@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuro-Lingo: جسر الكلمات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #111827; /* bg-gray-900 */
+        }
+        
+        /* --- الإصلاح الأساسي هنا --- */
+        .card {
+            transition: transform 0.6s;
+            cursor: pointer;
+            /* هذه الخاصية ضرورية للسماح للوجوه بالظهور في فضاء ثلاثي الأبعاد */
+            transform-style: preserve-3d;
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .card-face-back {
+            transform: rotateY(180deg);
+        }
+        .matched {
+            border-color: #34D399; /* emerald-400 */
+            transform: scale(1.05);
+        }
+        .grid-container {
+            display: grid;
+            gap: 1rem;
+        }
+        /* Dynamic grid columns */
+        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+        .grid-cols-5 { grid-template-columns: repeat(5, 1fr); }
+
+        /* اهتزاز عند الخطأ */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) rotateY(180deg); }
+            25% { transform: translateX(-5px) rotateY(180deg); }
+            50% { transform: translateX(5px) rotateY(180deg); }
+            75% { transform: translateX(-5px) rotateY(180deg); }
+        }
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Responsive grid adjustments */
+        @media (max-width: 640px) {
+            .grid-cols-4 { grid-template-columns: repeat(3, 1fr); }
+            .grid-cols-5 { grid-template-columns: repeat(4, 1fr); }
+            .card {
+                height: 6rem; /* h-24 */
+            }
+        }
+        @media (max-width: 480px) {
+             .grid-container {
+                gap: 0.5rem;
+             }
+             .card-face-back {
+                font-size: 1.125rem; /* text-xl */
+             }
+        }
+    </style>
+</head>
+<body class="text-white flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-4xl mx-auto">
+        <header class="text-center mb-6">
+            <h1 class="text-4xl md:text-5xl font-bold text-sky-400">Neuro-Lingo</h1>
+            <p class="text-xl text-gray-300">جسر الكلمات بين العربية والفرنسية</p>
+        </header>
+
+        <main id="game-container" class="bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-2xl">
+            <!-- Game Info Bar -->
+            <div class="flex justify-between items-center mb-4 text-lg">
+                <div>
+                    <span>المستوى: </span>
+                    <span id="level-display" class="font-bold text-2xl text-yellow-400">1</span>
+                </div>
+                <div>
+                    <span>الحركات: </span>
+                    <span id="moves-display" class="font-bold text-2xl text-green-400">0</span>
+                </div>
+            </div>
+
+            <!-- Game Board -->
+            <div id="game-board" class="grid-container">
+                <!-- Cards will be injected here by JavaScript -->
+            </div>
+        </main>
+        
+        <!-- Modal for level completion -->
+        <div id="modal-success" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+            <div class="bg-gray-800 rounded-xl p-8 text-center shadow-lg border border-sky-500 max-w-sm mx-4">
+                <div id="badge-display" class="mb-4"></div>
+                <h2 id="modal-title-success" class="text-3xl font-bold mb-2 text-yellow-400">أحسنت!</h2>
+                <p id="modal-message-success" class="text-lg mb-6">لقد أكملت المستوى بنجاح.</p>
+                <button id="next-level-btn" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg text-xl transition duration-300">
+                    المستوى التالي
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const gameData = [
+            // المستوى 1: أسماء محسوسة (حيوانات/منزل) - ذاكرة أساسية
+            { level: 1, grid: 'grid-cols-3', pairs: [{ fr: 'Chat', ar: 'قطة', id: 1 }, { fr: 'Maison', ar: 'منزل', id: 2 }, { fr: 'Porte', ar: 'باب', id: 3 }], 
+              badge: `<svg class="w-16 h-16 mx-auto text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>`},
+            // المستوى 2: أسماء محسوسة (طبيعة)
+            { level: 2, grid: 'grid-cols-4', pairs: [{ fr: 'Soleil', ar: 'شمس', id: 4 }, { fr: 'Arbre', ar: 'شجرة', id: 5 }, { fr: 'Fleur', ar: 'زهرة', id: 6 }, { fr: 'Eau', ar: 'ماء', id: 7 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10s5 2 7 3a8 8 0 01-8.657 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.343 17.343A7.975 7.975 0 0112 15c2.757 0 5.253.224 7.657 1.657l-7.657.686z"></path></svg>`},
+            // المستوى 3: أشياء شائعة
+            { level: 3, grid: 'grid-cols-4', pairs: [{ fr: 'Livre', ar: 'كتاب', id: 8 }, { fr: 'Table', ar: 'طاولة', id: 9 }, { fr: 'Voiture', ar: 'سيارة', id: 10 }, { fr: 'Téléphone', ar: 'هاتف', id: 11 }, { fr: 'Lit', ar: 'سرير', id: 12 }, { fr: 'Fenêtre', ar: 'نافذة', id: 13 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-9-8.494h18"></path></svg>`},
+            // المستوى 4: طعام
+            { level: 4, grid: 'grid-cols-4', pairs: [{ fr: 'Pain', ar: 'خبز', id: 14 }, { fr: 'Fromage', ar: 'جبن', id: 15 }, { fr: 'Pomme', ar: 'تفاحة', id: 16 }, { fr: 'Poisson', ar: 'سمك', id: 17 }, { fr: 'Café', ar: 'قهوة', id: 18 }, { fr: 'Sucre', ar: 'سكر', id: 19 }, { fr: 'Sel', ar: 'ملح', id: 20 }, { fr: 'Lait', ar: 'حليب', id: 21 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0c-.454-.303-.977-.454-1.5-.454V5.73c0-1.261.996-2.229 2.227-2.229h11.546c1.23 0 2.227.968 2.227 2.229v9.816zM9 13.5a.5.5 0 01.5-.5h5a.5.5 0 010 1h-5a.5.5 0 01-.5-.5z"></path></svg>`},
+            // المستوى 5: أفعال شائعة
+            { level: 5, grid: 'grid-cols-4', pairs: [{ fr: 'Manger', ar: 'يأكل', id: 22 }, { fr: 'Boire', ar: 'يشرب', id: 23 }, { fr: 'Parler', ar: 'يتكلم', id: 24 }, { fr: 'Voir', ar: 'يرى', id: 25 }, { fr: 'Savoir', ar: 'يعرف', id: 26 }, { fr: 'Venir', ar: 'يأتي', id: 27 }, { fr: 'Ouvrir', ar: 'يفتح', id: 28 }, { fr: 'Fermer', ar: 'يغلق', id: 29 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`},
+            // المستوى 6: صفات أساسية
+            { level: 6, grid: 'grid-cols-4', pairs: [{ fr: 'Grand', ar: 'كبير', id: 30 }, { fr: 'Petit', ar: 'صغير', id: 31 }, { fr: 'Chaud', ar: 'حار', id: 32 }, { fr: 'Froid', ar: 'بارد', id: 33 }, { fr: 'Rapide', ar: 'سريع', id: 34 }, { fr: 'Lent', ar: 'بطيء', id: 35 }, { fr: 'Bon', ar: 'جيد', id: 36 }, { fr: 'Mauvais', ar: 'سيء', id: 37 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>`},
+            // المستوى 7: أجزاء الجسم
+            { level: 7, grid: 'grid-cols-4', pairs: [{ fr: 'Tête', ar: 'رأس', id: 38 }, { fr: 'Main', ar: 'يد', id: 39 }, { fr: 'Pied', ar: 'قدم', id: 40 }, { fr: 'Oeil', ar: 'عين', id: 41 }, { fr: 'Bouche', ar: 'فم', id: 42 }, { fr: 'Nez', ar: 'أنف', id: 43 }, { fr: 'Oreille', ar: 'أذن', id: 44 }, { fr: 'Coeur', ar: 'قلب', id: 45 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>`},
+            // المستوى 8: ألوان وأرقام
+            { level: 8, grid: 'grid-cols-5', pairs: [{ fr: 'Rouge', ar: 'أحمر', id: 46 }, { fr: 'Vert', ar: 'أخضر', id: 47 }, { fr: 'Bleu', ar: 'أزرق', id: 48 }, { fr: 'Jaune', ar: 'أصفر', id: 49 }, { fr: 'Noir', ar: 'أسود', id: 50 }, { fr: 'Blanc', ar: 'أبيض', id: 51 }, { fr: 'Un', ar: 'واحد', id: 52 }, { fr: 'Deux', ar: 'اثنان', id: 53 }, { fr: 'Trois', ar: 'ثلاثة', id: 54 }, { fr: 'Dix', ar: 'عشرة', id: 55 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>`},
+            // المستوى 9: مشاعر وأحاسيس
+            { level: 9, grid: 'grid-cols-5', pairs: [{ fr: 'Heureux', ar: 'سعيد', id: 56 }, { fr: 'Triste', ar: 'حزين', id: 57 }, { fr: 'Fâché', ar: 'غاضب', id: 58 }, { fr: 'Peur', ar: 'خوف', id: 59 }, { fr: 'Surpris', ar: 'متفاجئ', id: 60 }, { fr: 'Fatigué', ar: 'متعب', id: 61 }, { fr: 'Fort', ar: 'قوي', id: 62 }, { fr: 'Faible', ar: 'ضعيف', id: 63 }, { fr: 'Timide', ar: 'خجول', id: 64 }, { fr: 'Courageux', ar: 'شجاع', id: 65 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`},
+            // المستوى 10: أفعال مجردة وحروف عطف
+            { level: 10, grid: 'grid-cols-5', pairs: [{ fr: 'Penser', ar: 'يفكر', id: 66 }, { fr: 'Croire', ar: 'يعتقد', id: 67 }, { fr: 'Aider', ar: 'يساعد', id: 68 }, { fr: 'Attendre', ar: 'ينتظر', id: 69 }, { fr: 'Envoyer', ar: 'يرسل', id: 70 }, { fr: 'Recevoir', ar: 'يستلم', id: 71 }, { fr: 'Et', ar: 'و', id: 72 }, { fr: 'Ou', ar: 'أو', id: 73 }, { fr: 'Mais', ar: 'لكن', id: 74 }, { fr: 'Si', ar: 'إذا', id: 75 }],
+              badge: `<svg class="w-16 h-16 mx-auto text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>`}
+        ];
+
+        const gameBoard = document.getElementById('game-board');
+        const levelDisplay = document.getElementById('level-display');
+        const movesDisplay = document.getElementById('moves-display');
+        const modalSuccess = document.getElementById('modal-success');
+        const badgeDisplay = document.getElementById('badge-display');
+        const modalTitleSuccess = document.getElementById('modal-title-success');
+        const modalMessageSuccess = document.getElementById('modal-message-success');
+        const nextLevelBtn = document.getElementById('next-level-btn');
+
+        const winSynth = new Tone.Synth().toDestination();
+        const failSynth = new Tone.Synth({ oscillator: { type: 'square' } }).toDestination();
+
+        let currentLevel = 0;
+        let moves = 0;
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matchedPairs = 0;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function setupLevel(levelIndex) {
+            const levelData = gameData[levelIndex];
+            matchedPairs = 0;
+            moves = 0;
+            movesDisplay.textContent = moves;
+            levelDisplay.textContent = levelData.level;
+            gameBoard.innerHTML = '';
+            gameBoard.className = 'grid-container ' + levelData.grid;
+
+            const cardsData = [];
+            levelData.pairs.forEach(pair => {
+                cardsData.push({ type: 'fr', text: pair.fr, pairId: pair.id });
+                cardsData.push({ type: 'ar', text: pair.ar, pairId: pair.id });
+            });
+
+            shuffle(cardsData).forEach(data => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card', 'h-28', 'sm:h-32', 'relative');
+                cardElement.dataset.pairId = data.pairId;
+                cardElement.innerHTML = `
+                    <div class="card-face w-full h-full flex items-center justify-center p-2 bg-gray-700 rounded-lg border-2 border-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-12 sm:w-12 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <div class="card-face card-face-back w-full h-full flex items-center justify-center p-2 bg-sky-500 rounded-lg text-xl sm:text-2xl font-bold">
+                        ${data.text}
+                    </div>
+                `;
+                gameBoard.appendChild(cardElement);
+                cardElement.addEventListener('click', flipCard);
+            });
+        }
+
+        function flipCard() {
+            if (Tone.context.state !== 'running') {
+                Tone.context.resume();
+            }
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            this.classList.add('is-flipped');
+
+            if (!firstCard) {
+                firstCard = this;
+                return;
+            }
+            secondCard = this;
+            moves++;
+            movesDisplay.textContent = moves;
+            lockBoard = true;
+            checkForMatch();
+        }
+        
+        function checkForMatch() {
+            const isMatch = firstCard.dataset.pairId === secondCard.dataset.pairId;
+            isMatch ? disableCards() : handleMismatch();
+        }
+        
+        function handleMismatch() {
+            failSynth.triggerAttackRelease("C3", "8n");
+            
+            firstCard.classList.add('shake');
+            secondCard.classList.add('shake');
+
+            setTimeout(() => {
+                firstCard.classList.remove('is-flipped', 'shake');
+                secondCard.classList.remove('is-flipped', 'shake');
+                resetBoard();
+            }, 1000);
+        }
+
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+            firstCard.querySelector('.card-face-back').classList.add('matched');
+            secondCard.querySelector('.card-face-back').classList.add('matched');
+            matchedPairs++;
+            resetBoard();
+            if (matchedPairs === gameData[currentLevel].pairs.length) {
+                setTimeout(showSuccessModal, 800);
+            }
+        }
+
+        function resetBoard() {
+            [firstCard, secondCard, lockBoard] = [null, null, false];
+        }
+
+        function playWinSound() {
+            const winMelody = ['C5', 'E5', 'G5', 'C6'];
+            const now = Tone.now();
+            winMelody.forEach((note, index) => {
+                winSynth.triggerAttackRelease(note, '8n', now + index * 0.15);
+            });
+        }
+
+        function showSuccessModal() {
+            playWinSound();
+            const levelData = gameData[currentLevel];
+            badgeDisplay.innerHTML = levelData.badge;
+
+            if (currentLevel >= gameData.length - 1) {
+                modalTitleSuccess.textContent = "تهانينا!";
+                modalMessageSuccess.textContent = "لقد أتقنت كل المستويات وأكملت اللعبة بنجاح!";
+                nextLevelBtn.textContent = "العب مجددًا";
+            } else {
+                modalTitleSuccess.textContent = "أحسنت!";
+                modalMessageSuccess.textContent = `لقد أكملت المستوى ${levelData.level} في ${moves} حركة.`;
+                nextLevelBtn.textContent = "المستوى التالي";
+            }
+            modalSuccess.classList.remove('hidden');
+        }
+
+        nextLevelBtn.addEventListener('click', () => {
+            modalSuccess.classList.add('hidden');
+            currentLevel++;
+            if (currentLevel >= gameData.length) {
+                currentLevel = 0;
+            }
+            setTimeout(() => setupLevel(currentLevel), 300);
+        });
+        
+        // Initial game start
+        setupLevel(currentLevel);
+    </script>
+</body>
+</html>
