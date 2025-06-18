@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L’heure, les dates et l’organisation du temps</title>
+    <!-- Chosen Palette: Custom palette based on source document (Sky Blue, Orange, Light Green, Purple, Pink, Blue Gray, Dark Purple, Turquoise) -->
+    <!-- Application Structure Plan: A single-page, vertical scrolling application with a sticky top navigation for direct access to 8 thematic sections. This linear structure follows the logical learning progression of the source document, from basic time-telling to complex appointment-setting. Each section is a self-contained learning module with an interactive quiz for immediate feedback, enhancing user engagement and knowledge retention. -->
+    <!-- Visualization & Content Choices: Content is organized into 8 distinct sections. Goal: Inform/Test. Method: Each section uses simple HTML (text, lists, tables) for explanations and interactive forms (radio buttons, text inputs) for quizzes/exercises. Interaction: Users get immediate feedback on quiz answers via JS that highlights correct/incorrect choices. Audio playback is added for French sentences using SpeechSynthesis API. Libraries: Vanilla JS only, as no complex charts are needed. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', 'Noto Sans Arabic', sans-serif;
+            scroll-behavior: smooth;
+        }
+        [lang="ar"] {
+            font-family: 'Noto Sans Arabic', sans-serif;
+        }
+        .section-card {
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+        .quiz-feedback {
+            display: none;
+            padding: 0.5rem 1rem;
+            margin-top: 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+        }
+        .quiz-feedback.correct {
+            display: block;
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .quiz-feedback.incorrect {
+            display: block;
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        .nav-item {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav-item:hover {
+            background-color: #e5e7eb;
+        }
+        .nav-item.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .option-label.correct {
+            background-color: #22c55e;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        .option-label.incorrect {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        .clock-image {
+            display: block;
+            margin: 1rem auto;
+            width: 150px;
+            height: 150px;
+            border: 5px solid #333;
+            border-radius: 50%;
+        }
+        .text-with-audio {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .text-with-audio button {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm p-4">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-blue-600 mb-4 md:mb-0" dir="ltr" lang="fr">L’heure, les dates et l’organisation du temps</h1>
+            <nav id="navbar" class="flex flex-wrap justify-center gap-2">
+                <a href="#section-1" class="nav-item">1</a>
+                <a href="#section-2" class="nav-item">2</a>
+                <a href="#section-3" class="nav-item">3</a>
+                <a href="#section-4" class="nav-item">4</a>
+                <a href="#section-5" class="nav-item">5</a>
+                <a href="#section-6" class="nav-item">6</a>
+                <a href="#section-7" class="nav-item">7</a>
+                <a href="#section-8" class="nav-item">8</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        
+        <!-- Section 1: L'heure et les moments de la journée -->
+        <section id="section-1" class="section-card bg-sky-100">
+            <h2 class="text-2xl font-bold text-sky-800 mb-4" dir="ltr" lang="fr">🔹 1. L’heure et les moments de la journée</h2>
+            <p class="mb-2"><strong>الشرح:</strong> تعلم كيفية قراءة الساعة والتعبير عن أوقات اليوم المختلفة باللغة الفرنسية. يساعدك هذا القسم على فهم نظامي الـ 12 ساعة والـ 24 ساعة.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="L'heure en format 12h: Ce format utilise les nombres de 1 à 12, et on ajoute du matin ou de l'après-midi / du soir pour préciser si c'est avant ou après midi.">
+                    <strong>L'heure en format 12h:</strong> Ce format utilise les nombres de 1 à 12, et on ajoute "du matin" (in the morning) ou "de l'après-midi" (in the afternoon) / "du soir" (in the evening) pour préciser si c'est avant ou après midi.
+                </span>
+                <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>الساعة بصيغة 12 ساعة:</strong> يستخدم هذا التنسيق الأرقام من 1 إلى 12، ونضيف "du matin" (صباحاً) أو "de l'après-midi" (بعد الظهر) / "du soir" (مساءً) لتحديد إذا كان الوقت قبل أو بعد الظهر.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Exemple: Il est 3h de l'après-midi.">
+                    <strong>Exemple:</strong> "Il est 3h de l'après-midi." (C'est 15h en format 24h)
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>مثال:</strong> "إنها الساعة 3 بعد الظهر." (وهي الساعة 15 في صيغة 24 ساعة)</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="L'heure en format 24h: Ce format utilise les nombres de 0 à 23 et est souvent utilisé pour les horaires officiels ou les transports.">
+                    <strong>L'heure en format 24h:</strong> Ce format utilise les nombres de 0 à 23 et est souvent utilisé pour les horaires officiels ou les transports.
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>الساعة بصيغة 24 ساعة:</strong> يستخدم هذا التنسيق الأرقام من 0 إلى 23 ويستخدم غالباً للجداول الرسمية أو وسائل النقل.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Exemple: Il est 15h.">
+                    <strong>Exemple:</strong> "Il est 15h." (C'est 3h de l'après-midi en format 12h)
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>مثال:</strong> "إنها الساعة 15." (وهي الساعة 3 بعد الظهر في صيغة 12 ساعة)</p>
+            
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Les moments de la journée:">
+                    <strong>Les moments de la journée:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Le matin: De l'aube à midi."><strong>Le matin:</strong> De l'aube à midi.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الصباح: من الفجر حتى الظهر.)</li>
+                <li class="text-with-audio"><span data-sentence="Le midi: 12h00 précises."><strong>Le midi:</strong> 12h00 précises.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الظهيرة: الساعة 12:00 بالضبط.)</li>
+                <li class="text-with-audio"><span data-sentence="L'après-midi: De midi à environ 18h."><strong>L'après-midi:</strong> De midi à environ 18h.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (بعد الظهر: من الظهر حتى حوالي الساعة 18.)</li>
+                <li class="text-with-audio"><span data-sentence="Le soir: D'environ 18h à la nuit."><strong>Le soir:</strong> D'environ 18h à la nuit.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (المساء: من حوالي الساعة 18 حتى الليل.)</li>
+                <li class="text-with-audio"><span data-sentence="La nuit: De la fin du soir jusqu'à l'aube."><strong>La nuit:</strong> De la fin du soir jusqu'à l'aube.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الليل: من نهاية المساء حتى الفجر.)</li>
+            </ul>
+
+            <div id="quiz1" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ اختبار قصير: ما الساعة؟</h3>
+                <img src="https://placehold.co/150x150/ffffff/000000?text=5:45" alt="ساعة تشير إلى 5:45" class="clock-image">
+                 <p lang="ar" class="text-center text-sm italic text-gray-600 mb-4">اختر التوقيت الصحيح بناء على صورة الساعة.</p>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q1" value="a"> A) Il est 6h30.</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q1" value="b"> B) Il est 5h45.</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q1" value="c" data-correct="true"> C) Il est 5h45 / 17h45.</label>
+                </div>
+                <button onclick="checkQuiz('quiz1')" class="mt-4 px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- Section 2: Les horaires -->
+        <section id="section-2" class="section-card bg-orange-100">
+            <h2 class="text-2xl font-bold text-orange-800 mb-4" dir="ltr" lang="fr">🔹 2. Les horaires (les transports, l’école, etc.)</h2>
+            <p class="mb-2"><strong>الشرح:</strong> فهم الجداول الزمنية ضروري في الحياة اليومية، سواء للمواصلات العامة، الدراسة، أو العمل. هذا القسم يعلمك كيفية قراءة الجداول بفعالية.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Les horaires sont des tableaux qui indiquent les heures de début et de fin d'événements, comme les départs de trains ou les cours à l'école. Ils sont essentiels pour organiser votre journée.">
+                    Les horaires sont des tableaux qui indiquent les heures de début et de fin d'événements, comme les départs de trains ou les cours à l'école. Ils sont essentiels pour organiser votre journée.
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">الجداول الزمنية هي جداول توضح أوقات بدء وانتهاء الأحداث، مثل مواعيد القطارات أو الحصص الدراسية. إنها ضرورية لتنظيم يومك.</p>
+            <table class="w-full text-left border-collapse rounded-lg overflow-hidden my-4">
+                <thead class="bg-orange-200">
+                    <tr>
+                        <th class="p-2" dir="ltr" lang="fr">Trajet (الرحلة)</th>
+                        <th class="p-2" dir="ltr" lang="fr">Départ (المغادرة)</th>
+                        <th class="p-2" dir="ltr" lang="fr">Arrivée (الوصول)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white"><td class="p-2 border-t" dir="ltr" lang="fr">Paris - Lyon</td><td class="p-2 border-t" dir="ltr" lang="fr">09:00</td><td class="p-2 border-t" dir="ltr" lang="fr">11:00</td></tr>
+                    <tr class="bg-orange-50"><td class="p-2 border-t" dir="ltr" lang="fr">Lyon - Marseille</td><td class="p-2 border-t" dir="ltr" lang="fr">11:30</td><td class="p-2 border-t" dir="ltr" lang="fr">13:00</td></tr>
+                </tbody>
+            </table>
+            <div id="quiz2" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ اختبار: متى يصل القطار إلى ليون؟</h3>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q2" value="a"> A) 09:00</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q2" value="b" data-correct="true"> B) 11:00</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q2" value="c"> C) 11:30</label>
+                </div>
+                <button onclick="checkQuiz('quiz2')" class="mt-4 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- Section 3: Le changement d’heure -->
+        <section id="section-3" class="section-card bg-green-100">
+            <h2 class="text-2xl font-bold text-green-800 mb-4" dir="ltr" lang="fr">🔹 3. Le changement d’heure (été / hiver)</h2>
+            <p class="mb-2"><strong>الشرح:</strong> يشرح هذا القسم مفهوم تغيير الساعة بين التوقيت الصيفي والشتوي، وهي ممارسة شائعة في العديد من البلدان لتوفير الطاقة واستغلال ضوء النهار.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Le changement d'heure est une pratique qui consiste à avancer ou reculer l'heure officielle d'une heure. Il y a deux périodes:">
+                    Le changement d'heure est une pratique qui consiste à avancer ou reculer l'heure officielle d'une heure. Il y a deux périodes:
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-2">تغيير الساعة هو ممارسة تتمثل في تقديم أو تأخير الساعة الرسمية بساعة واحدة. هناك فترتان:</p>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="L'heure d'été: On avance l'heure d'une heure (ex: 2h devient 3h). Cela se fait généralement le dernier dimanche de mars."><strong>L'heure d'été:</strong> On avance l'heure d'une heure (ex: 2h devient 3h). Cela se fait généralement le dernier dimanche de mars.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button></li>
+                <li class="text-with-audio"><span data-sentence="L'heure d'hiver: On recule l'heure d'une heure (ex: 3h devient 2h). Cela se fait généralement le dernier dimanche d'octobre."><strong>L'heure d'hiver:</strong> On recule l'heure d'une heure (ex: 3h devient 2h). Cela se fait généralement le dernier dimanche d'octobre.</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button></li>
+            </ul>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">
+                <ul>
+                    <li><strong>التوقيت الصيفي:</strong> نقدم الساعة بساعة واحدة (مثال: 2 صباحاً تصبح 3 صباحاً). يحدث هذا عادةً في الأحد الأخير من مارس.</li>
+                    <li><strong>التوقيت الشتوي:</strong> نؤخر الساعة بساعة واحدة (مثال: 3 صباحاً تصبح 2 صباحاً). يحدث هذا عادةً في الأحد الأخير من أكتوبر.</li>
+                </ul>
+            </p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pourquoi? Le but principal est d'économiser de l'énergie en profitant davantage de la lumière naturelle du soleil.">
+                    <strong>Pourquoi?</strong> Le but principal est d'économiser de l'énergie en profitant davantage de la lumière naturelle du soleil.
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>لماذا؟</strong> الهدف الرئيسي هو توفير الطاقة من خلال الاستفادة أكثر من ضوء الشمس الطبيعي.</p>
+
+            <div id="quiz3" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ اختبار: متى يتغير الوقت في فرنسا (للتوقيت الصيفي)؟</h3>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q3" value="a"> A) Octobre</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q3" value="b" data-correct="true"> B) Mars</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q3" value="c"> C) Janvier</label>
+                </div>
+                <button onclick="checkQuiz('quiz3')" class="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+        
+        <!-- Section 4: Les jours, les mois, le calendrier -->
+        <section id="section-4" class="section-card bg-purple-100">
+            <h2 class="text-2xl font-bold text-purple-800 mb-4" dir="ltr" lang="fr">🔹 4. Les jours, les mois, le calendrier</h2>
+            <p class="mb-2"><strong>الشرح:</strong> تعلم أيام الأسبوع وشهور السنة بالفرنسية، وكيفية استخدام التقويم والتعبير عن التواريخ بشكل صحيح.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Les jours de la semaine:">
+                    <strong>Les jours de la semaine:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Lundi">Lundi</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الاثنين)</li>
+                <li class="text-with-audio"><span data-sentence="Mardi">Mardi</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الثلاثاء)</li>
+                <li class="text-with-audio"><span data-sentence="Mercredi">Mercredi</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الأربعاء)</li>
+                <li class="text-with-audio"><span data-sentence="Jeudi">Jeudi</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الخميس)</li>
+                <li class="text-with-audio"><span data-sentence="Vendredi">Vendredi</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الجمعة)</li>
+                <li class="text-with-audio"><span data-sentence="Samedi">Samedi</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (السبت)</li>
+                <li class="text-with-audio"><span data-sentence="Dimanche">Dimanche</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (الأحد)</li>
+            </ul>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Les mois de l'année:">
+                    <strong>Les mois de l'année:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4 grid grid-cols-2 md:grid-cols-3">
+                <li class="text-with-audio"><span data-sentence="Janvier">Janvier</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (يناير)</li>
+                <li class="text-with-audio"><span data-sentence="Février">Février</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (فبراير)</li>
+                <li class="text-with-audio"><span data-sentence="Mars">Mars</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (مارس)</li>
+                <li class="text-with-audio"><span data-sentence="Avril">Avril</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أبريل)</li>
+                <li class="text-with-audio"><span data-sentence="Mai">Mai</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (مايو)</li>
+                <li class="text-with-audio"><span data-sentence="Juin">Juin</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (يونيو)</li>
+                <li class="text-with-audio"><span data-sentence="Juillet">Juillet</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (يوليو)</li>
+                <li class="text-with-audio"><span data-sentence="Août">Août</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أغسطس)</li>
+                <li class="text-with-audio"><span data-sentence="Septembre">Septembre</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (سبتمبر)</li>
+                <li class="text-with-audio"><span data-sentence="Octobre">Octobre</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أكتوبر)</li>
+                <li class="text-with-audio"><span data-sentence="Novembre">Novembre</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (نوفمبر)</li>
+                <li class="text-with-audio"><span data-sentence="Décembre">Décembre</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (ديسمبر)</li>
+            </ul>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Comment dire la date: On utilise généralement Nous sommes le... ou Aujourd'hui, c'est le....">
+                    <strong>Comment dire la date:</strong> On utilise généralement "Nous sommes le..." ou "Aujourd'hui, c'est le...".
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>كيف تقول التاريخ:</strong> نستخدم عادةً "Nous sommes le..." (نحن في...) أو "Aujourd'hui, c'est le..." (اليوم هو...).</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Exemple: Nous sommes le 15 juin.">
+                    <strong>Exemple:</strong> "Nous sommes le 15 juin."
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>مثال:</strong> "نحن في 15 يونيو."</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Exemple: Aujourd'hui, c'est le lundi 15 juin.">
+                    <strong>Exemple:</strong> "Aujourd'hui, c'est le lundi 15 juin."
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>مثال:</strong> "اليوم هو الاثنين 15 يونيو."</p>
+
+            <div id="quiz4" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ اختبار: اختر الصيغة الصحيحة لقول التاريخ "20 يوليو".</h3>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q4" value="a"> A) Nous sommes 20 juillet.</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q4" value="b" data-correct="true"> B) Nous sommes le 20 juillet.</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q4" value="c"> C) Il est le 20 juillet.</label>
+                </div>
+                <button onclick="checkQuiz('quiz4')" class="mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- Section 5: Les saisons -->
+        <section id="section-5" class="section-card bg-pink-100">
+            <h2 class="text-2xl font-bold text-pink-800 mb-4" dir="ltr" lang="fr">🔹 5. Les saisons</h2>
+             <p class="mb-2"><strong>الشرح:</strong> استكشف الفصول الأربعة في فرنسا وخصائصها المميزة، مما يساعدك على ربط التواريخ بالظواهر الطبيعية والمناخية.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Il y a quatre saisons dans l'année, chacune avec ses propres caractéristiques climatiques et naturelles:">
+                    Il y a quatre saisons dans l'année, chacune avec ses propres caractéristiques climatiques et naturelles:
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">هناك أربعة فصول في السنة، كل منها له خصائصه المناخية والطبيعية:</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="p-4 bg-white rounded-lg text-center">
+                    🌸<br>
+                    <strong dir="ltr" lang="fr">Printemps</strong><p lang="ar" class="text-sm">الربيع</p>
+                    <div class="text-with-audio justify-center" dir="ltr" lang="fr">
+                        <span data-sentence="Les fleurs fleurissent, le temps se réchauffe.">Les fleurs fleurissent, le temps se réchauffe.</span>
+                        <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                            <span class="text-lg">🔊</span>
+                        </button>
+                    </div>
+                    <p lang="ar" class="text-xs mt-1">(تتفتح الزهور، الطقس يصبح دافئاً.)</p>
+                </div>
+                <div class="p-4 bg-white rounded-lg text-center">
+                    ☀️<br>
+                    <strong dir="ltr" lang="fr">Été</strong><p lang="ar" class="text-sm">الصيف</p>
+                    <div class="text-with-audio justify-center" dir="ltr" lang="fr">
+                        <span data-sentence="Il fait chaud et ensoleillé, idéal pour les vacances.">Il fait chaud et ensoleillé, idéal pour les vacances.</span>
+                        <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                            <span class="text-lg">🔊</span>
+                        </button>
+                    </div>
+                    <p lang="ar" class="text-xs mt-1">(الجو حار ومشمس، مثالي للعطلات.)</p>
+                </div>
+                <div class="p-4 bg-white rounded-lg text-center">
+                    🍁<br>
+                    <strong dir="ltr" lang="fr">Autumne</strong><p lang="ar" class="text-sm">الخريف</p>
+                    <div class="text-with-audio justify-center" dir="ltr" lang="fr">
+                        <span data-sentence="Les feuilles tombent, le temps devient plus frais.">Les feuilles tombent, le temps devient plus frais.</span>
+                        <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                            <span class="text-lg">🔊</span>
+                        </button>
+                    </div>
+                    <p lang="ar" class="text-xs mt-1">(تسقط الأوراق، الطقس يصبح أبرد.)</p>
+                </div>
+                <div class="p-4 bg-white rounded-lg text-center">
+                    ❄️<br>
+                    <strong dir="ltr" lang="fr">Hiver</strong><p lang="ar" class="text-sm">الشتاء</p>
+                    <div class="text-with-audio justify-center" dir="ltr" lang="fr">
+                        <span data-sentence="Il fait froid, il peut neiger.">Il fait froid, il peut neiger.</span>
+                        <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                            <span class="text-lg">🔊</span>
+                        </button>
+                    </div>
+                    <p lang="ar" class="text-xs mt-1">(الجو بارد، قد تتساقط الثلوج.)</p>
+                </div>
+            </div>
+            <div id="quiz5" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ اختبار: اختر الفصل بناءً على الوصف: "Les arbres perdent leurs feuilles et le temps est frais."</h3>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q5" value="a"> A) Le printemps</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q5" value="b" data-correct="true"> B) L'automne</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q5" value="c"> C) L'hiver</label>
+                </div>
+                <button onclick="checkQuiz('quiz5')" class="mt-4 px-4 py-2 bg-pink-600 text-white rounded hover:bg-pink-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- Section 6: Les nombres utiles -->
+        <section id="section-6" class="section-card bg-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4" dir="ltr" lang="fr">🔹 6. Les nombres utiles pour l’heure et la date</h2>
+            <p class="mb-2"><strong>الشرح:</strong> هذا القسم يركز على الأعداد المستخدمة في التواريخ، وخاصة التمييز بين استخدام "1er" و "1" عندما نتحدث عن اليوم الأول من الشهر.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour les dates, nous utilisons les nombres cardinaux (1, 2, 3...) pour la plupart des jours du mois, mais il y a une exception pour le premier jour.">
+                    Pour les dates, nous utilisons les nombres cardinaux (1, 2, 3...) pour la plupart des jours du mois, mais il y a une exception pour le premier jour.
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">بالنسبة للتواريخ، نستخدم الأعداد الأصلية (1، 2، 3...) لمعظم أيام الشهر، ولكن هناك استثناء لليوم الأول.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="On utilise 1er (premier), qui est un nombre ordinal, uniquement pour le premier jour du mois.">
+                    On utilise <strong>"1er" (premier)</strong>, qui est un nombre ordinal, uniquement pour le premier jour du mois.
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">نستخدم <strong>"1er" (الأول)</strong>، وهو عدد ترتيبي، فقط لليوم الأول من الشهر.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Exemple: le 1er janvier (not le un janvier).">
+                    <strong>Exemple:</strong> "le 1er janvier" (not "le un janvier").
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>مثال:</strong> "الأول من يناير" (وليس "الواحد يناير").</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour tous les autres jours, on utilise le nombre cardinal:">
+                    Pour tous les autres jours, on utilise le nombre cardinal:
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">لجميع الأيام الأخرى، نستخدم العدد الأصلي:</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Exemple: le 2 janvier, le 15 mars, le 31 décembre.">
+                    <strong>Exemple:</strong> "le 2 janvier", "le 15 mars", "le 31 décembre".
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4"><strong>مثال:</strong> "2 يناير"، "15 مارس"، "31 ديسمبر".</p>
+            <div id="quiz6" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ تمرين: أي صيغة صحيحة لقول "الأول من مايو"؟</h3>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q6" value="a"> A) le un mai</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q6" value="b" data-correct="true"> B) le premier mai</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q6" value="c"> C) le 1 mai</label>
+                </div>
+                <button onclick="checkQuiz('quiz6')" class="mt-4 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- Section 7: L’expression du temps -->
+        <section id="section-7" class="section-card bg-indigo-100">
+            <h2 class="text-2xl font-bold text-indigo-800 mb-4" dir="ltr" lang="fr">🔹 7. L’expression du temps & emploi du temps</h2>
+            <p class="mb-2"><strong>الشرح:</strong> تعلم كيف تصف جدولك اليومي وتستخدم التعبيرات الزمنية الشائعة مثل "باكراً" أو "متأخراً".</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour décrire votre emploi du temps ou vos activités quotidiennes, vous pouvez utiliser ces structures:">
+                    Pour décrire votre emploi du temps ou vos activités quotidiennes, vous pouvez utiliser ces structures:
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">لوصف جدولك الزمني أو أنشطتك اليومية، يمكنك استخدام هذه التراكيب:</p>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Je me lève à…: Je me lève à 7h."><strong>Je me lève à…:</strong> (أستيقظ في...) "Je me lève à 7h."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أستيقظ الساعة 7.)</li>
+                <li class="text-with-audio"><span data-sentence="Je travaille de… à…: Je travaille de 9h à 17h."><strong>Je travaille de… à…:</strong> (أعمل من... إلى...) "Je travaille de 9h à 17h."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أعمل من 9 إلى 17.)</li>
+                <li class="text-with-audio"><span data-sentence="Je déjeune à…: Je déjeune à 13h."><strong>Je déjeune à…:</strong> (أتناول الغداء في...) "Je déjeune à 13h."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أتناول الغداء الساعة 13.)</li>
+                <li class="text-with-audio"><span data-sentence="Je dîne à…: Je dîne à 20h."><strong>Je dîne à…:</strong> (أتناول العشاء في...) "Je dîne à 20h."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أتناول العشاء الساعة 20.)</li>
+                <li class="text-with-audio"><span data-sentence="Je me couche à…: Je me couche à 23h."><strong>Je me couche à…:</strong> (أذهب للنوم في...) "Je me couche à 23h."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أذهب للنوم الساعة 23.)</li>
+            </ul>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Expressions de temps courantes:">
+                    <strong>Expressions de temps courantes:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Tôt: Je suis arrivé tôt."><strong>Tôt:</strong> (باكراً) "Je suis arrivé tôt."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (وصلت باكراً.)</li>
+                <li class="text-with-audio"><span data-sentence="Tard: Il est rentré tard."><strong>Tard:</strong> (متأخراً) "Il est rentré tard."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (عاد متأخراً.)</li>
+                <li class="text-with-audio"><span data-sentence="À temps: Elle est toujours à temps pour ses rendez-vous."><strong>À temps:</strong> (في الوقت المحدد) "Elle est toujours à temps pour ses rendez-vous."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (هي دائماً في الوقت المحدد لمواعيدها.)</li>
+                <li class="text-with-audio"><span data-sentence="En retard: Nous sommes en retard pour le train."><strong>En retard:</strong> (متأخراً) "Nous sommes en retard pour le train."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (نحن متأخرون عن القطار.)</li>
+            </ul>
+
+            <div id="quiz7" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ تمرين: رتب الجمل حسب التسلسل الزمني ليوم معين (اكتب 1، 2، 3، 4).</h3>
+                 <div class="space-y-2" data-correct-order="1,3,4,2">
+                    <div class="flex items-center gap-2" dir="ltr" lang="fr"><input type="number" min="1" max="4" class="w-12 border rounded p-1 text-center" data-order="1"> <span>Je prends le petit-déjeuner. (أتناول الفطور)</span></div>
+                    <div class="flex items-center gap-2" dir="ltr" lang="fr"><input type="number" min="1" max="4" class="w-12 border rounded p-1 text-center" data-order="4"> <span>Je me couche. (أنام)</span></div>
+                    <div class="flex items-center gap-2" dir="ltr" lang="fr"><input type="number" min="1" max="4" class="w-12 border rounded p-1 text-center" data-order="2"> <span>Je vais à l'école. (أذهب للمدرسة)</span></div>
+                    <div class="flex items-center gap-2" dir="ltr" lang="fr"><input type="number" min="1" max="4" class="w-12 border rounded p-1 text-center" data-order="3"> <span>Je rentre à la maison. (أعود للمنزل)</span></div>
+                </div>
+                <button onclick="checkOrderQuiz('quiz7')" class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">تحقق من الترتيب</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+
+        <!-- Section 8: Prendre rendez-vous -->
+        <section id="section-8" class="section-card bg-cyan-100">
+            <h2 class="text-2xl font-bold text-cyan-800 mb-4" dir="ltr" lang="fr">🔹 8. Prendre rendez-vous (الحجز وتحديد موعد)</h2>
+            <p class="mb-2"><strong>الشرح:</strong> دليل كامل للعبارات المستخدمة لتحديد المواعيد، تأكيدها، أو رفضها بلباقة باللغة الفرنسية.</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Apprendre à prendre rendez-vous est une compétence clé pour interagir en français. Voici quelques phrases utiles:">
+                    Apprendre à prendre rendez-vous est une compétence clé pour interagir en français. Voici quelques phrases utiles:
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <p lang="ar" class="text-sm italic text-gray-600 mb-4">تعلّم كيفية تحديد المواعيد مهارة أساسية للتفاعل باللغة الفرنسية. إليك بعض العبارات المفيدة:</p>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour proposer un rendez-vous:">
+                    <strong>Pour proposer un rendez-vous:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Est-ce que tu es libre à 10h ?">"Est-ce que tu es libre à 10h ?"</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (هل أنت متاح الساعة 10؟)</li>
+                <li class="text-with-audio"><span data-sentence="On se voit quand ?">"On se voit quand ?"</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (متى نتقابل؟)</li>
+                <li class="text-with-audio"><span data-sentence="Je voudrais prendre rendez-vous avec le docteur.">"Je voudrais prendre rendez-vous avec le docteur."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أود تحديد موعد مع الطبيب.)</li>
+                <li class="text-with-audio"><span data-sentence="Ça te dit de prendre un café demain ?">"Ça te dit de prendre un café demain ?"</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (هل ترغب في شرب قهوة غداً؟)</li>
+            </ul>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour accepter un rendez-vous:">
+                    <strong>Pour accepter un rendez-vous:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Oui, je suis disponible.">"Oui, je suis disponible."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (نعم، أنا متاح.)</li>
+                <li class="text-with-audio"><span data-sentence="D'accord, à quelle heure ?">"D'accord, à quelle heure ?"</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (حسناً، في أي ساعة؟)</li>
+                <li class="text-with-audio"><span data-sentence="C'est parfait pour moi !">"C'est parfait pour moi !"</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (هذا مثالي بالنسبة لي!)</li>
+            </ul>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour refuser un rendez-vous (poliment):">
+                    <strong>Pour refuser un rendez-vous (poliment):</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="Non, je ne peux pas.">"Non, je ne peux pas."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (لا، لا أستطيع.)</li>
+                <li class="text-with-audio"><span data-sentence="Je suis désolé, je ne suis pas libre à ce moment-là.">"Je suis désolé(e), je ne suis pas libre à ce moment-là."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (أنا آسف/آسفة، لست متاحاً/متاحة في ذلك الوقت.)</li>
+                <li class="text-with-audio"><span data-sentence="Peut-être une autre fois ?">"Peut-être une autre fois ?"</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (ربما في وقت آخر؟)</li>
+            </ul>
+            <div class="text-with-audio" dir="ltr" lang="fr">
+                <span data-sentence="Pour confirmer un lieu/heure:">
+                    <strong>Pour confirmer un lieu/heure:</strong>
+                </span>
+                 <button class="p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)">
+                    <span class="text-lg">🔊</span>
+                </button>
+            </div>
+            <ul dir="ltr" lang="fr" class="list-disc list-inside mb-4">
+                <li class="text-with-audio"><span data-sentence="On se retrouve à 14h devant la gare.">"On se retrouve à 14h devant la gare."</span><button class="ml-2 p-1 rounded-full bg-blue-200 hover:bg-blue-300 text-blue-800" onclick="speakSentence(this)"><span class="text-lg">🔊</span></button> (نتقابل الساعة 14 أمام المحطة.)</li>
+            </ul>
+
+            <div id="quiz8" class="mt-6 p-4 bg-white rounded-lg">
+                <h3 class="font-bold mb-2">✅ تمرين: اختر الرد المناسب للموقف التالي: "On se voit quand ?" (متى نتقابل؟)</h3>
+                <div class="space-y-2">
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q8" value="a"> A) Je ne peux pas.</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q8" value="b" data-correct="true"> B) On se retrouve à 14h.</label>
+                    <label class="block option-label" dir="ltr" lang="fr"><input type="radio" name="q8" value="c"> C) Oui, je suis libre.</label>
+                </div>
+                <button onclick="checkQuiz('quiz8')" class="mt-4 px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700">تحقق من الإجابة</button>
+                <div class="quiz-feedback"></div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="text-center p-4 text-gray-500 text-sm">
+        <p>تطبيق ويب تفاعلي تم إنشاؤه لتعلم الوقت والتاريخ بالفرنسية.</p>
+    </footer>
+
+    <script>
+        function speakSentence(buttonElement) {
+            const sentenceSpan = buttonElement.previousElementSibling;
+            const sentenceText = sentenceSpan.dataset.sentence;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(sentenceText);
+                utterance.lang = 'fr-FR'; // Set language to French
+                speechSynthesis.speak(utterance);
+            } else {
+                console.warn('SpeechSynthesis API not supported in this browser.');
+                // Optionally, display a message to the user that audio is not supported
+                alert('عذرًا، ميزة النطق غير مدعومة في متصفحك.');
+            }
+        }
+
+        function checkQuiz(quizId) {
+            const quizElement = document.getElementById(quizId);
+            const selectedOption = quizElement.querySelector('input[type="radio"]:checked');
+            const feedbackElement = quizElement.querySelector('.quiz-feedback');
+            const allLabels = quizElement.querySelectorAll('.option-label');
+
+            allLabels.forEach(l => l.classList.remove('correct', 'incorrect'));
+            
+            if (!selectedOption) {
+                feedbackElement.textContent = 'الرجاء اختيار إجابة.';
+                feedbackElement.className = 'quiz-feedback incorrect';
+                return;
+            }
+
+            const isCorrect = selectedOption.hasAttribute('data-correct');
+            const correctLabel = selectedOption.parentElement;
+
+            if (isCorrect) {
+                feedbackElement.textContent = 'إجابة صحيحة! أحسنت.';
+                feedbackElement.className = 'quiz-feedback correct';
+                correctLabel.classList.add('correct');
+            } else {
+                feedbackElement.textContent = 'إجابة خاطئة. حاول مرة أخرى.';
+                feedbackElement.className = 'quiz-feedback incorrect';
+                correctLabel.classList.add('incorrect');
+                const correctEl = quizElement.querySelector('input[data-correct="true"]').parentElement;
+                correctEl.classList.add('correct');
+            }
+        }
+        
+        function checkOrderQuiz(quizId) {
+            const quizElement = document.getElementById(quizId);
+            const inputs = quizElement.querySelectorAll('input[type="number"]');
+            const feedbackElement = quizElement.querySelector('.quiz-feedback');
+            
+            let userOrder = [];
+            inputs.forEach(input => {
+                userOrder.push({ val: input.value, el: input });
+            });
+
+            // Sort by user input value
+            userOrder.sort((a, b) => a.val - b.val);
+            
+            let isCorrect = true;
+            for(let i = 0; i < userOrder.length; i++) {
+                // Check if the element at position i has the correct original order
+                if (parseInt(userOrder[i].el.dataset.order) !== (i + 1)) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+            
+            if (isCorrect) {
+                feedbackElement.textContent = 'ترتيب صحيح! ممتاز.';
+                feedbackElement.className = 'quiz-feedback correct';
+            } else {
+                feedbackElement.textContent = 'ترتيب خاطئ. حاول مرة أخرى.';
+                feedbackElement.className = 'quiz-feedback incorrect';
+            }
+        }
+
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('#navbar a');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').substring(1) === entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: "-50% 0px -50% 0px" });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+    </script>
+</body>
+</html>
