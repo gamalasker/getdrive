@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درس اللغة الفرنسية: مكافحة التمييز المرتبط بالسن</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Use Cairo for Arabic text and Inter for French (Latin) text */
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        [dir="ltr"] {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom styles for transitions and highlights */
+        .modal-transition {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .modal-hidden {
+            opacity: 0;
+            transform: translate(-50%, -40%) scale(0.95);
+            pointer-events: none; /* Prevent interaction when hidden */
+        }
+        .modal-visible {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Highlight style for clickable words */
+        .highlighted-word {
+            cursor: pointer;
+            color: #2563eb; /* blue-600 */
+            font-weight: 600;
+            background-color: rgba(59, 130, 246, 0.1);
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s;
+        }
+        .highlighted-word:hover, .highlighted-word:focus-visible {
+            background-color: rgba(59, 130, 246, 0.2);
+            outline: none;
+        }
+
+        /* Collapsible section arrow animation */
+        details > summary {
+            list-style: none; /* Remove default marker */
+        }
+        details > summary::-webkit-details-marker {
+            display: none; /* For Safari */
+        }
+        details > summary::before {
+            content: '◀';
+            margin-left: 0.5rem;
+            display: inline-block;
+            transition: transform 0.2s ease-in-out;
+            font-size: 0.8em;
+        }
+        details[open] > summary::before {
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8">
+
+    <main class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-10">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-2">درس اللغة الفرنسية التفاعلي</h1>
+            <p class="text-lg md:text-xl text-slate-600" dir="ltr">Lutte contre la discrimination liée à l'âge (Niveau B2)</p>
+        </header>
+
+        <!-- Index Section -->
+        <section class="mb-12 p-6 bg-slate-50 rounded-lg border border-slate-200">
+            <h2 class="text-2xl font-bold text-slate-700 mb-4 pb-2 border-b">فهرس الدرس</h2>
+            <ul class="list-disc pr-5 text-lg text-slate-800 space-y-2">
+                <li><a href="#french-text-section" class="text-blue-600 hover:underline">النص الفرنسي التفاعلي</a></li>
+                <li><a href="#arabic-translation-section" class="text-blue-600 hover:underline">الترجمة العربية الكاملة</a></li>
+                <li><a href="#vocabulary-section" class="text-blue-600 hover:underline">أهم الكلمات والتعبيرات</a></li>
+                <li><a href="#quiz-section" class="text-blue-600 hover:underline">اختبر فهمك</a></li>
+            </ul>
+        </section>
+
+        <!-- French Text Section -->
+        <section id="french-text-section" class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-700 mb-4">النص الفرنسي <span class="text-sm font-normal text-slate-500">(انقر على الكلمات الملونة)</span></h2>
+            <div id="french-text" class="text-lg leading-relaxed text-slate-800 bg-slate-50 p-6 rounded-lg border" dir="ltr">
+                <p>
+                    Pour que les Français travaillent plus longtemps, il est crucial de <span class="highlighted-word" data-word="supprimer les obstacles à l'embauche" role="button" tabindex="0">supprimer les obstacles à l'embauche</span> pour les <span class="highlighted-word" data-word="seniors" role="button" tabindex="0">seniors</span>. C'est un défi important car, malgré la nécessité de <span class="highlighted-word" data-word="repousser l'âge de départ à la retraite" role="button" tabindex="0">repousser l'âge de départ à la retraite</span>, beaucoup de personnes de plus de 50 ans subissent encore une forte <span class="highlighted-word" data-word="discrimination liée à l'âge" role="button" tabindex="0">discrimination liée à l'âge</span>.
+                </p>
+                <p class="mt-4">
+                    Beaucoup de seniors se retrouvent dans une situation difficile : ils sont <span class="highlighted-word" data-word="trop jeunes pour la retraite" role="button" tabindex="0">trop jeunes pour la retraite</span>, mais <span class="highlighted-word" data-word="trop âgés pour être facilement embauchés" role="button" tabindex="0">trop âgés pour être facilement embauchés</span>. Après un <span class="highlighted-word" data-word="licenciement" role="button" tabindex="0">licenciement</span> ou une <span class="highlighted-word" data-word="réorientation de carrière" role="button" tabindex="0">réorientation de carrière</span> ratée, ils ont du mal à retrouver un emploi à cause de leur âge. Cette situation peut les pousser vers le <span class="highlighted-word" data-word="chômage" role="button" tabindex="0">chômage</span> ou la <span class="highlighted-word" data-word="précarité" role="button" tabindex="0">précarité</span>.
+                </p>
+                <p class="mt-4">
+                    Un sondage récent montre que de nombreux <span class="highlighted-word" data-word="préjugés" role="button" tabindex="0">préjugés</span> existent sur les travailleurs seniors. On pense souvent qu'ils sont <span class="highlighted-word" data-word="moins adaptables" role="button" tabindex="0">moins adaptables</span> aux nouvelles technologies, plus facilement fatigués ou qu'ils <span class="highlighted-word" data-word="coûtent trop cher" role="button" tabindex="0">coûtent trop cher</span>. Ces stéréotypes sont si répandus que l'âge est perçu comme la principale source de <span class="highlighted-word" data-word="discrimination" role="button" tabindex="0">discrimination</span> en France.
+                </p>
+                <p class="mt-4">
+                    Les entreprises, bien qu'elles soient favorables au report de l'âge de la retraite, préfèrent souvent embaucher des jeunes. Les <span class="highlighted-word" data-word="algorithmes de recrutement" role="button" tabindex="0">algorithmes de recrutement</span> sont parfois programmés pour privilégier les candidats plus jeunes, filtrant ainsi les seniors dès la première étape. Même après cet obstacle, les services de ressources humaines peuvent aussi avoir des <span class="highlighted-word" data-word="réticences" role="button" tabindex="0">réticences</span> à recruter des personnes plus âgées.
+                </p>
+                <p class="mt-4">
+                    Pour résoudre ce problème, il faut <span class="highlighted-word" data-word="corriger les biais" role="button" tabindex="0">corriger les biais</span> dans les algorithmes de recrutement et peut-être même envisager des <span class="highlighted-word" data-word="quotas" role="button" tabindex="0">quotas</span> basés sur l'âge. Les mentalités doivent évoluer non pas par idéal, mais par nécessité : dans dix ans, la majorité de la <span class="highlighted-word" data-word="main-d'œuvre" role="button" tabindex="0">main-d'œuvre</span> sera constituée par les plus de 45 ans, et la <span class="highlighted-word" data-word="pénurie de talents" role="button" tabindex="0">pénurie de talents</span> rendra l'<span class="highlighted-word" data-word="expérience" role="button" tabindex="0">expérience</span> des seniors indispensable.
+                </p>
+            </div>
+        </section>
+
+        <!-- Full Arabic Translation Section -->
+        <section id="arabic-translation-section" class="mb-12 bg-slate-50 rounded-lg border">
+            <details class="p-6">
+                <summary class="text-xl font-semibold text-slate-700 cursor-pointer">
+                    الترجمة العربية الكاملة للدرس
+                </summary>
+                <div class="mt-4 text-lg leading-relaxed text-slate-800 space-y-4 border-t pt-4">
+                    <!-- Arabic translation paragraphs -->
+                    <p>لكي يعمل الفرنسيون لفترة أطول، من الضروري إزالة الحواجز أمام توظيف كبار السن. يمثل هذا تحديًا كبيرًا، فبالرغم من الحاجة إلى تأخير سن التقاعد، لا يزال العديد من الأشخاص الذين تزيد أعمارهم عن 50 عامًا يعانون من تمييز قوي مرتبط بالسن.</p>
+                    <p>يجد العديد من كبار السن أنفسهم في وضع صعب: فهم صغار جدًا على التقاعد، لكنهم كبار جدًا على أن يتم توظيفهم بسهولة. بعد التسريح من العمل أو الفشل في إعادة توجيه مهني، يجدون صعوبة في العثور على عمل بسبب سنهم. قد يؤدي هذا الوضع بهم إلى البطالة أو عدم الاستقرار.</p>
+                    <p>يُظهر استطلاع حديث أن هناك العديد من الأحكام المسبقة حول العمال كبار السن. غالبًا ما يُعتقد أنهم أقل قدرة على التكيف مع التقنيات الجديدة، أو يتعبون بسهولة أكبر، أو أنهم يكلفون الكثير. هذه الصور النمطية منتشرة لدرجة أن العمر يُعتبر المصدر الرئيسي للتمييز في فرنسا.</p>
+                    <p>تفضل الشركات، على الرغم من تأييدها لتأجيل سن التقاعد، غالبًا توظيف الشباب. يتم برمجة خوارزميات التوظيف أحيانًا لتفضيل المرشحين الأصغر سنًا، مما يؤدي إلى تصفية كبار السن من الخطوة الأولى. حتى بعد تجاوز هذه العقبة، قد يكون لدى أقسام الموارد البشرية أيضًا تحفظات على توظيف الأشخاص الأكبر سنًا.</p>
+                    <p>لحل هذه المشكلة، يجب تصحيح التحيزات في خوارزميات التوظيف وربما النظر في حصص (كوتا) بناءً على العمر. يجب أن تتطور العقليات ليس من منطلق مبدأ، بل من منطلق الضرورة: في غضون عشر سنوات، ستشكل غالبية القوى العاملة من تزيد أعمارهم عن 45 عامًا، وسيؤدي نقص المواهب إلى جعل خبرة كبار السن لا غنى عنها.</p>
+                </div>
+            </details>
+        </section>
+
+        <!-- Vocabulary Section -->
+        <section id="vocabulary-section" class="mb-12">
+            <h2 class="text-2xl font-bold text-slate-700 mb-4">أهم الكلمات والتعبيرات</h2>
+            <div id="vocabulary-list" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <!-- Vocabulary items will be injected here -->
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz-section">
+            <h2 class="text-2xl font-bold text-slate-700 mb-6">اختبر فهمك</h2>
+            <div id="quiz-container" class="space-y-6">
+                <!-- Quiz questions will be injected here -->
+            </div>
+            <div id="quiz-controls" class="mt-8 text-center">
+                 <button id="submit-quiz-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full transition-transform duration-300 hover:scale-105 w-full md:w-auto">
+                    إظهار النتائج
+                </button>
+            </div>
+            <div id="quiz-results-wrapper" class="hidden mt-6 text-center" aria-live="polite">
+                <div id="quiz-results" class="p-6 bg-blue-100 border-2 border-blue-300 rounded-lg">
+                    <p class="text-2xl font-bold text-blue-800">النتيجة: <span id="score"></span> / <span id="total-questions"></span></p>
+                    <p id="quiz-feedback" class="text-lg mt-2 font-semibold"></p>
+                </div>
+                <button id="restart-quiz-btn" class="mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition-transform duration-300 hover:scale-105 w-full md:w-auto">
+                    إعادة الاختبار
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Word Info Modal -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-60 hidden z-40 transition-opacity duration-300"></div>
+    <div id="word-info-modal" class="modal-transition modal-hidden fixed top-1/2 left-1/2 w-11/12 max-w-md bg-white rounded-xl shadow-2xl p-6 z-50">
+        <div class="flex justify-between items-center mb-4 pb-3 border-b">
+            <h3 id="modal-french-word" class="text-2xl font-bold text-blue-700" dir="ltr"></h3>
+            <button id="close-modal-btn" aria-label="إغلاق" class="text-slate-400 hover:text-slate-600 text-3xl font-bold">&times;</button>
+        </div>
+        <p id="modal-arabic-translation" class="text-xl text-slate-800 mb-4"></p>
+        <button id="pronounce-word-btn" class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition-colors duration-300 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" /></svg>
+            <span>نطق</span>
+        </button>
+        <div id="modal-example-container" class="mt-4 p-4 bg-slate-100 rounded-md hidden border">
+            <p class="font-semibold text-slate-600">مثال:</p>
+            <p class="text-base text-slate-700 italic mt-1" dir="ltr" id="example-french"></p>
+            <p class="text-base text-slate-700 mt-1" id="example-arabic"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DATA ---
+            const vocabularyData = [
+                { word: "discrimination liée à l'âge", translation: "التمييز المرتبط بالعمر", example_fr: "La discrimination liée à l'âge est un problème courant.", example_ar: "التمييز المرتبط بالعمر مشكلة شائعة." },
+                { word: "supprimer les obstacles à l'embauche", translation: "إزالة الحواجز أمام التوظيف", example_fr: "Le gouvernement doit agir pour supprimer les obstacles à l'embauche.", example_ar: "يجب على الحكومة التحرك لإزالة الحواجز أمام التوظيف." },
+                { word: "seniors", translation: "كبار السن (فئة عمرية)", example_fr: "Les seniors apportent une grande expérience.", example_ar: "يجلب كبار السن خبرة كبيرة." },
+                { word: "repousser l'âge de départ à la retraite", translation: "تأجيل سن التقاعد", example_fr: "Le pays a décidé de repousser l'âge de départ à la retraite.", example_ar: "قررت الدولة تأجيل سن التقاعد." },
+                { word: "licenciement", translation: "تسريح/فصل من العمل", example_fr: "Après son licenciement, il a cherché un nouvel emploi.", example_ar: "بعد فصله من العمل، بحث عن وظيفة جديدة." },
+                { word: "réorientation de carrière", translation: "إعادة توجيه مهني", example_fr: "La réorientation de carrière est une étape importante.", example_ar: "إعادة التوجيه المهني خطوة مهمة." },
+                { word: "chômage", translation: "بطالة", example_fr: "Le taux de chômage a diminué ce trimestre.", example_ar: "انخفض معدل البطالة هذا الربع." },
+                { word: "précarité", translation: "عدم الاستقرار / الهشاشة", example_fr: "La précarité de l'emploi inquiète les jeunes.", example_ar: "عدم استقرار الوظائف يقلق الشباب." },
+                { word: "préjugés", translation: "أحكام مسبقة / تحيزات", example_fr: "Il faut lutter contre les préjugés.", example_ar: "يجب مكافحة الأحكام المسبقة." },
+                { word: "moins adaptables", translation: "أقل قدرة على التكيف", example_fr: "Le préjugé est que les seniors sont moins adaptables.", example_ar: "الحكم المسبق هو أن كبار السن أقل قدرة على التكيف." },
+                { word: "coûtent trop cher", translation: "يكلفون الكثير", example_fr: "On dit que les employés expérimentés coûtent trop cher.", example_ar: "يقال إن الموظفين ذوي الخبرة يكلفون الكثير." },
+                { word: "discrimination", translation: "تمييز", example_fr: "La loi interdit toute forme de discrimination.", example_ar: "يحظر القانون أي شكل من أشكال التمييز." },
+                { word: "algorithmes de recrutement", translation: "خوارزميات التوظيف", example_fr: "Les algorithmes de recrutement doivent être équitables.", example_ar: "يجب أن تكون خوارزميات التوظيف عادلة." },
+                { word: "réticences", translation: "تحفظات / ممانعات", example_fr: "Les RH ont parfois des réticences à embaucher des seniors.", example_ar: "لدى الموارد البشرية أحيانًا تحفظات على توظيف كبار السن." },
+                { word: "corriger les biais", translation: "تصحيح التحيزات", example_fr: "Il est essentiel de corriger les biais dans l'IA.", example_ar: "من الضروري تصحيح التحيزات في الذكاء الاصطناعي." },
+                { word: "quotas", translation: "حصص (كوتا)", example_fr: "Certains proposent des quotas pour la diversité.", example_ar: "يقترح البعض حصصًا لتعزيز التنوع." },
+                { word: "main-d'œuvre", translation: "القوى العاملة", example_fr: "La main-d'œuvre qualifiée est essentielle.", example_ar: "القوى العاملة المؤهلة ضرورية." },
+                { word: "pénurie de talents", translation: "نقص المواهب", example_fr: "L'industrie fait face à une pénurie de talents.", example_ar: "تواجه الصناعة نقصًا في المواهب." },
+                { word: "expérience", translation: "خبرة", example_fr: "L'expérience est un atout précieux.", example_ar: "الخبرة هي ميزة ثمينة." },
+                { word: "trop jeunes pour la retraite", translation: "صغار جدًا على التقاعد", example_fr: "Ils sont trop jeunes pour la retraite.", example_ar: "هم صغار جدًا على التقاعد." },
+                { word: "trop âgés pour être facilement embauchés", translation: "كبار جدًا للتوظيف بسهولة", example_fr: "Ils se sentent trop âgés pour être embauchés.", example_ar: "يشعرون بأنهم كبار جدًا في السن ليتم توظيفهم." }
+            ];
+
+            const quizQuestions = [
+                { question: "Quelle est la principale source de discrimination perçue en France, selon le texte ?", options: ["Le handicap", "La nationalité", "L'âge", "Le genre"], correct: 2 },
+                { question: "Pourquoi le changement des mentalités envers les seniors est-il une nécessité ?", options: ["Par principe moral", "Par obligation légale", "Par nécessité économique (pénurie de talents)", "Pour faire plaisir aux seniors"], correct: 2 },
+                { question: "Quel outil de recrutement peut introduire des biais contre les seniors ?", options: ["Les entretiens directs", "Les algorithmes de recrutement", "Les CV manuscrits", "Les réseaux sociaux"], correct: 1 }
+            ];
+
+            // --- STATE ---
+            let selectedAnswers = Array(quizQuestions.length).fill(null);
+            
+            // --- DOM Elements ---
+            const dom = {
+                frenchText: document.getElementById('french-text'),
+                modal: {
+                    overlay: document.getElementById('modal-overlay'),
+                    container: document.getElementById('word-info-modal'),
+                    frenchWord: document.getElementById('modal-french-word'),
+                    arabicTranslation: document.getElementById('modal-arabic-translation'),
+                    pronounceBtn: document.getElementById('pronounce-word-btn'),
+                    closeBtn: document.getElementById('close-modal-btn'),
+                    exampleContainer: document.getElementById('modal-example-container'),
+                    exampleFrench: document.getElementById('example-french'),
+                    exampleArabic: document.getElementById('example-arabic')
+                },
+                vocabularyList: document.getElementById('vocabulary-list'),
+                quiz: {
+                    container: document.getElementById('quiz-container'),
+                    controls: document.getElementById('quiz-controls'),
+                    submitBtn: document.getElementById('submit-quiz-btn'),
+                    resultsWrapper: document.getElementById('quiz-results-wrapper'),
+                    score: document.getElementById('score'),
+                    total: document.getElementById('total-questions'),
+                    feedback: document.getElementById('quiz-feedback'),
+                    restartBtn: document.getElementById('restart-quiz-btn')
+                }
+            };
+            
+            // --- FUNCTIONS ---
+            
+            const speakText = (text) => {
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel(); // Cancel any previous speech
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'fr-FR';
+                    utterance.rate = 0.9;
+                    speechSynthesis.speak(utterance);
+                } else {
+                    alert("عذراً، متصفحك لا يدعم خاصية النطق.");
+                }
+            };
+
+            const showModal = (wordData) => {
+                dom.modal.frenchWord.textContent = wordData.word;
+                dom.modal.arabicTranslation.textContent = wordData.translation;
+                if (wordData.example_fr) {
+                    dom.modal.exampleFrench.textContent = wordData.example_fr;
+                    dom.modal.exampleArabic.textContent = wordData.example_ar;
+                    dom.modal.exampleContainer.classList.remove('hidden');
+                } else {
+                    dom.modal.exampleContainer.classList.add('hidden');
+                }
+                dom.modal.overlay.classList.remove('hidden');
+                dom.modal.container.classList.remove('modal-hidden');
+                dom.modal.container.classList.add('modal-visible');
+                dom.modal.closeBtn.focus(); // For accessibility
+            };
+
+            const hideModal = () => {
+                dom.modal.overlay.classList.add('hidden');
+                dom.modal.container.classList.add('modal-hidden');
+                dom.modal.container.classList.remove('modal-visible');
+            };
+            
+            const displayVocabulary = () => {
+                dom.vocabularyList.innerHTML = '';
+                vocabularyData.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-slate-50 p-4 rounded-lg shadow-sm border text-right';
+                    card.innerHTML = `
+                        <p class="text-lg font-semibold text-blue-700" dir="ltr">${item.word}</p>
+                        <p class="text-md text-slate-700 mt-1">${item.translation}</p>
+                    `;
+                    dom.vocabularyList.appendChild(card);
+                });
+            };
+
+            const displayQuiz = () => {
+                dom.quiz.container.innerHTML = '';
+                selectedAnswers.fill(null);
+                
+                quizQuestions.forEach((q, qIndex) => {
+                    const questionBlock = document.createElement('div');
+                    questionBlock.className = 'p-4 bg-slate-50 rounded-lg border';
+                    questionBlock.innerHTML = `<p class="text-lg font-semibold text-slate-900 mb-4" dir="ltr">${qIndex + 1}. ${q.question}</p>`;
+                    
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.className = 'space-y-3';
+                    optionsContainer.setAttribute('role', 'radiogroup');
+                    
+                    q.options.forEach((option, oIndex) => {
+                        const optionDiv = document.createElement('div');
+                        optionDiv.className = 'quiz-option p-3 rounded-lg cursor-pointer transition-colors duration-200 border-2 bg-slate-200 hover:bg-indigo-100 border-transparent';
+                        optionDiv.textContent = option;
+                        optionDiv.dir = 'ltr';
+                        optionDiv.dataset.qIndex = qIndex;
+                        optionDiv.dataset.oIndex = oIndex;
+                        optionDiv.setAttribute('role', 'radio');
+                        optionDiv.setAttribute('aria-checked', 'false');
+                        optionDiv.setAttribute('tabindex', '0');
+                        optionsContainer.appendChild(optionDiv);
+                    });
+
+                    questionBlock.appendChild(optionsContainer);
+                    dom.quiz.container.appendChild(questionBlock);
+                });
+
+                dom.quiz.resultsWrapper.classList.add('hidden');
+                dom.quiz.controls.classList.remove('hidden');
+            };
+
+            const handleQuizSubmit = () => {
+                let score = 0;
+                quizQuestions.forEach((q, qIndex) => {
+                    const questionBlock = dom.quiz.container.children[qIndex];
+                    const options = questionBlock.querySelectorAll('.quiz-option');
+                    
+                    options.forEach(opt => {
+                        opt.style.pointerEvents = 'none';
+                        opt.classList.remove('hover:bg-indigo-100');
+                    });
+
+                    const correctOption = options[q.correct];
+                    correctOption.classList.remove('bg-slate-200');
+                    correctOption.classList.add('bg-green-100', 'border-green-400', 'font-semibold');
+                    correctOption.innerHTML += ' <span class="text-green-700">✓</span>';
+
+                    if (selectedAnswers[qIndex] !== null) {
+                        if (selectedAnswers[qIndex] === q.correct) {
+                            score++;
+                        } else {
+                            const selectedOption = options[selectedAnswers[qIndex]];
+                            selectedOption.classList.remove('bg-slate-200');
+                            selectedOption.classList.add('bg-red-100', 'border-red-400', 'font-semibold');
+                            selectedOption.innerHTML += ' <span class="text-red-700">✗</span>';
+                        }
+                    }
+                });
+
+                dom.quiz.score.textContent = score;
+                dom.quiz.total.textContent = quizQuestions.length;
+                
+                const feedbackMessages = {
+                    perfect: { text: "ممتاز! جميع إجاباتك صحيحة.", color: "text-green-700" },
+                    good: { text: "أداء جيد! استمر في المراجعة.", color: "text-blue-700" },
+                    retry: { text: "لا بأس، حاول مرة أخرى بعد مراجعة الدرس.", color: "text-red-700" }
+                };
+                
+                let result;
+                if (score === quizQuestions.length) result = feedbackMessages.perfect;
+                else if (score > quizQuestions.length / 2) result = feedbackMessages.good;
+                else result = feedbackMessages.retry;
+
+                dom.quiz.feedback.textContent = result.text;
+                dom.quiz.feedback.className = `text-lg mt-2 font-semibold ${result.color}`;
+
+                dom.quiz.controls.classList.add('hidden');
+                dom.quiz.resultsWrapper.classList.remove('hidden');
+            };
+
+            // --- EVENT LISTENERS ---
+
+            const handleWordClick = (target) => {
+                if (target) {
+                    const word = target.dataset.word.replace(/’/g, "'"); // Normalize apostrophe
+                    const wordData = vocabularyData.find(v => v.word.replace(/’/g, "'") === word);
+                    if (wordData) showModal(wordData);
+                }
+            };
+            
+            dom.frenchText.addEventListener('click', (e) => handleWordClick(e.target.closest('.highlighted-word')));
+            dom.frenchText.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleWordClick(e.target.closest('.highlighted-word'));
+                }
+            });
+
+            dom.modal.closeBtn.addEventListener('click', hideModal);
+            dom.modal.overlay.addEventListener('click', hideModal);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !dom.modal.container.classList.contains('modal-hidden')) {
+                    hideModal();
+                }
+            });
+
+            dom.modal.pronounceBtn.addEventListener('click', () => speakText(dom.modal.frenchWord.textContent));
+            
+            const handleQuizOptionSelect = (target) => {
+                if (target) {
+                    const qIndex = parseInt(target.dataset.qIndex);
+                    const oIndex = parseInt(target.dataset.oIndex);
+                    const options = dom.quiz.container.children[qIndex].querySelectorAll('.quiz-option');
+
+                    options.forEach(opt => {
+                        opt.classList.remove('bg-indigo-200', 'border-indigo-400');
+                        opt.classList.add('bg-slate-200');
+                        opt.setAttribute('aria-checked', 'false');
+                    });
+                    
+                    target.classList.remove('bg-slate-200');
+                    target.classList.add('bg-indigo-200', 'border-indigo-400');
+                    target.setAttribute('aria-checked', 'true');
+                    selectedAnswers[qIndex] = oIndex;
+                }
+            };
+            
+            dom.quiz.container.addEventListener('click', (e) => handleQuizOptionSelect(e.target.closest('.quiz-option')));
+            dom.quiz.container.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleQuizOptionSelect(e.target.closest('.quiz-option'));
+                }
+            });
+
+            dom.quiz.submitBtn.addEventListener('click', handleQuizSubmit);
+            dom.quiz.restartBtn.addEventListener('click', displayQuiz);
+
+            // --- INITIALIZATION ---
+            displayVocabulary();
+            displayQuiz();
+        });
+    </script>
+</body>
+</html>
