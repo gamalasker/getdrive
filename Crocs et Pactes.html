@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قصة انياب وعهود</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', 'Cairo', 'Arial', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            background-color: #f0f2f5;
+        }
+        .dark body {
+            background-color: #1a202c;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 10px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 10px;
+        }
+        .dark .chat-messages::-webkit-scrollbar-thumb {
+            background: #4a5568;
+        }
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0;
+        }
+        .dark .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+
+        .message-item {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: messageAppear 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .action-button {
+            min-height: 48px;
+            min-width: 48px;
+            transition: all 0.2s ease-in-out;
+        }
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .action-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .action-button i {
+            margin-right: 0.5rem;
+        }
+        html[dir="rtl"] .action-button i {
+            margin-right: 0;
+            margin-left: 0.5rem;
+        }
+
+        #progress-bar-container {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+        .dark #progress-bar-container {
+            background-color: #4a5568;
+        }
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #3b82f6;
+            transition: width 0.3s ease-out;
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: '#3b82f6', hover: '#2563eb' },
+                        secondary: { DEFAULT: '#64748b', hover: '#475569' },
+                        success: { DEFAULT: '#22c55e', hover: '#16a34a' },
+                        light_bg: '#f0f2f5',
+                        dark_bg: '#1a202c',
+                        card_light: '#ffffff',
+                        card_dark: '#2d3748',
+                        bubble_user_light: '#dbeafe', // Emma's bubble
+                        bubble_user_dark: '#1e3a8a', // Emma's bubble dark
+                        bubble_other_light: '#e5e7eb', // David & Vampire bubble
+                        bubble_other_dark: '#4b5563', // David & Vampire bubble dark
+                        bubble_narrator_light: '#e0e7ff',
+                        bubble_narrator_dark: '#3730a3',
+                        text_light: '#1f2937',
+                        text_dark: '#e5e7eb',
+
+                        btn_light_primary_bg: '#E0E7FF',
+                        btn_light_primary_text: '#3730A3',
+                        btn_light_primary_hover_bg: '#C7D2FE',
+
+                        btn_light_secondary_bg: '#E2E8F0',
+                        btn_light_secondary_text: '#334155',
+                        btn_light_secondary_hover_bg: '#CBD5E1',
+
+                        btn_light_success_bg: '#D1FAE5',
+                        btn_light_success_text: '#065F46',
+                        btn_light_success_hover_bg: '#A7F3D0',
+
+                        btn_light_neutral_bg: '#E5E7EB',
+                        btn_light_neutral_text: '#374151',
+                        btn_light_neutral_hover_bg: '#D1D5DB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Cairo', 'Arial', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'button-hover': '0 4px 12px rgba(0,0,0,0.15)'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-light_bg dark:bg-dark_bg text-text_light dark:text-text_dark transition-colors duration-300">
+
+    <header class="bg-primary-DEFAULT text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl sm:text-3xl font-bold">قصص مشوقة</h1>
+            <a href="#" class="text-lg hover:underline">قائمة القصص</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 mt-6">
+        <div class="mb-6 text-center">
+            <h2 id="storyCategory" class="text-xl sm:text-2xl font-semibold text-secondary-DEFAULT dark:text-secondary-hover mb-1">
+                {/* يتم التعيين بواسطة JS */}
+            </h2>
+            <h1 id="storyTitle" class="text-3xl sm:text-4xl font-bold text-primary-DEFAULT dark:text-primary-hover">
+                {/* يتم التعيين بواسطة JS */}
+            </h1>
+        </div>
+
+        <div id="chat-container" class="bg-card_light dark:bg-card_dark shadow-card rounded-xl overflow-hidden max-w-3xl mx-auto">
+            <div id="chat-messages" class="p-4 sm:p-6 h-[60vh] sm:h-[65vh] overflow-y-auto space-y-5 chat-messages">
+                <div id="initial-message" class="text-center text-gray-500 dark:text-gray-400 p-4 text-lg">
+                    اضغط على "ابدأ القصة" لعرض الحوار.
+                </div>
+            </div>
+
+            <div id="progress-bar-container" class="mx-4 sm:mx-6">
+                <div id="progress-bar"></div>
+            </div>
+
+            <div class="p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button id="prevButton" class="action-button col-span-1 flex items-center justify-center
+                                                bg-btn_light_secondary_bg text-btn_light_secondary_text hover:bg-btn_light_secondary_hover_bg
+                                                dark:bg-secondary-DEFAULT dark:hover:bg-secondary-hover dark:text-black
+                                                font-bold py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 dark:focus:ring-secondary-DEFAULT focus:ring-btn_light_secondary_text focus:ring-opacity-50" disabled>
+                        <i class="fas fa-arrow-left"></i><span class="hidden sm:inline">السابق</span>
+                    </button>
+                    <button id="nextButton" class="action-button col-span-1 flex items-center justify-center
+                                                bg-btn_light_success_bg text-btn_light_success_text hover:bg-btn_light_success_hover_bg
+                                                dark:bg-success-DEFAULT dark:hover:bg-success-hover dark:text-black
+                                                font-bold py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 dark:focus:ring-success-DEFAULT focus:ring-btn_light_success_text focus:ring-opacity-50" disabled>
+                        <i class="fas fa-arrow-right"></i><span class="hidden sm:inline">التالي</span>
+                    </button>
+                    <button id="translateButton" class="action-button col-span-1 flex items-center justify-center
+                                                    bg-btn_light_primary_bg text-btn_light_primary_text hover:bg-btn_light_primary_hover_bg
+                                                    dark:bg-primary-DEFAULT dark:hover:bg-primary-hover dark:text-black
+                                                    font-bold py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 dark:focus:ring-primary-DEFAULT focus:ring-btn_light_primary_text focus:ring-opacity-50">
+                        <i class="fas fa-language"></i><span class="hidden sm:inline">Traduire</span>
+                    </button>
+                    <button id="toggleDarkModeButton" class="action-button col-span-1 flex items-center justify-center
+                                                        bg-btn_light_neutral_bg text-btn_light_neutral_text hover:bg-btn_light_neutral_hover_bg
+                                                        dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-black
+                                                        font-bold py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 dark:focus:ring-gray-600 focus:ring-btn_light_neutral_text focus:ring-opacity-50">
+                        <i class="fas fa-moon"></i><span class="hidden sm:inline">الوضع</span>
+                    </button>
+                </div>
+                 <div class="mt-4 text-center">
+                     <button id="startButton" class="action-button w-full sm:w-auto
+                                                bg-btn_light_primary_bg text-btn_light_primary_text hover:bg-btn_light_primary_hover_bg
+                                                dark:bg-primary-DEFAULT dark:hover:bg-primary-hover dark:text-black
+                                                font-bold py-3 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 dark:focus:ring-primary-DEFAULT focus:ring-btn_light_primary_text focus:ring-opacity-75 text-lg">
+                        <i class="fas fa-play"></i> ابدأ القصة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- Story Data ---
+        const storyData = {
+            category_ar: "قصص رعب",
+            title_ar: "أنياب وعهود",
+            category_fr: "Histoires d'horreur",
+            title_fr: "Crocs et Pactes",
+            messages: [
+                { id: 1, type: 'narration', text_ar: "كان ديفيد وإيما يتبادلان نظرات ملؤها الحب عبر الطاولة في مطعم هادئ. الأجواء كانت مثالية: طعام شهي، أضواء شموع ناعمة، وموسيقى رومانسية تملأ الأرجاء.", text_fr: "David et Emma échangeaient des regards pleins d'amour à travers la table dans un restaurant tranquille. L'atmosphère était parfaite : nourriture délicieuse, douce lumière des bougies, et musique romantique emplissant l'air.", audio: "vampire_1.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 2, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "يا لها من ليلة رائعة يا حبيبتي، كل شيء هنا يبعث على السعادة.", text_fr: "Quelle soirée merveilleuse, mon amour, tout ici inspire le bonheur.", audio: "vampire_2.mp3", align: "left" },
+                { id: 3, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "معك، كل ليلة هي ليلة خاصة يا ديفيد. هذا المكان جميل جداً.", text_fr: "Avec toi, chaque nuit est spéciale, David. Cet endroit est si beau.", audio: "vampire_3.mp3", align: "right" },
+                { id: 4, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "وجودكِ هو ما يجعله جميلاً. أنظر إليكِ وأنسى كل ما مررت به قبل أن تكوني في حياتي.", text_fr: "Ta présence est ce qui le rend beau. Je te regarde et j'oublie tout ce que j'ai traversé avant que tu n'entres dans ma vie.", audio: "vampire_4.mp3", align: "left" },
+                { id: 5, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "وأنت أيضاً يا عزيزي، لقد جلبت النور إلى عالمي.", text_fr: "Et toi aussi, mon cher, tu as apporté la lumière dans mon monde.", audio: "vampire_5.mp3", align: "right" },
+                { id: 6, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "إيما، هناك أمر أود أن أبوح به لكِ.", text_fr: "Emma, il y a quelque chose que j'aimerais te confier.", audio: "vampire_6.mp3", align: "left" },
+                { id: 7, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "قل ما لديك يا حبيبي. مهما كان، سأكون سعيدة لسماعه.", text_fr: "Dis ce que tu as à dire, mon amour. Quoi que ce soit, je serai heureuse de l'entendre.", audio: "vampire_7.mp3", align: "right" },
+                { id: 8, type: 'narration', text_ar: "من زاوية مظلمة في المطعم، كان رجل غريب يراقب الزوجين بصمت. يجلس بلا حراك، ممسكاً بقائمة الطعام دون أن يقرأها، وعيناه الباردتان مثبتتان عليهما.", text_fr: "D'un coin sombre du restaurant, un homme étrange observait le couple en silence. Assis immobile, tenant un menu sans le lire, ses yeux froids fixés sur eux.", audio: "vampire_8.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 9, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "عفواً يا عزيزتي، سأذهب إلى دورة المياه للحظات قليلة وأعود.", text_fr: "Excuse-moi, ma chérie, je vais aux toilettes quelques instants et je reviens.", audio: "vampire_9.mp3", align: "left" },
+                { id: 10, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "بالتأكيد يا حبي.", text_fr: "Bien sûr, mon amour.", audio: "vampire_10.mp3", align: "right" },
+                { id: 11, type: 'narration', text_ar: "في دورة المياه، نظر ديفيد إلى انعكاسه في المرآة.", text_fr: "Aux toilettes, David regarda son reflet dans le miroir.", audio: "vampire_11.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 12, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "(محدثاً نفسه) هيا يا ديفيد، تمالك نفسك. أنت محظوظ جداً بوجود إيما.", text_fr: "(se parlant à lui-même) Allez David, reprends-toi. Tu as tellement de chance d'avoir Emma.", audio: "vampire_12.mp3", align: "left" },
+                { id: 13, type: 'narration', text_ar: "عندما خرج ديفيد، كاد أن يصطدم بالرجل الطويل القامة الذي كان ينتظره بجوار الباب. كان الرجل ذا عينين زرقاوين باردتين، ووجه شاحب، وأنف حاد، وشفتين رفيعتين شاحبتين.", text_fr: "Quand David sortit, il faillit heurter le grand homme qui l'attendait près de la porte. L'homme avait des yeux bleus froids, un visage pâle, un nez pointu et des lèvres minces et pâles.", audio: "vampire_13.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 14, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "أوه، المعذرة!", text_fr: "Oh, pardon !", audio: "vampire_14.mp3", align: "left" },
+                { id: 15, type: 'dialogue', speaker_ar: "الرجل الغريب", speaker_fr: "L'homme étrange", text_ar: "أي واحد؟", text_fr: "Lequel ?", audio: "vampire_15.mp3", align: "left" },
+                { id: 16, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "أوه... هذا! هذا مرحاض الرجال!", text_fr: "Oh... celui-ci ! Ce sont les toilettes des hommes !", audio: "vampire_16.mp3", align: "left" },
+                { id: 17, type: 'narration', text_ar: "عاد ديفيد إلى طاولته في المطعم.", text_fr: "David retourna à sa table au restaurant.", audio: "vampire_17.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 18, type: 'narration', text_ar: "كانت رحلة العودة إلى المنزل في سيارة الأجرة مليئة بالبهجة والدفء. كان الزوجان السعيدان يتحدثان عن حياتهما المشتركة وأحلامهما للمستقبل.", text_fr: "Le trajet de retour à la maison en taxi était rempli de joie et de chaleur. Le couple heureux parlait de leur vie commune et de leurs rêves pour l'avenir.", audio: "vampire_18.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 19, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "أتذكرين الليلة التي طلبت فيها يدك للزواج يا إيما؟ كم كانت ليلة لا تُنسى!", text_fr: "Te souviens-tu de la nuit où je t'ai demandé en mariage, Emma ? Quelle nuit inoubliable !", audio: "vampire_19.mp3", align: "left" },
+                { id: 20, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "وكيف لي أن أنسى تلك الليلة الساحرة! الليلة التي قلت فيها نعم! كانت بداية أجمل فصول حياتنا.", text_fr: "Et comment pourrais-je oublier cette nuit magique ! La nuit où j'ai dit oui ! C'était le début du plus beau chapitre de notre vie.", audio: "vampire_20.mp3", align: "right" },
+                { id: 21, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "فقط تخيلي، حياتنا كلها معاً، يا حبيبتي!", text_fr: "Imagine seulement, toute notre vie ensemble, mon amour !", audio: "vampire_21.mp3", align: "left" },
+                { id: 22, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "مشاركة، اهتمام...", text_fr: "Partage, attention...", audio: "vampire_22.mp3", align: "right" },
+                { id: 23, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "...حب لا ينتهي، وعطاء متبادل!", text_fr: "...amour sans fin, et don mutuel !", audio: "vampire_23.mp3", align: "left" },
+                { id: 24, type: 'narration', text_ar: "ابتسما لبعضهما البعض بحب وشوق.", text_fr: "Ils se sourirent avec amour et désir.", audio: "vampire_24.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 25, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "أنتِ أروع زوجة في العالم يا إيما!", text_fr: "Tu es la femme la plus merveilleuse du monde, Emma !", audio: "vampire_25.mp3", align: "left" },
+                { id: 26, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "وأنت أوسم وأحن زوج يا ديفيد! لم أقابل في حياتي شخصاً بمثل لطفك وكرمك! سعادتي معك لا توصف، أكاد أطير من الفرح!", text_fr: "Et tu es le mari le plus beau et le plus tendre, David ! Je n'ai jamais rencontré quelqu'un d'aussi gentil et généreux que toi ! Mon bonheur avec toi est indescriptible, j'ai l'impression de voler de joie !", audio: "vampire_26.mp3", align: "right" },
+                { id: 27, type: 'narration', text_ar: "دخلا البناية السكنية وهما يمسكان بأيدي بعضهما البعض بحميمية. من بين الظلال، كان الرجل الطويل يراقبهما.", text_fr: "Ils entrèrent dans l'immeuble en se tenant la main tendrement. Depuis l'ombre, le grand homme les observait.", audio: "vampire_27.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 28, type: 'dialogue', speaker_ar: "الرجل الطويل", speaker_fr: "Le grand homme", text_ar: "(محدثاً نفسه) أي واحد منهما؟", text_fr: "(se parlant à lui-même) Lequel des deux ?", audio: "vampire_28.mp3", align: "left" },
+                { id: 29, type: 'narration', text_ar: "راقب الرجل المبنى بعينين ثاقبتين، منتظراً أن يضاء نور شقتهما. مرت دقيقة... ثم دقيقتان... وفجأة، أضاء نور في نافذة بالطابق الثالث. لمح إيما للحظة وهي تغلق الستائر.", text_fr: "L'homme observa l'immeuble avec des yeux perçants, attendant que la lumière de leur appartement s'allume. Une minute passa... puis deux... Soudain, une lumière s'alluma à une fenêtre du troisième étage. Il aperçut Emma un instant alors qu'elle fermait les rideaux.", audio: "vampire_29.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 30, type: 'dialogue', speaker_ar: "الرجل الطويل", speaker_fr: "Le grand homme", text_ar: "(محدثاً نفسه بابتسامة خبيثة) كم مرة وقفت هكذا أترقب؟ كم ضحية راقبت؟ زوايا لا تُحصى! وضحايا كُثر!", text_fr: "(se parlant à lui-même avec un sourire malicieux) Combien de fois ai-je attendu ainsi ? Combien de victimes ai-je observées ? D'innombrables coins ! Et d'innombrables victimes !", audio: "vampire_30.mp3", align: "left" },
+                { id: 31, type: 'narration', text_ar: "تحرك الرجل من الظلال نحو باب البناية وضغط على أزرار الاتصال الداخلي لجميع الشقق. كان مصاص الدماء يشعر دائماً بالرضا عندما يسكن ضحاياه في شقق سكنية؛ فعاجلاً أم آجلاً، سيفتح له أحدهم الباب، معتقداً أنه عامل توصيل طلبات أو ما شابه. كانت تلك دعوة كافية لدخول المنزل. صعد الدرج بخفة إلى الطابق الثالث وسار في الممر دون أن يُحدث أي صوت. كان يستطيع سماع ضحكات الزوجين وحديثهما الدافئ. وضع أذنه على باب شقتهما، يستمع بمتعة. الحب الشاب يصنع ألذ الدماء؛ فهو مفعم بالحياة والطاقة.", text_fr: "L'homme sortit de l'ombre vers la porte de l'immeuble et appuya sur les boutons de l'interphone de tous les appartements. Le vampire se sentait toujours satisfait lorsque ses victimes vivaient dans des appartements ; tôt ou tard, quelqu'un lui ouvrirait la porte, pensant qu'il s'agissait d'un livreur ou quelque chose du genre. C'était une invitation suffisante pour entrer dans la maison. Il monta légèrement les escaliers jusqu'au troisième étage et marcha dans le couloir sans faire de bruit. Il pouvait entendre les rires du couple et leur conversation chaleureuse. Il colla son oreille à la porte de leur appartement, écoutant avec plaisir. Le jeune amour produit le sang le plus doux ; il est plein de vie et d'énergie.", audio: "vampire_31.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 32, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "أشعر وكأنني أعيش في فيلم رومانسي.", text_fr: "J'ai l'impression de vivre dans un film romantique.", audio: "vampire_32.mp3", align: "right" },
+                { id: 33, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "بل هو حلم جميل يا حبيبتي.", text_fr: "C'est plutôt un beau rêve, mon amour.", audio: "vampire_33.mp3", align: "left" },
+                { id: 34, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "نعم، حلم وردي. كم نحن محظوظان ببعضنا البعض!", text_fr: "Oui, un rêve rose. Comme nous avons de la chance de nous avoir !", audio: "vampire_34.mp3", align: "right" },
+                { id: 35, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "أتدرين بمن سأحلم الليلة يا ملاكي؟", text_fr: "Sais-tu de qui je vais rêver ce soir, mon ange ?", audio: "vampire_35.mp3", align: "left" },
+                { id: 36, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "بمن يا ترى؟", text_fr: "De qui donc ?", audio: "vampire_36.mp3", align: "right" },
+                { id: 37, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "بصاحبة الشعر الذي تفوح منه رائحة الورد! زوجتي الملاك!", text_fr: "De celle dont les cheveux sentent la rose ! Ma femme, mon ange !", audio: "vampire_37.mp3", align: "left" },
+                { id: 38, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "(محدثاً نفسه بابتسامة شريرة وهو يسترق السمع) حلمهما الجميل على وشك أن يتحول إلى كابوس مروع.", text_fr: "(se parlant à lui-même avec un sourire diabolique en écoutant) Leur beau rêve est sur le point de se transformer en un terrible cauchemar.", audio: "vampire_38.mp3", align: "left" },
+                { id: 39, type: 'narration', text_ar: "فجأة، دفع مصاص الدماء الباب ووقف أمامهما، مكشراً عن أنيابه الحادة الطويلة.", text_fr: "Soudain, le vampire poussa la porte et se tint devant eux, découvrant ses longues canines acérées.", audio: "vampire_39.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 40, type: 'narration', text_ar: "صرخ الزوجان من الفزع واحتضنا بعضهما البعض في صمت مريع. استطاع مصاص الدماء أن يشم رائحة خوفهما ويتلذذ بها. هكذا يفضل الأمر؛ فالخوف يجعل الدم ألذ.", text_fr: "Le couple hurla de terreur et se serra l'un contre l'autre dans un silence horrifié. Le vampire pouvait sentir leur peur et s'en délecter. C'est ainsi qu'il préférait les choses ; la peur rendait le sang plus doux.", audio: "vampire_40.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 41, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "محفظتي! هناك على الطاولة! خذها! خذ كل ما تريد!", text_fr: "Mon portefeuille ! Là, sur la table ! Prends-le ! Prends tout ce que tu veux !", audio: "vampire_41.mp3", align: "left" },
+                { id: 42, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "سآخذ كل ما أريد!", text_fr: "Je prendrai tout ce que je veux !", audio: "vampire_42.mp3", align: "left" },
+                { id: 43, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "حسناً! حسناً! لن نعترض طريقك، أعدك!", text_fr: "D'accord ! D'accord ! Nous ne te barrerons pas la route, je te le promets !", audio: "vampire_43.mp3", align: "left" },
+                { id: 44, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "لن تعترضا طريقي. أعدكما بذلك!", text_fr: "Vous ne me barrerez pas la route. Je vous le promets !", audio: "vampire_44.mp3", align: "left" },
+                { id: 45, type: 'narration', text_ar: "لمعت أنياب مصاص الدماء الحادة في الضوء الخافت. في تلك اللحظة، خطرت نفس الفكرة المروعة في ذهني ديفيد وإيما.", text_fr: "Les canines acérées du vampire brillèrent dans la pénombre. À cet instant, la même pensée horrible traversa l'esprit de David et d'Emma.", audio: "vampire_45.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 46, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "انظر... أسنانه! هل هو...؟", text_fr: "Regarde... ses dents ! Est-ce que c'est... ?", audio: "vampire_46.mp3", align: "right" },
+                { id: 47, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "مصاص دماء!!", text_fr: "Un vampire !!", audio: "vampire_47.mp3", align: "left" },
+                { id: 48, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "أي واحد منكما؟ يمكن أن يكون... واحد فقط!", text_fr: "Lequel de vous deux ? Il ne peut y en avoir... qu'un seul !", audio: "vampire_48.mp3", align: "left" },
+                { id: 49, type: 'narration', text_ar: "اتسعت أعين الزوجين خوفاً وفزعاً، وشهقتا من الرعب. أمسكا بأيدي بعضهما البعض بقوة، وشعرا بمعدتيهما تتقلصان من شدة الخوف.", text_fr: "Les yeux du couple s'écarquillèrent de peur et d'effroi, et ils haletèrent d'horreur. Ils se prirent la main fermement, sentant leur estomac se nouer de terreur.", audio: "vampire_49.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 50, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "الليلة، شربتُ دماء ثلاثة بالفعل. واحد آخر... وبعدها... يمكنني أن أنام... وأستعيد شبابي وقوتي.", text_fr: "Ce soir, j'ai déjà bu le sang de trois personnes. Encore un... et ensuite... je pourrai dormir... et retrouver ma jeunesse et ma force.", audio: "vampire_50.mp3", align: "left" },
+                { id: 51, type: 'narration', text_ar: "تحرك مصاص الدماء نحوهما ببطء. بدافع الغريزة، وقف ديفيد أمام إيما ليحميها. تشبثت إيما بظهره شاكرة له.", text_fr: "Le vampire s'avança lentement vers eux. Par instinct, David se plaça devant Emma pour la protéger. Emma s'agrippa à son dos, reconnaissante.", audio: "vampire_51.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 52, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "(محدثاً نفسه) لا داعي للعجلة. لدي كل الوقت. من سأختار؟ أي واحد منهما؟", text_fr: "(se parlant à lui-même) Pas besoin de se presser. J'ai tout mon temps. Qui vais-je choisir ? Lequel des deux ?", audio: "vampire_52.mp3", align: "left" },
+                { id: 53, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "شكراً لك يا حبيبي... شكراً لما تفعله من أجلي.", text_fr: "Merci, mon amour... Merci pour ce que tu fais pour moi.", audio: "vampire_53.mp3", align: "right" },
+                { id: 54, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "بالطبع يا حبيبتي. أنا هنا لأحميكِ دائماً.", text_fr: "Bien sûr, mon amour. Je suis là pour te protéger, toujours.", audio: "vampire_54.mp3", align: "left" },
+                { id: 55, type: 'narration', text_ar: "شعر ديفيد ببعض الفخر وهو ينطق بهذه الكلمات. ربما يستطيع مواجهة مصاص الدماء هذا. كل ما يحتاجه هو وتد خشبي أو أي شيء حاد لغرزه في قلبه. نظر حوله بسرعة بحثاً عن أي شيء يمكن استخدامه كسلاح...", text_fr: "David ressentit une certaine fierté en prononçant ces mots. Peut-être pourrait-il affronter ce vampire. Tout ce dont il avait besoin, c'était d'un pieu en bois ou de quelque chose de pointu à lui enfoncer dans le cœur. Il regarda rapidement autour de lui, cherchant quelque chose qui pourrait servir d'arme...", audio: "vampire_55.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 56, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "أنت شجاع جداً يا ديفيد لتعرض نفسك للتضحية من أجلي.", text_fr: "Tu es si courageux, David, de t'offrir en sacrifice pour moi.", audio: "vampire_56.mp3", align: "right" },
+                { id: 57, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "عفواً؟ ماذا تقولين؟", text_fr: "Pardon ? Qu'est-ce que tu dis ?", audio: "vampire_57.mp3", align: "left" },
+                { id: 58, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "أوه! لا شيء... فقط ظننت أنه بحكم حبك الكبير لي وكل التضحيات التي...", text_fr: "Oh ! Rien... J'ai juste pensé qu'avec ton grand amour pour moi et tous les sacrifices que...", audio: "vampire_58.mp3", align: "right" },
+                { id: 59, type: 'narration', text_ar: "تبادل ديفيد ومصاص الدماء النظرات للحظة.", text_fr: "David et le vampire échangèrent des regards un instant.", audio: "vampire_59.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 60, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "اسمعيني جيداً يا إيما. لا شك أبداً في مدى حبي لكِ!", text_fr: "Écoute-moi bien, Emma. Il n'y a absolument aucun doute sur l'étendue de mon amour pour toi !", audio: "vampire_60.mp3", align: "left" },
+                { id: 61, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "حقاً؟ ولكن لا يمكنك أن تتوقع مني أن أقدم له حياتي بهذه البساطة!", text_fr: "Vraiment ? Mais tu ne peux pas t'attendre à ce que je lui offre ma vie aussi simplement !", audio: "vampire_61.mp3", align: "right" },
+                { id: 62, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "لم أقل أنه يجب عليكِ ذلك!", text_fr: "Je n'ai pas dit que tu devais le faire !", audio: "vampire_62.mp3", align: "left" },
+                { id: 63, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "إنه مجرد خيار مطروح من بين الخيارات، هذا كل ما في الأمر!", text_fr: "C'est juste une option parmi d'autres, c'est tout !", audio: "vampire_63.mp3", align: "right" },
+                { id: 64, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "حسناً، فكري في خيار آخر! لمَ لا تعرضين نفسكِ عليه لإنقاذي أنا!", text_fr: "Eh bien, pense à une autre option ! Pourquoi ne t'offres-tu pas à lui pour me sauver, moi !", audio: "vampire_64.mp3", align: "left" },
+                { id: 65, type: 'narration', text_ar: "توتر الجو في الغرفة بشكل كبير. لم يكن مصاص الدماء مسروراً على الإطلاق؛ فالخوف والحب اللذان كان يستمتع بهما تحولا فجأة إلى جدال سخيف وأناني.", text_fr: "L'atmosphère dans la pièce devint extrêmement tendue. Le vampire n'était pas du tout content ; la peur et l'amour dont il se délectait s'étaient soudainement transformés en une dispute stupide et égoïste.", audio: "vampire_65.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 66, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "أتمنى أنك تمزح يا ديفيد!", text_fr: "J'espère que tu plaisantes, David !", audio: "vampire_66.mp3", align: "right" },
+                { id: 67, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "لنرى الآن مدى قوة حبكِ المزعوم!", text_fr: "Voyons maintenant la force de ton prétendu amour !", audio: "vampire_67.mp3", align: "left" },
+                { id: 68, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "يا لك من رجل فظيع وعديم المسؤولية!", text_fr: "Quel homme horrible et irresponsable tu es !", audio: "vampire_68.mp3", align: "right" },
+                { id: 69, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "وماذا عن الزوجة التي يفترض أن تحبني؟! تعرضين زوجك لمصاص دماء وكأنه قطعة لحم ترمى لكلب!", text_fr: "Et qu'en est-il de la femme qui est censée m'aimer ?! Tu offres ton mari à un vampire comme on jetterait un os à un chien !", audio: "vampire_69.mp3", align: "left" },
+                { id: 70, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "لقد قلتَ إن شعري تفوح منه رائحة الورد!", text_fr: "Tu as dit que mes cheveux sentaient la rose !", audio: "vampire_70.mp3", align: "right" },
+                { id: 71, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "حسناً، حسناً! اهدئي الآن!", text_fr: "D'accord, d'accord ! Calme-toi maintenant !", audio: "vampire_71.mp3", align: "left" },
+                { id: 72, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "وقلتَ إنني ملاك!", text_fr: "Et tu as dit que j'étais un ange !", audio: "vampire_72.mp3", align: "right" },
+                { id: 73, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "يجب... أن... أشرب! الآن!", text_fr: "JE DOIS... BOIRE ! MAINTENANT !", audio: "vampire_73.mp3", align: "left" },
+                { id: 74, type: 'narration', text_ar: "كان يريد أن ينهي الأمر بسرعة. أراد أن يبتعد عن هذين المخلوقين المثيرين للاشمئزاز في أسرع وقت ممكن. اتسعت عيناه أكثر، وكشر عن أنيابه بشكل كامل.", text_fr: "Il voulait en finir rapidement. Il voulait s'éloigner de ces deux créatures répugnantes le plus vite possible. Ses yeux s'écarquillèrent davantage, et il découvrit complètement ses canines.", audio: "vampire_74.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 75, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "أي... واحد... منكما؟", text_fr: "LEQUEL... DE... VOUS DEUX ?", audio: "vampire_75.mp3", align: "left" },
+                { id: 76, type: 'dialogue', speaker_ar: "ديفيد", speaker_fr: "David", text_ar: "هي! اخترها هي! إنها أصغر سناً! دمها سيكون ألذ!", text_fr: "Elle ! Choisissez-la ! Elle est plus jeune ! Son sang sera plus doux !", audio: "vampire_76.mp3", align: "left" },
+                { id: 77, type: 'dialogue', speaker_ar: "إيما", speaker_fr: "Emma", text_ar: "هو! هو! أرجوك، اختره هو! إنه أكبر حجماً! دمه أكثر!", text_fr: "Lui ! Lui ! S'il vous plaît, choisissez-le ! Il est plus grand ! Il a plus de sang !", audio: "vampire_77.mp3", align: "right" },
+                { id: 78, type: 'narration', text_ar: "فجأة، شعر مصاص الدماء بإرهاق شديد. لقد أمضى قروناً طويلة في القتل وسفك الدماء. الاستماع إلى هذا الجدال المقيت كان محبطاً للغاية. كيف يمكن أن يستمتع بشرب دم أي من هذين المخلوقين الحقيرين؟ نظر إلى وجهيهما المرعوبين والمشوهين بالخوف والأنانية وصرخ بأعلى صوته:", text_fr: "Soudain, le vampire se sentit extrêmement fatigué. Il avait passé de longs siècles à tuer et à verser le sang. Écouter cette dispute répugnante était profondément déprimant. Comment pouvait-il prendre plaisir à boire le sang de l'une ou l'autre de ces créatures méprisables ? Il regarda leurs visages terrifiés et déformés par la peur et l'égoïsme et hurla de toutes ses forces :", audio: "vampire_78.mp3", align: "center", speaker_ar: null, speaker_fr: null },
+                { id: 79, type: 'dialogue', speaker_ar: "مصاص الدماء", speaker_fr: "Le vampire", text_ar: "دم فاسد! دم لا يستحق الشرب!", text_fr: "MAUVAIS SANG ! DU SANG INDIGNE D'ÊTRE BU !", audio: "vampire_79.mp3", align: "left" },
+                { id: 80, type: 'narration', text_ar: "وبكلماته تلك، تلاشى مصاص الدماء في هواء الليل، تاركاً إيما وديفيد وحدهما معاً. معاً، كما كانا قد تعاهدا، لبقية حياتهما البائسة.", text_fr: "Et sur ces mots, le vampire disparut dans l'air nocturne, laissant Emma et David seuls ensemble. Ensemble, comme ils se l'étaient promis, pour le reste de leur misérable vie.", audio: "vampire_80.mp3", align: "center", speaker_ar: null, speaker_fr: null }
+            ]
+        };
+
+        const storyMessages = storyData.messages; // للوصول إلى الرسائل مباشرة
+
+        let currentMessageIndex = 0;
+        let currentLanguage = 'ar';
+        let currentAudio = null;
+        let audioContext;
+        let frenchSpeaker = null;
+
+        const chatMessagesContainer = document.getElementById('chat-messages');
+        const initialMessageDiv = document.getElementById('initial-message');
+        const startButton = document.getElementById('startButton');
+        const nextButton = document.getElementById('nextButton');
+        const prevButton = document.getElementById('prevButton');
+        const translateButton = document.getElementById('translateButton');
+        const toggleDarkModeButton = document.getElementById('toggleDarkModeButton');
+        const progressBar = document.getElementById('progress-bar');
+        const storyCategoryElement = document.getElementById('storyCategory');
+        const storyTitleElement = document.getElementById('storyTitle');
+
+        function initAudioContext() {
+            if (!audioContext && (typeof AudioContext !== "undefined" || typeof webkitAudioContext !== "undefined")) {
+                audioContext = new (AudioContext || webkitAudioContext)();
+            }
+        }
+
+        function initSpeechSynthesis() {
+            if ('speechSynthesis' in window) {
+                frenchSpeaker = window.speechSynthesis;
+                // Pre-load voices if possible, or ensure they are loaded before first use
+                frenchSpeaker.onvoiceschanged = () => {
+                    // Voices are loaded
+                };
+                frenchSpeaker.getVoices(); // This might be asynchronous
+            } else {
+                console.warn("SpeechSynthesis API not supported by this browser.");
+            }
+        }
+
+        function createMessageElement(message) {
+            const messageWrapper = document.createElement('div');
+            messageWrapper.classList.add('message-item', 'flex');
+            messageWrapper.dataset.messageId = message.id;
+
+            let bubbleBaseClasses = 'max-w-xs sm:max-w-md lg:max-w-lg p-3 rounded-2xl shadow-md break-words message-bubble';
+            let bubbleColorClasses = '';
+            let avatarHtml = '';
+            let messageAlignmentClass = '';
+
+            const speakerNameText = currentLanguage === 'ar' ? message.speaker_ar : message.speaker_fr;
+            const avatarInitial = speakerNameText ? speakerNameText.substring(0, 1).toUpperCase() : '';
+
+            if (message.align === 'left') { // David and Vampire
+                messageAlignmentClass = 'justify-start';
+                bubbleColorClasses = 'bg-bubble_other_light dark:bg-bubble_other_dark text-text_light dark:text-text_dark rounded-bl-lg';
+                if (message.type === 'dialogue' && speakerNameText) {
+                    avatarHtml = `
+                        <div class="flex flex-col items-center ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'} flex-shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-secondary-DEFAULT text-white flex items-center justify-center font-semibold text-sm mb-1 shadow-sm">${avatarInitial}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">${speakerNameText}</div>
+                        </div>`;
+                    messageWrapper.innerHTML = avatarHtml;
+                }
+            } else if (message.align === 'right') { // Emma
+                messageAlignmentClass = 'justify-end';
+                bubbleColorClasses = 'bg-bubble_user_light dark:bg-bubble_user_dark text-text_light dark:text-text_dark rounded-br-lg';
+                 if (message.type === 'dialogue' && speakerNameText) {
+                    avatarHtml = `
+                        <div class="flex flex-col items-center ${currentLanguage === 'ar' ? 'mr-2' : 'ml-2'} flex-shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-primary-DEFAULT text-white flex items-center justify-center font-semibold text-sm mb-1 shadow-sm">${avatarInitial}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">${speakerNameText}</div>
+                        </div>`;
+                }
+            } else { // Narration
+                messageAlignmentClass = 'justify-center';
+                bubbleColorClasses = 'bg-bubble_narrator_light dark:bg-bubble_narrator_dark text-text_light dark:text-text_dark text-center italic';
+            }
+            messageWrapper.classList.add(messageAlignmentClass);
+
+            const bubble = document.createElement('div');
+            bubble.className = `${bubbleBaseClasses} ${bubbleColorClasses}`;
+            bubble.textContent = currentLanguage === 'ar' ? message.text_ar : message.text_fr;
+            bubble.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
+            if (message.align === 'right' && avatarHtml) {
+                messageWrapper.appendChild(bubble);
+                messageWrapper.insertAdjacentHTML('beforeend', avatarHtml);
+            } else {
+                 messageWrapper.appendChild(bubble);
+            }
+            return messageWrapper;
+        }
+
+        function playAudio(arabicAudioSrc, frenchText) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            if (frenchSpeaker && frenchSpeaker.speaking) {
+                frenchSpeaker.cancel();
+            }
+
+            if (currentLanguage === 'ar') {
+                if (arabicAudioSrc && arabicAudioSrc.match(/\.(mp3|wav|ogg)$/i)) {
+                    if (audioContext && audioContext.state === 'suspended') {
+                        audioContext.resume().catch(e => console.error("Error resuming audio context", e));
+                    }
+                    currentAudio = new Audio('audio/' + arabicAudioSrc); // Assuming audio files are in an 'audio' folder
+                    currentAudio.play().catch(error => {
+                         console.warn("Arabic audio playback failed:", error.name, error.message);
+                         if (error.name === 'NotAllowedError') {
+                            const audioWarningId = 'audio-interaction-warning';
+                            if (!document.getElementById(audioWarningId)) {
+                                const audioWarning = document.createElement('p');
+                                audioWarning.id = audioWarningId;
+                                audioWarning.textContent = "انقر في أي مكان لبدء تشغيل الصوت (سياسة المتصفح).";
+                                audioWarning.classList.add('text-center', 'text-sm', 'text-red-500', 'my-2', 'font-semibold');
+                                chatMessagesContainer.appendChild(audioWarning);
+                                const removeWarning = () => {
+                                    audioWarning.remove();
+                                    document.body.removeEventListener('click', removeWarning);
+                                    if(currentAudio && currentAudio.paused) currentAudio.play().catch(e => console.warn("Retry play failed:", e));
+                                };
+                                document.body.addEventListener('click', removeWarning, { once: true });
+                            }
+                        } else if (error.name === 'NotFoundError' || (error.target && error.target.error && error.target.error.code === 4)) {
+                            console.error(`Audio file not found: audio/${arabicAudioSrc}`);
+                        }
+                    });
+                } else if (arabicAudioSrc) {
+                    console.warn(`Invalid or missing Arabic audio source: ${arabicAudioSrc}`);
+                }
+            } else if (currentLanguage === 'fr') {
+                if (frenchText && frenchSpeaker) {
+                    const utterance = new SpeechSynthesisUtterance(frenchText);
+                    let voices = frenchSpeaker.getVoices();
+                    let frenchVoice = voices.find(voice => voice.lang.startsWith('fr-') || voice.lang === 'fr');
+
+                    if (frenchVoice) {
+                        utterance.voice = frenchVoice;
+                    } else {
+                        // Fallback to specific regional French if general not found
+                        frenchVoice = voices.find(voice => voice.lang === 'fr-FR') || voices.find(voice => voice.lang === 'fr-CA');
+                         if (frenchVoice) {
+                            utterance.voice = frenchVoice;
+                        } else {
+                            console.warn("No specific French voice found, using browser default for French if available.");
+                        }
+                    }
+                    utterance.lang = 'fr-FR'; // Explicitly set language for utterance
+
+                    // Handle cases where voices are not immediately available
+                    if (voices.length === 0 && frenchSpeaker.onvoiceschanged === null) {
+                        frenchSpeaker.onvoiceschanged = () => {
+                            voices = frenchSpeaker.getVoices();
+                            frenchVoice = voices.find(voice => voice.lang.startsWith('fr-') || voice.lang === 'fr');
+                            if (frenchVoice) utterance.voice = frenchVoice;
+                            frenchSpeaker.onvoiceschanged = null; // Remove listener after first use
+                            if (!frenchSpeaker.speaking) frenchSpeaker.speak(utterance);
+                        };
+                         frenchSpeaker.getVoices(); // Trigger voice loading
+                    } else {
+                         frenchSpeaker.speak(utterance);
+                    }
+                } else if (!frenchSpeaker) {
+                    console.warn("SpeechSynthesis API not supported by this browser.");
+                    const noTTSWarningId = 'no-tts-warning-message';
+                    if (!document.getElementById(noTTSWarningId)) {
+                        const noTTSWarning = document.createElement('p');
+                        noTTSWarning.id = noTTSWarningId;
+                        noTTSWarning.textContent = "نطق الترجمة غير مدعوم في هذا المتصفح.";
+                        noTTSWarning.classList.add('text-center', 'text-sm', 'text-orange-500', 'my-2', 'font-semibold');
+                        chatMessagesContainer.appendChild(noTTSWarning);
+                    }
+                }
+            }
+        }
+
+        function updateProgressBar() {
+            const percentage = storyMessages.length > 0 ? ((currentMessageIndex + 1) / storyMessages.length) * 100 : 0;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function displayMessage(index, playSnd = true) {
+            if (index >= 0 && index < storyMessages.length) {
+                const message = storyMessages[index];
+                const messageElement = createMessageElement(message);
+
+                chatMessagesContainer.appendChild(messageElement);
+                setTimeout(() => { // Ensure DOM update before scrolling
+                     chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+                }, 50);
+
+                if (playSnd) playAudio(message.audio, message.text_fr);
+                updateButtonStates();
+                updateProgressBar();
+            }
+        }
+
+        function updateDisplayedMessagesLanguage() {
+            const currentScroll = chatMessagesContainer.scrollTop; // Preserve scroll position
+
+            chatMessagesContainer.innerHTML = ''; // Clear existing messages
+            if (initialMessageDiv && initialMessageDiv.style.display !== 'none') { // Re-add initial message if it was visible
+                 chatMessagesContainer.appendChild(initialMessageDiv);
+            }
+
+            // Re-render messages up to the current index in the new language
+            for (let i = 0; i <= currentMessageIndex; i++) {
+                if (i < storyMessages.length && (initialMessageDiv.style.display === 'none' || i > 0 || storyMessages.length === 0) ) { // Condition to avoid re-adding initial message if it's supposed to be hidden
+                     const messageElement = createMessageElement(storyMessages[i]);
+                     chatMessagesContainer.appendChild(messageElement);
+                }
+            }
+
+            chatMessagesContainer.scrollTop = currentScroll; // Restore scroll position
+
+            // Update button texts and other UI elements
+            const startButtonText = currentLanguage === 'ar' ? 'ابدأ القصة' : 'Commencer';
+            const nextButtonText = currentLanguage === 'ar' ? 'التالي' : 'Suivant';
+            const prevButtonText = currentLanguage === 'ar' ? 'السابق' : 'Précédent';
+            const translateButtonText = currentLanguage === 'ar' ? 'Traduire' : 'العودة للعربية';
+            const darkModeButtonText = currentLanguage === 'ar' ? 'الوضع' : 'Mode';
+
+            startButton.innerHTML = `<i class="fas fa-play"></i> ${startButtonText}`;
+            nextButton.querySelector('span').textContent = nextButtonText;
+            prevButton.querySelector('span').textContent = prevButtonText;
+            translateButton.querySelector('span').textContent = translateButtonText;
+            toggleDarkModeButton.querySelector('span').textContent = darkModeButtonText;
+
+            // Update story title and category
+            if (storyCategoryElement) {
+                storyCategoryElement.textContent = currentLanguage === 'ar' ? storyData.category_ar : storyData.category_fr;
+            }
+            if (storyTitleElement) {
+                storyTitleElement.textContent = currentLanguage === 'ar' ? storyData.title_ar : storyData.title_fr;
+            }
+
+            if (initialMessageDiv) {
+                initialMessageDiv.textContent = currentLanguage === 'ar' ? 'اضغط على "ابدأ القصة" لعرض الحوار.' : 'Cliquez sur "Commencer" pour afficher le dialogue.';
+            }
+        }
+
+        function updateButtonStates() {
+            prevButton.disabled = currentMessageIndex <= 0;
+            nextButton.disabled = currentMessageIndex >= storyMessages.length - 1;
+        }
+
+        function handleStartStory() {
+            initAudioContext(); // Initialize audio context on user interaction
+            initSpeechSynthesis(); // Initialize speech synthesis
+            if (initialMessageDiv) {
+                initialMessageDiv.style.display = 'none'; // Hide initial message
+            }
+            startButton.style.display = 'none'; // Hide start button
+
+            // Clear any existing messages if restarting
+            const existingMessages = chatMessagesContainer.querySelectorAll('.message-item');
+            existingMessages.forEach(item => item.remove());
+            currentMessageIndex = 0; // Reset index
+
+            displayMessage(currentMessageIndex);
+            nextButton.disabled = storyMessages.length <= 1;
+            prevButton.disabled = true; // Previous button is disabled at the start
+        }
+
+        function handleNextMessage() {
+            if (currentMessageIndex < storyMessages.length - 1) {
+                currentMessageIndex++;
+                displayMessage(currentMessageIndex);
+            }
+        }
+
+        function handlePrevMessage() {
+            if (currentMessageIndex > 0) {
+                // Remove the currently displayed message
+                if (chatMessagesContainer.lastChild && chatMessagesContainer.lastChild.classList.contains('message-item')) {
+                    chatMessagesContainer.lastChild.remove();
+                }
+                currentMessageIndex--;
+                // Re-play audio for the message now at the end
+                const messageToReShow = storyMessages[currentMessageIndex];
+                playAudio(messageToReShow.audio, messageToReShow.text_fr); // Play audio for the "new" current message
+                updateButtonStates();
+                updateProgressBar();
+            }
+        }
+
+        function handleToggleLanguage() {
+            // Stop any currently playing audio/speech
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            if (frenchSpeaker && frenchSpeaker.speaking) {
+                frenchSpeaker.cancel();
+            }
+
+            currentLanguage = currentLanguage === 'ar' ? 'fr' : 'ar';
+            document.documentElement.lang = currentLanguage;
+            document.documentElement.dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            updateDisplayedMessagesLanguage(); // This will re-render messages in the new language
+
+            // If a story is in progress, play the audio for the current message in the new language
+            if (currentMessageIndex >= 0 && currentMessageIndex < storyMessages.length && initialMessageDiv.style.display === 'none') {
+                const currentMsgData = storyMessages[currentMessageIndex];
+                playAudio(currentMsgData.audio, currentMsgData.text_fr);
+            }
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+            const icon = toggleDarkModeButton.querySelector('i');
+            if (document.documentElement.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // Event Listeners
+        startButton.addEventListener('click', handleStartStory);
+        nextButton.addEventListener('click', handleNextMessage);
+        prevButton.addEventListener('click', handlePrevMessage);
+        translateButton.addEventListener('click', handleToggleLanguage);
+        toggleDarkModeButton.addEventListener('click', toggleDarkMode);
+
+        // DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initSpeechSynthesis(); // Initialize speech synthesis early
+            // Set dark mode based on preference or localStorage
+            if (localStorage.getItem('darkMode') === 'true' ||
+               (!localStorage.getItem('darkMode') && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            }
+            // Update dark mode button icon
+            const icon = toggleDarkModeButton.querySelector('i');
+             if (document.documentElement.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+
+            updateButtonStates(); // Initial button states
+            updateProgressBar(); // Initial progress bar state
+
+            // Handle case where no story messages are loaded
+            if (storyMessages.length === 0) {
+                startButton.disabled = true;
+                nextButton.disabled = true;
+                prevButton.disabled = true;
+                if(initialMessageDiv) initialMessageDiv.textContent = currentLanguage === 'ar' ? "لم يتم تحميل أي قصة." : "Aucune histoire chargée.";
+            }
+            // Set initial story title and category
+            if (storyCategoryElement) storyCategoryElement.textContent = currentLanguage === 'ar' ? storyData.category_ar : storyData.category_fr;
+            if (storyTitleElement) storyTitleElement.textContent = currentLanguage === 'ar' ? storyData.title_ar : storyData.title_fr;
+        });
+
+    </script>
+</body>
+</html>
