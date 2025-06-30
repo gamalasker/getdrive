@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شرح الضمائر الشخصية في الفرنسية (كامل مع تمارين)</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for Arabic (Cairo) and French (Lato) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Applying fonts to the body for Arabic and setting a fallback */
+        body {
+            font-family: 'Cairo', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* Specific font for French text to ensure clarity */
+        .french-text {
+            font-family: 'Lato', sans-serif;
+            direction: ltr; /* Set text direction to left-to-right for French */
+            text-align: left;
+        }
+
+        /* A distinct style for highlighting pronouns */
+        .pronoun {
+            color: #c026d3; /* Fuchsia color for pronouns */
+            font-weight: 700;
+            display: inline-block;
+            background-color: #f3e8ff; /* Light purple background */
+            padding: 0 6px;
+            border-radius: 6px;
+        }
+
+        /* Custom card styling for each example */
+        .lesson-card {
+            background-color: white;
+            border-right: 5px solid #6d28d9; /* Deep purple border */
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+
+        /* Quiz styles */
+        .quiz-option {
+            display: block;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+            direction: ltr;
+            text-align: left;
+        }
+        .quiz-option:hover {
+            background-color: #f3e8ff;
+            border-color: #a855f7;
+        }
+        .quiz-option.correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+            color: #15803d;
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+        .feedback {
+            display: none;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .feedback.correct {
+            display: block;
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+        .feedback.incorrect {
+            display: block;
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        .hidden-answer {
+            display: none;
+            background-color: #f5f3ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header Section -->
+        <header class="text-center mb-10 border-b-2 border-purple-200 pb-6">
+            <h1 class="text-3xl md:text-5xl font-bold text-purple-800 mb-2">الضمائر الشخصية في اللغة الفرنسية</h1>
+            <p class="text-lg text-gray-600">(Les Pronoms Personnels)</p>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Sections 1-5 from before -->
+             <!-- Section 1: Différentes Constructions -->
+            <section id="section1" class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-700 mb-6">بِنَى لغوية مختلفة</h2>
+                <p class="mb-6 text-gray-700">يهدف هذا الجزء إلى توضيح الفروق الدقيقة في استخدام الضمائر بناءً على ما تشير إليه (شخص أم شيء/فكرة).</p>
+                
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Qu'est-ce que tu <span class="pronoun">en</span> penses?</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> ما رأيك فيه؟</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> هنا، الضمير <span class="pronoun">en</span> يعود على (de ce livre). القاعدة هي أن الضمير <span class="pronoun">en</span> يستخدم ليحل محل اسم مسبوق بحرف الجر de، وغالبًا ما يشير إلى شيء غير عاقل أو فكرة.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">J'<span class="pronoun">y</span> pense.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أنا أفكر فيه.</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> في هذا المثال، الضمير <span class="pronoun">y</span> يعود على (à ce projet). القاعدة هي أن الضمير <span class="pronoun">y</span> يستخدم ليحل محل اسم مسبوق بحرف الجر à، ويشير أيضًا إلى شيء غير عاقل أو فكرة.</p>
+                </div>
+                
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Je pense à <span class="pronoun">lui</span> / à <span class="pronoun">elle</span> / à <span class="pronoun">eux</span> / à <span class="pronoun">elles</span>.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أنا أفكر فيه / فيها / فيهم / فيهن.</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> عندما يأتي حرف الجر à قبل شخص عاقل، لا نستخدم <span class="pronoun">y</span>. بدلاً من ذلك، نستخدم الضمائر التوكيدية (Pronoms Toniques).</p>
+                </div>
+
+                 <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Je crois à l'amitié, j'<span class="pronoun">y</span> crois.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أنا أؤمن بالصداقة، أؤمن بها.</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> "الصداقة" (l'amitié) هي فكرة غير عاقلة مسبوقة بـ à، لذا نستخدم <span class="pronoun">y</span>.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Elle croit en Dieu, elle croit en <span class="pronoun">Lui</span>.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> هي تؤمن بالله، هي تؤمن به.</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> هذه حالة خاصة. مع لفظ الجلالة "Dieu" أو شخصيات مقدسة، نستخدم الضمير التوكيدي <span class="pronoun">Lui</span> كعلامة تبجيل.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Je <span class="pronoun">me</span> fais du souci. Ne <span class="pronoun">t'en</span> fais pas !</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أنا قلق. لا تقلق!</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> التعبير هو `se faire du souci`. في الأمر المنفي، <span class="pronoun">en</span> يحل محل `du souci`.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Tu <span class="pronoun">t'en</span> fais toujours... Je ne <span class="pronoun">m'y</span> ferai jamais.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أنت دائمًا تقلق... لن أعتاد على الأمر أبدًا.</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> التعبير `s'en faire` يعني "يقلق"، بينما `s'y faire` يعني "يعتاد على شيء ما".</p>
+                </div>
+            </section>
+            
+            <!-- Section 2: Expressions with EN -->
+            <section id="section2" class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-700 mb-6">تعبيرات اصطلاحية مع الضمير "EN"</h2>
+                
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Il leur <span class="pronoun">en</span> veut.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> en vouloir à quelqu'un (يحمل ضغينة على شخص ما).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> هو حانق عليهم.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Je n'<span class="pronoun">en</span> reviens pas qu'elle ait raté son bac.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne pas en revenir (لا يصدق / مندهش جدًا).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> لا أستوعب أنها رسبت في البكالوريا.</p>
+                </div>
+                
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Ils s'<span class="pronoun">en</span> sont pris à ces pauvres gens.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> s'en prendre à quelqu'un (يهاجم شخصًا ما).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> لقد هاجموا هؤلاء الناس المساكين.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Où est Madeleine? - Je n'<span class="pronoun">en</span> sais rien !</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne rien en savoir (لا يعرف شيئًا على الإطلاق).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أين مادلين؟ - لا أعرف شيئًا!</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Sur ces petites routes de montagne, je n'<span class="pronoun">en</span> mène pas large !</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne pas en mener large (يشعر بالخوف).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> على هذه الطرق الجبلية، أنا خائف!</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Tu lis ce roman? Tu <span class="pronoun">en</span> es où?</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> Où en être ? (أين وصلت؟ / في أي مرحلة أنت؟).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> هل تقرأ هذه الرواية؟ أين وصلت فيها؟</p>
+                </div>
+                
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Ils sont épuisés ? - Oui, ils n'<span class="pronoun">en</span> peuvent plus !</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne plus en pouvoir (لم يعد قادرًا على التحمل).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> هل هم متعبون؟ - نعم، لم يعودوا قادرين على التحمل!</p>
+                </div>
+            </section>
+
+            <!-- Section 3: Expressions with Y -->
+            <section id="section3" class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-700 mb-6">تعبيرات اصطلاحية مع الضمير "Y"</h2>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Alain sait s'<span class="pronoun">y</span> prendre avec les enfants difficiles.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> s'y prendre (يجيد التعامل / يعرف كيف يتصرف).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> آلان يعرف كيف يتعامل مع الأطفال الصعبين.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Tu t'<span class="pronoun">y</span> connais en informatique ? - Non, je n'<span class="pronoun">y</span> connais rien !</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> s'y connaître en (لديه خبرة أو معرفة في مجال ما).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> هل لديك خبرة في مجال المعلوماتية؟ - لا، لا أعرف شيئًا في هذا المجال!</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Si Luc a été licencié, je n'<span class="pronoun">y</span> suis pour rien.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> y être pour quelque chose / n'y être pour rien (له علاقة بالأمر / لا علاقة له بالأمر).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> إذا تم فصل لوك، فلا علاقة لي بالأمر.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">J'<span class="pronoun">y</span> suis ! (= j'ai compris)</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> J'y suis ! (فهمت!).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> فهمت!</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Le vieil homme n'<span class="pronoun">y</span> est plus. (= il a perdu la tête)</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne plus y être (فقد عقله / لم يعد في وعيه).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> الرجل العجوز لم يعد في وعيه.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">La situation est difficile, je n'<span class="pronoun">y</span> peux rien.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne rien y pouvoir (لا يستطيع فعل شيء حيال الأمر).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> الوضع صعب، لا أستطيع أن أفعل شيئًا حياله.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Tous les cousins, <span class="pronoun">y</span> compris le petit dernier, ont été invités.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> y compris (بما في ذلك / متضمنًا).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> جميع أبناء العم، بمن فيهم الأصغر، تمت دعوتهم.</p>
+                </div>
+
+            </section>
+
+            <!-- Section 4: Le Neutre -->
+            <section id="section4" class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-700 mb-6">استخدامات الضمير المحايد "LE"</h2>
+                <p class="mb-6 text-gray-700">الضمير <span class="pronoun">le</span> يمكن أن يكون محايدًا، أي أنه لا يعود على اسم مذكر، بل يحل محل فكرة كاملة أو جملة بأكملها.</p>
+                 
+                 <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">L'étudiant a été fort déçu de sa note, mais il ne <span class="pronoun">l'</span>a pas montré.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> خاب أمل الطالب كثيرًا من علامته، لكنه لم يظهر ذلك.</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> الضمير <span class="pronoun">l'</span> يحل محل فكرة "أنه كان خائب الأمل".</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Je te <span class="pronoun">l'</span>avais dit, qu'il n'aurait pas une bonne note!</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> لقد قلت لك إنه لن يحصل على علامة جيدة!</p>
+                    <p class="text-gray-600"><strong>الشرح:</strong> الضمير <span class="pronoun">l'</span> هنا يحل محل الجملة التالية بأكملها.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Serge <span class="pronoun">l'</span>a échappé belle.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> l'échapper belle (ينجو بأعجوبة).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> سيرج نجا بأعجوبة.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Le jeune navigateur <span class="pronoun">l'</span>a emporté sur ses concurrents.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> l'emporter sur (يفوز على / يتغلب على).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> الملاح الشاب فاز على منافسيه.</p>
+                </div>
+
+                <div class="lesson-card">
+                    <p class="french-text text-xl mb-3">Il ne <span class="pronoun">l'</span>entend pas de cette oreille.</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>التعبير:</strong> ne pas l'entendre de cette oreille (لا يوافق / يعتزم الدفاع عن موقفه).</p>
+                    <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> هو لا يرى الأمر بهذه الطريقة (سيدافع عن نفسه).</p>
+                </div>
+            </section>
+            
+            <!-- Section 5: Pronoms Indirects -->
+            <section id="section5" class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-700 mb-6">استخدامات اصطلاحية للضمائر غير المباشرة</h2>
+                <p class="mb-6 text-gray-700">الضمائر غير المباشرة (<span class="pronoun">me</span>, <span class="pronoun">te</span>, <span class="pronoun">lui</span>, <span class="pronoun">nous</span>, <span class="pronoun">vous</span>, <span class="pronoun">leur</span>) تُستخدم بكثرة في تعبيرات مجازية، خاصة تلك المرتبطة بالجسد أو التي تفيد الانتماء والعلاقة.</p>
+                
+                <div class="lesson-card">
+                    <h3 class="text-xl font-bold text-purple-600 mb-4">تعبيرات مجازية مرتبطة بالجسد</h3>
+                    <ul class="list-disc list-inside space-y-3">
+                        <li><p class="inline french-text">Elle <span class="pronoun">lui</span> court après. (هي تجري وراءه / تلاحقه عاطفيًا).</p></li>
+                        <li><p class="inline french-text">Il <span class="pronoun">lui</span> tourne autour. (هو يحوم حولها / يتقرب منها).</p></li>
+                        <li><p class="inline french-text">Elle <span class="pronoun">vous</span> tend les bras. (هي تمد لكم ذراعيها / ترحب بكم بحرارة).</p></li>
+                        <li><p class="inline french-text">Elle <span class="pronoun">me</span> saute au cou. (هي تعانقني بحماس).</p></li>
+                        <li><p class="inline french-text">Le succès <span class="pronoun">leur</span> a tourné la tête. (النجاح أصابهم بالغرور).</p></li>
+                        <li><p class="inline french-text">Ils <span class="pronoun">nous</span> tournent le dos. (هم يديرون لنا ظهورهم / يتجاهلوننا).</p></li>
+                        <li><p class="inline french-text">Cela <span class="pronoun">lui</span> tient à cœur. (هذا الأمر يهمه كثيرًا / قريب إلى قلبه).</p></li>
+                        <li><p class="inline french-text">Personne ne <span class="pronoun">lui</span> arrive à la cheville! (لا أحد يضاهيه! / لا أحد يصل لمستواه).</p></li>
+                    </ul>
+                </div>
+                
+                <div class="lesson-card">
+                    <h3 class="text-xl font-bold text-purple-600 mb-4">تعبيرات الانتماء والعلاقة</h3>
+                    <p class="text-gray-600 mb-4">في هذه التعبيرات، الضمير غير المباشر غالبًا ما يحمل معنى "الملكية" أو "العلاقة" بدلاً من كونه مجرد متلقي للفعل.</p>
+
+                    <div class="border-t border-gray-200 pt-4 mt-4">
+                        <p class="french-text text-xl mb-3">Je <span class="pronoun">leur</span> trouve mauvaise mine.</p>
+                        <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> أجد أن مظهرهم سيء.</p>
+                        <p class="text-gray-600"><strong>الشرح:</strong> المعنى المقصود هو أنني أرى أن <strong>مظهرهم</strong> (الذي يخصهم) سيء.</p>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mt-4">
+                        <p class="french-text text-xl mb-3">Nous <span class="pronoun">lui</span> connaissons peu d'amis.</p>
+                        <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> نعرف القليل من أصدقائه.</p>
+                        <p class="text-gray-600"><strong>الشرح:</strong> المعنى "نعرف له أصدقاء قليلين"، أي أننا نعرف أن <strong>أصدقاءه</strong> (الذين يخصونه) قليلون.</p>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mt-4">
+                        <p class="french-text text-xl mb-3">Elle <span class="pronoun">nous</span> a été d'une grande aide.</p>
+                        <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> لقد كانت عونًا كبيرًا لنا.</p>
+                        <p class="text-gray-600"><strong>الشرح:</strong> الضمير <span class="pronoun">nous</span> يوضح لمن كان العون موجهًا.</p>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4 mt-4">
+                        <p class="french-text text-xl mb-3">Qu'est-ce que tu <span class="pronoun">lui</span> trouves ?</p>
+                        <p class="text-lg text-blue-700 mb-3"><strong>الترجمة:</strong> ما الذي يعجبك فيه؟</p>
+                        <p class="text-gray-600"><strong>الشرح:</strong> المعنى الحرفي "ماذا تجد له؟"، والمقصود هو "ما هي الصفات الجذابة التي تجدها <strong>فيه</strong>؟".</p>
+                    </div>
+                </div>
+            </section>
+            <!-- END of original content -->
+
+
+            <!-- NEW Interactive Quiz Section -->
+            <section id="quiz" class="mb-12">
+                <div class="bg-purple-700 text-white p-6 rounded-lg shadow-lg">
+                    <h2 class="text-3xl font-bold text-center">اختبر معلوماتك!</h2>
+                    <p class="text-center mt-2">حان الوقت لتطبيق ما تعلمته. اختر الإجابة الصحيحة لكل سؤال.</p>
+                </div>
+            </section>
+
+            <!-- Quiz 1 -->
+            <section id="quiz1" class="mb-12">
+                <h3 class="text-2xl font-bold text-purple-700 mb-6">التمرين الأول: استبدل بالضمير المناسب</h3>
+                <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">1. Le petit garçon saute au cou <u>de sa maman</u>.</p>
+                    <div class="quiz-options" data-correct="1">
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il la saute au cou.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il lui saute au cou.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il en saute au cou.</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">2. Le jeune homme court après <u>cette jolie actrice</u>.</p>
+                    <div class="quiz-options" data-correct="1">
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il la court après.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il lui court après.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il y court après.</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+                 <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">3. Qu'avez-vous pensé <u>de cette situation</u> ?</p>
+                    <div class="quiz-options" data-correct="1">
+                        <span class="quiz-option" onclick="checkAnswer(this)">Qu'y avez-vous pensé ?</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Qu'en avez-vous pensé ?</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Que l'avez-vous pensé ?</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+                 <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">4. Est-ce qu'ils se font <u>à la nouvelle organisation</u> ?</p>
+                    <div class="quiz-options" data-correct="2">
+                        <span class="quiz-option" onclick="checkAnswer(this)">Est-ce qu'ils s'en font ?</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Est-ce qu'ils se la font ?</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Est-ce qu'ils s'y font ?</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+            </section>
+
+            <!-- Quiz 2 -->
+            <section id="quiz2" class="mb-12">
+                <h3 class="text-2xl font-bold text-purple-700 mb-6">التمرين الثاني: أوجد طريقة أخرى للتعبير</h3>
+                <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">1. Après les concours, <u>les étudiants sont épuisés</u>.</p>
+                     <div class="quiz-options" data-correct="0">
+                        <span class="quiz-option" onclick="checkAnswer(this)">... ils n'en peuvent plus.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">... ils n'y peuvent rien.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">... ils ne s'y font pas.</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+                <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">2. <u>La navigatrice a échappé de peu</u> à un naufrage !</p>
+                     <div class="quiz-options" data-correct="2">
+                        <span class="quiz-option" onclick="checkAnswer(this)">Elle n'en revenait pas.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Elle l'a emporté.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Elle l'a échappé belle !</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+                 <div class="lesson-card" data-quiz-item>
+                    <p class="french-text text-lg mb-4">3. Cet homme <u>éprouve de la rancune envers moi</u>.</p>
+                     <div class="quiz-options" data-correct="1">
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il m'en sort.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il m'en veut.</span>
+                        <span class="quiz-option" onclick="checkAnswer(this)">Il m'y veut.</span>
+                    </div>
+                    <div class="feedback"></div>
+                </div>
+            </section>
+
+            <!-- Quiz 3 -->
+            <section id="quiz3">
+                <h3 class="text-2xl font-bold text-purple-700 mb-6">التمرين الثالث: كوّن جملة</h3>
+                <p class="mb-6 text-gray-700">استخدم كل تعبير من التعبيرات التالية في جملة، مع تغيير الأزمنة والضمائر.</p>
+                <div class="lesson-card">
+                    <ul class="space-y-4">
+                        <li>
+                            <p class="french-text font-bold">Tourner autour</p>
+                            <button onclick="toggleAnswer(this)" class="mt-2 text-sm text-purple-600 hover:underline">أظهر مثالاً</button>
+                            <p class="hidden-answer french-text">Le chat <span class="pronoun">lui</span> tournait autour en ronronnant.</p>
+                        </li>
+                        <li>
+                            <p class="french-text font-bold">Tenir à cœur</p>
+                            <button onclick="toggleAnswer(this)" class="mt-2 text-sm text-purple-600 hover:underline">أظهر مثالاً</button>
+                            <p class="hidden-answer french-text">Cette réussite <span class="pronoun">me</span> tenait vraiment à cœur.</p>
+                        </li>
+                         <li>
+                            <p class="french-text font-bold">Courir après</p>
+                            <button onclick="toggleAnswer(this)" class="mt-2 text-sm text-purple-600 hover:underline">أظهر مثالاً</button>
+                            <p class="hidden-answer french-text">Elle <span class="pronoun">lui</span> a couru après pendant des mois.</p>
+                        </li>
+                         <li>
+                            <p class="french-text font-bold">Sauter au cou</p>
+                            <button onclick="toggleAnswer(this)" class="mt-2 text-sm text-purple-600 hover:underline">أظهر مثالاً</button>
+                            <p class="hidden-answer french-text">Quand ils se sont retrouvés, ils <span class="pronoun">se</span> sont sauté au cou.</p>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 pt-6 border-t-2 border-gray-200">
+            <p class="text-gray-500">تم إنشاء هذه الصفحة للمساعدة في تعلم قواعد اللغة الفرنسية.</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript for Quiz Interactivity -->
+    <script>
+        function checkAnswer(selectedOption) {
+            const parent = selectedOption.parentElement;
+            const feedback = parent.nextElementSibling;
+            const correctIndex = parseInt(parent.getAttribute('data-correct'));
+            const options = parent.children;
+
+            // Disable further clicks
+            for (let i = 0; i < options.length; i++) {
+                options[i].style.pointerEvents = 'none';
+            }
+
+            for (let i = 0; i < options.length; i++) {
+                if (i === correctIndex) {
+                    options[i].classList.add('correct');
+                } else if (options[i] === selectedOption) {
+                    options[i].classList.add('incorrect');
+                }
+            }
+            
+            if (options[correctIndex] === selectedOption) {
+                feedback.textContent = 'إجابة صحيحة!';
+                feedback.className = 'feedback correct';
+            } else {
+                feedback.textContent = 'إجابة خاطئة. حاول مرة أخرى في سؤال آخر!';
+                feedback.className = 'feedback incorrect';
+            }
+        }
+
+        function toggleAnswer(button) {
+            const answer = button.nextElementSibling;
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+                button.textContent = 'أخفِ المثال';
+            } else {
+                answer.style.display = 'none';
+                button.textContent = 'أظهر مثالاً';
+            }
+        }
+    </script>
+
+</body>
+</html>
