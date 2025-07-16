@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions interactives sur la vie quotidienne en France</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            direction: ltr; /* Set text direction to left-to-right for French */
+            text-align: left; /* Align text to the left for French */
+        }
+        .container {
+            max-width: 900px;
+        }
+        .question-card {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+        }
+        .question-title {
+            font-weight: 600;
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            color: #343a40;
+        }
+        .option-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        .option-label:hover {
+            background-color: #e9ecef;
+        }
+        .option-label input[type="radio"] {
+            margin-right: 8px; /* Adjust margin for LTR */
+        }
+        .feedback {
+            margin-top: 12px;
+            font-weight: 600;
+        }
+        .correct {
+            color: #28a745; /* Green */
+        }
+        .incorrect {
+            color: #dc3545; /* Red */
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-1px);
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            margin-top: 8px;
+            background-color: white;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            margin-top: 8px;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .answer-content {
+            display: none; /* Hidden by default */
+            background-color: #e6f7ff; /* Light blue background for answers */
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .answer-button {
+            background-color: #28a745; /* Green button */
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block; /* To allow margin-top and not take full width */
+            transition: background-color 0.2s;
+        }
+        .answer-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto bg-white p-8 rounded-xl shadow-lg">
+        <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Questions interactives sur la vie quotidienne en France</h1>
+        <p class="text-center text-gray-600 mb-10">Testez vos connaissances sur la culture et les traditions françaises !</p>
+
+        <!-- VRAI OU FAUX Section -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 text-gray-700">Vrai ou faux ?</h2>
+            <form id="vraiOuFauxForm">
+                <div class="question-card" id="q1">
+                    <p class="question-title">1. La semaine du goût est réservée aux enfants qui n'ont pas de goût.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <div class="question-card" id="q2">
+                    <p class="question-title">2. À midi, il est très à la mode de manger avec ses doigts.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <div class="question-card" id="q3">
+                    <p class="question-title">3. Le soir, la famille se retrouve autour de la table familiale.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <div class="question-card" id="q4">
+                    <p class="question-title">4. La cuisine traditionnelle française est remplacée par la cuisine exotique.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <div class="question-card" id="q5">
+                    <p class="question-title">5. Chaque région a ses spécialités culinaires.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <div class="feedback" id="feedback5"></div>
+                </div>
+
+                <div class="question-card" id="q6">
+                    <p class="question-title">6. Tous les restaurants français proposent des plats d'escargots ou de grenouilles.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q6" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q6" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback6"></div>
+                </div>
+
+                <div class="question-card" id="q7">
+                    <p class="question-title">7. Le vin est toujours compris dans le prix du menu.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q7" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q7" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback7"></div>
+                </div>
+
+                <div class="question-card" id="q8">
+                    <p class="question-title">8. "Faire un canard" signifie tremper un sucre dans le verre de digestif ou la tasse de café de son voisin.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q8" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q8" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback8"></div>
+                </div>
+
+                <div class="question-card" id="q9">
+                    <p class="question-title">9. On ne peut manger de la salade niçoise que dans la région de Nice.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q9" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q9" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <div class="feedback" id="feedback9"></div>
+                </div>
+
+                <div class="question-card" id="q10">
+                    <p class="question-title">10. Le porc est de la viande de cochon.</p>
+                    <label class="option-label">
+                        <input type="radio" name="q10" value="vrai">
+                        <span>Vrai</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q10" value="faux">
+                        <span>Faux</span>
+                    </label>
+                    <div class="feedback" id="feedback10"></div>
+                </div>
+
+                <div class="flex justify-center gap-4 mt-6">
+                    <button type="button" class="btn btn-primary" onclick="checkVraiOuFaux()">Vérifier les réponses</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetVraiOuFaux()">Réinitialiser</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Où peut-on acheter Section -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 text-gray-700">Où peut-on acheter :</h2>
+            <form id="ouAcheterForm">
+                <div class="question-card">
+                    <p class="question-title">1. du jambon et du saucisson ?</p>
+                    <select name="ouAcheter1" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback1"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">2. du fromage ?</p>
+                    <select name="ouAcheter2" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback2"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">3. des produits d'entretien ?</p>
+                    <select name="ouAcheter3" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback3"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">4. des bonbons ou des chocolats ?</p>
+                    <select name="ouAcheter4" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback4"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">5. du pain et des croissants ?</p>
+                    <select name="ouAcheter5" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback5"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">6. des gâteaux ?</p>
+                    <select name="ouAcheter6" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback6"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">7. des poissons et des fruits de mer ?</p>
+                    <select name="ouAcheter7" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback7"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">8. du vin ?</p>
+                    <select name="ouAcheter8" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback8"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">9. des timbres ?</p>
+                    <select name="ouAcheter9" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback9"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">10. des fleurs ?</p>
+                    <select name="ouAcheter10" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback10"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">11. des plats cuisinés variés ?</p>
+                    <select name="ouAcheter11" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback11"></div>
+                </div>
+
+                <div class="question-card">
+                    <p class="question-title">12. de la viande de veau ou de bœuf ?</p>
+                    <select name="ouAcheter12" class="rounded-md p-2 border border-gray-300">
+                        <option value="">Choisir le magasin</option>
+                        <option value="a">crémerie</option>
+                        <option value="b">pâtisserie</option>
+                        <option value="c">droguerie</option>
+                        <option value="d">bureau de tabac</option>
+                        <option value="e">boucherie</option>
+                        <option value="f">traiteur</option>
+                        <option value="g">caviste</option>
+                        <option value="h">confiserie</option>
+                        <option value="i">poissonnerie</option>
+                        <option value="j">boulangerie</option>
+                        <option value="k">fleuriste</option>
+                        <option value="l">charcuterie</option>
+                    </select>
+                    <div class="feedback" id="ouAcheterFeedback12"></div>
+                </div>
+
+                <div class="flex justify-center gap-4 mt-6">
+                    <button type="button" class="btn btn-primary" onclick="checkOuAcheter()">Vérifier les réponses</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetOuAcheter()">Réinitialiser</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- À VOTRE AVIS Section -->
+        <div class="mb-10">
+            <h2 class="text-2xl font-bold mb-6 text-gray-700">À votre avis : Questions de réflexion</h2>
+            <div class="question-card">
+                <p class="question-title">1. Comparez les trois principaux repas français avec ceux de votre pays.</p>
+                <button class="answer-button" onclick="toggleAnswer('answer1', this)">Afficher la réponse</button>
+                <div class="answer-content" id="answer1">
+                    <p>En France, les trois principaux repas sont le petit-déjeuner (léger, souvent pain/viennoiseries et boisson chaude), le déjeuner (repas le plus consistant, souvent un plat principal avec entrée/dessert) et le dîner (plus léger que le déjeuner, pris en famille). Dans mon pays, les repas peuvent varier mais souvent le déjeuner est aussi le repas principal, et le petit-déjeuner peut être plus ou moins copieux selon les régions et les habitudes familiales. Les horaires peuvent également différer.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="question-title">2. Où déjeunez-vous à midi et comment est composé votre repas ?</p>
+                <button class="answer-button" onclick="toggleAnswer('answer2', this)">Afficher la réponse</button>
+                <div class="answer-content" id="answer2">
+                    <p>Je déjeune généralement à la maison. Mon repas est souvent composé d'un plat principal comme du riz avec de la viande ou du poisson, accompagné de légumes. Parfois, j'ajoute une salade ou une soupe. C'est un repas équilibré et préparé à la maison.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="question-title">3. Quel repas de fête préférez-vous et pourquoi ?</p>
+                <button class="answer-button" onclick="toggleAnswer('answer3', this)">Afficher la réponse</button>
+                <div class="answer-content" id="answer3">
+                    <p>Je préfère le repas de l'Aïd, car c'est un moment où toute la famille se réunit. Nous préparons des plats traditionnels délicieux et variés, et l'ambiance est joyeuse et festive. C'est l'occasion de partager des moments précieux et de déguster des spécialités que l'on ne mange pas tous les jours.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="question-title">4. Trouvez trois arguments qui justifieraient la semaine du goût.</p>
+                <button class="answer-button" onclick="toggleAnswer('answer4', this)">Afficher la réponse</button>
+                <div class="answer-content" id="answer4">
+                    <p>1. **Éducation au palais :** Elle permet aux enfants et aux adultes de découvrir de nouvelles saveurs, textures et odeurs, développant ainsi leur éducation sensorielle et leur curiosité culinaire. <br>2. **Promotion d'une alimentation saine :** En mettant l'accent sur la diversité des aliments, elle encourage une alimentation équilibrée et la consommation de produits frais et de saison. <br>3. **Valorisation du patrimoine culinaire :** C'est une occasion de célébrer la richesse de la gastronomie locale et nationale, et de transmettre les traditions culinaires aux nouvelles générations.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="question-title">5. Comparez ce que l'on nomme les bonnes manières chez vous et en France.</p>
+                <button class="answer-button" onclick="toggleAnswer('answer5', this)">Afficher la réponse</button>
+                <div class="answer-content" id="answer5">
+                    <p>En France, il est de bon ton d'offrir des fleurs ou une bouteille de vin à l'hôte, d'attendre que la maîtresse de maison commence à manger, et de ne pas essuyer son assiette avec son pain. Le poulet ne se mange pas avec les doigts. Dans mon pays, certaines de ces règles sont similaires, comme offrir un cadeau à l'hôte ou attendre avant de manger. Cependant, il peut y avoir des différences, par exemple, l'usage des doigts pour certains plats traditionnels peut être accepté, ou des règles spécifiques concernant la politesse verbale et les salutations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Answers for Vrai ou Faux questions
+        const vraiOuFauxAnswers = {
+            q1: "faux",
+            q2: "faux",
+            q3: "vrai",
+            q4: "faux",
+            q5: "vrai",
+            q6: "faux",
+            q7: "faux",
+            q8: "faux",
+            q9: "faux",
+            q10: "vrai"
+        };
+
+        // Answers for Où peut-on acheter questions
+        const ouAcheterAnswers = {
+            ouAcheter1: "l", // du jambon et du saucisson -> charcuterie
+            ouAcheter2: "a", // du fromage -> crémerie
+            ouAcheter3: "c", // des produits d'entretien -> droguerie
+            ouAcheter4: "h", // des bonbons ou des chocolats -> confiserie
+            ouAcheter5: "j", // du pain et des croissants -> boulangerie
+            ouAcheter6: "b", // des gâteaux -> pâtisserie
+            ouAcheter7: "i", // des poissons et des fruits de mer -> poissonnerie
+            ouAcheter8: "g", // du vin -> caviste
+            ouAcheter9: "d", // des timbres -> bureau de tabac
+            ouAcheter10: "k", // des fleurs -> fleuriste
+            ouAcheter11: "f", // des plats cuisinés variés -> traiteur
+            ouAcheter12: "e"  // de la viande de veau ou de bœuf -> boucherie
+        };
+
+        /**
+         * Checks the answers for the "Vrai ou Faux" section.
+         */
+        function checkVraiOuFaux() {
+            const form = document.getElementById('vraiOuFauxForm');
+            for (let i = 1; i <= 10; i++) {
+                const questionName = `q${i}`;
+                const selectedOption = form.elements[questionName].value;
+                const feedbackElement = document.getElementById(`feedback${i}`);
+
+                if (selectedOption === vraiOuFauxAnswers[questionName]) {
+                    feedbackElement.textContent = 'Bonne réponse !';
+                    feedbackElement.className = 'feedback correct';
+                } else {
+                    feedbackElement.textContent = `Mauvaise réponse. La bonne réponse est : ${vraiOuFauxAnswers[questionName] === 'vrai' ? 'Vrai' : 'Faux'}.`;
+                    feedbackElement.className = 'feedback incorrect';
+                }
+            }
+        }
+
+        /**
+         * Resets the "Vrai ou Faux" section.
+         */
+        function resetVraiOuFaux() {
+            const form = document.getElementById('vraiOuFauxForm');
+            form.reset(); // Resets all radio buttons
+            for (let i = 1; i <= 10; i++) {
+                const feedbackElement = document.getElementById(`feedback${i}`);
+                feedbackElement.textContent = '';
+                feedbackElement.className = 'feedback';
+            }
+        }
+
+        /**
+         * Checks the answers for the "Où peut-on acheter" section.
+         */
+        function checkOuAcheter() {
+            const form = document.getElementById('ouAcheterForm');
+            for (let i = 1; i <= 12; i++) {
+                const questionName = `ouAcheter${i}`;
+                const selectedOption = form.elements[questionName].value;
+                const feedbackElement = document.getElementById(`ouAcheterFeedback${i}`);
+                const correctOptionKey = ouAcheterAnswers[questionName];
+
+                // Find the text of the correct option
+                const correctOptionText = Array.from(form.elements[questionName].options).find(option => option.value === correctOptionKey)?.textContent;
+
+                if (selectedOption === correctOptionKey) {
+                    feedbackElement.textContent = 'Bonne réponse !';
+                    feedbackElement.className = 'feedback correct';
+                } else {
+                    feedbackElement.textContent = `Mauvaise réponse. La bonne réponse est : ${correctOptionText}.`;
+                    feedbackElement.className = 'feedback incorrect';
+                }
+            }
+        }
+
+        /**
+         * Resets the "Où peut-on acheter" section.
+         */
+        function resetOuAcheter() {
+            const form = document.getElementById('ouAcheterForm');
+            form.reset(); // Resets all select dropdowns
+            for (let i = 1; i <= 12; i++) {
+                const feedbackElement = document.getElementById(`ouAcheterFeedback${i}`);
+                feedbackElement.textContent = '';
+                feedbackElement.className = 'feedback';
+            }
+        }
+
+        /**
+         * Toggles the visibility of an answer.
+         * @param {string} answerId - The ID of the answer content div.
+         * @param {HTMLElement} buttonElement - The button element that was clicked.
+         */
+        function toggleAnswer(answerId, buttonElement) {
+            const answerContent = document.getElementById(answerId);
+            if (answerContent.style.display === 'block') {
+                answerContent.style.display = 'none';
+                buttonElement.textContent = 'Afficher la réponse';
+            } else {
+                answerContent.style.display = 'block';
+                buttonElement.textContent = 'Masquer la réponse';
+            }
+        }
+    </script>
+</body>
+</html>
