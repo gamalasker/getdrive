@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice Interactif : Analyser une offre d'emploi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .option-label.correct {
+            background-color: #d1fae5; /* Vert clair */
+            border-color: #10b981; /* Vert */
+        }
+        .option-label.incorrect {
+            background-color: #fee2e2; /* Rouge clair */
+            border-color: #ef4444; /* Rouge */
+        }
+        .feedback {
+            font-weight: 500;
+        }
+        .feedback.correct {
+            color: #10b981; /* Vert */
+        }
+        .feedback.incorrect {
+            color: #ef4444; /* Rouge */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Exercice d'entraînement</h1>
+            <p class="text-lg text-gray-600 mt-2">Analysez l'offre d'emploi et répondez aux questions.</p>
+        </header>
+
+        <!-- Offre d'emploi Card -->
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg mb-8 border border-gray-200">
+            <h2 class="text-2xl font-bold text-indigo-700 mb-4">Offre d'emploi</h2>
+            <div class="space-y-4 text-gray-700">
+                <p><strong>Titre du poste :</strong> Vendeur / Vendeuse en boutique de prêt-à-porter</p>
+                <p><strong>Entreprise :</strong> "Élégance Urbaine", une marque jeune et dynamique spécialisée dans la mode citadine.</p>
+                <p><strong>Localisation :</strong> Lyon Centre (Presqu'île)</p>
+                <p><strong>Contrat :</strong> CDI - Temps plein (35h/semaine)</p>
+                
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">Missions :</h3>
+                    <p class="mb-2">Rattaché(e) au responsable du magasin, vous serez en charge de :</p>
+                    <ul class="list-disc list-inside space-y-1 pl-4">
+                        <li>Accueillir, conseiller et fidéliser la clientèle.</li>
+                        <li>Présenter nos collections et aider les clients dans leurs choix.</li>
+                        <li>Gérer les opérations d'encaissement.</li>
+                        <li>Participer à la bonne tenue du magasin (rangement, propreté) et à la gestion des stocks.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-lg mb-2">Profil recherché :</h3>
+                    <ul class="list-disc list-inside space-y-1 pl-4">
+                        <li>Vous avez une première expérience dans la vente.</li>
+                        <li>Vous possédez un excellent sens du relationnel et un esprit d'équipe.</li>
+                        <li>Vous êtes dynamique, souriant(e) et passionné(e) par la mode.</li>
+                        <li>La maîtrise de l'anglais est un plus.</li>
+                    </ul>
+                </div>
+                
+                <p class="pt-4"><strong>Pour postuler :</strong> Envoyez votre CV et lettre de motivation à <a href="#" class="text-indigo-600 hover:underline">recrutement@elegance-urbaine.fr</a></p>
+            </div>
+        </div>
+
+        <!-- QCM Section -->
+        <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200">
+            <form id="quiz-form">
+                <!-- Exercice 1 -->
+                <h2 class="text-2xl font-bold text-indigo-700 mb-6">Exercice 1 : Analyse de l'offre d'emploi</h2>
+                <div class="space-y-8">
+                    <!-- Question 1 -->
+                    <div id="question-1">
+                        <p class="font-semibold text-lg mb-3">1. Quel est le nom de l'entreprise qui recrute ?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="a" class="mr-3"><span>Lyon Centre</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="b" class="mr-3"><span>Élégance Urbaine</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q1" value="c" class="mr-3"><span>Prêt-à-porter</span></label>
+                        </div>
+                        <div id="feedback-1" class="mt-2 text-sm"></div>
+                    </div>
+                    <!-- Question 2 -->
+                    <div id="question-2">
+                        <p class="font-semibold text-lg mb-3">2. Quel type de contrat de travail est proposé ?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="a" class="mr-3"><span>CDD (Contrat à Durée Déterminée)</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="b" class="mr-3"><span>CDI (Contrat à Durée Indéterminée)</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q2" value="c" class="mr-3"><span>Contrat d'intérim</span></label>
+                        </div>
+                        <div id="feedback-2" class="mt-2 text-sm"></div>
+                    </div>
+                    <!-- Question 3 -->
+                    <div id="question-3">
+                        <p class="font-semibold text-lg mb-3">3. Laquelle de ces tâches N'EST PAS une mission pour ce poste ?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="a" class="mr-3"><span>Gérer les opérations d'encaissement.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="b" class="mr-3"><span>Accueillir et conseiller la clientèle.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q3" value="c" class="mr-3"><span>Créer les nouvelles collections de vêtements.</span></label>
+                        </div>
+                        <div id="feedback-3" class="mt-2 text-sm"></div>
+                    </div>
+                    <!-- Question 4 -->
+                    <div id="question-4">
+                        <p class="font-semibold text-lg mb-3">4. Quelle compétence est décrite comme "un plus" pour le candidat ?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="a" class="mr-3"><span>Avoir une expérience dans la vente.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="b" class="mr-3"><span>La maîtrise de l'anglais.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q4" value="c" class="mr-3"><span>Être passionné(e) par la mode.</span></label>
+                        </div>
+                        <div id="feedback-4" class="mt-2 text-sm"></div>
+                    </div>
+                    <!-- Question 5 -->
+                    <div id="question-5">
+                        <p class="font-semibold text-lg mb-3">5. Quelle information N'EST PAS présente dans cette annonce ?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q5" value="a" class="mr-3"><span>Le lieu de travail.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q5" value="b" class="mr-3"><span>Le salaire.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q5" value="c" class="mr-3"><span>L'adresse e-mail pour postuler.</span></label>
+                        </div>
+                        <div id="feedback-5" class="mt-2 text-sm"></div>
+                    </div>
+                </div>
+
+                <hr class="my-10 border-gray-300">
+
+                <!-- Exercice 2 -->
+                <h2 class="text-2xl font-bold text-indigo-700 mb-6">Exercice 2 : Questions générales</h2>
+                <div class="space-y-8">
+                    <!-- Question 6 -->
+                    <div id="question-6">
+                        <p class="font-semibold text-lg mb-3">6. Quel type de contrat de travail offre le plus de stabilité selon le guide?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q6" value="a" class="mr-3"><span>Contrat à temps partiel</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q6" value="b" class="mr-3"><span>CDD (Contrat à Durée Déterminée)</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q6" value="c" class="mr-3"><span>CDI (Contrat à Durée Indéterminée)</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q6" value="d" class="mr-3"><span>Contrat d'intérim</span></label>
+                        </div>
+                        <div id="feedback-6" class="mt-2 text-sm"></div>
+                    </div>
+                     <!-- Question 7 -->
+                    <div id="question-7">
+                        <p class="font-semibold text-lg mb-3">7. Où est-il conseillé de chercher des offres d'emploi en France, selon le guide?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q7" value="a" class="mr-3"><span>En utilisant plusieurs sources en même temps, comme les sites généralistes, spécialisés et les réseaux sociaux.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q7" value="b" class="mr-3"><span>Uniquement auprès des agences d'intérim.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q7" value="c" class="mr-3"><span>Uniquement sur les sites généralistes comme Indeed.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q7" value="d" class="mr-3"><span>Uniquement dans la presse locale.</span></label>
+                        </div>
+                        <div id="feedback-7" class="mt-2 text-sm"></div>
+                    </div>
+                     <!-- Question 8 -->
+                    <div id="question-8">
+                        <p class="font-semibold text-lg mb-3">8. Quel pourcentage environ du salaire brut faut-il enlever pour connaître le salaire net en France, selon le guide?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q8" value="a" class="mr-3"><span>10%</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q8" value="b" class="mr-3"><span>50%</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q8" value="c" class="mr-3"><span>23%</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q8" value="d" class="mr-3"><span>5%</span></label>
+                        </div>
+                        <div id="feedback-8" class="mt-2 text-sm"></div>
+                    </div>
+                     <!-- Question 9 -->
+                    <div id="question-9">
+                        <p class="font-semibold text-lg mb-3">9. Selon le guide, quel est le rôle principal d'une agence d'intérim dans la recherche d'emploi en France?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q9" value="a" class="mr-3"><span>Proposer des missions de courte ou moyenne durée pour acquérir de l'expérience.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q9" value="b" class="mr-3"><span>Fournir des formations longues et coûteuses pour se spécialiser dans un domaine.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q9" value="c" class="mr-3"><span>Offrir des conseils financiers pour mieux gérer son salaire une fois embauché.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q9" value="d" class="mr-3"><span>Garantir un emploi stable et permanent dès la première mission.</span></label>
+                        </div>
+                        <div id="feedback-9" class="mt-2 text-sm"></div>
+                    </div>
+                     <!-- Question 10 -->
+                    <div id="question-10">
+                        <p class="font-semibold text-lg mb-3">10. D'après le guide, quelle est l'importance de la rubrique "missions" dans une offre d'emploi?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q10" value="a" class="mr-3"><span>Elle indique le salaire exact qui sera versé après impôts et cotisations sociales.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q10" value="b" class="mr-3"><span>Elle donne des informations sur les possibilités d'évolution de carrière au sein de l'entreprise.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q10" value="c" class="mr-3"><span>Elle décrit les avantages sociaux offerts par l'entreprise, tels que les tickets restaurant ou la mutuelle.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q10" value="d" class="mr-3"><span>Elle permet de comprendre en détail les tâches à effectuer au quotidien et d'évaluer si elles correspondent à ses compétences et intérêts.</span></label>
+                        </div>
+                        <div id="feedback-10" class="mt-2 text-sm"></div>
+                    </div>
+                     <!-- Question 11 -->
+                    <div id="question-11">
+                        <p class="font-semibold text-lg mb-3">11. Selon le guide, pourquoi est-il important de se renseigner sur l'entreprise avant de postuler à une offre d'emploi?</p>
+                        <div class="space-y-2">
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q11" value="a" class="mr-3"><span>Cela garantit que l'entreprise est bien située géographiquement.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q11" value="b" class="mr-3"><span>Cela augmente les chances d'obtenir un salaire plus élevé.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q11" value="c" class="mr-3"><span>Cela permet de connaître les noms des employés et de les contacter directement.</span></label>
+                            <label class="option-label block p-4 border-2 border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"><input type="radio" name="q11" value="d" class="mr-3"><span>Cela permet de personnaliser la lettre de motivation et de mieux se préparer à l'entretien.</span></label>
+                        </div>
+                        <div id="feedback-11" class="mt-2 text-sm"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-10">
+                    <button type="submit" id="submit-btn" class="w-full sm:w-auto bg-indigo-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition-all duration-300 ease-in-out">
+                        Vérifier mes réponses
+                    </button>
+                    <div id="results" class="text-lg font-bold text-gray-800"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const quizForm = document.getElementById('quiz-form');
+            const resultsDiv = document.getElementById('results');
+            const submitButton = document.getElementById('submit-btn');
+
+            // Store correct answers for both exercises
+            const correctAnswers = {
+                q1: 'b', q2: 'b', q3: 'c', q4: 'b', q5: 'b',
+                q6: 'c', q7: 'a', q8: 'c', q9: 'a', q10: 'd', q11: 'd'
+            };
+
+            quizForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent form from submitting the traditional way
+
+                let score = 0;
+                const totalQuestions = Object.keys(correctAnswers).length;
+                const formData = new FormData(quizForm);
+
+                // Disable all inputs after submission
+                const inputs = quizForm.querySelectorAll('input[type="radio"]');
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+
+                // Loop through each question to check the answer
+                for (const [question, correctAnswer] of Object.entries(correctAnswers)) {
+                    const userAnswer = formData.get(question);
+                    const questionNumber = question.substring(1); // e.g., "1", "2", ... "11"
+                    const feedbackEl = document.getElementById(`feedback-${questionNumber}`);
+                    const questionEl = document.getElementById(`question-${questionNumber}`);
+                    
+                    if (!questionEl) continue; // Skip if question element doesn't exist
+
+                    const optionLabels = questionEl.querySelectorAll('.option-label');
+
+                    // Reset styles
+                    optionLabels.forEach(label => {
+                        label.classList.remove('correct', 'incorrect');
+                    });
+                    
+                    if (feedbackEl) {
+                        feedbackEl.innerHTML = ''; // Clear previous feedback
+                    }
+
+                    if (userAnswer) {
+                        const selectedLabel = document.querySelector(`input[name="${question}"][value="${userAnswer}"]`).parentElement;
+                        if (userAnswer === correctAnswer) {
+                            score++;
+                            selectedLabel.classList.add('correct');
+                            feedbackEl.innerHTML = `<span class="feedback correct">Correct !</span>`;
+                        } else {
+                            selectedLabel.classList.add('incorrect');
+                            const correctLabel = document.querySelector(`input[name="${question}"][value="${correctAnswer}"]`).parentElement;
+                            correctLabel.classList.add('correct');
+                            feedbackEl.innerHTML = `<span class="feedback incorrect">Incorrect. La bonne réponse était mise en surbrillance.</span>`;
+                        }
+                    } else {
+                        // If no answer was given
+                        const correctLabel = document.querySelector(`input[name="${question}"][value="${correctAnswer}"]`).parentElement;
+                        correctLabel.classList.add('correct');
+                        feedbackEl.innerHTML = `<span class="feedback incorrect">Vous n'avez pas répondu. Voici la bonne réponse.</span>`;
+                    }
+                }
+
+                // Display final score
+                resultsDiv.textContent = `Votre score : ${score} / ${totalQuestions}`;
+                if(score === totalQuestions) {
+                    resultsDiv.classList.add('text-green-600');
+                } else if (score > totalQuestions / 2) {
+                    resultsDiv.classList.add('text-yellow-600');
+                } else {
+                    resultsDiv.classList.add('text-red-600');
+                }
+
+
+                // Change button to "Recommencer"
+                submitButton.textContent = 'Recommencer';
+                submitButton.onclick = () => window.location.reload(); // Reloads the page to restart the quiz
+            });
+        });
+    </script>
+
+</body>
+</html>
