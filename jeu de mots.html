@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu du Coffre - Trouvez le mot secret</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .treasure-chest {
+            background: linear-gradient(145deg, #8B4513, #A0522D);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .treasure-chest::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,215,0,0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .clue-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .clue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .guess-input {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .guess-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102,126,234,0.3);
+        }
+        
+        .attempt-item {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .success-animation {
+            animation: bounce 0.6s ease-in-out;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #FFD700;
+            border-radius: 50%;
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+    <div class="particles" id="particles"></div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold text-white mb-4">🏆 Jeu du Coffre 🏆</h1>
+			            <p class="text-xl text-purple-200 max-w-3xl mx-auto">
+                Trouvez le mot secret français qui forme de nouvelles expressions avec les trois indices donnés ! (Frenchapeau)
+            </p>
+        </div>
+
+        <!-- Game Rules -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 mb-8 max-w-4xl mx-auto">
+            <h2 class="text-2xl font-semibold text-white mb-4">📋 Règles du jeu</h2>
+            <div class="text-purple-100 space-y-2">
+                <p>• Vous devez trouver un mot unique en français qui ouvre le coffre</p>
+                <p>• Vous avez 3 indices à votre disposition</p>
+                <p>• Le mot secret + chaque indice forme une nouvelle expression française</p>
+                <p>• Exemple: indices "tour/jeu/sortir" → mot secret "table" → "tour de table", "table de jeu", "sortir de table"</p>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="max-w-6xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Left Side: Clues and Input -->
+                <div class="space-y-6">
+                    <!-- Clues -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+                        <h3 class="text-2xl font-semibold text-white mb-6 text-center">🔍 Indices</h3>
+                        <div class="grid gap-4" id="cluesContainer">
+                            <!-- Clues will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Input Section -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">💭 Votre proposition</h3>
+                        <div class="flex gap-3">
+                            <input 
+                                type="text" 
+                                id="guessInput" 
+                                class="guess-input flex-1 px-4 py-3 rounded-xl text-gray-800 font-medium placeholder-gray-500"
+                                placeholder="Entrez votre mot..."
+                                maxlength="20"
+                            >
+                            <button 
+                                id="submitGuess" 
+                                class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                            >
+                                Essayer
+                            </button>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <span class="text-purple-200">Tentatives restantes: </span>
+                            <span id="attemptsLeft" class="text-yellow-400 font-bold text-xl">5</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Treasure Chest and Attempts -->
+                <div class="space-y-6">
+                    <!-- Treasure Chest -->
+                    <div class="treasure-chest p-8 text-center relative">
+                        <div class="relative z-10">
+                            <div id="chestIcon" class="text-8xl mb-4">🔒</div>
+                            <h3 class="text-2xl font-bold text-yellow-200 mb-2">Coffre au Trésor</h3>
+                            <p id="chestStatus" class="text-yellow-100">Fermé - Trouvez le mot secret !</p>
+                        </div>
+                    </div>
+
+                    <!-- Attempts History -->
+                    <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-4">📝 Vos tentatives</h3>
+                        <div id="attemptsList" class="space-y-2 max-h-60 overflow-y-auto">
+                            <p class="text-purple-200 text-center italic">Aucune tentative pour le moment...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+            <div class="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-3xl p-8 max-w-md mx-4 text-center transform scale-95 transition-all duration-300">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-bold text-white mb-4">Félicitations !</h2>
+                <p class="text-white/90 mb-6">Vous avez trouvé le mot secret !</p>
+                <div id="successWord" class="text-2xl font-bold text-white bg-white/20 rounded-xl py-3 px-6 mb-6"></div>
+                <button id="newGameBtn" class="bg-white text-orange-500 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+                    Nouvelle partie
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class TreasureGame {
+            constructor() {
+                this.currentPuzzle = null;
+                this.attempts = [];
+                this.maxAttempts = 5;
+                this.attemptsLeft = this.maxAttempts;
+                this.gameWon = false;
+                
+                // Sample puzzles - in a real game, these would come from a server
+this.puzzles = [
+    {
+        clues: ["tour", "jeu", "sortir"],
+        answer: "table",
+        explanations: [
+            "tour de table = prise de parole successive",
+            "table de jeu = table servant à un jeu",
+            "sortir de table = quitter la table"
+        ]
+    },
+    {
+        clues: ["coup", "temps", "bonne"],
+        answer: "heure",
+        explanations: [
+            "coup d'heure = moment précis",
+            "temps d'heure = durée d'une heure",
+            "bonne heure = moment opportun"
+        ]
+    },
+    {
+        clues: ["prendre", "donner", "avoir"],
+        answer: "air",
+        explanations: [
+            "prendre l'air = sortir dehors",
+            "donner de l'air = aérer",
+            "avoir l'air = sembler"
+        ]
+    },
+    {
+        clues: ["faire", "prendre", "perdre"],
+        answer: "temps",
+        explanations: [
+            "faire du temps = patienter",
+            "prendre son temps = ne pas se presser",
+            "perdre son temps = gaspiller du temps"
+        ]
+    },
+    {
+        clues: ["avoir", "garder", "perdre"],
+        answer: "tête",
+        explanations: [
+            "avoir la tête = être attentif",
+            "garder la tête = rester calme",
+            "perdre la tête = devenir fou"
+        ]
+    },
+    {
+        clues: ["donner", "ouvrir", "garder"],
+        answer: "main",
+        explanations: [
+            "donner la main = aider",
+            "ouvrir la main = être généreux",
+            "garder la main = dominer"
+        ]
+    },
+    {
+        clues: ["tomber", "bonne", "mauvaise"],
+        answer: "humeur",
+        explanations: [
+            "tomber de bonne humeur = se réjouir",
+            "être de bonne humeur = joyeux",
+            "être de mauvaise humeur = irrité"
+        ]
+    },
+    {
+        clues: ["changer", "avoir", "bonne"],
+        answer: "idée",
+        explanations: [
+            "changer d'idée = modifier son opinion",
+            "avoir une idée = concevoir quelque chose",
+            "bonne idée = suggestion utile"
+        ]
+    },
+    {
+        clues: ["perdre", "garder", "rester"],
+        answer: "calme",
+        explanations: [
+            "perdre son calme = s’énerver",
+            "garder son calme = rester tranquille",
+            "rester calme = ne pas paniquer"
+        ]
+    },
+    {
+        clues: ["gagner", "perdre", "mettre"],
+        answer: "argent",
+        explanations: [
+            "gagner de l'argent = recevoir un revenu",
+            "perdre de l'argent = subir une perte",
+            "mettre de l'argent = investir"
+        ]
+    },
+    {
+        clues: ["donner", "recevoir", "envoyer"],
+        answer: "message",
+        explanations: [
+            "donner un message = transmettre une information",
+            "recevoir un message = être informé",
+            "envoyer un message = communiquer"
+        ]
+    },
+    {
+        clues: ["faire", "entendre", "élever"],
+        answer: "voix",
+        explanations: [
+            "faire entendre sa voix = s’exprimer",
+            "entendre une voix = percevoir un son",
+            "élever la voix = parler fort"
+        ]
+    },
+    {
+        clues: ["avoir", "donner", "prendre"],
+        answer: "rendez-vous",
+        explanations: [
+            "avoir un rendez-vous = être attendu",
+            "donner rendez-vous = proposer une rencontre",
+            "prendre rendez-vous = fixer une date"
+        ]
+    },
+    {
+        clues: ["voir", "garder", "ouvrir"],
+        answer: "œil",
+        explanations: [
+            "voir de ses propres yeux = constater",
+            "garder un œil = surveiller",
+            "ouvrir les yeux = réaliser quelque chose"
+        ]
+    },
+    {
+        clues: ["avoir", "perdre", "changer"],
+        answer: "travail",
+        explanations: [
+            "avoir du travail = être occupé",
+            "perdre son travail = être licencié",
+            "changer de travail = changer de poste"
+        ]
+    },
+    {
+        clues: ["bon", "mauvais", "changer"],
+        answer: "goût",
+        explanations: [
+            "bon goût = style raffiné",
+            "mauvais goût = style douteux",
+            "changer de goût = varier ses préférences"
+        ]
+    },
+    {
+        clues: ["avoir", "donner", "rendre"],
+        answer: "service",
+        explanations: [
+            "avoir un service = profiter d’une aide",
+            "donner un service = aider quelqu’un",
+            "rendre service = faire une faveur"
+        ]
+    },
+    {
+        clues: ["prendre", "faire", "suivre"],
+        answer: "route",
+        explanations: [
+            "prendre la route = commencer un voyage",
+            "faire la route = voyager",
+            "suivre la route = continuer son chemin"
+        ]
+    },
+    {
+        clues: ["bonne", "mauvaise", "prendre"],
+        answer: "décision",
+        explanations: [
+            "bonne décision = bon choix",
+            "mauvaise décision = erreur",
+            "prendre une décision = faire un choix"
+        ]
+    },
+    {
+        clues: ["perdre", "trouver", "chercher"],
+        answer: "clé",
+        explanations: [
+            "perdre ses clés = ne plus les avoir",
+            "trouver une clé = la retrouver",
+            "chercher une clé = la rechercher"
+        ]
+    }
+];
+
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.startNewGame();
+                this.createParticles();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('submitGuess').addEventListener('click', () => this.submitGuess());
+                document.getElementById('guessInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.submitGuess();
+                });
+                document.getElementById('newGameBtn').addEventListener('click', () => this.startNewGame());
+            }
+            
+            startNewGame() {
+                this.currentPuzzle = this.puzzles[Math.floor(Math.random() * this.puzzles.length)];
+                this.attempts = [];
+                this.attemptsLeft = this.maxAttempts;
+                this.gameWon = false;
+                
+                this.updateUI();
+                this.displayClues();
+                this.hideSuccessModal();
+                
+                document.getElementById('guessInput').value = '';
+                document.getElementById('guessInput').focus();
+            }
+            
+            displayClues() {
+                const container = document.getElementById('cluesContainer');
+                container.innerHTML = '';
+                
+                this.currentPuzzle.clues.forEach((clue, index) => {
+                    const clueCard = document.createElement('div');
+                    clueCard.className = 'clue-card p-4 rounded-xl text-center';
+                    clueCard.innerHTML = `
+                        <div class="text-white font-semibold text-lg">Indice ${index + 1}</div>
+                        <div class="text-yellow-200 text-2xl font-bold mt-2">${clue}</div>
+                    `;
+                    container.appendChild(clueCard);
+                });
+            }
+            
+            submitGuess() {
+                if (this.gameWon || this.attemptsLeft <= 0) return;
+                
+                const input = document.getElementById('guessInput');
+                const guess = input.value.trim().toLowerCase();
+                
+                if (!guess) {
+                    this.showMessage('Veuillez entrer un mot !', 'error');
+                    return;
+                }
+                
+                this.attempts.push(guess);
+                this.attemptsLeft--;
+                
+                if (guess === this.currentPuzzle.answer.toLowerCase()) {
+                    this.gameWon = true;
+                    this.showSuccess();
+                } else {
+                    if (this.attemptsLeft <= 0) {
+                        this.showGameOver();
+                    }
+                }
+                
+                this.updateUI();
+                input.value = '';
+            }
+            
+            updateUI() {
+                document.getElementById('attemptsLeft').textContent = this.attemptsLeft;
+                this.updateAttemptsList();
+                
+                if (this.gameWon) {
+                    document.getElementById('chestIcon').textContent = '🔓';
+                    document.getElementById('chestStatus').textContent = 'Ouvert - Bravo !';
+                    document.querySelector('.treasure-chest').classList.add('success-animation');
+                }
+            }
+            
+            updateAttemptsList() {
+                const list = document.getElementById('attemptsList');
+                
+                if (this.attempts.length === 0) {
+                    list.innerHTML = '<p class="text-purple-200 text-center italic">Aucune tentative pour le moment...</p>';
+                    return;
+                }
+                
+                list.innerHTML = '';
+                this.attempts.forEach((attempt, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'attempt-item bg-white/5 rounded-lg p-3 flex justify-between items-center';
+                    
+                    const isCorrect = attempt === this.currentPuzzle.answer.toLowerCase();
+                    const statusIcon = isCorrect ? '✅' : '❌';
+                    const statusColor = isCorrect ? 'text-green-400' : 'text-red-400';
+                    
+                    item.innerHTML = `
+                        <span class="text-white font-medium">${attempt}</span>
+                        <span class="${statusColor} text-xl">${statusIcon}</span>
+                    `;
+                    
+                    list.appendChild(item);
+                });
+            }
+            
+            showSuccess() {
+                document.getElementById('successWord').textContent = this.currentPuzzle.answer.toUpperCase();
+                document.getElementById('successModal').classList.remove('hidden');
+                document.getElementById('successModal').classList.add('flex');
+                
+                // Show explanations
+                setTimeout(() => {
+                    let explanationText = "Explications:\n";
+                    this.currentPuzzle.explanations.forEach(exp => {
+                        explanationText += "• " + exp + "\n";
+                    });
+                    console.log(explanationText); // In a real app, this would be shown in the modal
+                }, 1000);
+            }
+            
+            showGameOver() {
+                setTimeout(() => {
+                    alert(`Dommage ! Le mot était : ${this.currentPuzzle.answer.toUpperCase()}\n\nExplications:\n${this.currentPuzzle.explanations.join('\n')}`);
+                    this.startNewGame();
+                }, 500);
+            }
+            
+            hideSuccessModal() {
+                document.getElementById('successModal').classList.add('hidden');
+                document.getElementById('successModal').classList.remove('flex');
+                document.querySelector('.treasure-chest').classList.remove('success-animation');
+                document.getElementById('chestIcon').textContent = '🔒';
+                document.getElementById('chestStatus').textContent = 'Fermé - Trouvez le mot secret !';
+            }
+            
+            showMessage(message, type) {
+                // Simple message system - in a real app, this would be a proper notification
+                const color = type === 'error' ? 'red' : 'green';
+                console.log(`%c${message}`, `color: ${color}; font-weight: bold;`);
+            }
+            
+            createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 3 + 's';
+                    particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    particlesContainer.appendChild(particle);
+                }
+            }
+        }
+        
+        // Start the game when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new TreasureGame();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9667650e9031e23e',t:'MTc1MzczNzM1Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
