@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة الكلمات الفرنسية - French Word Quest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .game-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .level-button {
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+        }
+        
+        .level-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .word-card {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .word-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .choice-btn {
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .choice-btn:hover {
+            border-color: #0984e3;
+            background-color: #e3f2fd;
+        }
+        
+        .correct {
+            background-color: #00b894 !important;
+            color: white !important;
+            border-color: #00b894 !important;
+        }
+        
+        .incorrect {
+            background-color: #e17055 !important;
+            color: white !important;
+            border-color: #e17055 !important;
+        }
+        
+        .ai-assistant {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            border-radius: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        .star {
+            color: #fdcb6e;
+            font-size: 2rem;
+            animation: twinkle 1s ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .map-location {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .map-location:hover {
+            transform: scale(1.1);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-100 min-h-screen">
+    <!-- شاشة البداية -->
+    <div id="startScreen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="game-card text-white p-8 max-w-2xl w-full text-center">
+            <h1 class="text-4xl font-bold mb-4">🇫🇷 رحلة الكلمات الفرنسية</h1>
+            <h2 class="text-2xl mb-6">French Word Quest</h2>
+            <p class="text-lg mb-8 opacity-90">انطلق في مغامرة تعليمية ممتعة لتعلم المفردات الفرنسية مع دعم الذكاء الاصطناعي</p>
+            
+            <div class="mb-8">
+                <div class="flex justify-center space-x-4 mb-4">
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <p class="text-sm">100+ كلمة</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">🤖</div>
+                        <p class="text-sm">مساعد ذكي</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">🏆</div>
+                        <p class="text-sm">نظام نقاط</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="startGame()" class="level-button text-white px-8 py-4 rounded-full text-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all">
+                🚀 ابدأ الرحلة
+            </button>
+        </div>
+    </div>
+
+    <!-- خريطة فرنسا -->
+    <div id="mapScreen" class="hidden min-h-screen p-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">🗺️ خريطة فرنسا التعليمية</h2>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-lg font-semibold text-blue-600">النقاط: <span id="totalScore">0</span></div>
+                        <div class="text-lg font-semibold text-purple-600">المستوى: <span id="currentLevel">1</span></div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('colors')">
+                        <div class="text-3xl mb-2">🎨</div>
+                        <h3 class="font-semibold">الألوان</h3>
+                        <p class="text-sm opacity-80">Les Couleurs</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-colors">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('food')">
+                        <div class="text-3xl mb-2">🍽️</div>
+                        <h3 class="font-semibold">الطعام</h3>
+                        <p class="text-sm opacity-80">La Nourriture</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-food">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('family')">
+                        <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
+                        <h3 class="font-semibold">العائلة</h3>
+                        <p class="text-sm opacity-80">La Famille</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-family">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('animals')">
+                        <div class="text-3xl mb-2">🐾</div>
+                        <h3 class="font-semibold">الحيوانات</h3>
+                        <p class="text-sm opacity-80">Les Animaux</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-animals">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('sports')">
+                        <div class="text-3xl mb-2">⚽</div>
+                        <h3 class="font-semibold">الرياضات</h3>
+                        <p class="text-sm opacity-80">Les Sports</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-sports">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('basics')">
+                        <div class="text-3xl mb-2">📝</div>
+                        <h3 class="font-semibold">المفردات الأساسية</h3>
+                        <p class="text-sm opacity-80">Vocabulaire de Base</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-basics">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('numbers')">
+                        <div class="text-3xl mb-2">🔢</div>
+                        <h3 class="font-semibold">الأرقام</h3>
+                        <p class="text-sm opacity-80">Les Nombres</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-numbers">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('school')">
+                        <div class="text-3xl mb-2">🏫</div>
+                        <h3 class="font-semibold">في المدرسة</h3>
+                        <p class="text-sm opacity-80">À l'École</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-school">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('weather')">
+                        <div class="text-3xl mb-2">🌤️</div>
+                        <h3 class="font-semibold">الطقس</h3>
+                        <p class="text-sm opacity-80">La Météo</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-weather">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                    
+                    <div class="map-location level-button text-white p-4 rounded-xl text-center" onclick="selectLevel('doctor')">
+                        <div class="text-3xl mb-2">👩‍⚕️</div>
+                        <h3 class="font-semibold">عند الطبيب</h3>
+                        <p class="text-sm opacity-80">Chez le Médecin</p>
+                        <div class="mt-2">
+                            <span class="star" id="stars-doctor">⭐⭐⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- مساعد الذكاء الاصطناعي -->
+            <div class="ai-assistant text-white p-4 rounded-2xl">
+                <div class="flex items-center space-x-4">
+                    <div class="text-3xl">🤖</div>
+                    <div>
+                        <h3 class="font-semibold">مساعدك الذكي</h3>
+                        <p class="text-sm opacity-90" id="aiMessage">مرحباً! اختر مستوى لتبدأ رحلتك التعليمية</p>
+                    </div>
+                    <button onclick="askAI()" class="bg-white text-purple-600 px-4 py-2 rounded-full font-semibold hover:bg-gray-100 transition-all">
+                        اسأل المساعد
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة اللعب -->
+    <div id="gameScreen" class="hidden min-h-screen p-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- شريط التقدم -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <button onclick="backToMap()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-all">
+                        ← العودة للخريطة
+                    </button>
+                    <h2 class="text-xl font-bold text-gray-800" id="levelTitle">الألوان - Les Couleurs</h2>
+                    <div class="text-lg font-semibold text-blue-600">النقاط: <span id="gameScore">0</span></div>
+                </div>
+                
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                    <div class="progress-bar h-4 rounded-full" id="progressBar" style="width: 0%"></div>
+                </div>
+                
+                <div class="text-center text-sm text-gray-600">
+                    السؤال <span id="questionNumber">1</span> من <span id="totalQuestions">10</span>
+                </div>
+            </div>
+
+            <!-- بطاقة الكلمة -->
+            <div class="word-card text-white p-8 mb-6 text-center">
+                <div class="text-6xl mb-4" id="wordEmoji">🔴</div>
+                <h3 class="text-3xl font-bold mb-2" id="frenchWord">Rouge</h3>
+                <button onclick="pronounceWord()" class="bg-white text-blue-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition-all mb-4">
+                    🔊 استمع للنطق
+                </button>
+                <p class="text-lg opacity-90">ما معنى هذه الكلمة بالعربية؟</p>
+            </div>
+
+            <!-- خيارات الإجابة -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <button class="choice-btn bg-white p-4 rounded-xl text-lg font-semibold text-gray-800 hover:shadow-lg" onclick="selectAnswer(0)" id="choice0">
+                    أحمر
+                </button>
+                <button class="choice-btn bg-white p-4 rounded-xl text-lg font-semibold text-gray-800 hover:shadow-lg" onclick="selectAnswer(1)" id="choice1">
+                    أزرق
+                </button>
+                <button class="choice-btn bg-white p-4 rounded-xl text-lg font-semibold text-gray-800 hover:shadow-lg" onclick="selectAnswer(2)" id="choice2">
+                    أخضر
+                </button>
+                <button class="choice-btn bg-white p-4 rounded-xl text-lg font-semibold text-lg font-semibold text-gray-800 hover:shadow-lg" onclick="selectAnswer(3)" id="choice3">
+                    أصفر
+                </button>
+            </div>
+
+            <!-- أزرار المساعدة -->
+            <div class="flex justify-center space-x-4">
+                <button onclick="getHint()" class="bg-yellow-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-yellow-600 transition-all">
+                    💡 تلميح
+                </button>
+                <button onclick="askAIHelp()" class="bg-purple-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-600 transition-all">
+                    🤖 مساعدة ذكية
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة النتائج -->
+    <div id="resultScreen" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="game-card text-white p-8 max-w-2xl w-full text-center">
+            <div class="text-6xl mb-4">🏆</div>
+            <h2 class="text-3xl font-bold mb-4">أحسنت!</h2>
+            <div class="text-xl mb-6">
+                <p>النقاط المكتسبة: <span id="finalScore" class="font-bold">0</span></p>
+                <p>الإجابات الصحيحة: <span id="correctAnswers" class="font-bold">0</span>/10</p>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-3">الكلمات التي تعلمتها:</h3>
+                <div id="learnedWords" class="text-sm opacity-90"></div>
+            </div>
+            
+            <div class="space-y-3">
+                <button onclick="restartLevel()" class="w-full bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-all">
+                    🔄 إعادة المستوى
+                </button>
+                <button onclick="backToMap()" class="w-full bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition-all">
+                    🗺️ العودة للخريطة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة المساعد الذكي -->
+    <div id="aiModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-bold text-gray-800">🤖 المساعد الذكي</h3>
+                <button onclick="closeAIModal()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="aiResponse" class="text-gray-700 mb-4 p-4 bg-gray-50 rounded-lg">
+                مرحباً! كيف يمكنني مساعدتك في تعلم الفرنسية؟
+            </div>
+            <input type="text" id="aiInput" placeholder="اكتب سؤالك هنا..." class="w-full p-3 border border-gray-300 rounded-lg mb-4">
+            <button onclick="sendToAI()" class="w-full bg-purple-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-600 transition-all">
+                إرسال
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // بيانات اللعبة
+        const gameData = {
+            colors: [
+                {french: "Rouge", arabic: "أحمر", emoji: "🔴", choices: ["أحمر", "أزرق", "أخضر", "أصفر"], correct: 0},
+                {french: "Bleu", arabic: "أزرق", emoji: "🔵", choices: ["أحمر", "أزرق", "أخضر", "أصفر"], correct: 1},
+                {french: "Vert", arabic: "أخضر", emoji: "🟢", choices: ["أحمر", "أزرق", "أخضر", "أصفر"], correct: 2},
+                {french: "Jaune", arabic: "أصفر", emoji: "🟡", choices: ["أحمر", "أزرق", "أخضر", "أصفر"], correct: 3},
+                {french: "Noir", arabic: "أسود", emoji: "⚫", choices: ["أسود", "أبيض", "رمادي", "بني"], correct: 0},
+                {french: "Blanc", arabic: "أبيض", emoji: "⚪", choices: ["أسود", "أبيض", "رمادي", "بني"], correct: 1},
+                {french: "Rose", arabic: "وردي", emoji: "🌸", choices: ["وردي", "بنفسجي", "برتقالي", "رمادي"], correct: 0},
+                {french: "Violet", arabic: "بنفسجي", emoji: "🟣", choices: ["وردي", "بنفسجي", "برتقالي", "رمادي"], correct: 1},
+                {french: "Orange", arabic: "برتقالي", emoji: "🟠", choices: ["وردي", "بنفسجي", "برتقالي", "رمادي"], correct: 2},
+                {french: "Gris", arabic: "رمادي", emoji: "🔘", choices: ["وردي", "بنفسجي", "برتقالي", "رمادي"], correct: 3}
+            ],
+            food: [
+                {french: "Pain", arabic: "خبز", emoji: "🍞", choices: ["خبز", "جبن", "لحم", "سمك"], correct: 0},
+                {french: "Fromage", arabic: "جبن", emoji: "🧀", choices: ["خبز", "جبن", "لحم", "سمك"], correct: 1},
+                {french: "Pomme", arabic: "تفاح", emoji: "🍎", choices: ["تفاح", "موز", "برتقال", "عنب"], correct: 0},
+                {french: "Banane", arabic: "موز", emoji: "🍌", choices: ["تفاح", "موز", "برتقال", "عنب"], correct: 1},
+                {french: "Orange", arabic: "برتقال", emoji: "🍊", choices: ["تفاح", "موز", "برتقال", "عنب"], correct: 2},
+                {french: "Raisin", arabic: "عنب", emoji: "🍇", choices: ["تفاح", "موز", "برتقال", "عنب"], correct: 3},
+                {french: "Eau", arabic: "ماء", emoji: "💧", choices: ["ماء", "حليب", "عصير", "قهوة"], correct: 0},
+                {french: "Lait", arabic: "حليب", emoji: "🥛", choices: ["ماء", "حليب", "عصير", "قهوة"], correct: 1},
+                {french: "Café", arabic: "قهوة", emoji: "☕", choices: ["ماء", "حليب", "عصير", "قهوة"], correct: 3},
+                {french: "Chocolat", arabic: "شوكولاتة", emoji: "🍫", choices: ["شوكولاتة", "كعك", "بسكويت", "حلوى"], correct: 0}
+            ],
+            family: [
+                {french: "Père", arabic: "أب", emoji: "👨", choices: ["أب", "أم", "أخ", "أخت"], correct: 0},
+                {french: "Mère", arabic: "أم", emoji: "👩", choices: ["أب", "أم", "أخ", "أخت"], correct: 1},
+                {french: "Frère", arabic: "أخ", emoji: "👦", choices: ["أب", "أم", "أخ", "أخت"], correct: 2},
+                {french: "Sœur", arabic: "أخت", emoji: "👧", choices: ["أب", "أم", "أخ", "أخت"], correct: 3},
+                {french: "Grand-père", arabic: "جد", emoji: "👴", choices: ["جد", "جدة", "عم", "خال"], correct: 0},
+                {french: "Grand-mère", arabic: "جدة", emoji: "👵", choices: ["جد", "جدة", "عم", "خال"], correct: 1},
+                {french: "Oncle", arabic: "عم", emoji: "👨‍🦳", choices: ["جد", "جدة", "عم", "خال"], correct: 2},
+                {french: "Tante", arabic: "عمة", emoji: "👩‍🦳", choices: ["عمة", "خالة", "ابن عم", "ابنة عم"], correct: 0},
+                {french: "Cousin", arabic: "ابن عم", emoji: "👱‍♂️", choices: ["عمة", "خالة", "ابن عم", "ابنة عم"], correct: 2},
+                {french: "Cousine", arabic: "ابنة عم", emoji: "👱‍♀️", choices: ["عمة", "خالة", "ابن عم", "ابنة عم"], correct: 3}
+            ],
+            animals: [
+                {french: "Chat", arabic: "قطة", emoji: "🐱", choices: ["قطة", "كلب", "طائر", "سمكة"], correct: 0},
+                {french: "Chien", arabic: "كلب", emoji: "🐶", choices: ["قطة", "كلب", "طائر", "سمكة"], correct: 1},
+                {french: "Oiseau", arabic: "طائر", emoji: "🐦", choices: ["قطة", "كلب", "طائر", "سمكة"], correct: 2},
+                {french: "Poisson", arabic: "سمكة", emoji: "🐟", choices: ["قطة", "كلب", "طائر", "سمكة"], correct: 3},
+                {french: "Cheval", arabic: "حصان", emoji: "🐴", choices: ["حصان", "بقرة", "خروف", "ماعز"], correct: 0},
+                {french: "Vache", arabic: "بقرة", emoji: "🐄", choices: ["حصان", "بقرة", "خروف", "ماعز"], correct: 1},
+                {french: "Mouton", arabic: "خروف", emoji: "🐑", choices: ["حصان", "بقرة", "خروف", "ماعز"], correct: 2},
+                {french: "Lapin", arabic: "أرنب", emoji: "🐰", choices: ["أرنب", "فأر", "قنفذ", "سنجاب"], correct: 0},
+                {french: "Souris", arabic: "فأر", emoji: "🐭", choices: ["أرنب", "فأر", "قنفذ", "سنجاب"], correct: 1},
+                {french: "Éléphant", arabic: "فيل", emoji: "🐘", choices: ["فيل", "أسد", "نمر", "دب"], correct: 0}
+            ],
+            sports: [
+                {french: "Football", arabic: "كرة القدم", emoji: "⚽", choices: ["كرة القدم", "كرة السلة", "التنس", "السباحة"], correct: 0},
+                {french: "Basketball", arabic: "كرة السلة", emoji: "🏀", choices: ["كرة القدم", "كرة السلة", "التنس", "السباحة"], correct: 1},
+                {french: "Tennis", arabic: "التنس", emoji: "🎾", choices: ["كرة القدم", "كرة السلة", "التنس", "السباحة"], correct: 2},
+                {french: "Natation", arabic: "السباحة", emoji: "🏊", choices: ["كرة القدم", "كرة السلة", "التنس", "السباحة"], correct: 3},
+                {french: "Cyclisme", arabic: "ركوب الدراجات", emoji: "🚴", choices: ["ركوب الدراجات", "الجري", "الملاكمة", "الجمباز"], correct: 0},
+                {french: "Course", arabic: "الجري", emoji: "🏃", choices: ["ركوب الدراجات", "الجري", "الملاكمة", "الجمباز"], correct: 1},
+                {french: "Boxe", arabic: "الملاكمة", emoji: "🥊", choices: ["ركوب الدراجات", "الجري", "الملاكمة", "الجمباز"], correct: 2},
+                {french: "Gymnastique", arabic: "الجمباز", emoji: "🤸", choices: ["ركوب الدراجات", "الجري", "الملاكمة", "الجمباز"], correct: 3},
+                {french: "Ski", arabic: "التزلج", emoji: "⛷️", choices: ["التزلج", "الهوكي", "الغولف", "الكرة الطائرة"], correct: 0},
+                {french: "Volleyball", arabic: "الكرة الطائرة", emoji: "🏐", choices: ["التزلج", "الهوكي", "الغولف", "الكرة الطائرة"], correct: 3}
+            ],
+            basics: [
+                {french: "Bonjour", arabic: "مرحبا", emoji: "👋", choices: ["مرحبا", "وداعا", "شكرا", "عفوا"], correct: 0},
+                {french: "Au revoir", arabic: "وداعا", emoji: "👋", choices: ["مرحبا", "وداعا", "شكرا", "عفوا"], correct: 1},
+                {french: "Merci", arabic: "شكرا", emoji: "🙏", choices: ["مرحبا", "وداعا", "شكرا", "عفوا"], correct: 2},
+                {french: "Pardon", arabic: "عفوا", emoji: "🙇", choices: ["مرحبا", "وداعا", "شكرا", "عفوا"], correct: 3},
+                {french: "Oui", arabic: "نعم", emoji: "✅", choices: ["نعم", "لا", "ربما", "بالطبع"], correct: 0},
+                {french: "Non", arabic: "لا", emoji: "❌", choices: ["نعم", "لا", "ربما", "بالطبع"], correct: 1},
+                {french: "S'il vous plaît", arabic: "من فضلك", emoji: "🙏", choices: ["من فضلك", "آسف", "أهلا", "مع السلامة"], correct: 0},
+                {french: "Excusez-moi", arabic: "آسف", emoji: "😔", choices: ["من فضلك", "آسف", "أهلا", "مع السلامة"], correct: 1},
+                {french: "Bonsoir", arabic: "مساء الخير", emoji: "🌙", choices: ["صباح الخير", "مساء الخير", "ليلة سعيدة", "ظهر سعيد"], correct: 1},
+                {french: "Bonne nuit", arabic: "ليلة سعيدة", emoji: "😴", choices: ["صباح الخير", "مساء الخير", "ليلة سعيدة", "ظهر سعيد"], correct: 2}
+            ],
+            numbers: [
+                {french: "Un", arabic: "واحد", emoji: "1️⃣", choices: ["واحد", "اثنان", "ثلاثة", "أربعة"], correct: 0},
+                {french: "Deux", arabic: "اثنان", emoji: "2️⃣", choices: ["واحد", "اثنان", "ثلاثة", "أربعة"], correct: 1},
+                {french: "Trois", arabic: "ثلاثة", emoji: "3️⃣", choices: ["واحد", "اثنان", "ثلاثة", "أربعة"], correct: 2},
+                {french: "Quatre", arabic: "أربعة", emoji: "4️⃣", choices: ["واحد", "اثنان", "ثلاثة", "أربعة"], correct: 3},
+                {french: "Cinq", arabic: "خمسة", emoji: "5️⃣", choices: ["خمسة", "ستة", "سبعة", "ثمانية"], correct: 0},
+                {french: "Six", arabic: "ستة", emoji: "6️⃣", choices: ["خمسة", "ستة", "سبعة", "ثمانية"], correct: 1},
+                {french: "Sept", arabic: "سبعة", emoji: "7️⃣", choices: ["خمسة", "ستة", "سبعة", "ثمانية"], correct: 2},
+                {french: "Huit", arabic: "ثمانية", emoji: "8️⃣", choices: ["خمسة", "ستة", "سبعة", "ثمانية"], correct: 3},
+                {french: "Neuf", arabic: "تسعة", emoji: "9️⃣", choices: ["تسعة", "عشرة", "عشرون", "مائة"], correct: 0},
+                {french: "Dix", arabic: "عشرة", emoji: "🔟", choices: ["تسعة", "عشرة", "عشرون", "مائة"], correct: 1}
+            ],
+            school: [
+                {french: "École", arabic: "مدرسة", emoji: "🏫", choices: ["مدرسة", "فصل", "كتاب", "قلم"], correct: 0},
+                {french: "Classe", arabic: "فصل", emoji: "🏛️", choices: ["مدرسة", "فصل", "كتاب", "قلم"], correct: 1},
+                {french: "Livre", arabic: "كتاب", emoji: "📚", choices: ["مدرسة", "فصل", "كتاب", "قلم"], correct: 2},
+                {french: "Stylo", arabic: "قلم", emoji: "✏️", choices: ["مدرسة", "فصل", "كتاب", "قلم"], correct: 3},
+                {french: "Professeur", arabic: "معلم", emoji: "👨‍🏫", choices: ["معلم", "طالب", "مدير", "حارس"], correct: 0},
+                {french: "Élève", arabic: "طالب", emoji: "👨‍🎓", choices: ["معلم", "طالب", "مدير", "حارس"], correct: 1},
+                {french: "Tableau", arabic: "سبورة", emoji: "📋", choices: ["سبورة", "مكتب", "كرسي", "نافذة"], correct: 0},
+                {french: "Bureau", arabic: "مكتب", emoji: "🗃️", choices: ["سبورة", "مكتب", "كرسي", "نافذة"], correct: 1},
+                {french: "Chaise", arabic: "كرسي", emoji: "🪑", choices: ["سبورة", "مكتب", "كرسي", "نافذة"], correct: 2},
+                {french: "Cahier", arabic: "دفتر", emoji: "📓", choices: ["دفتر", "ممحاة", "مسطرة", "حقيبة"], correct: 0}
+            ],
+            weather: [
+                {french: "Soleil", arabic: "شمس", emoji: "☀️", choices: ["شمس", "مطر", "ثلج", "رياح"], correct: 0},
+                {french: "Pluie", arabic: "مطر", emoji: "🌧️", choices: ["شمس", "مطر", "ثلج", "رياح"], correct: 1},
+                {french: "Neige", arabic: "ثلج", emoji: "❄️", choices: ["شمس", "مطر", "ثلج", "رياح"], correct: 2},
+                {french: "Vent", arabic: "رياح", emoji: "💨", choices: ["شمس", "مطر", "ثلج", "رياح"], correct: 3},
+                {french: "Nuage", arabic: "غيمة", emoji: "☁️", choices: ["غيمة", "برق", "رعد", "ضباب"], correct: 0},
+                {french: "Éclair", arabic: "برق", emoji: "⚡", choices: ["غيمة", "برق", "رعد", "ضباب"], correct: 1},
+                {french: "Tonnerre", arabic: "رعد", emoji: "🌩️", choices: ["غيمة", "برق", "رعد", "ضباب"], correct: 2},
+                {french: "Brouillard", arabic: "ضباب", emoji: "🌫️", choices: ["غيمة", "برق", "رعد", "ضباب"], correct: 3},
+                {french: "Chaud", arabic: "حار", emoji: "🔥", choices: ["حار", "بارد", "دافئ", "معتدل"], correct: 0},
+                {french: "Froid", arabic: "بارد", emoji: "🧊", choices: ["حار", "بارد", "دافئ", "معتدل"], correct: 1}
+            ],
+            doctor: [
+                {french: "Médecin", arabic: "طبيب", emoji: "👩‍⚕️", choices: ["طبيب", "ممرضة", "مريض", "دواء"], correct: 0},
+                {french: "Infirmière", arabic: "ممرضة", emoji: "👩‍⚕️", choices: ["طبيب", "ممرضة", "مريض", "دواء"], correct: 1},
+                {french: "Patient", arabic: "مريض", emoji: "🤒", choices: ["طبيب", "ممرضة", "مريض", "دواء"], correct: 2},
+                {french: "Médicament", arabic: "دواء", emoji: "💊", choices: ["طبيب", "ممرضة", "مريض", "دواء"], correct: 3},
+                {french: "Hôpital", arabic: "مستشفى", emoji: "🏥", choices: ["مستشفى", "عيادة", "صيدلية", "إسعاف"], correct: 0},
+                {french: "Clinique", arabic: "عيادة", emoji: "🏥", choices: ["مستشفى", "عيادة", "صيدلية", "إسعاف"], correct: 1},
+                {french: "Pharmacie", arabic: "صيدلية", emoji: "💊", choices: ["مستشفى", "عيادة", "صيدلية", "إسعاف"], correct: 2},
+                {french: "Mal", arabic: "ألم", emoji: "😣", choices: ["ألم", "حمى", "سعال", "صداع"], correct: 0},
+                {french: "Fièvre", arabic: "حمى", emoji: "🤒", choices: ["ألم", "حمى", "سعال", "صداع"], correct: 1},
+                {french: "Toux", arabic: "سعال", emoji: "😷", choices: ["ألم", "حمى", "سعال", "صداع"], correct: 2}
+            ]
+        };
+
+        // متغيرات اللعبة
+        let currentCategory = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctAnswersCount = 0;
+        let totalScore = parseInt(localStorage.getItem('totalScore')) || 0;
+        let learnedWords = JSON.parse(localStorage.getItem('learnedWords')) || [];
+
+        // بدء اللعبة
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('mapScreen').classList.remove('hidden');
+            document.getElementById('totalScore').textContent = totalScore;
+            updateAIMessage("مرحباً بك في رحلة تعلم الفرنسية! اختر مستوى لتبدأ التعلم.");
+        }
+
+        // اختيار المستوى
+        function selectLevel(category) {
+            currentCategory = category;
+            currentQuestions = [...gameData[category]].sort(() => Math.random() - 0.5).slice(0, 10);
+            currentQuestionIndex = 0;
+            score = 0;
+            correctAnswersCount = 0;
+            
+            document.getElementById('mapScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            
+            const titles = {
+                colors: 'الألوان - Les Couleurs',
+                food: 'الطعام - La Nourriture',
+                family: 'العائلة - La Famille',
+                animals: 'الحيوانات - Les Animaux',
+                sports: 'الرياضات - Les Sports',
+                basics: 'المفردات الأساسية - Vocabulaire de Base',
+                numbers: 'الأرقام - Les Nombres',
+                school: 'في المدرسة - À l\'École',
+                weather: 'الطقس - La Météo',
+                doctor: 'عند الطبيب - Chez le Médecin'
+            };
+            
+            document.getElementById('levelTitle').textContent = titles[category];
+            document.getElementById('gameScore').textContent = score;
+            document.getElementById('totalQuestions').textContent = currentQuestions.length;
+            
+            showQuestion();
+        }
+
+        // عرض السؤال
+        function showQuestion() {
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showResults();
+                return;
+            }
+
+            const question = currentQuestions[currentQuestionIndex];
+            
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('wordEmoji').textContent = question.emoji;
+            document.getElementById('frenchWord').textContent = question.french;
+            
+            // خلط الخيارات
+            const shuffledChoices = [...question.choices].sort(() => Math.random() - 0.5);
+            const correctAnswer = question.arabic;
+            const correctIndex = shuffledChoices.indexOf(correctAnswer);
+            
+            for (let i = 0; i < 4; i++) {
+                const choiceBtn = document.getElementById(`choice${i}`);
+                choiceBtn.textContent = shuffledChoices[i];
+                choiceBtn.className = 'choice-btn bg-white p-4 rounded-xl text-lg font-semibold text-gray-800 hover:shadow-lg';
+                choiceBtn.disabled = false;
+            }
+            
+            // تحديث شريط التقدم
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // حفظ الإجابة الصحيحة
+            window.currentCorrectIndex = correctIndex;
+        }
+
+        // اختيار الإجابة
+        function selectAnswer(selectedIndex) {
+            const question = currentQuestions[currentQuestionIndex];
+            const isCorrect = selectedIndex === window.currentCorrectIndex;
+            
+            // تعطيل جميع الأزرار
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`choice${i}`).disabled = true;
+            }
+            
+            if (isCorrect) {
+                document.getElementById(`choice${selectedIndex}`).classList.add('correct');
+                score += 10;
+                correctAnswersCount++;
+                totalScore += 10;
+                showNotification('إجابة صحيحة! 🎉', 'success');
+                
+                // إضافة الكلمة للكلمات المتعلمة
+                if (!learnedWords.some(word => word.french === question.french)) {
+                    learnedWords.push({
+                        french: question.french,
+                        arabic: question.arabic,
+                        emoji: question.emoji
+                    });
+                }
+            } else {
+                document.getElementById(`choice${selectedIndex}`).classList.add('incorrect');
+                document.getElementById(`choice${window.currentCorrectIndex}`).classList.add('correct');
+                showNotification(`الإجابة الصحيحة: ${question.arabic}`, 'error');
+            }
+            
+            document.getElementById('gameScore').textContent = score;
+            document.getElementById('totalScore').textContent = totalScore;
+            
+            // حفظ البيانات
+            localStorage.setItem('totalScore', totalScore);
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showQuestion();
+            }, 2000);
+        }
+
+        // نطق الكلمة
+        function pronounceWord() {
+            const question = currentQuestions[currentQuestionIndex];
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(question.french);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } else {
+                showNotification('النطق غير متاح في هذا المتصفح', 'error');
+            }
+        }
+
+        // الحصول على تلميح
+        function getHint() {
+            const question = currentQuestions[currentQuestionIndex];
+            const hints = {
+                colors: `هذا اللون يشبه لون ${question.emoji}`,
+                food: `هذا الطعام يُرمز له بـ ${question.emoji}`,
+                family: `هذا الشخص في العائلة يُرمز له بـ ${question.emoji}`,
+                animals: `هذا الحيوان يُرمز له بـ ${question.emoji}`,
+                sports: `هذه الرياضة تُرمز لها بـ ${question.emoji}`,
+                basics: `هذه الكلمة الأساسية تُستخدم للتحية أو التعبير ${question.emoji}`,
+                numbers: `هذا الرقم يُكتب كـ ${question.emoji}`,
+                school: `هذا الشيء موجود في المدرسة ${question.emoji}`,
+                weather: `هذا الطقس يُرمز له بـ ${question.emoji}`,
+                doctor: `هذا مرتبط بالطب والصحة ${question.emoji}`
+            };
+            
+            showNotification(hints[currentCategory] || 'فكر في الرمز المعروض', 'info');
+        }
+
+        // طلب المساعدة من الذكاء الاصطناعي
+        function askAIHelp() {
+            const question = currentQuestions[currentQuestionIndex];
+            const aiHelp = `الكلمة "${question.french}" تعني "${question.arabic}" بالعربية. هذه الكلمة تُستخدم في الحياة اليومية وهي من الكلمات الأساسية في اللغة الفرنسية.`;
+            
+            document.getElementById('aiResponse').textContent = aiHelp;
+            document.getElementById('aiModal').classList.remove('hidden');
+        }
+
+        // فتح نافذة المساعد الذكي
+        function askAI() {
+            document.getElementById('aiModal').classList.remove('hidden');
+        }
+
+        // إغلاق نافذة المساعد الذكي
+        function closeAIModal() {
+            document.getElementById('aiModal').classList.add('hidden');
+        }
+
+        // إرسال سؤال للذكاء الاصطناعي
+        function sendToAI() {
+            const input = document.getElementById('aiInput').value;
+            if (!input.trim()) return;
+            
+            // محاكاة استجابة الذكاء الاصطناعي
+            const responses = [
+                "هذا سؤال رائع! في اللغة الفرنسية، نستخدم هذه الكلمة بكثرة في المحادثات اليومية.",
+                "لتذكر هذه الكلمة بسهولة، حاول ربطها بصورة أو موقف من حياتك اليومية.",
+                "النطق الصحيح مهم جداً في الفرنسية. حاول الاستماع للكلمة عدة مرات وكررها.",
+                "هذه الكلمة من الكلمات الأساسية التي ستحتاجها كثيراً عند تعلم الفرنسية.",
+                "ممتاز! استمر في التدرب وستتقن هذه الكلمات قريباً."
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            document.getElementById('aiResponse').textContent = randomResponse;
+            document.getElementById('aiInput').value = '';
+        }
+
+        // تحديث رسالة المساعد الذكي
+        function updateAIMessage(message) {
+            document.getElementById('aiMessage').textContent = message;
+        }
+
+        // عرض النتائج
+        function showResults() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctAnswers').textContent = correctAnswersCount;
+            
+            // عرض الكلمات المتعلمة
+            const learnedWordsDiv = document.getElementById('learnedWords');
+            const recentWords = learnedWords.slice(-5); // آخر 5 كلمات
+            learnedWordsDiv.innerHTML = recentWords.map(word => 
+                `<span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm m-1">
+                    ${word.emoji} ${word.french} - ${word.arabic}
+                </span>`
+            ).join('');
+        }
+
+        // إعادة تشغيل المستوى
+        function restartLevel() {
+            document.getElementById('resultScreen').classList.add('hidden');
+            selectLevel(currentCategory);
+        }
+
+        // العودة للخريطة
+        function backToMap() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('mapScreen').classList.remove('hidden');
+            document.getElementById('totalScore').textContent = totalScore;
+        }
+
+        // عرض الإشعارات
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification p-4 rounded-lg text-white font-semibold ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // تحميل البيانات المحفوظة عند بدء الصفحة
+        window.onload = function() {
+            document.getElementById('totalScore').textContent = totalScore;
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'966c4a38c3fedb88',t:'MTc1Mzc4ODY4Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
