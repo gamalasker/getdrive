@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Défi Express - لغز وفرصة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Cairo', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .option-btn {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .correct {
+            background: linear-gradient(135deg, #4ade80, #22c55e) !important;
+            color: white !important;
+        }
+        
+        .incorrect {
+            background: linear-gradient(135deg, #f87171, #ef4444) !important;
+            color: white !important;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        
+        .flag-icon {
+            background: linear-gradient(135deg, #0055a4, #ffffff, #ef4135);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-2" dir="ltr">
+                🇫🇷 Défi Express
+            </h1>
+            <p class="text-xl text-white/90">لغز وفرصة - <span dir="ltr" class="inline-block">Puzzle et Opportunité</span></p>
+        </div>
+
+        <!-- Main Game Container -->
+        <div id="gameContainer" class="card rounded-3xl shadow-2xl p-8">
+            <!-- Menu Screen -->
+            <div id="menuScreen" class="text-center">
+                <div class="mb-8">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">اختر التحدي الخاص بك</h2>
+                    <p class="text-gray-600" dir="ltr">Choisissez votre défi</p>
+                </div>
+
+                <!-- Category Selection -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-orange-100 to-orange-200 cursor-pointer hover:shadow-lg transition-all" data-category="achats" onclick="selectCategory('achats', this)">
+                        <div class="text-3xl mb-2">🛍️</div>
+                        <h3 class="text-lg font-semibold text-gray-800">المشتريات</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Les achats</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-red-100 to-red-200 cursor-pointer hover:shadow-lg transition-all" data-category="cuisine" onclick="selectCategory('cuisine', this)">
+                        <div class="text-3xl mb-2">🍽️</div>
+                        <h3 class="text-lg font-semibold text-gray-800">الطبخ</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">La cuisine</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-200 cursor-pointer hover:shadow-lg transition-all" data-category="deplacements" onclick="selectCategory('deplacements', this)">
+                        <div class="text-3xl mb-2">🚶‍♂️</div>
+                        <h3 class="text-lg font-semibold text-gray-800">التنقل</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Déplacements</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-green-100 to-green-200 cursor-pointer hover:shadow-lg transition-all" data-category="sante" onclick="selectCategory('sante', this)">
+                        <div class="text-3xl mb-2">🏥</div>
+                        <h3 class="text-lg font-semibold text-gray-800">الصحة</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">La santé</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-200 cursor-pointer hover:shadow-lg transition-all" data-category="maison" onclick="selectCategory('maison', this)">
+                        <div class="text-3xl mb-2">🏠</div>
+                        <h3 class="text-lg font-semibold text-gray-800">المنزل</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">La maison</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-yellow-100 to-yellow-200 cursor-pointer hover:shadow-lg transition-all" data-category="temps" onclick="selectCategory('temps', this)">
+                        <div class="text-3xl mb-2">🕒</div>
+                        <h3 class="text-lg font-semibold text-gray-800">الطقس والوقت</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Temps & météo</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-indigo-100 to-indigo-200 cursor-pointer hover:shadow-lg transition-all" data-category="ecole" onclick="selectCategory('ecole', this)">
+                        <div class="text-3xl mb-2">🎓</div>
+                        <h3 class="text-lg font-semibold text-gray-800">المدرسة</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">L'école</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-200 cursor-pointer hover:shadow-lg transition-all" data-category="famille" onclick="selectCategory('famille', this)">
+                        <div class="text-3xl mb-2">👨‍👩‍👧‍👦</div>
+                        <h3 class="text-lg font-semibold text-gray-800">العائلة</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">La famille</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 cursor-pointer hover:shadow-lg transition-all" data-category="travail" onclick="selectCategory('travail', this)">
+                        <div class="text-3xl mb-2">👔</div>
+                        <h3 class="text-lg font-semibold text-gray-800">العمل</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Le travail</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-teal-100 to-teal-200 cursor-pointer hover:shadow-lg transition-all" data-category="voyage" onclick="selectCategory('voyage', this)">
+                        <div class="text-3xl mb-2">🧳</div>
+                        <h3 class="text-lg font-semibold text-gray-800">السفر</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Le voyage</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-200 cursor-pointer hover:shadow-lg transition-all" data-category="technologie" onclick="selectCategory('technologie', this)">
+                        <div class="text-3xl mb-2">📱</div>
+                        <h3 class="text-lg font-semibold text-gray-800">التكنولوجيا</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Technologie</p>
+                    </div>
+                    
+                    <div class="category-card p-4 rounded-2xl bg-gradient-to-br from-emerald-100 to-emerald-200 cursor-pointer hover:shadow-lg transition-all" data-category="loisirs" onclick="selectCategory('loisirs', this)">
+                        <div class="text-3xl mb-2">🎉</div>
+                        <h3 class="text-lg font-semibold text-gray-800">الترفيه</h3>
+                        <p class="text-gray-600 text-xs" dir="ltr">Les loisirs</p>
+                    </div>
+                </div>
+
+                <!-- Level Selection -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">المستوى / <span dir="ltr" class="inline-block">Niveau</span></h3>
+                    <div class="flex justify-center flex-wrap gap-4 mb-6">
+                        <button class="level-btn px-6 py-3 rounded-xl bg-green-500 text-white font-semibold hover:bg-green-600 transition-all" data-level="debutant" onclick="selectLevel('debutant', this)">
+                            🌱 مبتدئ
+                        </button>
+                        <button class="level-btn px-6 py-3 rounded-xl bg-yellow-500 text-white font-semibold hover:bg-yellow-600 transition-all" data-level="intermediaire" onclick="selectLevel('intermediaire', this)">
+                            🔍 متوسط
+                        </button>
+                        <button class="level-btn px-6 py-3 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition-all" data-level="expert" onclick="selectLevel('expert', this)">
+                            🧠 خبير
+                        </button>
+                    </div>
+                    
+                    <!-- Start Game Button -->
+                    <div class="text-center">
+                        <button id="startGameBtn" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-bold text-lg hover:shadow-lg transition-all opacity-50 cursor-not-allowed" disabled>
+                            🎮 ابدأ اللعبة
+                        </button>
+                        <p class="text-sm text-gray-500 mt-2">اختر فئة ومستوى للبدء</p>
+                    </div>
+                </div>
+
+                <!-- Stats Display -->
+                <div class="bg-gray-50 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">📊 إحصائياتك</h3>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-blue-600" id="totalScore">0</div>
+                            <div class="text-sm text-gray-600">النقاط</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-green-600" id="correctAnswers">0</div>
+                            <div class="text-sm text-gray-600">إجابات صحيحة</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-purple-600" id="gamesPlayed">0</div>
+                            <div class="text-sm text-gray-600">ألعاب</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="gameScreen" class="hidden">
+                <!-- Game Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <div class="text-right">
+                        <div class="text-lg font-bold text-blue-600" id="currentScore">0 نقطة</div>
+                        <div class="text-sm text-gray-600">سؤال <span id="questionNumber">1</span>/10</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-lg font-semibold text-gray-800" id="categoryDisplay"></div>
+                        <div class="text-sm text-gray-600" id="levelDisplay"></div>
+                    </div>
+                    <button onclick="backToMenu()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all">
+                        → رجوع
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-8">
+                    <div class="progress-bar bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full" id="progressBar" style="width: 10%"></div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg mb-6 fade-in" id="questionCard">
+                    <div class="text-center mb-6">
+                        <div class="text-4xl mb-4" id="questionIcon">🤔</div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2" id="questionText" dir="ltr" style="text-align: left;"></h2>
+                        <button onclick="speakQuestion()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+                            🔊 استمع
+                        </button>
+                    </div>
+
+                    <!-- Timer -->
+                    <div class="text-center mb-6">
+                        <div class="inline-block bg-red-100 rounded-full px-4 py-2">
+                            <span class="text-red-600 font-bold">ثانية <span id="timer">30</span> ⏰</span>
+                        </div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="grid gap-4" id="optionsContainer">
+                        <!-- Options will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Hint Button -->
+                <div class="text-center">
+                    <button onclick="showHint()" class="px-6 py-3 bg-yellow-500 text-white rounded-xl hover:bg-yellow-600 transition-all" id="hintBtn">
+                        💡 تلميح (-5 نقاط)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Screen -->
+            <div id="resultScreen" class="hidden text-center">
+                <div class="mb-8">
+                    <div class="text-8xl mb-4" id="resultIcon"></div>
+                    <h2 class="text-3xl font-bold mb-2" id="resultTitle"></h2>
+                    <p class="text-gray-600 text-lg" id="resultMessage"></p>
+                </div>
+
+                <!-- Explanation -->
+                <div class="bg-blue-50 rounded-2xl p-6 mb-8" id="explanationCard">
+                    <h3 class="text-lg font-semibold text-blue-800 mb-2">💡 شرح</h3>
+                    <p class="text-blue-700" id="explanationText" dir="ltr" style="text-align: left;"></p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4 justify-center">
+                    <button onclick="backToMenu()" class="px-8 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-all font-semibold">
+                        القائمة الرئيسية
+                    </button>
+                    <button onclick="nextQuestion()" class="px-8 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition-all font-semibold" id="nextBtn">
+                        ← التالي
+                    </button>
+                </div>
+            </div>
+
+            <!-- Final Score Screen -->
+            <div id="finalScreen" class="hidden text-center">
+                <div class="mb-8">
+                    <div class="text-8xl mb-4">🏆</div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">انتهت اللعبة!</h2>
+                    <p class="text-gray-600" dir="ltr">Partie terminée!</p>
+                </div>
+
+                <!-- Final Stats -->
+                <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-8 mb-8">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-blue-600" id="finalScore">0</div>
+                            <div class="text-gray-600">إجمالي النقاط</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-green-600" id="finalCorrect">0</div>
+                            <div class="text-gray-600">إجابات صحيحة</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-4xl font-bold text-purple-600" id="finalPercentage">0%</div>
+                            <div class="text-gray-600">نسبة النجاح</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Badges -->
+                <div class="mb-8" id="badgesContainer">
+                    <!-- Badges will be shown here -->
+                </div>
+
+                <button onclick="playAgain()" class="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all font-semibold text-lg">
+                    🎮 العب مرة أخرى
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            currentCategory: '',
+            currentLevel: '',
+            currentQuestion: 0,
+            score: 0,
+            correctAnswers: 0,
+            totalQuestions: 10,
+            questions: [],
+            timer: null,
+            timeLeft: 30,
+            hintsUsed: 0
+        };
+
+        // Load stats from localStorage
+        function loadStats() {
+            const stats = JSON.parse(localStorage.getItem('defiExpressStats') || '{"totalScore": 0, "correctAnswers": 0, "gamesPlayed": 0}');
+            document.getElementById('totalScore').textContent = stats.totalScore;
+            document.getElementById('correctAnswers').textContent = stats.correctAnswers;
+            document.getElementById('gamesPlayed').textContent = stats.gamesPlayed;
+            return stats;
+        }
+
+        // Save stats to localStorage
+        function saveStats(newScore, newCorrect) {
+            const stats = loadStats();
+            stats.totalScore += newScore;
+            stats.correctAnswers += newCorrect;
+            stats.gamesPlayed += 1;
+            localStorage.setItem('defiExpressStats', JSON.stringify(stats));
+            loadStats();
+        }
+
+        // --- NEW EXTENDED QUESTION DATABASE ---
+        const questionDatabase = {
+            achats: {
+                debutant: [
+                    { question: "Au supermarché, on met les courses dans un...", options: ["caddie", "frigo", "lit"], correct: 0, explanation: "Le caddie (أو العربة) sert à transporter les courses dans un supermarché.", icon: "🛒" },
+                    { question: "Pour payer, on utilise de l'... ou une carte.", options: ["eau", "argent", "air"], correct: 1, explanation: "L'argent (المال) ou la carte bancaire sont les moyens de paiement.", icon: "💳" },
+                    { question: "Les vêtements, on les achète dans un...", options: ["magasin", "jardin", "nuage"], correct: 0, explanation: "On achète les vêtements dans un magasin (محل).", icon: "👕" },
+                    { question: "Où achète-t-on du pain ?", options: ["à la boucherie", "à la boulangerie", "à la pharmacie"], correct: 1, explanation: "On achète le pain à la boulangerie (المخبز).", icon: "🥖" },
+                    { question: "Le document qu'on reçoit après avoir payé est un...", options: ["ticket de caisse", "livre", "journal"], correct: 0, explanation: "Le ticket de caisse (الإيصال) est la preuve de l'achat.", icon: "🧾" }
+                ],
+                intermediaire: [
+                    { question: "Que signifie 'faire les soldes' ?", options: ["vendre la maison", "acheter des articles à prix réduit", "partir en vacances"], correct: 1, explanation: "'Faire les soldes' signifie profiter des réductions (التخفيضات).", icon: "🏷️" },
+                    { question: "Si un article est trop cher, on peut dire : 'C'est hors de...'", options: ["prix", "question", "danger"], correct: 0, explanation: "'Hors de prix' est une expression pour dire que quelque chose est très cher (باهظ الثمن).", icon: "💸" },
+                    { question: "Comment appelle-t-on la personne qui travaille à la caisse ?", options: ["le caissier / la caissière", "le vendeur / la vendeuse", "le client / la cliente"], correct: 0, explanation: "Le caissier ou la caissière (أمين الصندوق) enregistre et encaisse les achats.", icon: "🧑‍💼" },
+                    { question: "Où peut-on essayer un vêtement dans un magasin ?", options: ["dans la réserve", "dans la cabine d'essayage", "à la caisse"], correct: 1, explanation: "La cabine d'essayage (غرفة القياس) est l'endroit pour essayer les vêtements.", icon: "🚪" }
+                ],
+                expert: [
+                    { question: "Que signifie l'acronyme 'TTC' sur un prix ?", options: ["Très Très Cher", "Toutes Taxes Comprises", "Transport Tarif Compris"], correct: 1, explanation: "'TTC' signifie 'Toutes Taxes Comprises', incluant la TVA (ضريبة القيمة المضافة).", icon: "💶" },
+                    { question: "Quel est le délai légal de rétractation pour un achat en ligne en France ?", options: ["7 jours", "14 jours", "30 jours"], correct: 1, explanation: "La loi Hamon garantit un délai de rétractation (فترة التراجع) de 14 jours pour les achats en ligne.", icon: "⚖️" },
+                    { question: "Comment appelle-t-on le fait de regarder les vitrines sans acheter ?", options: ["le lèche-vitrines", "le lèche-bottes", "le lèche-plats"], correct: 0, explanation: "'Faire du lèche-vitrines' (التفرج على الواجهات) est une expression populaire.", icon: "👀" }
+                ]
+            },
+            cuisine: {
+                debutant: [
+                    { question: "Pour faire une omelette, il faut des...", options: ["œufs", "pommes", "chaussures"], correct: 0, explanation: "Les œufs (البيض) sont l'ingrédient principal de l'omelette.", icon: "🍳" },
+                    { question: "On coupe les légumes avec un...", options: ["couteau", "verre", "livre"], correct: 0, explanation: "On utilise un couteau (سكين) pour couper les aliments.", icon: "🔪" },
+                    { question: "Le plat principal de la France est...", options: ["le couscous", "la pizza", "le bœuf bourguignon"], correct: 2, explanation: "Le bœuf bourguignon (لحم البقر بالبورغينيون) est un plat traditionnel français très connu.", icon: "🍲" },
+                    { question: "Quel ustensile utilise-t-on pour manger de la soupe ?", options: ["une fourchette", "une cuillère", "un couteau"], correct: 1, explanation: "On mange la soupe avec une cuillère (ملعقة).", icon: "🥣" }
+                ],
+                intermediaire: [
+                    { question: "Que veut dire 'faire revenir' des oignons ?", options: ["les faire bouillir", "les cuire dans la graisse chaude", "les manger crus"], correct: 1, explanation: "'Faire revenir' (تشويح) signifie cuire rapidement dans une matière grasse.", icon: "🧅" },
+                    { question: "Quel fromage est célèbre pour ses trous ?", options: ["le roquefort", "le camembert", "l'emmental"], correct: 2, explanation: "L'emmental (جبن الإمنتال) est le fameux fromage suisse avec des trous.", icon: "🧀" },
+                    { question: "Qu'est-ce qu'une 'vinaigrette' ?", options: ["une sauce pour salade", "un petit vin", "une sorte de viande"], correct: 0, explanation: "La vinaigrette est une sauce (صلصة) à base d'huile, de vinaigre, de sel et de poivre.", icon: "🥗" }
+                ],
+                expert: [
+                    { question: "Quelle est la différence entre 'brunoise' et 'julienne' ?", options: ["l'une est cuite, l'autre crue", "ce sont des techniques de découpe", "l'une est salée, l'autre sucrée"], correct: 1, explanation: "Ce sont deux techniques de découpe de légumes : la brunoise en très petits dés (مكعبات صغيرة جدا), la julienne en fins bâtonnets (شرائح رفيعة).", icon: "🥕" },
+                    { question: "Qu'est-ce qu'un 'court-bouillon' ?", options: ["un bouillon qui cuit vite", "un liquide aromatisé pour pocher", "une soupe très courte"], correct: 1, explanation: "Un court-bouillon est un liquide (ماء أو نبيذ) aromatisé utilisé pour pocher (سلق) poissons ou crustacés.", icon: "🐟" },
+                    { question: "D'où vient le plat 'la ratatouille' ?", options: ["de Bretagne", "de Provence", "d'Alsace"], correct: 1, explanation: "La ratatouille est une spécialité à base de légumes originaire de Provence (منطقة بروفانس).", icon: "🍆" }
+                ]
+            },
+            deplacements: {
+                debutant: [
+                    { question: "Pour aller au travail, je prends le...", options: ["bus", "chat", "nuage"], correct: 0, explanation: "Le bus (الحافلة) est un moyen de transport en commun.", icon: "🚌" },
+                    { question: "À pied, on marche sur le...", options: ["plafond", "trottoir", "lit"], correct: 1, explanation: "Le trottoir (الرصيف) est réservé aux piétons.", icon: "🚶‍♀️" },
+                    { question: "Pour traverser la rue, on regarde à... et à droite.", options: ["gauche", "l'intérieur", "en haut"], correct: 0, explanation: "Il faut toujours regarder à gauche puis à droite (يسارًا ثم يمينًا) avant de traverser.", icon: "🚦" },
+                    { question: "Le train s'arrête à la...", options: ["gare", "piscine", "forêt"], correct: 0, explanation: "La gare (محطة القطار) est l'endroit où les trains s'arrêtent.", icon: "🚉" }
+                ],
+                intermediaire: [
+                    { question: "Pour prendre le métro à Paris, on a besoin d'un...", options: ["ticket de cinéma", "ticket de métro", "ticket de loto"], correct: 1, explanation: "Un ticket de métro (تذكرة مترو) est nécessaire pour voyager dans le métro parisien.", icon: "🚇" },
+                    { question: "Que faut-il faire à un feu rouge ?", options: ["accélérer", "s'arrêter", "klaxonner"], correct: 1, explanation: "Un feu rouge (إشارة حمراء) signifie qu'il faut s'arrêter.", icon: "🔴" },
+                    { question: "Comment demande-t-on son chemin ?", options: ["'Où est la gare, s'il vous plaît ?'", "'Quel âge avez-vous ?'", "'Combien ça coûte ?'"], correct: 0, explanation: "C'est la phrase correcte pour demander son chemin (للسؤال عن الطريق).", icon: "🗺️" }
+                ],
+                expert: [
+                    { question: "Que signifie 'composter son billet' ?", options: ["le jeter", "le valider dans une machine", "l'acheter"], correct: 1, explanation: "Il faut composter (تثقيب) son billet avant de monter dans un train en France pour le valider.", icon: "✅" },
+                    { question: "Qu'est-ce que le 'covoiturage' ?", options: ["louer une voiture", "partager sa voiture avec d'autres", "conduire très vite"], correct: 1, explanation: "Le covoiturage (مشاركة السيارات) consiste à partager un trajet en voiture pour réduire les frais et la pollution.", icon: "🚗" },
+                    { question: "Sur une autoroute française, quelle est la limitation de vitesse standard par temps sec ?", options: ["110 km/h", "130 km/h", "90 km/h"], correct: 1, explanation: "La vitesse est limitée à 130 km/h (130 كيلومتر في الساعة) sur autoroute par temps sec.", icon: "�️" }
+                ]
+            },
+            sante: {
+                debutant: [
+                    { question: "Quand on est malade, on va chez le...", options: ["boulanger", "médecin", "chat"], correct: 1, explanation: "Le médecin (الطبيب) soigne les gens malades.", icon: "👨‍⚕️" },
+                    { question: "Pour les médicaments, on va à la...", options: ["boulangerie", "pharmacie", "plage"], correct: 1, explanation: "La pharmacie (الصيدلية) vend des médicaments.", icon: "💊" },
+                    { question: "J'ai mal à la... (head)", options: ["chaussure", "tête", "voiture"], correct: 1, explanation: "Avoir mal à la tête (صداع) est une douleur courante.", icon: "🤕" },
+                    { question: "Pour se brosser les dents, on utilise une brosse à dents et du...", options: ["savon", "dentifrice", "shampoing"], correct: 1, explanation: "On utilise du dentifrice (معجون أسنان) pour se laver les dents.", icon: "🦷" }
+                ],
+                intermediaire: [
+                    { question: "Un médecin qui soigne les enfants est un...", options: ["pédiatre", "dentiste", "cardiologue"], correct: 0, explanation: "Le pédiatre (طبيب الأطفال) est le spécialiste de la santé des enfants.", icon: "👶" },
+                    { question: "Que prend-on pour faire baisser la fièvre ?", options: ["un antibiotique", "un antipyrétique", "un somnifère"], correct: 1, explanation: "Un antipyrétique (خافض للحرارة), comme le paracétamol, aide à réduire la fièvre.", icon: "🌡️" },
+                    { question: "Comment appelle-t-on une ordonnance du médecin ?", options: ["une prescription", "une facture", "une lettre"], correct: 0, explanation: "Une prescription (وصفة طبية) est le document où le médecin écrit les médicaments à prendre.", icon: "📝" }
+                ],
+                expert: [
+                    { question: "Qu'est-ce que la 'Carte Vitale' en France ?", options: ["une carte de crédit", "la carte d'assurance maladie", "une carte de fidélité"], correct: 1, explanation: "La Carte Vitale (بطاقة التأمين الصحي) est la carte d'assurance maladie en France, qui permet le remboursement des soins.", icon: "🟩" },
+                    { question: "Que signifie l'expression 'avoir un chat dans la gorge' ?", options: ["être très malade", "être enroué, avoir du mal à parler", "avoir mangé un chat"], correct: 1, explanation: "C'est une expression idiomatique qui signifie être enroué (بحة في الصوت).", icon: "🗣️" },
+                    { question: "Quel est le numéro d'urgence médicale en France (SAMU) ?", options: ["le 15", "le 17", "le 18"], correct: 0, explanation: "Le 15 est le numéro du SAMU (خدمة المساعدة الطبية الطارئة) pour les urgences médicales.", icon: "🚑" }
+                ]
+            },
+            maison: {
+                debutant: [
+                    { question: "On dort dans la...", options: ["cuisine", "chambre", "rue"], correct: 1, explanation: "La chambre (غرفة النوم) est la pièce où l'on dort.", icon: "🛏️" },
+                    { question: "On cuisine dans la...", options: ["cuisine", "salle de bain", "garage"], correct: 0, explanation: "La cuisine (المطبخ) est la pièce où l'on prépare les repas.", icon: "🍳" },
+                    { question: "Pour s'asseoir dans le salon, on utilise un...", options: ["lit", "canapé", "bureau"], correct: 1, explanation: "Le canapé (الأريكة) est un meuble confortable pour s'asseoir.", icon: "🛋️" },
+                    { question: "On se lave dans la...", options: ["chambre", "salle de bain", "cuisine"], correct: 1, explanation: "La salle de bain (الحمام) est la pièce pour l'hygiène personnelle.", icon: "🛁" }
+                ],
+                intermediaire: [
+                    { question: "Comment appelle-t-on la tâche de nettoyer le sol avec de l'eau ?", options: ["passer l'aspirateur", "faire la vaisselle", "passer la serpillière"], correct: 2, explanation: "'Passer la serpillière' (مسح الأرضية) signifie nettoyer le sol avec une serpillère humide.", icon: "🧹" },
+                    { question: "Quel appareil garde les aliments au frais ?", options: ["le four", "le réfrigérateur", "le micro-ondes"], correct: 1, explanation: "Le réfrigérateur (الثلاجة), ou frigo, conserve les aliments au froid.", icon: "🧊" },
+                    { question: "Le contraire de 'locataire' est...", options: ["propriétaire", "voisin", "gardien"], correct: 0, explanation: "Le propriétaire (المالك) possède le logement, tandis que le locataire (المستأجر) le loue.", icon: "🔑" }
+                ],
+                expert: [
+                    { question: "En France, qu'est-ce que la 'taxe d'habitation' ?", options: ["un impôt sur le revenu", "un impôt local pour les occupants d'un logement", "une taxe sur les achats"], correct: 1, explanation: "La taxe d'habitation (ضريبة السكن) est un impôt payé par la personne qui habite un logement, qu'elle soit locataire ou propriétaire (en cours de suppression).", icon: "🏛️" },
+                    { question: "Que signifie 'bricoler' ?", options: ["faire des petits travaux manuels", "casser des objets", "dormir"], correct: 0, explanation: "'Bricoler' (القيام بأعمال يدوية) signifie faire de petites réparations ou créations soi-même.", icon: "🛠️" },
+                    { question: "Qu'est-ce qu'un 'bail' ?", options: ["un balai pour nettoyer", "le contrat de location", "une fête"], correct: 1, explanation: "Le bail (عقد الإيجار) est le contrat officiel entre un locataire et un propriétaire.", icon: "📄" }
+                ]
+            },
+            temps: {
+                debutant: [
+                    { question: "Aujourd'hui, il fait... (sun)", options: ["beau", "carré", "rouge"], correct: 0, explanation: "'Il fait beau' (الجو جميل) signifie que le temps est ensoleillé.", icon: "☀️" },
+                    { question: "En hiver, il fait...", options: ["chaud", "froid", "carré"], correct: 1, explanation: "L'hiver (الشتاء) est la saison froide.", icon: "❄️" },
+                    { question: "Après lundi, c'est...", options: ["dimanche", "mardi", "janvier"], correct: 1, explanation: "Mardi (الثلاثاء) est le jour qui suit lundi (الاثنين).", icon: "📅" },
+                    { question: "Quand le ciel est gris et que l'eau tombe, on dit qu'il...", options: ["neige", "pleut", "vente"], correct: 1, explanation: "Quand il pleut (تمطر), de l'eau tombe du ciel.", icon: "🌧️" }
+                ],
+                intermediaire: [
+                    { question: "Que signifie 'il y a des averses' ?", options: ["il pleut toute la journée", "il y a de courtes pluies", "il y a du brouillard"], correct: 1, explanation: "Une averse (زخة مطر) est une pluie courte et souvent intense.", icon: "🌦️" },
+                    { question: "Quelle saison vient après l'été ?", options: ["le printemps", "l'automne", "l'hiver"], correct: 1, explanation: "L'automne (الخريف) suit l'été.", icon: "🍂" },
+                    { question: "S'il est 15h00, on peut aussi dire qu'il est trois heures de...", options: ["le matin", "l'après-midi", "le soir"], correct: 1, explanation: "15h00 correspond à 3 heures de l'après-midi (بعد الظهر).", icon: "🕒" }
+                ],
+                expert: [
+                    { question: "Que signifie l'expression 'il pleut des cordes' ?", options: ["il pleut un peu", "il pleut très fort", "il grêle"], correct: 1, explanation: "C'est une expression idiomatique pour dire qu'il y a une pluie torrentielle (مطر غزير).", icon: "⛈️" },
+                    { question: "Qu'est-ce que le 'mistral' ?", options: ["un vent froid et sec en Provence", "une tempête de neige", "une vague de chaleur"], correct: 0, explanation: "Le mistral (رياح الميسترال) est un vent violent, froid et sec qui souffle dans la vallée du Rhône et en Provence.", icon: "💨" },
+                    { question: "Quelle est la différence entre 'la météo' et 'le climat' ?", options: ["aucune", "la météo est à court terme, le climat à long terme", "la météo est pour l'été, le climat pour l'hiver"], correct: 1, explanation: "La météo (الطقس) décrit le temps qu'il fait au jour le jour, tandis que le climat (المناخ) décrit les tendances météorologiques sur de longues périodes.", icon: "🌍" }
+                ]
+            },
+            ecole: {
+                debutant: [
+                    { question: "À l'école, on écrit avec un...", options: ["stylo", "poisson", "nuage"], correct: 0, explanation: "Le stylo (القلم) est l'outil principal pour écrire.", icon: "✏️" },
+                    { question: "Pour apprendre, on lit des...", options: ["livres", "chaussures", "voitures"], correct: 0, explanation: "Les livres (الكتب) contiennent des connaissances et des histoires.", icon: "📚" },
+                    { question: "La personne qui enseigne est le/la...", options: ["professeur", "docteur", "chanteur"], correct: 0, explanation: "Le professeur (المعلم/ة) enseigne aux élèves.", icon: "🧑‍🏫" },
+                    { question: "Les vacances d'été durent généralement...", options: ["une semaine", "deux mois", "un jour"], correct: 1, explanation: "En France, les grandes vacances d'été (العطلة الصيفية) durent environ deux mois (juillet et août).", icon: "🏖️" }
+                ],
+                intermediaire: [
+                    { question: "Comment s'appelle l'examen à la fin du lycée en France ?", options: ["le brevet", "le baccalauréat", "la licence"], correct: 1, explanation: "Le baccalauréat (البكالوريا), souvent appelé 'le bac', est l'examen qui conclut les études secondaires.", icon: "🎓" },
+                    { question: "Quelle matière étudie les nombres et les calculs ?", options: ["l'histoire", "le français", "les mathématiques"], correct: 2, explanation: "Les mathématiques (الرياضيات) sont la science des nombres.", icon: "➗" },
+                    { question: "La pause du midi à l'école s'appelle la...", options: ["récréation", "cantine", "sieste"], correct: 1, explanation: "La cantine (الكافتيريا) est le lieu où les élèves déjeunent.", icon: " lunchtime" }
+                ],
+                expert: [
+                    { question: "En France, à quel âge l'école est-elle obligatoire ?", options: ["dès la naissance", "à partir de 3 ans", "à partir de 6 ans"], correct: 1, explanation: "Depuis 2019, l'instruction est obligatoire (إلزامية) en France dès l'âge de 3 ans.", icon: "🏛️" },
+                    { question: "Que signifie 'redoubler' une classe ?", options: ["la sauter", "la refaire une deuxième fois", "la finir avec succès"], correct: 1, explanation: "Redoubler (إعادة السنة) signifie qu'un élève doit refaire la même année scolaire.", icon: "🔁" },
+                    { question: "Comment appelle-t-on les universités les plus prestigieuses en France, accessibles sur concours ?", options: ["les Grandes Écoles", "les Petites Écoles", "les Universités Normales"], correct: 0, explanation: "Les Grandes Écoles (المدارس الكبرى) sont des établissements d'enseignement supérieur très sélectifs.", icon: "🏫" }
+                ]
+            },
+            famille: {
+                debutant: [
+                    { question: "Le père de mon père est mon...", options: ["frère", "grand-père", "chat"], correct: 1, explanation: "Le père de votre père est votre grand-père (الجد).", icon: "👴" },
+                    { question: "La fille de ma tante est ma...", options: ["cousine", "voiture", "chaussure"], correct: 0, explanation: "La fille de votre tante ou de votre oncle est votre cousine (ابنة العم/الخال).", icon: "👧" },
+                    { question: "Le frère de ma mère est mon...", options: ["père", "oncle", "cousin"], correct: 1, explanation: "Le frère de votre mère ou de votre père est votre oncle (العم/الخال).", icon: "👨" },
+                    { question: "La femme de mon père est ma...", options: ["sœur", "mère", "tante"], correct: 1, explanation: "La femme de votre père est votre mère (الأم).", icon: "👩" }
+                ],
+                intermediaire: [
+                    { question: "Comment appelle-t-on les parents de mes parents ?", options: ["mes grands-parents", "mes arrières-grands-parents", "mes oncles"], correct: 0, explanation: "Les parents de vos parents sont vos grands-parents (الأجداد).", icon: "👵👴" },
+                    { question: "Le mari de ma sœur est mon...", options: ["beau-frère", "beau-père", "cousin"], correct: 0, explanation: "Le mari de votre sœur est votre beau-frère (صهر).", icon: "🤵" },
+                    { question: "Un enfant qui n'a ni frère ni sœur est un...", options: ["enfant unique", "enfant terrible", "enfant sage"], correct: 0, explanation: "Un enfant unique (طفل وحيد) est un enfant qui n'a pas de fratrie.", icon: "👤" }
+                ],
+                expert: [
+                    { question: "En France, qu'est-ce que le 'PACS' ?", options: ["un type de mariage", "un pacte civil de solidarité", "une fête de famille"], correct: 1, explanation: "Le PACS (ميثاق التضامن المدني) est une forme d'union civile entre deux personnes, différente du mariage.", icon: "📜" },
+                    { question: "Comment appelle-t-on le fait d'avoir plusieurs générations vivant sous le même toit ?", options: ["la colocation", "la cohabitation intergénérationnelle", "le concubinage"], correct: 1, explanation: "La cohabitation intergénérationnelle (السكن المشترك بين الأجيال) est de plus en plus courante.", icon: "👨‍👩‍👧‍👦" },
+                    { question: "Que signifie l'adjectif 'cadet' ou 'cadette' dans une fratrie ?", options: ["l'aîné(e)", "le/la plus jeune", "celui/celle du milieu"], correct: 1, explanation: "Le cadet ou la cadette (الأصغر سناً) est l'enfant le plus jeune de la famille, par opposition à l'aîné(e) (الأكبر).", icon: "👶" }
+                ]
+            },
+            travail: {
+                debutant: [
+                    { question: "Le médecin travaille à l'...", options: ["hôpital", "océan", "arbre"], correct: 0, explanation: "Un médecin travaille souvent dans un hôpital (مستشفى) ou un cabinet médical.", icon: "🏥" },
+                    { question: "Le boulanger fait du...", options: ["pain", "vent", "bruit"], correct: 0, explanation: "Le métier du boulanger (الخباز) est de faire du pain.", icon: "🥖" },
+                    { question: "La personne qui dirige une entreprise est le...", options: ["directeur / la directrice", "plombier", "danseur"], correct: 0, explanation: "Le directeur ou la directrice (المدير/ة) est à la tête de l'entreprise.", icon: "🧑‍💼" },
+                    { question: "Pour postuler à un emploi, on envoie un CV et une lettre de...", options: ["motivation", "démission", "vacances"], correct: 0, explanation: "Une lettre de motivation (رسالة دافع) accompagne le CV pour expliquer pourquoi on veut le poste.", icon: "✉️" }
+                ],
+                intermediaire: [
+                    { question: "Comment s'appelle la réunion de travail ?", options: ["la pause", "la réunion", "le déjeuner"], correct: 1, explanation: "Une réunion (اجتماع) est un rassemblement de collègues pour discuter.", icon: "🤝" },
+                    { question: "Quel est le salaire minimum en France ?", options: ["le SMIC", "le RSA", "le PIB"], correct: 0, explanation: "Le SMIC (الحد الأدنى للأجور) est le salaire horaire minimum légal.", icon: "💰" },
+                    { question: "Que signifie être 'au chômage' ?", options: ["être en vacances", "être sans emploi", "travailler beaucoup"], correct: 1, explanation: "Être au chômage (عاطل عن العمل) signifie ne pas avoir de travail mais en chercher un.", icon: "📉" }
+                ],
+                expert: [
+                    { question: "Quelle est la différence entre un 'CDD' et un 'CDI' ?", options: ["le salaire", "la durée du contrat", "le lieu de travail"], correct: 1, explanation: "Un CDI est un Contrat à Durée Indéterminée (عقد غير محدد المدة), tandis qu'un CDD est un Contrat à Durée Déterminée (عقد محدد المدة).", icon: "📄" },
+                    { question: "Que sont les 'RTT' (Réduction du Temps de Travail) ?", options: ["des jours de congé supplémentaires", "des heures supplémentaires payées", "une baisse de salaire"], correct: 0, explanation: "Les RTT sont des jours de repos (أيام راحة) accordés aux salariés qui travaillent plus de 35 heures par semaine.", icon: "🗓️" },
+                    { question: "Comment appelle-t-on la période au début d'un contrat pour tester l'employé ?", options: ["la période d'essai", "la période de grâce", "la période de vacances"], correct: 0, explanation: "La période d'essai (فترة التجربة) permet à l'employeur et au salarié de voir si la collaboration fonctionne.", icon: "⏳" }
+                ]
+            },
+            voyage: {
+                debutant: [
+                    { question: "Pour voyager en avion, il faut un...", options: ["billet", "sandwich", "chat"], correct: 0, explanation: "Il faut un billet d'avion (تذكرة طيران) pour monter dans un avion.", icon: "🎫" },
+                    { question: "À l'hôtel, on dort dans une...", options: ["voiture", "chambre", "piscine"], correct: 1, explanation: "On réserve une chambre (غرفة) à l'hôtel pour y dormir.", icon: "🏨" },
+                    { question: "Les vêtements de voyage, on les met dans une...", options: ["valise", "casserole", "fleur"], correct: 0, explanation: "La valise (حقيبة السفر) sert à transporter ses affaires.", icon: "🧳" },
+                    { question: "Pour voyager dans un autre pays, on a souvent besoin d'un...", options: ["passeport", "téléphone", "chapeau"], correct: 0, explanation: "Le passeport (جواز السفر) est un document d'identité international.", icon: "🛂" }
+                ],
+                intermediaire: [
+                    { question: "Comment s'appelle l'endroit où les avions décollent et atterrissent ?", options: ["la gare", "le port", "l'aéroport"], correct: 2, explanation: "L'aéroport (المطار) est le lieu de départ et d'arrivée des avions.", icon: "✈️" },
+                    { question: "Que signifie 'vol direct' ?", options: ["un vol avec escale", "un vol sans escale", "un vol annulé"], correct: 1, explanation: "Un vol direct (رحلة مباشرة) va d'un point A à un point B sans s'arrêter.", icon: "➡️" },
+                    { question: "Qu'est-ce qu'une 'auberge de jeunesse' ?", options: ["un hôtel de luxe", "un hébergement bon marché pour jeunes", "un restaurant"], correct: 1, explanation: "Une auberge de jeunesse (نزل الشباب) offre un logement simple et peu cher, souvent en dortoir.", icon: " bunk bed" }
+                ],
+                expert: [
+                    { question: "Qu'est-ce que le 'décalage horaire' ?", options: ["une différence d'heure entre deux lieux", "un retard de l'avion", "une heure d'été"], correct: 0, explanation: "Le décalage horaire (فارق التوقيت) est la fatigue due au changement rapide de fuseaux horaires.", icon: " jet lag" },
+                    { question: "Que signifie 'hors-saison' ?", options: ["pendant la période la plus touristique", "en dehors de la période la plus touristique", "sans saison"], correct: 1, explanation: "Voyager hors-saison (خارج الموسم السياحي) est souvent moins cher et moins fréquenté.", icon: "📉" },
+                    { question: "Dans l'UE, quel document peut remplacer le passeport pour les citoyens européens ?", options: ["le permis de conduire", "la carte d'identité nationale", "la carte de crédit"], correct: 1, explanation: "Une carte d'identité nationale (بطاقة الهوية الوطنية) en cours de validité suffit pour voyager au sein de l'Espace Schengen.", icon: "🆔" }
+                ]
+            },
+            technologie: {
+                debutant: [
+                    { question: "Pour téléphoner, on utilise un...", options: ["téléphone", "pain", "nuage"], correct: 0, explanation: "Le téléphone (الهاتف) est l'appareil de base pour communiquer à distance.", icon: "📱" },
+                    { question: "Sur Internet, on peut envoyer des...", options: ["e-mails", "chaussures", "nuages"], correct: 0, explanation: "Les e-mails (رسائل البريد الإلكتروني) sont des messages électroniques.", icon: "📧" },
+                    { question: "Pour regarder des vidéos, on utilise un...", options: ["ordinateur", "pain", "chat"], correct: 0, explanation: "Un ordinateur (حاسوب) ou un smartphone permet de visionner des vidéos.", icon: "💻" },
+                    { question: "Pour se connecter à Internet sans fil, on utilise le...", options: ["Bluetooth", "Wi-Fi", "GPS"], correct: 1, explanation: "Le Wi-Fi (الواي فاي) permet une connexion sans fil à Internet.", icon: "📶" }
+                ],
+                intermediaire: [
+                    { question: "Comment appelle-t-on le fait de copier un fichier d'Internet sur son ordinateur ?", options: ["télécharger", "supprimer", "imprimer"], correct: 0, explanation: "Télécharger (تنزيل) signifie transférer des données d'un serveur vers son appareil.", icon: "📥" },
+                    { question: "Quel est le nom d'un petit programme sur un smartphone ?", options: ["une application", "un dossier", "un virus"], correct: 0, explanation: "Une application (تطبيق), ou 'app', est un logiciel pour smartphone ou tablette.", icon: "📲" },
+                    { question: "Le 'cerveau' de l'ordinateur est le...", options: ["clavier", "processeur", "écran"], correct: 1, explanation: "Le processeur (المعالج) exécute les instructions et les calculs de l'ordinateur.", icon: "⚙️" }
+                ],
+                expert: [
+                    { question: "Que signifie 'naviguer en mode incognito' ?", options: ["naviguer plus vite", "naviguer sans laisser d'historique sur l'appareil", "naviguer sans payer"], correct: 1, explanation: "Le mode incognito (وضع التصفح المتخفي) empêche le navigateur de sauvegarder votre historique, vos cookies et les informations saisies.", icon: "🕵️" },
+                    { question: "Qu'est-ce que le 'cloud computing' ?", options: ["stocker des données sur son ordinateur", "stocker et accéder à des données sur des serveurs distants via Internet", "une nouvelle technologie de météo"], correct: 1, explanation: "Le 'cloud' (الحوسبة السحابية) permet d'utiliser des services et de stocker des fichiers en ligne plutôt que localement.", icon: "☁️" },
+                    { question: "En sécurité informatique, qu'est-ce que le 'phishing' (hameçonnage) ?", options: ["une technique de pêche", "une tentative de vol d'informations personnelles via un faux e-mail", "un antivirus"], correct: 1, explanation: "Le phishing (التصيد الاحتيالي) est une arnaque visant à vous faire révéler des informations confidentielles (mots de passe, numéros de carte).", icon: "🎣" }
+                ]
+            },
+            loisirs: {
+                debutant: [
+                    { question: "Pour faire du sport, on va au...", options: ["gymnase", "frigo", "nuage"], correct: 0, explanation: "Un gymnase (صالة رياضية) est un lieu équipé pour le sport.", icon: "🤸" },
+                    { question: "Au cinéma, on regarde des...", options: ["films", "chaussures", "nuages"], correct: 0, explanation: "Le cinéma (السينما) est l'endroit où l'on projette des films.", icon: "🎬" },
+                    { question: "J'aime écouter de la...", options: ["musique", "pluie", "voiture"], correct: 0, explanation: "Écouter de la musique (الاستماع إلى الموسيقى) est un loisir très populaire.", icon: "🎵" },
+                    { question: "Le week-end, beaucoup de gens aiment se... dans un parc.", options: ["battre", "promener", "cacher"], correct: 1, explanation: "Se promener (التنزه) est une activité relaxante.", icon: "🌳" }
+                ],
+                intermediaire: [
+                    { question: "Comment s'appelle une collection de timbres ?", options: ["la philatélie", "la numismatique", "la bibliophilie"], correct: 0, explanation: "La philatélie (هواية جمع الطوابع) est l'art de collectionner les timbres-poste.", icon: "💌" },
+                    { question: "Quel est le musée le plus célèbre de Paris ?", options: ["le musée d'Orsay", "le Centre Pompidou", "le Louvre"], correct: 2, explanation: "Le Louvre (متحف اللوفر) est le plus grand musée d'art du monde et abrite la Joconde.", icon: "🖼️" },
+                    { question: "Que signifie 'faire la grasse matinée' ?", options: ["se lever très tôt", "dormir tard le matin", "faire du sport le matin"], correct: 1, explanation: "Faire la grasse matinée (النوم لوقت متأخر) est un plaisir du week-end pour beaucoup.", icon: "😴" }
+                ],
+                expert: [
+                    { question: "Qu'est-ce que la 'pétanque' ?", options: ["un jeu de cartes", "un sport de boules originaire du sud de la France", "une danse traditionnelle"], correct: 1, explanation: "La pétanque (الكرة الحديدية) est un jeu d'adresse très populaire, surtout en Provence.", icon: "🎯" },
+                    { question: "Quel événement récompense les meilleurs films français chaque année ?", options: ["les Oscars", "les Césars", "le Festival de Cannes"], correct: 1, explanation: "La cérémonie des Césars (جوائز سيزار) est l'équivalent français des Oscars.", icon: "🏆" },
+                    { question: "Comment appelle-t-on un marché aux puces en plein air ?", options: ["une brocante", "une braderie", "les deux"], correct: 2, explanation: "Une brocante ou une braderie (سوق السلع المستعملة) sont des marchés où l'on vend des objets d'occasion.", icon: "🏺" }
+                ]
+            }
+        };
+
+
+        // Initialize game
+        loadStats();
+
+        function selectCategory(category, element) {
+            gameState.currentCategory = category;
+            
+            // Remove selection from all category cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('ring-4', 'ring-blue-500', 'transform', 'scale-105');
+            });
+            
+            // Add selection to clicked card
+            element.classList.add('ring-4', 'ring-blue-500', 'transform', 'scale-105');
+            
+            // Update start button
+            updateStartButton();
+        }
+
+        function selectLevel(level, element) {
+            gameState.currentLevel = level;
+            
+            // Remove selection from all level buttons
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-white');
+            });
+            
+            // Add selection to clicked button
+            element.classList.add('ring-4', 'ring-white');
+            
+            // Update start button
+            updateStartButton();
+        }
+
+        function updateStartButton() {
+            const startBtn = document.getElementById('startGameBtn');
+            const helpText = startBtn.nextElementSibling;
+            
+            if (gameState.currentCategory && gameState.currentLevel) {
+                startBtn.disabled = false;
+                startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                startBtn.classList.add('hover:scale-105');
+                startBtn.onclick = startGame;
+                helpText.textContent = 'اضغط للبدء!';
+                helpText.classList.add('text-green-600');
+                helpText.classList.remove('text-gray-500');
+            } else {
+                startBtn.disabled = true;
+                startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                startBtn.classList.remove('hover:scale-105');
+                startBtn.onclick = null;
+                
+                if (!gameState.currentCategory && !gameState.currentLevel) {
+                    helpText.textContent = 'اختر فئة ومستوى للبدء';
+                } else if (!gameState.currentCategory) {
+                    helpText.textContent = 'اختر فئة';
+                } else {
+                    helpText.textContent = 'اختر مستوى';
+                }
+                helpText.classList.remove('text-green-600');
+                helpText.classList.add('text-gray-500');
+            }
+        }
+
+        function startGame() {
+            // Get questions for selected category and level
+            const categoryQuestions = questionDatabase[gameState.currentCategory]?.[gameState.currentLevel] || [];
+            
+            if (categoryQuestions.length === 0) {
+                alert('عذراً، لا توجد أسئلة متاحة لهذا الاختيار حالياً!');
+                return;
+            }
+
+            // Shuffle and select questions
+            gameState.questions = shuffleArray([...categoryQuestions]).slice(0, Math.min(gameState.totalQuestions, categoryQuestions.length));
+            gameState.currentQuestion = 0;
+            gameState.score = 0;
+            gameState.correctAnswers = 0;
+            gameState.hintsUsed = 0;
+
+            // Update display
+            const categoryName = document.querySelector(`.category-card[data-category="${gameState.currentCategory}"] h3`).textContent;
+            const levelName = document.querySelector(`.level-btn[data-level="${gameState.currentLevel}"]`).textContent.trim();
+            document.getElementById('categoryDisplay').textContent = categoryName;
+            document.getElementById('levelDisplay').textContent = levelName;
+
+            // Show game screen
+            showScreen('gameScreen');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (gameState.currentQuestion >= gameState.questions.length) {
+                showFinalScreen();
+                return;
+            }
+
+            const question = gameState.questions[gameState.currentQuestion];
+            
+            // Update question display
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('questionIcon').textContent = question.icon;
+            document.getElementById('questionNumber').textContent = gameState.currentQuestion + 1;
+            document.getElementById('currentScore').textContent = gameState.score + ' نقطة';
+            
+            // Update progress bar
+            const progress = ((gameState.currentQuestion + 1) / gameState.questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Load options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn w-full p-4 bg-white border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all font-medium';
+                button.dir = 'ltr';
+                button.style.textAlign = 'left';
+                button.innerHTML = `<span class="text-lg font-semibold text-blue-600 mr-3">${String.fromCharCode(65 + index)}</span> ${option}`;
+                button.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+
+            // Reset timer
+            gameState.timeLeft = gameState.currentLevel === 'debutant' ? 30 : gameState.currentLevel === 'intermediaire' ? 20 : 15;
+            startTimer();
+
+            // Reset hint button
+            document.getElementById('hintBtn').style.display = 'block';
+            document.getElementById('hintBtn').disabled = false;
+        }
+
+        function startTimer() {
+            clearInterval(gameState.timer);
+            const timerElement = document.getElementById('timer');
+            const timerContainer = timerElement.parentElement;
+            timerContainer.classList.remove('pulse', 'bg-red-200');
+            timerContainer.classList.add('bg-red-100');
+            updateTimerDisplay();
+            
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                updateTimerDisplay();
+                
+                if (gameState.timeLeft <= 0) {
+                    clearInterval(gameState.timer);
+                    selectAnswer(-1); // Time's up
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = gameState.timeLeft;
+            
+            if (gameState.timeLeft <= 5) {
+                timerElement.parentElement.classList.add('pulse');
+                timerElement.parentElement.classList.remove('bg-red-100');
+                timerElement.parentElement.classList.add('bg-red-200');
+            }
+        }
+
+        function selectAnswer(selectedIndex) {
+            clearInterval(gameState.timer);
+            
+            const question = gameState.questions[gameState.currentQuestion];
+            const isCorrect = selectedIndex === question.correct;
+            const isTimeout = selectedIndex === -1;
+
+            // Update buttons
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === question.correct) {
+                    btn.classList.add('correct');
+                } else if (index === selectedIndex && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Calculate score
+            let points = 0;
+            if (isCorrect) {
+                points = 10;
+                if (gameState.timeLeft > 10) points += 5; // Bonus for speed
+                gameState.correctAnswers++;
+            }
+            gameState.score += points;
+
+            // Show result
+            setTimeout(() => {
+                showResult(isCorrect, isTimeout, question.explanation, points);
+            }, 1500);
+        }
+
+        function showResult(isCorrect, isTimeout, explanation, points) {
+            const resultIcon = document.getElementById('resultIcon');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMessage = document.getElementById('resultMessage');
+            const explanationText = document.getElementById('explanationText');
+
+            if (isTimeout) {
+                resultIcon.textContent = '⏰';
+                resultTitle.textContent = 'انتهى الوقت!';
+                resultMessage.innerHTML = '<span dir="ltr" class="inline-block">Temps écoulé !</span>';
+            } else if (isCorrect) {
+                resultIcon.textContent = '🎉';
+                resultTitle.textContent = 'أحسنت!';
+                resultMessage.innerHTML = `<span dir="ltr" class="inline-block">Bravo !</span> لقد ربحت ${points} نقطة!`;
+                playSound('correct');
+            } else {
+                resultIcon.textContent = '😅';
+                resultTitle.textContent = 'ليس تماماً...';
+                resultMessage.innerHTML = `<span dir="ltr" class="inline-block">Pas tout à fait...</span> حاول مرة أخرى!`;
+                playSound('incorrect');
+            }
+
+            explanationText.textContent = explanation;
+            
+            // Update next button
+            const nextBtn = document.getElementById('nextBtn');
+            if (gameState.currentQuestion >= gameState.questions.length - 1) {
+                nextBtn.textContent = 'عرض النتائج';
+                nextBtn.onclick = showFinalScreen;
+            } else {
+                nextBtn.textContent = '← التالي';
+                nextBtn.onclick = nextQuestion;
+            }
+
+            showScreen('resultScreen');
+        }
+
+        function nextQuestion() {
+            gameState.currentQuestion++;
+            showScreen('gameScreen');
+            loadQuestion();
+        }
+
+        function showFinalScreen() {
+            const percentage = gameState.questions.length > 0 ? Math.round((gameState.correctAnswers / gameState.questions.length) * 100) : 0;
+            
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('finalCorrect').textContent = gameState.correctAnswers + '/' + gameState.questions.length;
+            document.getElementById('finalPercentage').textContent = percentage + '%';
+
+            // Show badges
+            const badgesContainer = document.getElementById('badgesContainer');
+            badgesContainer.innerHTML = '';
+            
+            if (percentage >= 80) {
+                badgesContainer.innerHTML = '<div class="inline-block bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-semibold">🏆 خبير!</div>';
+            } else if (percentage >= 60) {
+                badgesContainer.innerHTML = '<div class="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold">⭐ أداء رائع!</div>';
+            } else {
+                badgesContainer.innerHTML = '<div class="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold">💪 استمر في المحاولة!</div>';
+            }
+
+            // Save stats
+            saveStats(gameState.score, gameState.correctAnswers);
+
+            showScreen('finalScreen');
+        }
+
+        function showHint() {
+            if (gameState.score < 5) {
+                alert("ليس لديك نقاط كافية لاستخدام التلميح!");
+                return;
+            }
+
+            const question = gameState.questions[gameState.currentQuestion];
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            // Find one wrong answer to remove
+            let wrongAnswersIndices = [];
+            buttons.forEach((btn, index) => {
+                if (index !== question.correct && !btn.disabled) {
+                    wrongAnswersIndices.push(index);
+                }
+            });
+            
+            if (wrongAnswersIndices.length > 0) {
+                const removeIndex = wrongAnswersIndices[Math.floor(Math.random() * wrongAnswersIndices.length)];
+                buttons[removeIndex].style.opacity = '0.3';
+                buttons[removeIndex].onclick = null; // Disable click
+                
+                gameState.score -= 5;
+                document.getElementById('currentScore').textContent = gameState.score + ' نقطة';
+                document.getElementById('hintBtn').disabled = true; // Use hint only once
+            }
+        }
+
+        function speakQuestion() {
+            const question = gameState.questions[gameState.currentQuestion];
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(question.question);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.9;
+                speechSynthesis.speak(utterance);
+            } else {
+                alert("عذراً، متصفحك لا يدعم النطق الصوتي.");
+            }
+        }
+
+        function playSound(type) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                if (type === 'correct') {
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                    gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+                } else {
+                    oscillator.type = 'square';
+                    oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+                    gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.5);
+                }
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.error("لا يمكن تشغيل الصوت:", e);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('#gameContainer > div').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden', 'fade-in');
+            // Trigger reflow to restart animation
+            void document.getElementById(screenId).offsetWidth;
+            document.getElementById(screenId).classList.add('fade-in');
+        }
+
+        function backToMenu() {
+            clearInterval(gameState.timer);
+            showScreen('menuScreen');
+            
+            // Reset selections
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('ring-4', 'ring-blue-500', 'transform', 'scale-105');
+            });
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.classList.remove('ring-4', 'ring-white');
+            });
+            
+            gameState.currentCategory = '';
+            gameState.currentLevel = '';
+            
+            // Reset start button
+            updateStartButton();
+        }
+
+        function playAgain() {
+            showScreen('menuScreen');
+        }
+    </script>
+</body>
+</html>
+�
