@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match les Lettres - Jeu Éducatif</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+        }
+        
+        .title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .word-display {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            border: 2px solid #667eea;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .domain-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .word-context {
+            font-size: 1rem;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 8px;
+        }
+        
+        .target-word {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.4rem;
+        }
+        
+        .current-word {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 15px 0;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .letter-in-word {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 2px;
+            border-radius: 8px;
+            background: #e9ecef;
+            transition: all 0.3s ease;
+        }
+        
+        .letters-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+        
+        .letter-btn {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 15px 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-width: 60px;
+            color: #333;
+        }
+        
+        .letter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+        
+        .letter-btn.selected {
+            background: linear-gradient(145deg, #667eea, #5a67d8);
+            color: white;
+            border-color: #667eea;
+            transform: scale(0.95);
+        }
+        
+        .letter-btn.correct {
+            background: linear-gradient(145deg, #48bb78, #38a169);
+            color: white;
+            border-color: #48bb78;
+            animation: bounce 0.6s ease;
+        }
+        
+        .letter-btn.incorrect {
+            background: linear-gradient(145deg, #f56565, #e53e3e);
+            color: white;
+            border-color: #f56565;
+            animation: shake 0.6s ease;
+        }
+        
+        .letter-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-clear {
+            background: linear-gradient(145deg, #fbb6ce, #f687b3);
+            color: white;
+        }
+        
+        .btn-check {
+            background: linear-gradient(145deg, #68d391, #48bb78);
+            color: white;
+        }
+        
+        .btn-next {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feedback.success {
+            background: linear-gradient(145deg, #c6f6d5, #9ae6b4);
+            color: #22543d;
+            border: 2px solid #48bb78;
+        }
+        
+        .feedback.error {
+            background: linear-gradient(145deg, #fed7d7, #feb2b2);
+            color: #742a2a;
+            border: 2px solid #f56565;
+        }
+        
+        .score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 60%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            80% { transform: translateY(-5px); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes celebration {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .celebration {
+            animation: celebration 0.6s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .letter-btn {
+                padding: 12px 16px;
+                font-size: 1.3rem;
+                min-width: 50px;
+            }
+            
+            .current-word {
+                font-size: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">🎮 Match les Lettres</h1>
+        <p class="subtitle">Forme le mot français en cliquant sur les lettres dans le bon ordre!(frenchapeau)</p>
+        
+        <div class="score">Score: <span id="score">0</span>/10</div>
+        
+        <div class="word-display">
+            <div class="domain-badge" id="domainBadge">Les Animaux</div>
+            <div class="word-context" id="wordContext">Un petit animal domestique qui miaule</div>
+            <div class="current-word" id="currentWord"></div>
+        </div>
+        
+        <div class="letters-container" id="lettersContainer"></div>
+        
+        <div class="controls">
+            <button class="btn btn-clear" onclick="clearWord()">🗑️ Effacer</button>
+            <button class="btn btn-check" onclick="checkWord()">✅ Vérifier</button>
+            <button class="btn btn-next" onclick="nextWord()" style="display: none;" id="nextBtn">➡️ Suivant</button>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <script>
+        // Mots français pour débutants avec leurs lettres mélangées et domaines
+ const words = [
+    // --- A1 ---
+    { 
+        word: 'SOLEIL', 
+        letters: ['S', 'O', 'L', 'E', 'I', 'L', 'M', 'R'], 
+        domain: 'La Nature',
+        context: 'L\'étoile qui éclaire notre planète'
+    },
+    { 
+        word: 'CHAIR', 
+        letters: ['C', 'H', 'A', 'I', 'R', 'E', 'L'], 
+        domain: 'Le Corps humain',
+        context: 'Partie molle du corps'
+    },
+    { 
+        word: 'PAPA', 
+        letters: ['P', 'A', 'P', 'A', 'M', 'E'], 
+        domain: 'La Famille et le Foyer',
+        context: 'Le père en langage affectif'
+    },
+
+    // --- A2 ---
+    { 
+        word: 'ÉCRAN', 
+        letters: ['É', 'C', 'R', 'A', 'N', 'L', 'T'], 
+        domain: 'La Technologie',
+        context: 'Surface pour regarder un film ou utiliser un ordinateur'
+    },
+    { 
+        word: 'MUSIQUE', 
+        letters: ['M', 'U', 'S', 'I', 'Q', 'U', 'E', 'L'], 
+        domain: 'Les Arts',
+        context: 'Art des sons et des mélodies'
+    },
+    { 
+        word: 'HIVER', 
+        letters: ['H', 'I', 'V', 'E', 'R', 'A', 'S'], 
+        domain: 'Les Saisons',
+        context: 'Saison froide entre automne et printemps'
+    },
+
+    // --- B1 ---
+    { 
+        word: 'ORDINATEUR', 
+        letters: ['O','R','D','I','N','A','T','E','U','R','S'], 
+        domain: 'La Technologie',
+        context: 'Appareil utilisé pour faire des tâches numériques'
+    },
+    { 
+        word: 'CUISINE', 
+        letters: ['C','U','I','S','I','N','E','T'], 
+        domain: 'La Maison',
+        context: 'Endroit où on prépare les repas'
+    },
+    { 
+        word: 'VÉRITÉ', 
+        letters: ['V','É','R','I','T','É','S','U'], 
+        domain: 'Les Valeurs',
+        context: 'Ce qui est conforme à la réalité'
+    },
+    { 
+        word: 'MONTAGNE', 
+        letters: ['M','O','N','T','A','G','N','E','S'], 
+        domain: 'La Géographie',
+        context: 'Relief très élevé de la terre'
+    },
+    { 
+        word: 'SOURIRE', 
+        letters: ['S','O','U','R','I','R','E','T','A'], 
+        domain: 'Les Émotions',
+        context: 'Expression du visage qui montre la joie'
+    }
+];
+
+        
+        let currentWordIndex = 0;
+        let selectedLetters = [];
+        let score = 0;
+        let gameCompleted = false;
+        
+        // Messages d'encouragement
+        const successMessages = [
+            "🎉 Excellent! Très bien joué!",
+            "✨ Parfait! Tu es formidable!",
+            "🌟 Bravo! Continue comme ça!",
+            "🎊 Magnifique! Tu progresses!",
+            "💫 Fantastique! Bien fait!"
+        ];
+        
+        const errorMessages = [
+            "❌ Pas tout à fait... Essaie encore!",
+            "🤔 Presque! Réessaie!",
+            "💪 Tu peux y arriver! Encore une fois!",
+            "🎯 Pas grave, continue d'essayer!"
+        ];
+        
+        // Créer des sons avec Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSuccessSound() {
+            // Son de succès - mélodie joyeuse
+            const frequencies = [523.25, 659.25, 783.99]; // Do, Mi, Sol
+            frequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                }, index * 100);
+            });
+        }
+        
+        function playErrorSound() {
+            // Son d'erreur - ton descendant
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.5);
+            oscillator.type = 'sawtooth';
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+        
+        function initializeGame() {
+            currentWordIndex = 0;
+            score = 0;
+            gameCompleted = false;
+            updateScore();
+            loadWord();
+        }
+        
+        function loadWord() {
+            if (currentWordIndex >= words.length) {
+                showGameComplete();
+                return;
+            }
+            
+            const currentGame = words[currentWordIndex];
+            document.getElementById('domainBadge').textContent = currentGame.domain;
+            document.getElementById('wordContext').textContent = currentGame.context;
+
+            document.getElementById('currentWord').innerHTML = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('nextBtn').style.display = 'none';
+            
+            selectedLetters = [];
+            createLetterButtons(currentGame.letters);
+        }
+        
+        function createLetterButtons(letters) {
+            const container = document.getElementById('lettersContainer');
+            container.innerHTML = '';
+            
+            // Mélanger les lettres
+            const shuffledLetters = [...letters].sort(() => Math.random() - 0.5);
+            
+            shuffledLetters.forEach((letter, index) => {
+                const button = document.createElement('button');
+                button.className = 'letter-btn';
+                button.textContent = letter;
+                button.onclick = () => selectLetter(letter, button, index);
+                container.appendChild(button);
+            });
+        }
+        
+        function selectLetter(letter, button, index) {
+            if (button.disabled) return;
+            
+            selectedLetters.push(letter);
+            button.classList.add('selected');
+            button.disabled = true;
+            
+            updateCurrentWord();
+        }
+        
+        function updateCurrentWord() {
+            const currentWordDiv = document.getElementById('currentWord');
+            currentWordDiv.innerHTML = '';
+            
+            selectedLetters.forEach(letter => {
+                const span = document.createElement('span');
+                span.className = 'letter-in-word';
+                span.textContent = letter;
+                currentWordDiv.appendChild(span);
+            });
+        }
+        
+        function clearWord() {
+            selectedLetters = [];
+            document.getElementById('currentWord').innerHTML = '';
+            
+            // Réactiver tous les boutons
+            const buttons = document.querySelectorAll('.letter-btn');
+            buttons.forEach(button => {
+                button.disabled = false;
+                button.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+        }
+        
+        function checkWord() {
+            const targetWord = words[currentWordIndex].word;
+            const formedWord = selectedLetters.join('');
+            const feedback = document.getElementById('feedback');
+            const buttons = document.querySelectorAll('.letter-btn');
+            
+            if (formedWord === targetWord) {
+                // Réponse correcte
+                score++;
+                updateScore();
+                
+                buttons.forEach(button => {
+                    if (button.disabled) {
+                        button.classList.add('correct');
+                    }
+                });
+                
+                const successMessage = successMessages[Math.floor(Math.random() * successMessages.length)];
+                feedback.textContent = successMessage;
+                feedback.className = 'feedback success celebration';
+                
+                playSuccessSound();
+                
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                
+            } else {
+                // Réponse incorrecte
+                buttons.forEach(button => {
+                    if (button.disabled) {
+                        button.classList.add('incorrect');
+                    }
+                });
+                
+                const errorMessage = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+                feedback.textContent = errorMessage;
+                feedback.className = 'feedback error';
+                
+                playErrorSound();
+                
+                // Réinitialiser après 2 secondes
+                setTimeout(() => {
+                    clearWord();
+                }, 2000);
+            }
+        }
+        
+        function nextWord() {
+            currentWordIndex++;
+            loadWord();
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+        
+        function showGameComplete() {
+            const feedback = document.getElementById('feedback');
+            feedback.innerHTML = `
+                <div style="text-align: center;">
+                    <h2>🎉 Félicitations!</h2>
+                    <p>Tu as terminé le jeu avec un score de ${score}/10!</p>
+                    <button class="btn btn-next" onclick="initializeGame()" style="margin-top: 15px;">
+                        🔄 Rejouer
+                    </button>
+                </div>
+            `;
+            feedback.className = 'feedback success celebration';
+            
+            // Jouer une mélodie de victoire
+            setTimeout(playSuccessSound, 0);
+            setTimeout(playSuccessSound, 300);
+            setTimeout(playSuccessSound, 600);
+            
+            document.getElementById('lettersContainer').innerHTML = '';
+            document.getElementById('currentWord').innerHTML = '';
+        }
+        
+        // Initialiser le jeu au chargement
+        window.onload = function() {
+            // Activer le contexte audio après interaction utilisateur
+            document.addEventListener('click', function() {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            }, { once: true });
+            
+            initializeGame();
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96953b5023b3189a',t:'MTc1NDIxNzk5MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
