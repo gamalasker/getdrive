@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلة تفاعلية على الدرس - نسخة محسنة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .french-text {
+            font-family: 'Poppins', sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+        .question-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            transition: all 0.3s ease-in-out;
+        }
+        .question-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+        }
+        .correct {
+            border: 2px solid #10B981 !important; /* Emerald-500 */
+            background-color: #ECFDF5;
+        }
+        .incorrect {
+            border: 2px solid #F43F5E !important; /* Rose-500 */
+            background-color: #FFF1F2;
+        }
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn-primary {
+            background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 51%, #fd868c 100%);
+            color: white;
+            background-size: 200% auto;
+        }
+        .btn-primary:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+        }
+        .btn-secondary {
+            background-color: #9CA3AF; /* Gray-400 */
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #6B7280; /* Gray-500 */
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.15);
+        }
+        select, input[type="text"] {
+            border-radius: 8px;
+            border: 1px solid #D1D5DB;
+            transition: border-color 0.3s;
+            padding: 2px 4px;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.5);
+        }
+        .choice-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #D1D5DB;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Poppins', sans-serif;
+            width: 100%;
+            text-align: left;
+        }
+        .choice-btn:hover {
+            background-color: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+        .selected-choice {
+            background-color: #667eea;
+            color: white;
+            border-color: #667eea !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-bold text-white" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">أسئلة تفاعلية على الدرس</h1>
+            <p class="text-lg text-white/90 mt-2">اختبر فهمك للدرس بتصميم جديد وممتع!</p>
+        </header>
+
+        <form id="quiz-form" onsubmit="return false;">
+            <div id="quiz-container">
+                <!-- السؤال الأول: المهن -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">1. صل بين المهنة ومعناها الصحيح:</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between"><label class="text-lg french-text" for="prof1">Un médecin</label><select id="prof1" class="p-2"><option value="">اختر..</option><option value="actor">ممثل</option><option value="doctor">طبيب</option><option value="teacher">مدرس</option><option value="pilot">طيار</option></select></div>
+                        <div class="flex items-center justify-between"><label class="text-lg french-text" for="prof2">Un acteur</label><select id="prof2" class="p-2"><option value="">اختر..</option><option value="actor">ممثل</option><option value="doctor">طبيب</option><option value="teacher">مدرس</option><option value="pilot">طيار</option></select></div>
+                        <div class="flex items-center justify-between"><label class="text-lg french-text" for="prof3">Un pilote</label><select id="prof3" class="p-2"><option value="">اختر..</option><option value="actor">ممثل</option><option value="doctor">طبيب</option><option value="teacher">مدرس</option><option value="pilot">طيار</option></select></div>
+                    </div>
+                </div>
+
+                <!-- السؤال الثاني: مفردات الصورة -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">2. ما هذا؟ (من الصورة الأولى)</h2>
+                    <div class="space-y-4">
+                         <div class="flex items-center justify-between"><label class="text-lg french-text" for="vocab1">Une voiture</label><select id="vocab1" class="p-2"><option value="">اختر..</option><option value="tree">شجرة</option><option value="car">سيارة</option><option value="street">شارع</option></select></div>
+                         <div class="flex items-center justify-between"><label class="text-lg french-text" for="vocab2">Un arbre</label><select id="vocab2" class="p-2"><option value="">اختر..</option><option value="tree">شجرة</option><option value="car">سيارة</option><option value="street">شارع</option></select></div>
+                    </div>
+                </div>
+
+                <!-- السؤال الثالث: فهم الحوار -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">3. اختر Vrai (صح) أو Faux (خطأ):</h2>
+                    <div class="space-y-4">
+                        <div id="tf1" class="p-3 rounded-lg flex items-center justify-between"><span class="french-text text-lg">a) Emma est en retard à la fête de Victoire.</span><div class="flex gap-2" data-question="tf1"><button type="button" class="choice-btn" data-value="vrai">Vrai</button><button type="button" class="choice-btn" data-value="faux">Faux</button></div></div>
+                        <div id="tf2" class="p-3 rounded-lg flex items-center justify-between"><span class="french-text text-lg">b) Valentine est déguisée en pilote.</span><div class="flex gap-2" data-question="tf2"><button type="button" class="choice-btn" data-value="vrai">Vrai</button><button type="button" class="choice-btn" data-value="faux">Faux</button></div></div>
+                        <div id="tf3" class="p-3 rounded-lg flex items-center justify-between"><span class="french-text text-lg">c) Le thème de la fête est les animaux.</span><div class="flex gap-2" data-question="tf3"><button type="button" class="choice-btn" data-value="vrai">Vrai</button><button type="button" class="choice-btn" data-value="faux">Faux</button></div></div>
+                    </div>
+                </div>
+
+                <!-- السؤال الرابع: إعطاء الاتجاهات -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">4. أكمل وصف الطريق:</h2>
+                    <div class="p-4 rounded-lg bg-indigo-100/50">
+                        <p class="text-lg text-center french-text leading-loose">
+                            ...prenez la 
+                            <select id="dir1" class="p-1"><option value="">...</option><option value="première">première</option><option value="deuxième">deuxième</option></select>
+                            rue à 
+                            <select id="dir2" class="p-1"><option value="">...</option><option value="droite">droite</option><option value="gauche">gauche</option></select>
+                            et tournez à 
+                            <select id="dir3" class="p-1"><option value="">...</option><option value="droite">droite</option><option value="gauche">gauche</option></select>
+                            au troisième feu...
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- السؤال الخامس: معلومات عن الحفلة -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">5. أكمل معلومات الحفلة من الدعوة:</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between"><label class="text-lg">العنوان:</label><div class="flex items-center gap-2 french-text"><input type="text" id="info1" class="p-2 w-20 text-center">, rue des Lilas.</div></div>
+                        <div class="flex items-center justify-between"><label class="text-lg">التاريخ:</label><div class="flex items-center gap-2 french-text">samedi <input type="text" id="info2" class="p-2 w-16 text-center"> mai.</div></div>
+                    </div>
+                </div>
+                
+                <!-- السؤال السادس: أكمل الملخص -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">6. أكمل ملخص المحادثة:</h2>
+                    <div class="p-4 rounded-lg bg-indigo-100/50">
+                        <p class="french-text text-lg leading-relaxed">
+                            Emma est avec son 
+                            <select id="sum1"><option value="">...</option><option value="père">père</option><option value="frère">frère</option><option value="ami">ami</option></select> 
+                            devant l'
+                            <select id="sum2"><option value="">...</option><option value="hôpital">hôpital</option><option value="parc">parc</option><option value="lycée">lycée</option></select>
+                            ; ils sont 
+                            <select id="sum3"><option value="">...</option><option value="perdus">perdus</option><option value="contents">contents</option><option value="en retard">en retard</option></select>
+                            . Victoire explique le chemin à 
+                            <select id="sum4"><option value="">...</option><option value="Emma">Emma</option><option value="son père">son père</option><option value="Martin">Martin</option></select>
+                            . C'est facile, c'est la première rue à 
+                            <select id="sum5"><option value="">...</option><option value="droite">droite</option><option value="gauche">gauche</option></select>
+                            et à 
+                            <select id="sum6"><option value="">...</option><option value="gauche">gauche</option><option value="droite">droite</option></select>
+                            au troisième feu. Chez Victoire, la fête est 
+                            <select id="sum7"><option value="">...</option><option value="géniale">géniale</option><option value="ennuyeuse">ennuyeuse</option><option value="calme">calme</option></select>
+                            . Les copains sont déguisés : Valentine est déguisée en 
+                            <select id="sum8"><option value="">...</option><option value="infirmière">infirmière</option><option value="pilote">pilote</option><option value="actrice">actrice</option></select>
+                            et Martin en 
+                            <select id="sum9"><option value="">...</option><option value="pilote">pilote</option><option value="infirmier">infirmier</option><option value="médecin">médecin</option></select>
+                            . Emma est confuse, elle n'est pas 
+                            <select id="sum10"><option value="">...</option><option value="déguisée">déguisée</option><option value="prête">prête</option><option value="contente">contente</option></select>
+                            . À la fin, il y a un problème ! Le père d'Emma se trompe et tourne à 
+                            <select id="sum11"><option value="">...</option><option value="droite">droite</option><option value="gauche">gauche</option></select>
+                            !
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- أسئلة الاختيار من متعدد -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">7. أسئلة إضافية (اختيار من متعدد):</h2>
+                    <div class="space-y-6">
+                        <!-- Q1 -->
+                        <div id="mcq1" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Qu'est-ce qu'Emma aime faire comme activité physique ?</p><div class="space-y-2" data-question="mcq1"><button type="button" class="choice-btn" data-value="a">a) Jouer au football</button><button type="button" class="choice-btn" data-value="b">b) Faire du vélo</button><button type="button" class="choice-btn" data-value="c">c) Nager à la piscine</button></div></div>
+                        <!-- Q2 -->
+                        <div id="mcq2" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Où Emma aime-t-elle aller pour lire des livres ?</p><div class="space-y-2" data-question="mcq2"><button type="button" class="choice-btn" data-value="a">a) Au cinéma</button><button type="button" class="choice-btn" data-value="b">b) Au restaurant</button><button type="button" class="choice-btn" data-value="c">c) À la bibliothèque</button></div></div>
+                        <!-- Q3 -->
+                        <div id="mcq3" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quel type de fêtes Emma apprécie-t-elle ?</p><div class="space-y-2" data-question="mcq3"><button type="button" class="choice-btn" data-value="a">a) Les fêtes d'anniversaire</button><button type="button" class="choice-btn" data-value="b">b) Les fêtes de Noël</button><button type="button" class="choice-btn" data-value="c">c) Les fêtes déguisées</button></div></div>
+                        <!-- Q4 -->
+                        <div id="mcq4" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quelle activité artistique Emma aime-t-elle ?</p><div class="space-y-2" data-question="mcq4"><button type="button" class="choice-btn" data-value="a">a) Peindre des tableaux</button><button type="button" class="choice-btn" data-value="b">b) Chanter des chansons</button><button type="button" class="choice-btn" data-value="c">c) Faire de la danse</button></div></div>
+                        <!-- Q5 -->
+                        <div id="mcq5" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quel est l'un des objectifs principaux de l'unité "Le Club des citadins" ?</p><div class="space-y-2" data-question="mcq5"><button type="button" class="choice-btn" data-value="a">a) Parler des animaux</button><button type="button" class="choice-btn" data-value="b">b) Parler des professions</button><button type="button" class="choice-btn" data-value="c">c) Parler du sport</button></div></div>
+                        <!-- Q6 -->
+                        <div id="mcq6" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quel âge a Emma ?</p><div class="space-y-2" data-question="mcq6"><button type="button" class="choice-btn" data-value="a">a) 15 ans</button><button type="button" class="choice-btn" data-value="b">b) 16 ans</button><button type="button" class="choice-btn" data-value="c">c) 17 ans</button></div></div>
+                        <!-- Q7 -->
+                        <div id="mcq7" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Qu'est-ce qu'Emma aime faire, selon sa présentation ?</p><div class="space-y-2" data-question="mcq7"><button type="button" class="choice-btn" data-value="a">a) Le football</button><button type="button" class="choice-btn" data-value="b">b) La danse</button><button type="button" class="choice-btn" data-value="c">c) La cuisine</button></div></div>
+                        <!-- Q8 -->
+                        <div id="mcq8" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quel est le problème d'Emma au début du dialogue ?</p><div class="space-y-2" data-question="mcq8"><button type="button" class="choice-btn" data-value="a">a) Elle est malade.</button><button type="button" class="choice-btn" data-value="b">b) Elle est en retard et perdue.</button><button type="button" class="choice-btn" data-value="c">c) Elle n'aime pas la fête.</button></div></div>
+                        <!-- Q9 -->
+                        <div id="mcq9" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Où se trouvent Emma et son père au début du dialogue ?</p><div class="space-y-2" data-question="mcq9"><button type="button" class="choice-btn" data-value="a">a) Devant l'école.</button><button type="button" class="choice-btn" data-value="b">b) Devant l'entrée du parc, à côté de l'hôpital.</button><button type="button" class="choice-btn" data-value="c">c) Chez Victoire.</button></div></div>
+                        <!-- Q10 -->
+                        <div id="mcq10" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quelle est la première indication que Victoire donne à Emma ?</p><div class="space-y-2" data-question="mcq10"><button type="button" class="choice-btn" data-value="a">a) Tournez à gauche.</button><button type="button" class="choice-btn" data-value="b">b) Prenez la première rue à droite.</button><button type="button" class="choice-btn" data-value="c">c) Continuez tout droit.</button></div></div>
+                        <!-- Q11 -->
+                        <div id="mcq11" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quel est le nom de la rue où habite Victoire ?</p><div class="space-y-2" data-question="mcq11"><button type="button" class="choice-btn" data-value="a">a) Rue des Roses</button><button type="button" class="choice-btn" data-value="b">b) Rue des Lilas</button><button type="button" class="choice-btn" data-value="c">c) Rue du Parc</button></div></div>
+                        <!-- Q12 -->
+                        <div id="mcq12" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">En quoi Valentine est-elle déguisée à la fête ?</p><div class="space-y-2" data-question="mcq12"><button type="button" class="choice-btn" data-value="a">a) En médecin</button><button type="button" class="choice-btn" data-value="b">b) En infirmière</button><button type="button" class="choice-btn" data-value="c">c) En professeur</button></div></div>
+                        <!-- Q13 -->
+                        <div id="mcq13" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">En quoi Martin est-il déguisé à la fête ?</p><div class="space-y-2" data-question="mcq13"><button type="button" class="choice-btn" data-value="a">a) En policier</button><button type="button" class="choice-btn" data-value="b">b) En pompier</button><button type="button" class="choice-btn" data-value="c">c) En pilote</button></div></div>
+                        <!-- Q14 -->
+                        <div id="mcq14" class="p-3 rounded-lg"><p class="french-text font-semibold mb-2">Quel est le déguisement d'Emma ?</p><div class="space-y-2" data-question="mcq14"><button type="button" class="choice-btn" data-value="a">a) Une infirmière</button><button type="button" class="choice-btn" data-value="b">b) Un pilote</button><button type="button" class="choice-btn" data-value="c">c) C'est une surprise</button></div></div>
+                    </div>
+                </div>
+                
+                <!-- سؤال إعادة ترتيب الجمل -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">8. أعد ترتيب الكلمات لتكوين جمل صحيحة:</h2>
+                    <div class="space-y-4">
+                        <div id="reorder1" class="p-3 rounded-lg"><p class="french-text mb-2">a) voiture / Je / dans / la / suis</p><input type="text" class="w-full p-2 french-text" placeholder="اكتب الجملة هنا..."></div>
+                        <div id="reorder2" class="p-3 rounded-lg"><p class="french-text mb-2">b) à / Tournez / gauche / troisième / au / feu</p><input type="text" class="w-full p-2 french-text" placeholder="اكتب الجملة هنا..."></div>
+                        <div id="reorder3" class="p-3 rounded-lg"><p class="french-text mb-2">c) la / rue / à / Prends / première / droite</p><input type="text" class="w-full p-2 french-text" placeholder="اكتب الجملة هنا..."></div>
+                        <div id="reorder4" class="p-3 rounded-lg"><p class="french-text mb-2">d) est / en / infirmière / Julie / déguisée</p><input type="text" class="w-full p-2 french-text" placeholder="اكتب الجملة هنا..."></div>
+                        <div id="reorder5" class="p-3 rounded-lg"><p class="french-text mb-2">e) Et / c'est / ? / toi / ton / , / déguisement / quoi</p><input type="text" class="w-full p-2 french-text" placeholder="اكتب الجملة هنا..."></div>
+                    </div>
+                </div>
+
+                <!-- سؤال الألوان -->
+                <div class="question-card">
+                    <h2 class="text-2xl font-bold mb-4 text-purple-700">9. ما هو لون...؟</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between"><label class="text-lg french-text" for="color1">La voiture:</label><input type="text" id="color1" class="p-2 w-1/2 french-text"></div>
+                        <div class="flex items-center justify-between"><label class="text-lg french-text" for="color2">Le panneau:</label><input type="text" id="color2" class="p-2 w-1/2 french-text"></div>
+                        <div class="flex items-center justify-between"><label class="text-lg french-text" for="color3">L'arbre:</label><input type="text" id="color3" class="p-2 w-1/2 french-text"></div>
+                    </div>
+                </div>
+
+
+                <!-- أزرار التحكم والنتيجة -->
+                <div class="text-center mt-8">
+                    <button id="checkBtn" type="button" class="btn btn-primary">تحقق من إجاباتي</button>
+                    <button id="resetBtn" type="reset" class="btn btn-secondary ml-4">إعادة المحاولة</button>
+                    <div id="result" class="mt-6 text-2xl font-bold text-white"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const quizForm = document.getElementById('quiz-form');
+        const checkBtn = document.getElementById('checkBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const resultDiv = document.getElementById('result');
+        
+        let tfAnswers = { tf1: null, tf2: null, tf3: null };
+        let mcqAnswers = {};
+
+        document.querySelectorAll('.choice-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const questionGroup = button.parentElement;
+                const questionId = questionGroup.dataset.question;
+                const value = button.dataset.value;
+
+                if (questionId.startsWith('tf')) {
+                    tfAnswers[questionId] = value;
+                } else {
+                    mcqAnswers[questionId] = value;
+                }
+                
+                questionGroup.querySelectorAll('.choice-btn').forEach(btn => btn.classList.remove('selected-choice'));
+                button.classList.add('selected-choice');
+            });
+        });
+
+        function checkAnswer(element, condition) {
+            if (condition) {
+                element.classList.add('correct');
+                element.classList.remove('incorrect');
+                return 1;
+            } else {
+                element.classList.add('incorrect');
+                element.classList.remove('correct');
+                return 0;
+            }
+        }
+        
+        function normalizeString(str) {
+            return str.trim().toLowerCase().replace(/[.,?]/g, '');
+        }
+
+        checkBtn.addEventListener('click', () => {
+            let score = 0;
+            let totalPoints = 0;
+
+            // Question 1: Professions (3 points)
+            score += checkAnswer(document.getElementById('prof1'), document.getElementById('prof1').value === 'doctor'); totalPoints++;
+            score += checkAnswer(document.getElementById('prof2'), document.getElementById('prof2').value === 'actor'); totalPoints++;
+            score += checkAnswer(document.getElementById('prof3'), document.getElementById('prof3').value === 'pilot'); totalPoints++;
+            
+            // Question 2: Vocabulary (2 points)
+            score += checkAnswer(document.getElementById('vocab1'), document.getElementById('vocab1').value === 'car'); totalPoints++;
+            score += checkAnswer(document.getElementById('vocab2'), document.getElementById('vocab2').value === 'tree'); totalPoints++;
+
+            // Question 3: True/False (3 points)
+            score += checkAnswer(document.getElementById('tf1'), tfAnswers.tf1 === 'vrai'); totalPoints++;
+            score += checkAnswer(document.getElementById('tf2'), tfAnswers.tf2 === 'faux'); totalPoints++;
+            score += checkAnswer(document.getElementById('tf3'), tfAnswers.tf3 === 'faux'); totalPoints++;
+
+            // Question 4: Directions (1 point for all correct)
+            const dir1_correct = document.getElementById('dir1').value === 'première';
+            const dir2_correct = document.getElementById('dir2').value === 'droite';
+            const dir3_correct = document.getElementById('dir3').value === 'gauche';
+            checkAnswer(document.getElementById('dir1'), dir1_correct);
+            checkAnswer(document.getElementById('dir2'), dir2_correct);
+            checkAnswer(document.getElementById('dir3'), dir3_correct);
+            if (dir1_correct && dir2_correct && dir3_correct) {
+                score++;
+            }
+            totalPoints++;
+
+            // Question 5: Party Info (2 points)
+            score += checkAnswer(document.getElementById('info1'), document.getElementById('info1').value.trim() === '76'); totalPoints++;
+            score += checkAnswer(document.getElementById('info2'), document.getElementById('info2').value.trim() === '4'); totalPoints++;
+
+            // Question 6: Summary (11 points)
+            score += checkAnswer(document.getElementById('sum1'), document.getElementById('sum1').value === 'père'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum2'), document.getElementById('sum2').value === 'hôpital'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum3'), document.getElementById('sum3').value === 'perdus'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum4'), document.getElementById('sum4').value === 'Emma'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum5'), document.getElementById('sum5').value === 'droite'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum6'), document.getElementById('sum6').value === 'gauche'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum7'), document.getElementById('sum7').value === 'géniale'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum8'), document.getElementById('sum8').value === 'infirmière'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum9'), document.getElementById('sum9').value === 'pilote'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum10'), document.getElementById('sum10').value === 'déguisée'); totalPoints++;
+            score += checkAnswer(document.getElementById('sum11'), document.getElementById('sum11').value === 'droite'); totalPoints++;
+
+            // Question 7: MCQs (14 points)
+            score += checkAnswer(document.getElementById('mcq1'), mcqAnswers.mcq1 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq2'), mcqAnswers.mcq2 === 'c'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq3'), mcqAnswers.mcq3 === 'c'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq4'), mcqAnswers.mcq4 === 'c'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq5'), mcqAnswers.mcq5 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq6'), mcqAnswers.mcq6 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq7'), mcqAnswers.mcq7 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq8'), mcqAnswers.mcq8 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq9'), mcqAnswers.mcq9 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq10'), mcqAnswers.mcq10 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq11'), mcqAnswers.mcq11 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq12'), mcqAnswers.mcq12 === 'b'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq13'), mcqAnswers.mcq13 === 'c'); totalPoints++;
+            score += checkAnswer(document.getElementById('mcq14'), mcqAnswers.mcq14 === 'c'); totalPoints++;
+
+            // Question 8: Reorder sentences (5 points)
+            const reorder1 = document.querySelector('#reorder1 input');
+            score += checkAnswer(reorder1, normalizeString(reorder1.value) === 'je suis dans la voiture'); totalPoints++;
+            const reorder2 = document.querySelector('#reorder2 input');
+            score += checkAnswer(reorder2, normalizeString(reorder2.value) === 'tournez à gauche au troisième feu'); totalPoints++;
+            const reorder3 = document.querySelector('#reorder3 input');
+            score += checkAnswer(reorder3, normalizeString(reorder3.value) === 'prends la première rue à droite'); totalPoints++;
+            const reorder4 = document.querySelector('#reorder4 input');
+            score += checkAnswer(reorder4, normalizeString(reorder4.value) === 'julie est déguisée en infirmière'); totalPoints++;
+            const reorder5 = document.querySelector('#reorder5 input');
+            score += checkAnswer(reorder5, normalizeString(reorder5.value) === 'et toi c\'est quoi ton déguisement' || normalizeString(reorder5.value) === 'et toi, c\'est quoi ton déguisement?'); totalPoints++;
+
+            // Question 9: Colors (3 points)
+            const color1 = document.getElementById('color1');
+            score += checkAnswer(color1, normalizeString(color1.value) === 'bleu' || normalizeString(color1.value) === 'bleue'); totalPoints++;
+            const color2 = document.getElementById('color2');
+            score += checkAnswer(color2, normalizeString(color2.value).includes('rouge') && normalizeString(color2.value).includes('blanc')); totalPoints++;
+            const color3 = document.getElementById('color3');
+            score += checkAnswer(color3, normalizeString(color3.value) === 'vert'); totalPoints++;
+
+
+            // Display result
+            resultDiv.textContent = `نتيجتك هي: ${score} من ${totalPoints}`;
+            resultDiv.classList.remove('text-green-300', 'text-red-300');
+            if(score > totalPoints / 2) {
+                resultDiv.classList.add('text-green-300');
+            } else {
+                resultDiv.classList.add('text-red-300');
+            }
+            
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+
+        resetBtn.addEventListener('click', () => {
+            quizForm.reset();
+            document.querySelectorAll('.correct, .incorrect, .selected-choice').forEach(el => {
+                el.classList.remove('correct', 'incorrect', 'selected-choice');
+            });
+            tfAnswers = { tf1: null, tf2: null, tf3: null };
+            mcqAnswers = {};
+            resultDiv.textContent = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+    </script>
+</body>
+</html>
