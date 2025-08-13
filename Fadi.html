@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fadi et le Vaisseau Spatial - قصة فادي والمركبة الفضائية</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .book-container {
+            perspective: 1500px;
+            width: 800px;
+            height: 600px;
+            position: relative;
+        }
+
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform-origin: right center; /* Hinge on the right for RTL book */
+            transition: transform 0.9s ease-in-out;
+            backface-visibility: hidden;
+            overflow: hidden;
+            left: 0; /* All pages start on the left stack */
+        }
+        
+        .page.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .back-cover {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            right: 0;
+        }
+
+        .page-content {
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+        }
+
+        .page-illustration {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .page-image {
+            width: 90%;
+            height: 150px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .french-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+            direction: ltr;
+        }
+
+        .arabic-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+            direction: rtl;
+            font-weight: 600;
+        }
+        
+        .audio-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-top: 5px;
+            color: #764ba2;
+            transition: transform 0.2s ease;
+        }
+        .audio-btn:hover {
+            transform: scale(1.15);
+        }
+
+
+        .controls {
+            position: absolute;
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 10px;
+            font-size: 12px;
+            color: #999;
+        }
+        .page:nth-child(odd) .page-number { left: 20px; }
+        .page:nth-child(even) .page-number { right: 20px; }
+
+
+        .title-page {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .title-page .page-content {
+            justify-content: center;
+        }
+        
+        .title-page .page-illustration {
+            width: 150px;
+            height: 150px;
+            font-size: 80px;
+        }
+
+        .title-page h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .title-page h2 {
+            font-size: 20px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* Illustrations */
+        .space-bg { background: linear-gradient(45deg, #1a1a2e, #16213e); }
+        .books-bg { background: linear-gradient(45deg, #ff9a9e, #fecfef); }
+        .build-bg { background: linear-gradient(45deg, #a8edea, #fed6e3); }
+        .rocket-bg { background: linear-gradient(45deg, #ff6b6b, #ffa500); }
+        .helmet-bg { background: linear-gradient(45deg, #4ecdc4, #44a08d); }
+        .flight-bg { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .planets-bg { background: linear-gradient(45deg, #ff8a80, #ff5722); }
+        .aliens-bg { background: linear-gradient(45deg, #81c784, #4caf50); }
+        .return-bg { background: linear-gradient(45deg, #64b5f6, #2196f3); }
+        .dream-bg { background: linear-gradient(45deg, #ffb74d, #ff9800); }
+
+        @media (max-width: 768px) {
+            .book-container { width: 90vw; height: 70vh; }
+            .page-content { padding: 15px; }
+            .page-illustration { width: 80px; height: 80px; font-size: 40px; }
+            .page-image { height: 120px; }
+            .french-text, .arabic-text { font-size: 12px; }
+            .audio-btn { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container">
+        <div class="book" id="book">
+            <!-- Pages are in reverse HTML order to stack correctly with z-index. -->
+
+            <!-- Page 10 -->
+            <div class="page" style="z-index: 1;">
+                <div class="page-content">
+                    <div class="page-illustration dream-bg">💭</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhjqge6ojULlNMiRG8HzdkdpI4bLgvRb_OeRIU5_ENsxFDtIXuPxD4ICleihxOP86IXpLTWp8WeHexAhT3lIaVB1Pk9Nf7olJbpN62ZmdAae-pDM5WoHRieDk0JvgGoLlQilN_i5oss5NTGwGpAQe-1XUuXJqz6nM7ojL1fEQSFc9iix8vle8tbMCK_BVQ/s320/11.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Fadi savait que même si son vaisseau était en carton, ses rêves pouvaient l'emmener dans les endroits les plus lointains de l'univers. Et il continua de rêver au jour où il voyagerait dans l'espace pour de vrai.</div>
+                    <div class="arabic-text">علم فادي أنه حتى لو كانت مركبته من الكرتون، فإن أحلامه يمكن أن تأخذه إلى أبعد الأماكن في الكون. واستمر في الحلم باليوم الذي سيسافر فيه إلى الفضاء حقاً.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">10</div>
+                </div>
+            </div>
+
+            <!-- Page 9 -->
+            <div class="page" style="z-index: 2;">
+                <div class="page-content">
+                    <div class="page-illustration return-bg">🌍</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgXdH2TtYc4nL20YNdZLm7V7-qXTDAzyHzEdiBgDYlyWCgiFccYyk0ZZb7e0KKCbcS7jUtnFT41RKq01hjVoa_osWd7Rr-cAKTovnUvyoF7_BE3aLu-PtSQMowmqs9kBbRSGpP2seR_iRcZRod_2TppII-4mbFRmvz_O9-gOmBaTRuLL8AVE1dTNWjEQ_o/s320/10.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Quand il fut temps de rentrer à la maison, Fadi ramena son vaisseau "L'Étoile Brillante" vers la Terre, le cœur rempli d'aventures et de souvenirs heureux.</div>
+                    <div class="arabic-text">عندما حان وقت العودة إلى المنزل، أعاد فادي مركبته "النجمة المضيئة" إلى الأرض، وقلبه مليء بالمغامرات والذكريات السعيدة.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">9</div>
+                </div>
+            </div>
+
+            <!-- Page 8 -->
+            <div class="page" style="z-index: 3;">
+                <div class="page-content">
+                    <div class="page-illustration aliens-bg">👽</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjqIz0IHLIxMFaeAu5ii7TtXYLNQAe8b7GEueSAIsBfd70x6BlUCfUK9QIGPBnjocbHpN9CRC6sdkNMy9_9IjlCX0aGP1DUyV40CxrhIjcMuwDW15UTIrjdSNW_rhrjjQ0hYgqVPG0tBkJSsiWPsQzph4HfSt5OOfXI0UDudLrkWbRuCcMwRQUNJHpkC0g/s320/9.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Fadi fit signe aux gentils extraterrestres qu'il rencontra sur des planètes lointaines. Ils lui firent signe en retour avec de grands sourires.</div>
+                    <div class="arabic-text">لوح فادي للكائنات الفضائية اللطيفة التي التقى بها على كواكب بعيدة. لوحوا له بالمقابل بابتسامات عريضة.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">8</div>
+                </div>
+            </div>
+
+            <!-- Page 7 -->
+            <div class="page" style="z-index: 4;">
+                <div class="page-content">
+                    <div class="page-illustration planets-bg">🪐</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgk_xLAC8_j8GWSisunYlRy8FJXs19ACzMWQZQL7xhNMQDVm52d28fDAoZhmgsWDllzEmnl57AmWRhglYtmcoIvzUqJUpvplbvF4p670ECYCxg-xNnFD1EdrfyTDsMdWfOTZXuI130THT5aZEjFMi6sqbaY4OMEdLq0S7a_h8DS0AMb6ugDEa_bsdK-XwQ/s320/8.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Dans son voyage imaginaire, Fadi passa devant la planète rouge, Mars, vit les magnifiques anneaux de Saturne et aperçut la géante Jupiter.</div>
+                    <div class="arabic-text">في رحلته التخيلية، مر فادي أمام الكوكب الأحمر المريخ، ورأى حلقات زحل الجميلة ولمح العملاق المشتري.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">7</div>
+                </div>
+            </div>
+
+            <!-- Page 6 -->
+            <div class="page" style="z-index: 5;">
+                <div class="page-content">
+                    <div class="page-illustration flight-bg">☁️</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg4bbxKGWYCGzP6tD0uczlDe9_qtI2NWBxbS5zsz_6pMBMf9BN2b3HlvA5W7-WytKOvMc1clsawPEuPqMNhcXgYvRt1rZUhfGcWqjidTtQKbu9gdO03n8QkU5xg_KvqFXJ0nX07Kpx1haP2BmOHboNz-Z9vhf5WptwrAwIc9AlST96NbyL5QC4ej96Zfms/s320/7.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Fadi ferma les yeux et imagina son vaisseau s'élever dans le ciel, perçant les nuages et se dirigeant vers les étoiles.</div>
+                    <div class="arabic-text">أغلق فادي عينيه وتخيل مركبته ترتفع في السماء، تخترق السحب وتتجه نحو النجوم.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">6</div>
+                </div>
+            </div>
+
+            <!-- Page 5 -->
+            <div class="page" style="z-index: 6;">
+                <div class="page-content">
+                    <div class="page-illustration helmet-bg">👨‍🚀</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhSksMP3TUxpijrPt1z_YKh8fTm7WZHY3vBhzwMBWXcka_ySz5ckMeLnDXAtjJJ8dihmVTlOOPj3WoQ7hrt7gRAwNj2T6-1axiXPE9dEVb2Xj9ccv5cJV4Tl4tWhmbmfCQoFrfEgLoevyAs3oU7m02dlhde97TQ0qwO7TuhD6T-rsq9psxHXplcCNHlduI/s320/6.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Fadi mit son casque fabriqué avec un vieux seau et entra dans le cockpit de son vaisseau. "Cinq, quatre, trois, deux, un... décollage !" cria Fadi avec enthousiasme.</div>
+                    <div class="arabic-text">وضع فادي خوذته المصنوعة من دلو قديم ودخل إلى قمرة القيادة في مركبته. "خمسة، أربعة، ثلاثة، اثنان، واحد... إقلاع!" صرخ فادي بحماس.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">5</div>
+                </div>
+            </div>
+
+            <!-- Page 4 -->
+            <div class="page" style="z-index: 7;">
+                <div class="page-content">
+                    <div class="page-illustration rocket-bg">🛸</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhzCl6VDA_nyJY3m2pl0kWj_eZpetlQAbOOxVbRi5ZGgTEesuqQAA3YT55X5KWh5WDPhfe8llSQUdXMqiwbPrLlK06uTjBFyV8vbZRt0t4zMl3sSmy44YVxhrPQX9FaNU_u7lxwuDCap_A81h_nAj0PCuotRZgVyDvaqfmvrsCI5ATW9hlnXqTVxa_vZ64/s320/5.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Fadi travailla dur pendant plusieurs jours. Finalement, son vaisseau spatial, qu'il nomma "L'Étoile Brillante", fut prêt pour le décollage.</div>
+                    <div class="arabic-text">عمل فادي بجد لعدة أيام. أخيراً، أصبحت مركبته الفضائية التي أطلق عليها "النجمة المضيئة" جاهزة للإقلاع.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">4</div>
+                </div>
+            </div>
+
+            <!-- Page 3 -->
+            <div class="page" style="z-index: 8;">
+                <div class="page-content">
+                    <div class="page-illustration build-bg">🔧</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhLYDksJyKqtxc8RbybtxPPeX_ow52PjTdZDZ74QoD42puSel6XsFolP6f7IXFEBTO0BHmZ5WgjLJkC-2B107iTcnrJXgDmVtzHKlEXDAw6XcFUKHIvxgEb6lHPOAYEDsKPtKuxui0No7eu8FJZ-G5PcJzPvbGkK7vS7g3NZNHLTfkecL0uq-z4dyD7JRo/s320/4.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Un jour, Fadi décida de construire son propre vaisseau spatial. Il rassembla des boîtes en carton, des bouteilles en plastique et du papier d'aluminium.</div>
+                    <div class="arabic-text">في يوم من الأيام، قرر فادي بناء مركبته الفضائية الخاصة. جمع صناديق من الكرتون وزجاجات بلاستيكية وورق الألمنيوم.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">3</div>
+                </div>
+            </div>
+
+            <!-- Page 2 -->
+            <div class="page" style="z-index: 9;">
+                <div class="page-content">
+                    <div class="page-illustration books-bg">📚</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEilVCda9nwH99_SIIbhFrSQjvoHkalGEzeWbjKqQJAEX8sA1-1j7tDJKsGICBmQTkRJWeJT_maoeEABhpZCkGZyIjANQCo9oLAXAAa9BbyWkwSSL9xkf_IFjKf8_PJMeaGP2vXGvK_iQ7ffMYeqxUW4WHPN09kIwMii-ubFRYn505FylkZeQboXcF1zUks/s320/3.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Chaque nuit, Fadi lisait des livres sur l'espace. Il découvrait les planètes colorées, les galaxies en spirale et les étoiles scintillantes.</div>
+                    <div class="arabic-text">كل ليلة، كان فادي يقرأ كتباً عن الفضاء. اكتشف الكواكب الملونة والمجرات الحلزونية والنجوم المتلألئة.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">2</div>
+                </div>
+            </div>
+
+            <!-- Page 1 -->
+            <div class="page" style="z-index: 10;">
+                <div class="page-content">
+                    <div class="page-illustration space-bg">🌟</div>
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhPGqcQhMjXxNBZggDLyGnyZRXJrV3sgrcjlISjR32q-hX6A4X3yINMrEs284Q2N4ZlylhO3x_DMyEKgzDhPr4SqTkYK65bGrJC3kJ2j-yaLxJ5PIgFAXaMW_DyfhJzcjnHcsGXobuFrxqgo_Nz03wV3qqqxUrtcung5nL1VBRwUc-jTlCDOFWiyOklqmI/s320/2.png" alt="مكان الصورة" class="page-image">
+                    <div class="french-text">Dans un monde rempli d'étoiles et de planètes lointaines, vivait un petit garçon nommé Fadi. Fadi rêvait de devenir un astronaute.</div>
+                    <div class="arabic-text">في عالم مليء بالنجوم والكواكب البعيدة، عاش صبي صغير يُدعى فادي. كان فادي يحلم بأن يصبح رائد فضاء.</div>
+                    <button class="audio-btn">🔊</button>
+                    <div class="page-number">1</div>
+                </div>
+            </div>
+            
+            <!-- Cover Page -->
+            <div class="page title-page" style="z-index: 11;">
+                <div class="page-content">
+                    <div class="page-illustration">🚀</div>
+                    <h1>Fadi et le Vaisseau Spatial</h1>
+                    <h2>فادي والمركبة الفضائية</h2>
+                </div>
+            </div>
+
+            <!-- Static back cover -->
+            <div class="back-cover"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="prevBtn">→ الصفحة السابقة</button>
+            <button class="btn" id="nextBtn">الصفحة التالية ←</button>
+        </div>
+    </div>
+
+    <script>
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const book = document.getElementById('book');
+        const pages = Array.from(book.querySelectorAll('.page')).reverse();
+        
+        let currentPage = 0;
+        const totalPages = pages.length;
+
+        function stopSpeech() {
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+        }
+
+        function updateButtons() {
+            nextBtn.disabled = currentPage === totalPages;
+            prevBtn.disabled = currentPage === 0;
+        }
+
+        function nextPage() {
+            stopSpeech();
+            if (currentPage < totalPages) {
+                const pageToFlip = pages[currentPage];
+                pageToFlip.classList.add('flipped');
+                pageToFlip.style.zIndex = currentPage + 12;
+                currentPage++;
+                updateButtons();
+            }
+        }
+
+        function previousPage() {
+            stopSpeech();
+            if (currentPage > 0) {
+                currentPage--;
+                const pageToUnflip = pages[currentPage];
+                pageToUnflip.classList.remove('flipped');
+                pageToUnflip.style.zIndex = totalPages - currentPage;
+                updateButtons();
+            }
+        }
+
+        function speak(text) {
+            stopSpeech(); // Stop any previous speech before starting new
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR'; // Set language to French
+            utterance.rate = 0.9; // Adjust speech rate for clarity
+            speechSynthesis.speak(utterance);
+        }
+
+        // --- Event Listeners ---
+        nextBtn.addEventListener('click', nextPage);
+        prevBtn.addEventListener('click', previousPage);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') nextPage();
+            else if (e.key === 'ArrowRight') previousPage();
+        });
+
+        document.querySelectorAll('.audio-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const textToSpeak = event.target.parentElement.querySelector('.french-text').innerText;
+                speak(textToSpeak);
+            });
+        });
+
+        // Initialisation
+        updateButtons();
+    </script>
+</body>
+</html>
