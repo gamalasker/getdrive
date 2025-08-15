@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>الرياضة بالفرنسية - منصة تفاعلية متكاملة</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --grad-main:linear-gradient(135deg,#667eea,#764ba2);
+  --grad-accent:linear-gradient(45deg,#48bb78,#38a169);
+  --grad-blue:linear-gradient(45deg,#4299e1,#3182ce);
+  --grad-danger:linear-gradient(45deg,#e53e3e,#c53030);
+  --radius-lg:20px;
+  --radius-md:14px;
+  --shadow-sm:0 2px 8px rgba(0,0,0,.08);
+  --shadow-md:0 6px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 10px 28px rgba(0,0,0,.18);
+  --bg-card:#ffffff;
+  --bg-soft:#f7fafc;
+  --tx-dark:#2d3748;
+  --tx-mid:#4a5568;
+  --tx-soft:#718096;
+  --tx-light:#e2e8f0;
+  --border:#e2e8f0;
+  --focus:#667eea;
+  --warn:#dd6b20;
+  --success:#38a169;
+  --danger:#e53e3e;
+  --info:#4299e1;
+  --transition:.35s cubic-bezier(.4,.0,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--grad-main);
+  min-height:100vh;
+  color:var(--tx-dark);
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#2d3658}
+::-webkit-scrollbar-thumb{background:#6c7bd9;border-radius:20px}
+::-webkit-scrollbar-thumb:hover{background:#8d98ea}
+.container{max-width:1320px;margin:0 auto;padding:0 20px;}
+header.header{
+  background:rgba(255,255,255,.97);
+  backdrop-filter:blur(14px);
+  box-shadow:var(--shadow-lg);
+  padding:2.2rem 0 1.7rem;
+  position:sticky;top:0;z-index:50;
+  border-bottom:4px solid #4f5bd9;
+}
+.header h1{
+  font-size:2.55rem;
+  background:linear-gradient(90deg,#4c51bf,#805ad5,#d53f8c);
+  -webkit-background-clip:text;
+  color:transparent;
+  font-weight:700;
+  letter-spacing:.5px;
+  margin-bottom:.5rem;
+}
+.header p{color:var(--tx-soft);font-size:1.05rem;font-weight:500;}
+.header .meta-line{
+  margin-top:.9rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.8rem;
+  justify-content:center;
+  font-size:.75rem;
+  color:var(--tx-mid);
+}
+.meta-pill{
+  background:var(--bg-soft);
+  padding:.4rem .9rem;
+  border-radius:30px;
+  border:1px solid var(--border);
+  display:inline-flex;
+  gap:.45rem;
+  align-items:center;
+  font-weight:600;
+  transition:var(--transition);
+}
+.meta-pill i{color:#5a67d8}
+.meta-pill:hover{box-shadow:0 4px 12px rgba(0,0,0,.12);transform:translateY(-3px)}
+nav.navigation{
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(8px);
+  box-shadow:var(--shadow-md);
+  margin-bottom:1.8rem;
+  border-radius:0 0 var(--radius-lg) var(--radius-lg);
+  border-top:1px solid #edf2f7;
+}
+.nav-inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.65rem;
+  justify-content:center;
+  padding:1rem 1rem 1.2rem;
+}
+.nav-btn{
+  background:linear-gradient(45deg,#6b74e6,#8563dd);
+  color:#fff;
+  border:none;
+  padding:.75rem 1.3rem;
+  border-radius:30px;
+  font-size:.80rem;
+  font-weight:600;
+  letter-spacing:.5px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:.55rem;
+  position:relative;
+  overflow:hidden;
+  transition:var(--transition);
+  box-shadow:var(--shadow-sm);
+  min-width:135px;
+  justify-content:center;
+}
+.nav-btn:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent 70%);
+  opacity:0;
+  transition:var(--transition);
+}
+.nav-btn:hover:before{opacity:1}
+.nav-btn:hover{transform:translateY(-4px) scale(1.02)}
+.nav-btn.active{
+  background:var(--grad-accent);
+  box-shadow:0 6px 18px rgba(56,161,105,.45);
+}
+.global-progress{
+  background:rgba(255,255,255,.9);
+  box-shadow:var(--shadow-md);
+  border-radius:var(--radius-lg);
+  padding:1rem 1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:.65rem;
+  margin-bottom:1.7rem;
+  position:relative;
+  overflow:hidden;
+}
+.global-progress:after{
+  content:"";
+  position:absolute;
+  width:220px;
+  height:220px;
+  background:radial-gradient(circle at 45% 45%,rgba(102,126,234,.25),transparent 70%);
+  top:-90px;left:-80px;
+  pointer-events:none;
+}
+.gp-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:1rem;
+  z-index:2;
+}
+.gp-title{
+  font-weight:700;
+  font-size:.95rem;
+  color:var(--tx-mid);
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+.progress-bar-shell{
+  height:14px;
+  background:#e2e8f0;
+  border-radius:60px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:inset 0 0 4px rgba(0,0,0,.15);
+}
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#48bb78,#38a169,#4299e1,#805ad5);
+  background-size:250% 100%;
+  animation:moveGradient 8s linear infinite;
+  transition:width .7s cubic-bezier(.6,.04,.24,.95);
+  position:relative;
+}
+@keyframes moveGradient{
+  0%{background-position:0 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0 50%}
+}
+.progress-stats{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  font-size:.7rem;
+  color:var(--tx-mid);
+  font-weight:600;
+  align-items:center;
+}
+.stat-badge{
+  background:var(--bg-soft);
+  padding:.45rem .75rem;
+  border-radius:10px;
+  border:1px solid var(--border);
+  display:inline-flex;
+  gap:.4rem;
+  align-items:center;
+}
+.stat-badge i{color:#5a67d8}
+.btn-reset-progress{
+  background:var(--grad-danger);
+  color:#fff;
+  border:none;
+  padding:.55rem .9rem;
+  border-radius:12px;
+  font-size:.7rem;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+}
+.btn-reset-progress:hover{transform:translateY(-3px) scale(1.05)}
+main.main{
+  padding-bottom:4rem;
+}
+.section{
+  display:none;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(6px);
+  border:1px solid #e5e9f7;
+  border-radius:var(--radius-lg);
+  padding:2rem 1.7rem 2.3rem;
+  margin-bottom:2rem;
+  box-shadow:var(--shadow-lg);
+  position:relative;
+  overflow:hidden;
+}
+.section.active{display:block;}
+.section:before{
+  content:"";
+  position:absolute;
+  width:320px;
+  height:320px;
+  background:radial-gradient(circle at 65% 35%,rgba(118,75,162,.18),transparent 70%);
+  top:-160px;
+  right:-140px;
+  pointer-events:none;
+  opacity:.55;
+}
+.section h2{
+  font-size:1.55rem;
+  font-weight:800;
+  background:linear-gradient(90deg,#4f46e5,#764ba2,#d53f8c);
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:1.4rem;
+  letter-spacing:.5px;
+  position:relative;
+  display:flex;
+  gap:.6rem;
+  align-items:center;
+}
+.flex-grid{
+  display:grid;
+  gap:1.4rem;
+}
+@media (min-width:820px){
+  .flex-grid.cols-2{grid-template-columns:repeat(2,1fr);}
+  .flex-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+  .flex-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+}
+.card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.2rem 1.05rem 1.35rem;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);}
+.card h3{
+  font-size:1.05rem;
+  margin:0;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  color:var(--tx-mid);
+}
+.tag{
+  background:#edf2f7;
+  padding:.35rem .7rem;
+  border-radius:12px;
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.4px;
+  color:#4a5568;
+  display:inline-flex;
+  align-items:center;
+  gap:.3rem;
+}
+.tag i{color:#667eea}
+.rule-examples{
+  display:flex;
+  flex-direction:column;
+  gap:.6rem;
+  margin-top:.4rem;
+}
+.example-block{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:.7rem .75rem .8rem;
+  font-size:.8rem;
+  display:grid;
+  gap:.35rem;
+  position:relative;
+  overflow:hidden;
+}
+.example-block:before{
+  content:"";
+  position:absolute;
+  width:90px;height:90px;
+  background:radial-gradient(circle at 70% 25%,rgba(102,126,234,.25),transparent 70%);
+  top:-40px;right:-40px;
+  opacity:.4;
+}
+.example-fr{font-family:'Roboto',monospace;font-weight:600;color:#2d3748;font-size:.85rem;}
+.example-ar{font-size:.7rem;color:var(--tx-soft);}
+.inline-audio-btn{
+  background:var(--grad-blue);
+  border:none;
+  color:#fff;
+  padding:.45rem .8rem;
+  border-radius:40px;
+  font-size:.65rem;
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  transition:var(--transition);
+  box-shadow:var(--shadow-sm);
+}
+.inline-audio-btn:hover{transform:translateY(-3px);}
+.inline-audio-btn.playing{animation:pulse 1.1s infinite;background:var(--grad-accent);}
+.section-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.65rem;
+  margin-bottom:1.1rem;
+}
+.filter-btn{
+  background:#edf2f7;
+  border:none;
+  border-radius:30px;
+  padding:.55rem 1.05rem;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  cursor:pointer;
+  color:#4a5568;
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+  position:relative;
+  overflow:hidden;
+}
+.filter-btn:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),transparent);
+  opacity:0;
+  transition:var(--transition);
+}
+.filter-btn:hover:after{opacity:1}
+.filter-btn.active{
+  background:var(--grad-blue);
+  color:#fff;
+  box-shadow:0 5px 16px rgba(66,153,225,.45);
+}
+.search-box{
+  position:relative;
+  width:100%;
+  max-width:420px;
+}
+.search-box input{
+  width:100%;
+  padding:.85rem 1rem .85rem 2.7rem;
+  background:#ffffff;
+  border:2px solid var(--border);
+  border-radius:14px;
+  font-family:'Cairo',sans-serif;
+  font-size:.75rem;
+  font-weight:600;
+  color:var(--tx-mid);
+  letter-spacing:.4px;
+  transition:var(--transition);
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+.search-box input:focus{
+  outline:none;
+  border-color:var(--focus);
+  box-shadow:0 0 0 4px rgba(102,126,234,.25);
+}
+.search-box i{
+  position:absolute;
+  left:1rem;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:.9rem;
+  color:#a0aec0;
+}
+.vocab-grid{
+  display:grid;
+  gap:1rem;
+}
+@media (min-width:680px){
+  .vocab-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr));}
+}
+.vocab-card{
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1rem .9rem 1.15rem;
+  box-shadow:var(--shadow-sm);
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  position:relative;
+  cursor:pointer;
+  transition:var(--transition);
+  overflow:hidden;
+}
+.vocab-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);}
+.vocab-card.flipped{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#ffffff;
+  border-color:#667eea;
+}
+.vocab-front,.vocab-back{transition:var(--transition);}
+.vocab-card.flipped .vocab-front{opacity:0;transform:translateY(-10px) scale(.9);pointer-events:none;}
+.vocab-card:not(.flipped) .vocab-back{opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;}
+.vocab-term{font-size:1.05rem;font-weight:700;font-family:'Roboto',sans-serif;}
+.vocab-pron{font-size:.68rem;color:#718096;font-weight:600;letter-spacing:.6px;}
+.vocab-card.flipped .vocab-pron{color:#e2e8f0;}
+.vocab-ar{font-size:.85rem;font-weight:600;}
+.vocab-context{
+  font-size:.62rem;
+  line-height:1.4;
+  color:#4a5568;
+  background:#edf2f7;
+  padding:.45rem .55rem;
+  border-radius:10px;
+  font-weight:600;
+}
+.vocab-card.flipped .vocab-context{background:rgba(255,255,255,.25);color:#fff;border:1px solid rgba(255,255,255,.35);}
+.card-actions{
+  display:flex;
+  gap:.45rem;
+  flex-wrap:wrap;
+  margin-top:.3rem;
+}
+.sm-btn{
+  background:var(--grad-blue);
+  border:none;
+  color:#fff;
+  padding:.45rem .8rem;
+  border-radius:30px;
+  font-size:.6rem;
+  font-weight:700;
+  cursor:pointer;
+  letter-spacing:.5px;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+}
+.sm-btn:hover{transform:translateY(-3px)}
+.sm-btn.outline{
+  background:#edf2f7;
+  color:#4a5568;
+  border:1px solid #d2d9e8;
+}
+.sm-btn.outline:hover{
+  background:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+.sm-btn.playing{animation:pulse 1.1s infinite;background:var(--grad-accent);}
+.phrases-wrapper{
+  display:grid;
+  gap:1.1rem;
+}
+.phrase-item{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:1rem .95rem 1.05rem;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  box-shadow:var(--shadow-sm);
+  transition:var(--transition);
+}
+.phrase-item:before{
+  content:"";
+  position:absolute;
+  width:160px;height:160px;
+  background:radial-gradient(circle at 70% 20%,rgba(66,153,225,.3),transparent 70%);
+  top:-90px;right:-60px;
+  opacity:.4;
+  pointer-events:none;
+}
+.phrase-item:hover{transform:translateY(-6px);box-shadow:var(--shadow-md);}
+.phrase-fr{
+  font-family:'Roboto',monospace;
+  font-weight:700;
+  font-size:.95rem;
+  color:#27304b;
+}
+.phrase-ar{
+  font-size:.75rem;
+  font-weight:600;
+  color:#4a5568;
+}
+.phrase-context{
+  font-size:.6rem;
+  font-weight:600;
+  letter-spacing:.5px;
+  color:#718096;
+  background:#ffffff;
+  padding:.35rem .6rem;
+  border-radius:10px;
+  align-self:flex-start;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+.inline-controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+}
+.exercise-box{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.2rem 1rem 1.4rem;
+  display:flex;
+  flex-direction:column;
+  gap:.8rem;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.exercise-box:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  background:radial-gradient(circle at 75% 25%,rgba(72,187,120,.3),transparent 70%);
+  top:-120px;right:-100px;
+  opacity:.45;
+  pointer-events:none;
+}
+.fill-sentence{
+  font-family:'Roboto',monospace;
+  font-size:1.05rem;
+  font-weight:600;
+  color:#2d3748;
+  line-height:1.6;
+}
+.fill-sentence input{
+  font-family:'Roboto',monospace;
+  font-size:.95rem;
+  min-width:110px;
+  padding:.5rem .65rem;
+  border:2px solid #d1d9e8;
+  border-radius:10px;
+  font-weight:600;
+  text-align:center;
+  letter-spacing:.7px;
+  transition:var(--transition);
+  background:#fff;
+}
+.fill-sentence input:focus{
+  outline:none;
+  border-color:var(--focus);
+  box-shadow:0 0 0 4px rgba(102,126,234,.2);
+}
+.fill-sentence input.correct{
+  background:#f0fff4;
+  border-color:#38a169;
+  color:#22543d;
+}
+.fill-sentence input.incorrect{
+  background:#fff5f5;
+  border-color:#e53e3e;
+  color:#742a2a;
+}
+.translation-line{
+  font-size:.75rem;
+  font-weight:600;
+  color:#4a5568;
+  background:#ffffff;
+  padding:.55rem .75rem;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+}
+.hint-box{
+  background:#e6fffa;
+  border:1px solid #b2f5ea;
+  border-left:5px solid #38b2ac;
+  padding:.65rem .8rem .7rem;
+  border-radius:12px;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:#234e52;
+  display:none;
+  line-height:1.5;
+}
+.options-line{
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:1px;
+  color:#718096;
+  background:#fff;
+  padding:.45rem .7rem;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,.05);
+  display:inline-flex;
+  gap:.4rem;
+  flex-wrap:wrap;
+}
+.inline-audio-group{
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:.4rem;
+}
+.score-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  background:#fff;
+  padding:.55rem .85rem;
+  border-radius:50px;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  box-shadow:0 3px 10px rgba(0,0,0,.12);
+  border:1px solid #e2e8f0;
+  color:#2d3748;
+}
+.big-btn{
+  background:var(--grad-accent);
+  border:none;
+  color:#fff;
+  padding:.75rem 1.25rem;
+  font-size:.75rem;
+  font-weight:700;
+  letter-spacing:.7px;
+  border-radius:14px;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(72,187,120,.45);
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+  position:relative;
+  overflow:hidden;
+  transition:var(--transition);
+}
+.big-btn.blue{
+  background:var(--grad-blue);
+  box-shadow:0 4px 12px rgba(66,153,225,.45);
+}
+.big-btn.gray{
+  background:#e2e8f0;
+  color:#2d3748;
+  box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.big-btn.danger{
+  background:var(--grad-danger);
+  box-shadow:0 4px 12px rgba(229,62,62,.45);
+}
+.big-btn:hover{transform:translateY(-4px) scale(1.02);}
+.big-btn:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.25),transparent);
+  opacity:0;
+  transition:var(--transition);
+}
+.big-btn:hover:after{opacity:1}
+.btn-row{
+  display:flex;
+  gap:.75rem;
+  flex-wrap:wrap;
+  margin-top:.9rem;
+}
+.dragdrop-shell{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:1rem .95rem 1.3rem;
+  box-shadow:var(--shadow-sm);
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.dd-flex{
+  display:grid;
+  gap:1.1rem;
+}
+@media (min-width:820px){
+  .dd-flex{grid-template-columns:320px 1fr;}
+}
+.word-pool{
+  background:#ffffff;
+  border:2px dashed #c3cee0;
+  min-height:170px;
+  border-radius:18px;
+  padding:.7rem .7rem .6rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.55rem;
+  align-content:flex-start;
+  position:relative;
+}
+.draggable-word{
+  background:linear-gradient(45deg,#667eea,#764ba2);
+  color:#fff;
+  border:none;
+  border-radius:50px;
+  padding:.55rem 1.05rem;
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  cursor:grab;
+  display:inline-flex;
+  gap:.5rem;
+  align-items:center;
+  position:relative;
+  box-shadow:0 4px 10px rgba(102,126,234,.45);
+  transition:var(--transition);
+}
+.draggable-word:hover{transform:translateY(-4px) scale(1.06)}
+.draggable-word:active{cursor:grabbing}
+.sentences-zone{
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
+}
+.dd-sentence{
+  background:#ffffff;
+  border:2px dashed #cbd5e0;
+  border-radius:18px;
+  padding:.75rem .85rem;
+  min-height:78px;
+  font-size:.85rem;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:.55rem;
+  flex-wrap:wrap;
+  line-height:1.5;
+  position:relative;
+  transition:var(--transition);
+}
+.dd-sentence.drag-over{background:#edf2f7;border-color:#667eea;}
+.drop-slot{
+  background:#e6ebf5;
+  border:2px dashed #a0aec0;
+  border-radius:12px;
+  padding:.45rem .9rem;
+  min-width:95px;
+  text-align:center;
+  font-size:.7rem;
+  font-weight:700;
+  color:#4a5568;
+  letter-spacing:.5px;
+  cursor:pointer;
+  transition:var(--transition);
+  position:relative;
+}
+.drop-slot.filled{
+  background:#c6f6d5;
+  border-color:#48bb78;
+  color:#22543d;
+  box-shadow:0 0 0 1px #48bb78;
+}
+.sentence-audio{
+  position:absolute;
+  top:6px;
+  left:6px;
+  background:var(--grad-blue);
+  color:#fff;
+  border:none;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  font-size:.65rem;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 4px 12px rgba(66,153,225,.45);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--transition);
+}
+.sentence-audio:hover{transform:translateY(-3px)}
+.dd-translation{
+  font-size:.55rem;
+  font-weight:700;
+  color:#718096;
+  width:100%;
+}
+.pronunciation-trainer{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:1.2rem 1rem 1.5rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+}
+.pronunciation-trainer:before{
+  content:"";
+  position:absolute;
+  width:260px;height:260px;
+  top:-140px;left:-140px;
+  background:radial-gradient(circle at 60% 40%,rgba(66,153,225,.25),transparent 70%);
+  opacity:.5;
+  pointer-events:none;
+}
+.mode-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+}
+.mode-btn{
+  background:#edf2f7;
+  border:1px solid #d2d9e8;
+  border-radius:30px;
+  padding:.6rem 1.1rem;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:#4a5568;
+  cursor:pointer;
+  transition:var(--transition);
+  box-shadow:var(--shadow-sm);
+}
+.mode-btn.active{
+  background:var(--grad-blue);
+  color:#ffffff;
+  border-color:#4299e1;
+  box-shadow:0 4px 14px rgba(66,153,225,.45);
+}
+.pron-content{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.2rem .95rem 1.3rem;
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  min-height:125px;
+}
+.pron-content:after{
+  content:"";
+  position:absolute;
+  width:170px;height:170px;
+  background:radial-gradient(circle at 70% 25%,rgba(118,75,162,.25),transparent 70%);
+  top:-100px;right:-80px;
+  opacity:.4;
+  pointer-events:none;
+}
+.pron-fr{
+  font-family:'Roboto',monospace;
+  font-size:1.3rem;
+  font-weight:700;
+  color:#2d3748;
+  letter-spacing:.5px;
+}
+.pron-ar{
+  font-size:.8rem;
+  font-weight:600;
+  color:#4a5568;
+}
+.pron-phon{
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.6px;
+  color:#4299e1;
+}
+.pron-tip{
+  background:#e6fffa;
+  border:1px solid #b2f5ea;
+  padding:.55rem .7rem;
+  border-radius:12px;
+  font-size:.6rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:#285e61;
+  line-height:1.5;
+}
+.pron-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+  margin-top:.5rem;
+}
+.quiz-box{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:1.3rem 1rem 1.6rem;
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.quiz-box:before{
+  content:"";
+  position:absolute;
+  width:250px;height:250px;
+  top:-150px;right:-150px;
+  background:radial-gradient(circle at 65% 30%,rgba(229,62,62,.3),transparent 70%);
+  pointer-events:none;
+  opacity:.35;
+}
+.quiz-header{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.75rem;
+  align-items:center;
+  justify-content:space-between;
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.6px;
+  color:#4a5568;
+}
+.timer-badge{
+  background:#fff5f5;
+  color:#c53030;
+  padding:.5rem .8rem;
+  border-radius:12px;
+  border:1px solid #fed7d7;
+  display:inline-flex;
+  gap:.45rem;
+  align-items:center;
+  box-shadow:0 2px 6px rgba(229,62,62,.3);
+  font-size:.65rem;
+}
+.q-progress{
+  background:#ffffff;
+  padding:.55rem .9rem;
+  border-radius:12px;
+  border:1px solid var(--border);
+  display:inline-flex;
+  gap:.4rem;
+  align-items:center;
+  font-size:.65rem;
+  font-weight:700;
+  letter-spacing:.5px;
+  color:#2d3748;
+}
+.quiz-question{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1rem .9rem 1.15rem;
+  font-size:.9rem;
+  font-weight:700;
+  line-height:1.6;
+  letter-spacing:.4px;
+  position:relative;
+  box-shadow:var(--shadow-sm);
+}
+.quiz-options{
+  display:grid;
+  gap:.75rem;
+}
+@media (min-width:640px){
+  .quiz-options{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+}
+.quiz-option{
+  background:#ffffff;
+  border:2px solid #cbd5e0;
+  padding:.85rem .9rem;
+  border-radius:16px;
+  font-size:.7rem;
+  font-weight:800;
+  letter-spacing:.7px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  box-shadow:0 3px 10px rgba(0,0,0,.06);
+  position:relative;
+  overflow:hidden;
+  transition:var(--transition);
+}
+.quiz-option:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,rgba(255,255,255,.28),transparent 60%);
+  opacity:0;
+  transition:var(--transition);
+}
+.quiz-option:hover:before{opacity:1}
+.quiz-option:hover{transform:translateY(-4px)}
+.quiz-option.selected{
+  background:var(--grad-blue);
+  color:#ffffff;
+  border-color:#4299e1;
+  box-shadow:0 5px 14px rgba(66,153,225,.45);
+}
+.quiz-option.correct{
+  background:#f0fff4;
+  color:#22543d;
+  border-color:#48bb78;
+  box-shadow:0 4px 12px rgba(72,187,120,.45);
+}
+.quiz-option.incorrect{
+  background:#fff5f5;
+  color:#742a2a;
+  border-color:#e53e3e;
+  box-shadow:0 4px 12px rgba(229,62,62,.35);
+}
+.quiz-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.7rem;
+}
+.quiz-results{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:1.4rem 1rem 1.6rem;
+  margin-top:.9rem;
+  display:none;
+  flex-direction:column;
+  gap:1rem;
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow-md);
+}
+.quiz-results:after{
+  content:"";
+  position:absolute;
+  width:300px;height:300px;
+  background:radial-gradient(circle at 65% 25%,rgba(72,187,120,.35),transparent 70%);
+  top:-170px;left:-150px;
+  opacity:.45;
+  pointer-events:none;
+}
+.final-score{
+  font-size:2rem;
+  font-weight:800;
+  letter-spacing:1px;
+  background:linear-gradient(90deg,#48bb78,#38a169,#4299e1,#764ba2);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.medal-badge{
+  font-size:3.2rem;
+  line-height:1;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.25));
+  animation:popMedal .9s ease;
+}
+@keyframes popMedal{
+  0%{transform:scale(0) rotate(-180deg);opacity:0}
+  60%{transform:scale(1.15) rotate(20deg);opacity:1}
+  100%{transform:scale(1) rotate(0deg);}
+}
+.score-breakdown{
+  display:grid;
+  gap:.9rem;
+  margin-top:.6rem;
+}
+@media (min-width:640px){
+  .score-breakdown{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));}
+}
+.break-card{
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:.8rem .75rem .9rem;
+  font-size:.65rem;
+  font-weight:700;
+  color:#4a5568;
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+  position:relative;
+  overflow:hidden;
+}
+.break-card:before{
+  content:"";
+  position:absolute;
+  width:130px;height:130px;
+  background:radial-gradient(circle at 70% 25%,rgba(102,126,234,.24),transparent 70%);
+  top:-70px;right:-60px;
+  opacity:.35;
+  pointer-events:none;
+}
+.footer{
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);
+  padding:2rem 0 2.4rem;
+  margin-top:3rem;
+  text-align:center;
+  font-size:.7rem;
+  font-weight:600;
+  color:#4a5568;
+  box-shadow:0 -2px 14px rgba(0,0,0,.12);
+  border-top:3px solid #5d68e0;
+  position:relative;
+  overflow:hidden;
+}
+.footer:before{
+  content:"";
+  position:absolute;
+  width:400px;height:400px;
+  background:radial-gradient(circle at 50% 50%,rgba(102,126,234,.22),transparent 70%);
+  top:-200px;left:-180px;
+}
+.footer:after{
+  content:"";
+  position:absolute;
+  width:300px;height:300px;
+  background:radial-gradient(circle at 60% 35%,rgba(118,75,162,.25),transparent 70%);
+  right:-160px;top:-160px;
+}
+.feedback{
+  position:fixed;
+  top:18px;
+  right:18px;
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  background:#4299e1;
+  color:#fff;
+  padding:.85rem 1.1rem .9rem;
+  border-radius:16px;
+  font-size:.7rem;
+  font-weight:800;
+  letter-spacing:.6px;
+  box-shadow:0 6px 22px rgba(0,0,0,.3);
+  z-index:9999;
+  animation:slideIn .5s;
+  max-width:320px;
+  line-height:1.5;
+}
+.feedback.success{background:#38a169}
+.feedback.error{background:#e53e3e}
+.feedback.warning{background:#dd6b20}
+.feedback.info{background:#4299e1}
+@keyframes slideIn{
+  0%{opacity:0;transform:translateX(40px) scale(.95)}
+  100%{opacity:1;transform:translateX(0) scale(1)}
+}
+@keyframes slideOut{
+  0%{opacity:1;transform:translateX(0) scale(1)}
+  100%{opacity:0;transform:translateX(30px) scale(.9)}
+}
+.audio-loading{
+  position:fixed;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(15,23,42,.9);
+  color:#fff;
+  padding:1.2rem 1.6rem;
+  border-radius:20px;
+  font-size:.8rem;
+  font-weight:700;
+  display:none;
+  flex-direction:column;
+  gap:.55rem;
+  align-items:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+  z-index:9998;
+  letter-spacing:.8px;
+  min-width:240px;
+}
+.audio-loading .spinner{
+  width:40px;height:40px;
+  border:5px solid rgba(255,255,255,.2);
+  border-top:5px solid #48bb78;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+.playing{animation:pulse 1.1s infinite}
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+/* Responsive tweaks */
+@media (max-width:640px){
+  .header h1{font-size:2.05rem}
+  .nav-btn{flex:1 1 calc(50% - .8rem);min-width:120px}
+  .section{padding:1.6rem 1rem 1.9rem}
+  .big-btn{flex:1 1 140px;justify-content:center}
+  .quiz-question{font-size:.85rem}
+  .fill-sentence{font-size:.95rem}
+  .pron-fr{font-size:1.1rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+.sr-only{
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0 0 0 0);
+  border:0;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container">
+    <h1><i class="fas fa-dumbbell"></i> الرياضة بالفرنسية</h1>
+    <p>منصة تفاعلية شاملة: مفردات – تمارين – نطق – تقييم – حفظ تقدمك</p>
+    <div class="meta-line">
+      <span class="meta-pill"><i class="fas fa-user"></i> الطالب: <strong id="userName">طالب</strong></span>
+      <span class="meta-pill"><i class="fas fa-calendar"></i> <span id="todayDate"></span></span>
+      <span class="meta-pill"><i class="fas fa-hourglass-half"></i> مدة الجلسة: <span id="sessionTimer">00:00</span></span>
+      <span class="meta-pill"><i class="fas fa-medal"></i> إنجاز: <span id="engagementLevel">0%</span></span>
+    </div>
+  </div>
+</header>
+
+<nav class="navigation" aria-label="التنقل الرئيسي">
+  <div class="nav-inner container" id="navBar">
+    <button class="nav-btn active" data-section="grammar"><i class="fas fa-book"></i> القواعد</button>
+    <button class="nav-btn" data-section="vocabulary"><i class="fas fa-list-ul"></i> المفردات</button>
+    <button class="nav-btn" data-section="phrases"><i class="fas fa-comments"></i> التعبيرات</button>
+    <button class="nav-btn" data-section="pronunciation"><i class="fas fa-volume-up"></i> تدريب النطق</button>
+    <button class="nav-btn" data-section="exercise1"><i class="fas fa-pencil-alt"></i> تمرين 1</button>
+    <button class="nav-btn" data-section="exercise2"><i class="fas fa-puzzle-piece"></i> تمرين 2</button>
+    <button class="nav-btn" data-section="quiz"><i class="fas fa-trophy"></i> الاختبار</button>
+  </div>
+</nav>
+
+<section class="global-progress container" aria-label="شريط التقدم العام">
+  <div class="gp-top">
+    <div class="gp-title"><i class="fas fa-chart-line"></i> التقدم الكلي</div>
+    <div class="progress-stats" id="progressStats">
+      <span class="stat-badge" title="تمارين املأ الفراغ">
+        <i class="fas fa-edit"></i> <span id="statFill">0/0</span>
+      </span>
+      <span class="stat-badge" title="السحب والإفلات">
+        <i class="fas fa-object-group"></i> <span id="statDrag">0/0</span>
+      </span>
+      <span class="stat-badge" title="أسئلة الاختبار">
+        <i class="fas fa-question-circle"></i> <span id="statQuiz">0/0</span>
+      </span>
+      <span class="stat-badge" title="النطق (عناصر)">
+        <i class="fas fa-headphones"></i> <span id="statPron">0/0</span>
+      </span>
+    </div>
+    <button class="btn-reset-progress" id="btnResetAll" aria-label="إعادة ضبط التقدم"><i class="fas fa-rotate"></i> إعادة ضبط</button>
+  </div>
+  <div class="progress-bar-shell" aria-hidden="true">
+    <div class="progress-fill" id="globalProgressFill"></div>
+  </div>
+</section>
+
+<main class="main container" id="mainContent">
+
+  <!-- القواعد -->
+  <section class="section active" id="grammar" tabindex="0">
+    <h2><i class="fas fa-book-open"></i> القواعد الأساسية (FAIRE / JOUER)</h2>
+    <div class="flex-grid cols-2">
+      <div class="card">
+        <h3><i class="fas fa-fire-alt"></i> فعل FAIRE</h3>
+        <div class="tag"><i class="fas fa-info-circle"></i> يستخدم مع الرياضات الفردية أو الأنشطة بلا كرة</div>
+        <p style="font-size:.8rem;line-height:1.6;font-weight:600;color:#4a5568">
+          القاعدة: <strong>FAIRE + (du / de la / de l’ + رياضة فردية)</strong><br>
+          نختار الأداة حسب جنس الكلمة وبدايتها.
+        </p>
+        <div class="rule-examples">
+          <div class="example-block">
+            <div class="example-fr">Je fais du judo</div>
+            <div class="example-ar">أنا أمارس الجودو</div>
+            <button class="inline-audio-btn" data-say="Je fais du judo">🔊 نطق</button>
+          </div>
+          <div class="example-block">
+            <div class="example-fr">Elle fait de la natation</div>
+            <div class="example-ar">هي تمارس السباحة</div>
+            <button class="inline-audio-btn" data-say="Elle fait de la natation">🔊 نطق</button>
+          </div>
+          <div class="example-block">
+            <div class="example-fr">Tu fais de l'équitation</div>
+            <div class="example-ar">أنت تمارس الفروسية</div>
+            <button class="inline-audio-btn" data-say="Tu fais de l équitation">🔊 نطق</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3><i class="fas fa-futbol"></i> فعل JOUER</h3>
+        <div class="tag"><i class="fas fa-info-circle"></i> يستخدم مع الرياضات بالكرة / ألعاب جماعية</div>
+        <p style="font-size:.8rem;line-height:1.6;font-weight:600;color:#4a5568">
+          القاعدة: <strong>JOUER + (au / à la / aux + لعبة)</strong><br>
+          نستخدم (au) للمفرد المذكر، (à la) للمفرد المؤنث، (aux) للجمع.
+        </p>
+        <div class="rule-examples">
+          <div class="example-block">
+            <div class="example-fr">Nous jouons au football</div>
+            <div class="example-ar">نحن نلعب كرة القدم</div>
+            <button class="inline-audio-btn" data-say="Nous jouons au football">🔊 نطق</button>
+          </div>
+            <div class="example-block">
+              <div class="example-fr">Ils jouent au tennis</div>
+              <div class="example-ar">هم يلعبون التنس</div>
+              <button class="inline-audio-btn" data-say="Ils jouent au tennis">🔊 نطق</button>
+            </div>
+            <div class="example-block">
+              <div class="example-fr">Vous jouez à la pétanque</div>
+              <div class="example-ar">أنتم تلعبون البيتانك</div>
+              <button class="inline-audio-btn" data-say="Vous jouez à la pétanque">🔊 نطق</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- المفردات -->
+  <section class="section" id="vocabulary">
+    <h2><i class="fas fa-list-ul"></i> المفردات التفاعلية</h2>
+    <div class="section-toolbar">
+      <button class="filter-btn active" data-vcat="places"><i class="fas fa-map-marked-alt"></i> الأماكن</button>
+      <button class="filter-btn" data-vcat="people"><i class="fas fa-users"></i> الأشخاص</button>
+      <button class="filter-btn" data-vcat="equipment"><i class="fas fa-toolbox"></i> الأدوات</button>
+      <button class="filter-btn" data-vcat="sports"><i class="fas fa-basketball-ball"></i> الرياضات</button>
+      <button class="filter-btn" data-vcat="actions"><i class="fas fa-running"></i> الأفعال</button>
+      <div class="search-box">
+        <input type="text" id="vocabSearch" placeholder="🔍 ابحث فرنسي / عربي...">
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+    <div class="vocab-grid" id="vocabGrid" aria-live="polite"></div>
+  </section>
+
+  <!-- التعبيرات -->
+  <section class="section" id="phrases">
+    <h2><i class="fas fa-comments"></i> التعبيرات والجمل الشائعة</h2>
+    <div class="section-toolbar">
+      <button class="filter-btn active" data-pcat="asking"><i class="fas fa-question"></i> السؤال</button>
+      <button class="filter-btn" data-pcat="describing"><i class="fas fa-align-left"></i> الوصف</button>
+      <button class="filter-btn" data-pcat="expressing"><i class="fas fa-heart"></i> الإعجاب</button>
+      <button class="filter-btn" data-pcat="conversation"><i class="fas fa-handshake"></i> محادثة</button>
+    </div>
+    <div class="phrases-wrapper" id="phrasesWrapper" aria-live="polite"></div>
+  </section>
+
+  <!-- تدريب النطق -->
+  <section class="section" id="pronunciation">
+    <h2><i class="fas fa-volume-up"></i> تدريب النطق</h2>
+    <div class="pronunciation-trainer">
+      <div class="mode-tabs">
+        <button class="mode-btn active" data-pmode="word">كلمات</button>
+        <button class="mode-btn" data-pmode="sentence">جمل</button>
+        <button class="mode-btn" data-pmode="dialogue">حوار</button>
+      </div>
+      <div class="pron-content" id="pronContent" aria-live="polite"></div>
+      <div class="pron-buttons">
+        <button class="big-btn blue" id="btnPronPlay"><i class="fas fa-play"></i> تشغيل</button>
+        <button class="big-btn gray" id="btnPronSlow"><i class="fas fa-turtle"></i> بطيء</button>
+        <button class="big-btn" id="btnPronNext"><i class="fas fa-forward"></i> التالي</button>
+        <button class="big-btn danger" id="btnPronRestart"><i class="fas fa-rotate-left"></i> إعادة</button>
+      </div>
+      <div class="score-chip"><i class="fas fa-check-circle"></i> تم / الكل: <span id="pronCounter">0/0</span></div>
+    </div>
+  </section>
+
+  <!-- تمرين 1 -->
+  <section class="section" id="exercise1">
+    <h2><i class="fas fa-pencil-alt"></i> تمرين املأ الفراغ</h2>
+    <div class="exercise-box" id="fillExerciseBox" aria-live="polite"></div>
+    <div class="btn-row">
+      <button class="big-btn" id="btnFillCheck"><i class="fas fa-check"></i> تحقق</button>
+      <button class="big-btn blue" id="btnFillNext"><i class="fas fa-arrow-right"></i> التالي</button>
+      <button class="big-btn gray" id="btnFillHint"><i class="fas fa-lightbulb"></i> تلميح</button>
+      <button class="big-btn danger" id="btnFillRestart"><i class="fas fa-rotate-left"></i> إعادة</button>
+    </div>
+    <div class="score-chip"><i class="fas fa-star"></i> النتيجة: <span id="fillScoreDisplay">0</span></div>
+  </section>
+
+  <!-- تمرين 2 -->
+  <section class="section" id="exercise2">
+    <h2><i class="fas fa-puzzle-piece"></i> تمرين السحب والإفلات</h2>
+    <div class="dragdrop-shell">
+      <p style="font-size:.75rem;font-weight:600;color:#4a5568">اسحب الأدوات الصحيحة لتكميل الجمل، ثم تحقّق.</p>
+      <div class="dd-flex">
+        <div class="word-pool" id="ddWordPool" aria-label="مجموعة الكلمات"></div>
+        <div class="sentences-zone" id="ddSentencesZone" aria-live="polite"></div>
+      </div>
+      <div class="btn-row">
+        <button class="big-btn" id="btnDDCheck"><i class="fas fa-check-double"></i> تحقق</button>
+        <button class="big-btn blue" id="btnDDReset"><i class="fas fa-rotate"></i> إعادة</button>
+        <button class="big-btn gray" id="btnDDSpeak"><i class="fas fa-volume-up"></i> نطق الكل</button>
+      </div>
+      <div class="score-chip"><i class="fas fa-clipboard-check"></i> النتيجة: <span id="dragScoreDisplay">0</span></div>
+    </div>
+  </section>
+
+  <!-- الاختبار -->
+  <section class="section" id="quiz">
+    <h2><i class="fas fa-trophy"></i> الاختبار النهائي</h2>
+    <div class="quiz-box">
+      <div class="quiz-header">
+        <div class="q-progress"><i class="fas fa-list-ol"></i> سؤال <span id="quizProgressNum">1</span> / <span id="quizTotal">0</span></div>
+        <div class="timer-badge"><i class="fas fa-clock"></i> الوقت: <span id="quizTimer">00:00</span></div>
+      </div>
+      <div class="quiz-question" id="quizQuestionBox" aria-live="polite"></div>
+      <div class="quiz-options" id="quizOptionsBox"></div>
+      <div class="quiz-actions">
+        <button class="big-btn" id="btnQuizSubmit"><i class="fas fa-paper-plane"></i> إرسال</button>
+        <button class="big-btn blue" id="btnQuizSpeak"><i class="fas fa-volume-up"></i> نطق السؤال</button>
+        <button class="big-btn gray" id="btnQuizRestart"><i class="fas fa-rotate-left"></i> إعادة</button>
+      </div>
+      <div class="score-chip"><i class="fas fa-percentage"></i> نتيجة مؤقتة: <span id="quizScoreTemp">0</span></div>
+      <div class="quiz-results" id="quizResultsBox" aria-live="polite"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="audio-loading" id="audioLoading">
+  <div class="spinner"></div>
+  <div>جاري تجهيز الصوت...</div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    &copy; 2025 منصة frenhapeau التفاعلية لتعليم الفرنسية| إصدار متكامل | تم إنشاء هذه الواجهة لغرض التعلم والدراسة. 
+    <br>يمكنك إعادة التهيئة في أي وقت من خلال زر (إعادة ضبط التقدم).
+  </div>
+</footer>
+
+<!-- سكربت التطبيق الكامل -->
+<script>
+/* ====================== البيانات الأساسية ====================== */
+const vocabularyData={
+  places:[
+    {f:'le stade',a:'الملعب الكبير',p:'لُو سْتَاد',c:'مكان لمباريات كرة القدم والألعاب الكبرى'},
+    {f:'le gymnase',a:'الصالة الرياضية',p:'لُو جِمْنَاز',c:'قاعة مغلقة للرياضات'},
+    {f:'la piscine',a:'حمام السباحة',p:'لَا بيسِين',c:'مكان ممارسة السباحة'},
+    {f:'le court',a:'ملعب التنس',p:'لُو كُور',c:'مساحة لمباريات التنس'},
+    {f:'la piste',a:'المضمار',p:'لَا بيسْت',c:'مسار الجري وألعاب القوى'},
+    {f:'le terrain',a:'أرضية الملعب',p:'لُو تِرَّان',c:'المساحة المخصصة للعب'}
+  ],
+  people:[
+    {f:'un joueur',a:'لاعب',p:'أَنْ جُوير',c:'يمارس لعبة'},
+    {f:'une joueuse',a:'لاعبة',p:'أُون جُويُوز',c:'لاعبة رياضية'},
+    {f:'un entraîneur',a:'مدرب',p:'أَنْ أَنْترَينير',c:'يشرف على الفريق'},
+    {f:'un arbitre',a:'حكم',p:'أَنْ أَرْبيتر',c:'يدير المباراة'},
+    {f:'une équipe',a:'فريق',p:'أُون إيكيب',c:'مجموعة لاعبين'},
+    {f:'un gardien de but',a:'حارس المرمى',p:'أَنْ جَارْديَنْ دُو بُو',c:'يحمي المرمى'}
+  ],
+  equipment:[
+    {f:'un ballon',a:'كرة (كبيرة)',p:'أَنْ بَالُونْ',c:'كرة قدم أو سلة'},
+    {f:'une balle',a:'كرة (صغيرة)',p:'أُون بَال',c:'كرة التنس أو الطاولة'},
+    {f:'un filet',a:'شبكة',p:'أَنْ فيلِي',c:'تفصل نصف الملعب'},
+    {f:'des chaussures de sport',a:'أحذية رياضية',p:'شُوسُور دُ سْبُور',c:'أحذية خاصة للرياضة'},
+    {f:'un maillot',a:'قميص رياضي',p:'أَنْ مَايُو',c:'الزي الرسمي'}
+  ],
+  sports:[
+    {f:'le football',a:'كرة القدم',p:'فوتْبُول',c:'الأكثر انتشاراً'},
+    {f:'le tennis',a:'التنس',p:'تِنيس',c:'رياضة المضرب'},
+    {f:'la natation',a:'السباحة',p:'نَاتَاسْيُون',c:'رياضة مائية'},
+    {f:'le basketball',a:'كرة السلة',p:'بَاسْكِتْبُول',c:'تُلعب بالسلة'},
+    {f:'le volleyball',a:'الكرة الطائرة',p:'فُولِيبُول',c:'شبكة مرتفعة'},
+    {f:'le judo',a:'الجودو',p:'جُودُو',c:'فن قتالي ياباني'}
+  ],
+  actions:[
+    {f:'courir',a:'يجري',p:'كُورير',c:'التحرك بسرعة'},
+    {f:'sauter',a:'يقفز',p:'سُوتِي',c:'الارتفاع عن الأرض'},
+    {f:'lancer',a:'يرمي',p:'لَانْسِي',c:'إرسال الكرة'},
+    {f:'nager',a:'يسبح',p:'نَاجِي',c:'الحركة في الماء'},
+    {f:'gagner',a:'يفوز',p:'جَانْيِي',c:'تحقيق النصر'},
+    {f:'perdre',a:'يخسر',p:'بِيرْدر',c:'عدم الفوز'}
+  ]
+};
+
+const phrasesData={
+  asking:[
+    {fr:"Quel sport fais-tu?",ar:"ما الرياضة التي تمارسها؟",pr:"كِل سْبُور فِي تُو؟",ctx:"سؤال عام"},
+    {fr:"Tu joues au football?",ar:"هل تلعب كرة القدم؟",pr:"تُو جُو أُو فوتبول؟",ctx:"سؤال تأكيدي"},
+    {fr:"Où t'entraînes-tu?",ar:"أين تتدرب؟",pr:"أُو تَانترِين تُو؟",ctx:"مكان التدريب"},
+    {fr:"Combien de fois par semaine?",ar:"كم مرة أسبوعياً؟",pr:"كُومْبْيَان دُ فْوَا؟",ctx:"التكرار"}
+  ],
+  describing:[
+    {fr:"Je fais du sport tous les jours",ar:"أمارس الرياضة كل يوم",pr:"جُو فِي دُ سْبُور تُو لِي جُور",ctx:"روتين"},
+    {fr:"Mon équipe s'entraîne le soir",ar:"فريقي يتدرب مساءً",pr:"مُون إيكِيب سَانترِين لُو سْوَار",ctx:"وقت التدريب"},
+    {fr:"Le match était fantastique",ar:"كانت المباراة رائعة",pr:"لُو مَاتْش إيتِي فَانْتَاسْتيك",ctx:"وصف"},
+    {fr:"Je progresse chaque semaine",ar:"أتقدم كل أسبوع",pr:"جُو بْرُوغْرِيس شَاك سُومِين",ctx:"تطور"}
+  ],
+  expressing:[
+    {fr:"J'adore le tennis",ar:"أحب التنس",pr:"جَادُور لُو تِنيس",ctx:"إعجاب"},
+    {fr:"Le football est ma passion",ar:"كرة القدم هي شغفي",pr:"لُو فُوتْبُول إِه مَا بَاسْيُون",ctx:"شغف"},
+    {fr:"Je déteste perdre",ar:"أكره الخسارة",pr:"جُو دِيتِست بِيرْدر",ctx:"رفض"},
+    {fr:"C'est difficile mais amusant",ar:"إنه صعب لكنه ممتع",pr:"سِي دِيفِيسيل مِي أَمُوزَان",ctx:"توازن"}
+  ],
+  conversation:[
+    {fr:"Tu veux jouer avec nous?",ar:"هل تريد اللعب معنا؟",pr:"تُو فُو جُوِي أَفِيك نُو",ctx:"دعوة"},
+    {fr:"Bonne chance pour le match!",ar:"حظ موفق في المباراة!",pr:"بُون شَانْس بُور لُو مَاتْش",ctx:"تشجيع"},
+    {fr:"Félicitations pour la victoire!",ar:"مبروك الفوز!",pr:"فِيليسِيتَاسْيُون بُور لَا فِيكْتُوَار",ctx:"تهنئة"},
+    {fr:"Tu peux recommencer demain",ar:"يمكنك أن تعيد غداً",pr:"تُو بُو رِكُومَانسي دُومَان",ctx:"نصيحة"}
+  ]
+};
+
+const fillExercises=[
+  {
+    sentence:"Je _____ du tennis avec mes amis.",
+    answer:"joue",
+    options:["joue","fais","mange"],
+    trans:"أنا ألعب التنس مع أصدقائي",
+    hint:"التنس = لعبة بالمضرب ⇒ jouer",
+    explain:"نستخدم jouer مع الرياضات بالكرة/المضرب مثل tennis"
+  },
+  {
+    sentence:"Elle _____ de la natation à la piscine.",
+    answer:"fait",
+    options:["fait","joue","va"],
+    trans:"هي تمارس السباحة في المسبح",
+    hint:"natation رياضة فردية ⇒ faire",
+    explain:"السباحة نشاط فردي لذا faire"
+  },
+  {
+    sentence:"Nous _____ au football au stade.",
+    answer:"jouons",
+    options:["jouons","faisons","mangeons"],
+    trans:"نحن نلعب كرة القدم في الملعب",
+    hint:"football بالكرة ⇒ jouer",
+    explain:"كرة القدم لعبة جماعية بالكرة"
+  },
+  {
+    sentence:"Tu _____ du vélo dans le parc ?",
+    answer:"fais",
+    options:["fais","joues","vas"],
+    trans:"هل تقود الدراجة في الحديقة؟",
+    hint:"vélo نشاط فردي ⇒ faire",
+    explain:"ركوب الدراجة نشاط فردي"
+  },
+  {
+    sentence:"Les enfants _____ au basketball.",
+    answer:"jouent",
+    options:["jouent","font","vont"],
+    trans:"الأطفال يلعبون كرة السلة",
+    hint:"basketball كرة ⇒ jouer",
+    explain:"رياضة بالكرة ⇒ jouer"
+  }
+];
+
+const dragDropData={
+  words:["au","de la","du","à la"],
+  sentences:[
+    {tmpl:"Je joue ___ football.",ans:"au",trans:"أنا ألعب كرة القدم"},
+    {tmpl:"Elle fait ___ natation.",ans:"de la",trans:"هي تمارس السباحة"},
+    {tmpl:"Tu fais ___ judo.",ans:"du",trans:"أنت تمارس الجودو"},
+    {tmpl:"Nous jouons ___ pétanque.",ans:"à la",trans:"نحن نلعب البيتانك"}
+  ]
+};
+
+const pronunciationData={
+  word:[
+    {fr:"football",ar:"كرة القدم",phon:"فوتْبُول",tip:"حرف t لا يُنطق في النهايات غالباً."},
+    {fr:"tennis",ar:"التنس",phon:"تِنيس",tip:"الـ e خفيفة أقرب (إِ)."},
+    {fr:"natation",ar:"السباحة",phon:"ناتاسْيُون",tip:"النهاية tion تُنطق (سْيُون)."},
+    {fr:"basketball",ar:"كرة السلة",phon:"بَاسْكِتْبُول",tip:"انطق basket + بول مع تخفيف t."},
+    {fr:"judo",ar:"الجودو",phon:"جُودُو",tip:"حرف j فرنسي = ج ناعمة."}
+  ],
+  sentence:[
+    {fr:"Je fais du sport",ar:"أنا أمارس الرياضة",phon:"جُو فِي دُ سْبُور",tip:"اربط fais du بطريقة سلسة."},
+    {fr:"Elle joue au tennis",ar:"هي تلعب التنس",phon:"إِل جُو أُو تِنيس",tip:"au + tennis = أُوتِنيس متصلة."},
+    {fr:"Nous jouons au football",ar:"نحن نلعب كرة القدم",phon:"نُو جُو أُو فوتبول",tip:"jouons: (جوونغ) بدون نطق واضح g."}
+  ],
+  dialogue:[
+    {fr:"- Quel sport fais-tu?\n- Je fais du judo.",ar:"- ما الرياضة؟\n- أمارس الجودو.",phon:"- كِل سْبُور فِي تُو؟\n- جُو فِي دُ جُودُو.",tip:"غيّر نبرة السؤال ثم أخفض للجواب."},
+    {fr:"- Tu joues au tennis?\n- Oui, j'adore ça.",ar:"- هل تلعب التنس؟\n- نعم أحبه.",phon:"- تُو جُو أُو تِنيس؟\n- وِي، جَادُور سَا.",tip:"الجملة الثانية بسلاسة بلا توقف."}
+  ]
+};
+
+const quizQuestions=[
+  {
+    q:"الصيغة الصحيحة: (أنا أمارس السباحة).",
+    options:["Je joue de la natation","Je fais de la natation","Je vais de la natation","Je mange de la natation"],
+    ans:1,
+    exp:"السباحة رياضة فردية ⇒ faire"
+  },
+  {
+    q:"نستخدم jouer مع:",
+    options:["الرياضات الفردية بلا أدوات","الرياضات بالكرة","الطعام","الأسماء فقط"],
+    ans:1,
+    exp:"كرة / لعبة جماعية = jouer"
+  },
+  {
+    q:"الأداة الصحيحة مع (football) بعد jouer:",
+    options:["du","de la","au","à la"],
+    ans:2,
+    exp:"football مذكر ⇒ au"
+  },
+  {
+    q:"الصحيح: (نحن نلعب الجودو)؟",
+    options:["Nous jouons au judo","Nous faisons du judo","Nous jouons du judo","Nous jouons de la judo"],
+    ans:1,
+    exp:"الجودو رياضة فردية ⇒ faire du"
+  },
+  {
+    q:"(هم يلعبون كرة السلة) بالفرنسية:",
+    options:["Ils font du basketball","Ils jouent au basketball","Ils jouent du basketball","Ils vont au basketball"],
+    ans:1,
+    exp:"كرة السلة ⇒ jouer au"
+  },
+  {
+    q:"اختيار صحيح: Elle ____ du vélo.",
+    options:["joue","fait","fais","jouent"],
+    ans:1,
+    exp:"vélo نشاط فردي ⇒ Elle fait"
+  },
+  {
+    q:"أداة judo مع faire:",
+    options:["du","au","de la","à la"],
+    ans:0,
+    exp:"رياضة مذكر تبدأ بحرف ساكن ⇒ du"
+  },
+  {
+    q:"النطق الصحيح لكلمة (football) في الفرنسية:",
+    options:["فوتِيبال","فوتْبول (t لا تُنطق)","فو تبول (بتقطيع)","فوتَ بول مع فتح التاء"],
+    ans:1,
+    exp:"t صامت غالباً"
+  },
+  {
+    q:"نقول: Je ____ au tennis.",
+    options:["fais","suis","joue","fait"],
+    ans:2,
+    exp:"التنس لعبة بالمضرب ⇒ jouer"
+  },
+  {
+    q:"جملة صحيحة: (أحب الفوز).",
+    options:["J'adore gagner","Je fais gagner","Je joue gagner","Je suis gagner"],
+    ans:0,
+    exp:"الفعل gagner = يفوز ⇒ j'adore gagner"
+  }
+];
+
+/* ====================== الحالة والمتغيرات ====================== */
+let currentSection="grammar";
+let vocabCategory="places";
+let phraseCategory="asking";
+let pronMode="word";
+let pronIndex=0;
+let pronCounters={word:0,sentence:0,dialogue:0};
+let fillIndex=0;
+let fillScore=0;
+let dragEvaluated=false;
+let dragScore=0;
+let quizIndex=0;
+let quizScore=0;
+let quizSelected=null;
+let quizTimer=0;
+let quizTimerInterval=null;
+let sessionSeconds=0;
+let sessionTimerInterval=null;
+let medalGiven=false;
+let voicesLoaded=false;
+let frVoice=null, arVoice=null;
+let savedStateLoaded=false;
+
+/* ====================== عناصر DOM مساعدة ====================== */
+const el=(s,ctx=document)=>ctx.querySelector(s);
+const els=(s,ctx=document)=>[...ctx.querySelectorAll(s)];
+
+/* ====================== واجهة التغذية الراجعة ====================== */
+function showFeedback(msg,type="info",timeout=3500){
+  const old=el('.feedback'); if(old){old.remove();}
+  const div=document.createElement('div');
+  div.className=`feedback ${type}`;
+  div.innerHTML=`<i class="fas ${
+    type==="success"?"fa-check-circle":
+    type==="error"?"fa-times-circle":
+    type==="warning"?"fa-exclamation-triangle":
+    "fa-info-circle"
+  }"></i> ${msg}`;
+  document.body.appendChild(div);
+  setTimeout(()=>{
+    div.style.animation='slideOut .45s forwards';
+    setTimeout(()=>div.remove(),450);
+  },timeout);
+}
+
+/* ====================== شريط التقدم العام ====================== */
+function updateGlobalProgressBar(){
+  const totalFill=fillExercises.length;
+  const fillDone= Math.min(fillIndex, totalFill);
+  const totalDrag=dragDropData.sentences.length;
+  const dragDone=dragEvaluated?totalDrag:0;
+  const totalQuiz=quizQuestions.length;
+  const quizDone=Math.min(quizIndex, totalQuiz);
+  const totalPron = pronunciationData.word.length+pronunciationData.sentence.length+pronunciationData.dialogue.length;
+  const pronDone = pronCounters.word+pronCounters.sentence+pronCounters.dialogue;
+
+  const overallPercent=Math.round(((fillDone+dragDone+quizDone+pronDone)/(totalFill+totalDrag+totalQuiz+totalPron))*100);
+
+  el('#globalProgressFill').style.width=overallPercent+'%';
+  el('#engagementLevel').textContent=overallPercent+'%';
+
+  el('#statFill').textContent=`${fillDone}/${totalFill}`;
+  el('#statDrag').textContent=`${dragDone}/${totalDrag}`;
+  el('#statQuiz').textContent=`${quizDone}/${totalQuiz}`;
+  el('#statPron').textContent=`${pronDone}/${totalPron}`;
+
+  if(overallPercent>=80 && !medalGiven){
+    medalGiven=true;
+    showFeedback('🥇 مبروك! حصلت على ميدالية الإنجاز (80%)','success',5000);
+    saveState();
+  }
+}
+
+/* ====================== حفظ / تحميل الحالة ====================== */
+function saveState(){
+  try{
+    const state={
+      fillIndex,fillScore,dragEvaluated,dragScore,
+      quizIndex,quizScore,quizTimer,
+      pronMode,pronIndex,pronCounters,
+      vocabCategory,phraseCategory,
+      medalGiven
+    };
+    localStorage.setItem('fr_sport_state',JSON.stringify(state));
+  }catch(e){console.warn('حفظ فشل',e);}
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem('fr_sport_state');
+    if(!raw) return;
+    const s=JSON.parse(raw);
+    fillIndex=s.fillIndex||0;
+    fillScore=s.fillScore||0;
+    dragEvaluated=s.dragEvaluated||false;
+    dragScore=s.dragScore||0;
+    quizIndex=s.quizIndex||0;
+    quizScore=s.quizScore||0;
+    quizTimer=s.quizTimer||0;
+    pronMode=s.pronMode||'word';
+    pronIndex=s.pronIndex||0;
+    pronCounters=s.pronCounters||{word:0,sentence:0,dialogue:0};
+    vocabCategory=s.vocabCategory||"places";
+    phraseCategory=s.phraseCategory||"asking";
+    medalGiven=!!s.medalGiven;
+    savedStateLoaded=true;
+  }catch(e){console.warn('تحميل فشل',e);}
+}
+function resetAllProgress(){
+  if(!confirm('هل أنت متأكد من إعادة ضبط كل التقدم؟')) return;
+  localStorage.removeItem('fr_sport_state');
+  fillIndex=0; fillScore=0;
+  dragEvaluated=false; dragScore=0;
+  quizIndex=0; quizScore=0; quizTimer=0;
+  pronMode='word'; pronIndex=0; pronCounters={word:0,sentence:0,dialogue:0};
+  vocabCategory='places'; phraseCategory='asking';
+  medalGiven=false;
+  renderAllSections(true);
+  showFeedback('تمت إعادة الضبط','info');
+  saveState();
+}
+
+/* ====================== النطق ====================== */
+function loadVoices(){
+  const vs=speechSynthesis.getVoices();
+  if(!vs.length) return;
+  frVoice = vs.find(v=>v.lang==='fr-FR') || vs.find(v=>/fr/i.test(v.lang)) || null;
+  arVoice = vs.find(v=>/ar/i.test(v.lang)) || null;
+  voicesLoaded=true;
+}
+if('speechSynthesis' in window){
+  speechSynthesis.onvoiceschanged=()=>{
+    loadVoices();
+  };
+  setTimeout(loadVoices,600);
+}
+
+function speak(text,lang='fr-FR',btn=null,slow=false){
+  if(!('speechSynthesis' in window)){
+    showFeedback('النطق غير مدعوم في هذا المتصفح','error');
+    return;
+  }
+  text = (text||'').replace(/\s+/g,' ').trim();
+  if(!text){return;}
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    if(lang.startsWith('ar')){
+      u.lang= arVoice? arVoice.lang : 'ar-SA';
+      if(arVoice) u.voice=arVoice;
+    }else{
+      u.lang= frVoice? frVoice.lang : 'fr-FR';
+      if(frVoice) u.voice=frVoice;
+    }
+    u.rate= slow ? 0.55 : 0.9;
+    u.pitch=1;
+    u.onstart=()=>{
+      el('#audioLoading').style.display='flex';
+      if(btn) btn.classList.add('playing');
+    };
+    u.onend=()=>{
+      el('#audioLoading').style.display='none';
+      if(btn) btn.classList.remove('playing');
+    };
+    u.onerror=()=>{
+      el('#audioLoading').style.display='none';
+      if(btn) btn.classList.remove('playing');
+      showFeedback('حدث خطأ في تشغيل الصوت','error');
+    };
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }catch(err){
+    showFeedback('تعذر النطق','error');
+  }
+}
+
+/* ====================== المفردات ====================== */
+function renderVocabulary(){
+  els('.filter-btn[data-vcat]').forEach(b=>b.classList.toggle('active',b.dataset.vcat===vocabCategory));
+  const search=el('#vocabSearch').value.trim().toLowerCase();
+  const data=vocabularyData[vocabCategory]||[];
+  const grid=el('#vocabGrid');
+  grid.innerHTML=data.filter(item=>{
+    if(!search) return true;
+    return item.f.toLowerCase().includes(search)||item.a.toLowerCase().includes(search);
+  }).map(item=>`
+    <div class="vocab-card" data-vocab="${item.f}">
+      <div class="vocab-front">
+        <div class="vocab-term">${item.f}</div>
+        <div class="vocab-pron">${item.p}</div>
+        <div class="card-actions">
+          <button class="sm-btn" data-say="${item.f}"><i class="fas fa-volume-up"></i> نطق</button>
+          <button class="sm-btn outline" data-say="${item.f}" data-slow="1"><i class="fas fa-turtle"></i> بطيء</button>
+          <button class="sm-btn outline" data-flip="${item.f}"><i class="fas fa-exchange-alt"></i> قلب</button>
+        </div>
+      </div>
+      <div class="vocab-back">
+        <div class="vocab-ar">${item.a}</div>
+        <div class="vocab-context">${item.c}</div>
+        <div class="card-actions">
+          <button class="sm-btn" data-say="${item.f}"><i class="fas fa-headphones"></i> استماع</button>
+          <button class="sm-btn outline" data-flip="${item.f}"><i class="fas fa-undo"></i> رجوع</button>
+        </div>
+      </div>
+    </div>
+  `).join('') || `<p style="font-size:.8rem;font-weight:600;color:#718096">لا نتائج مطابقة...</p>`;
+}
+
+/* ====================== التعبيرات ====================== */
+function renderPhrases(){
+  els('.filter-btn[data-pcat]').forEach(b=>b.classList.toggle('active',b.dataset.pcat===phraseCategory));
+  const wrap=el('#phrasesWrapper');
+  const arr=phrasesData[phraseCategory]||[];
+  wrap.innerHTML=arr.map(p=>`
+    <div class="phrase-item">
+      <div class="phrase-context"><i class="fas fa-tag"></i> ${p.ctx}</div>
+      <div class="phrase-fr">${p.fr}</div>
+      <div class="phrase-ar">${p.ar}</div>
+      <div class="inline-controls">
+        <button class="sm-btn" data-say="${p.fr}"><i class="fas fa-volume-up"></i> فرنسي</button>
+        <button class="sm-btn outline" data-say="${p.ar}" data-lang="ar-SA"><i class="fas fa-volume-up"></i> عربي</button>
+        <button class="sm-btn outline" data-say="${p.fr}" data-slow="1"><i class="fas fa-turtle"></i> بطيء</button>
+      </div>
+      <div style="font-size:.6rem;color:#4299e1;font-weight:700;letter-spacing:.5px">النطق التقريبي: ${p.pr}</div>
+    </div>
+  `).join('');
+}
+
+/* ====================== تدريب النطق ====================== */
+function renderPronunciation(){
+  els('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.pmode===pronMode));
+  const data=pronunciationData[pronMode];
+  if(!data || !data.length){el('#pronContent').innerHTML="<p>لا بيانات.</p>";return;}
+  if(pronIndex>=data.length) pronIndex=0;
+  const item=data[pronIndex];
+  el('#pronContent').innerHTML=`
+    <div class="pron-fr">${item.fr.replace(/\n/g,'<br>')}</div>
+    <div class="pron-ar">${item.ar.replace(/\n/g,'<br>')}</div>
+    <div class="pron-phon">النطق التقريبي: ${item.phon}</div>
+    <div class="pron-tip"><i class="fas fa-lightbulb"></i> ${item.tip}</div>
+  `;
+  const total= pronunciationData.word.length + pronunciationData.sentence.length + pronunciationData.dialogue.length;
+  const done= pronCounters.word + pronCounters.sentence + pronCounters.dialogue;
+  el('#pronCounter').textContent=`${done}/${total}`;
+}
+
+/* ====================== تمرين املأ الفراغ ====================== */
+function renderFillExercise(){
+  const box=el('#fillExerciseBox');
+  if(fillIndex>=fillExercises.length){
+    box.innerHTML=`
+      <div class="fill-sentence" style="font-size:.95rem">انتهت الأسئلة ✅</div>
+      <div class="translation-line"><i class="fas fa-star"></i> نتيجتك: ${fillScore}/${fillExercises.length}</div>
+    `;
+    return;
+  }
+  const ex=fillExercises[fillIndex];
+  const html = ex.sentence.replace('_____',`<input type="text" id="fillAnswer" autocomplete="off" placeholder="...">`);
+  box.innerHTML=`
+    <div class="fill-sentence">${html}</div>
+    <div class="translation-line"><i class="fas fa-language"></i> الترجمة: ${ex.trans}</div>
+    <div class="options-line">الخيارات: ${ex.options.map(o=>`<span>${o}</span>`).join(' • ')}</div>
+    <div class="hint-box" id="fillHint">💡 ${ex.hint}</div>
+    <div class="inline-audio-group">
+      <button class="inline-audio-btn" data-say="${ex.sentence.replace('_____',ex.answer)}"><i class="fas fa-headphones"></i> نطق</button>
+      <button class="inline-audio-btn" data-say="${ex.sentence.replace('_____',ex.answer)}" data-slow="1"><i class="fas fa-turtle"></i> بطيء</button>
+    </div>
+  `;
+  el('#fillScoreDisplay').textContent=fillScore;
+}
+
+function checkFillAnswer(){
+  if(fillIndex>=fillExercises.length) return;
+  const ex=fillExercises[fillIndex];
+  const input=el('#fillAnswer');
+  if(!input) return;
+  const val=input.value.trim().toLowerCase();
+  if(!val){showFeedback('أدخل إجابة','warning');return;}
+  if(val===ex.answer.toLowerCase()){
+    input.classList.add('correct');
+    if(!input.dataset.scored){
+      fillScore++;
+      input.dataset.scored="1";
+      showFeedback('إجابة صحيحة ✔️','success');
+    }
+  }else{
+    input.classList.add('incorrect');
+    showFeedback(`خطأ ❌ الصحيح: ${ex.answer}<br><small>${ex.explain}</small>`,'error',5000);
+  }
+  saveState();
+  updateGlobalProgressBar();
+}
+
+function nextFill(){
+  if(fillIndex<fillExercises.length){
+    fillIndex++;
+    renderFillExercise();
+    saveState();
+    updateGlobalProgressBar();
+  }
+}
+function toggleFillHint(){
+  const h=el('#fillHint');
+  if(h){h.style.display = h.style.display==='block'?'none':'block';}
+}
+function restartFill(){
+  if(!confirm('إعادة تمرين املأ الفراغ؟')) return;
+  fillIndex=0;fillScore=0;
+  renderFillExercise();
+  saveState();
+  updateGlobalProgressBar();
+}
+
+/* ====================== تمرين السحب والإفلات ====================== */
+function initDragDrop(){
+  const pool=el('#ddWordPool');
+  const zone=el('#ddSentencesZone');
+  dragEvaluated=false;
+  dragScore=0;
+  pool.innerHTML=dragDropData.words.map(w=>`
+    <button class="draggable-word" draggable="true" data-word="${w}">${w}</button>
+  `).join('');
+  zone.innerHTML=dragDropData.sentences.map((s,i)=>`
+    <div class="dd-sentence" data-index="${i}">
+      <button class="sentence-audio" data-say="${s.tmpl.replace('___',s.ans)}">🔊</button>
+      ${s.tmpl.replace('___',`<span class="drop-slot" data-ans="${s.ans}">ضع هنا</span>`)}
+      <span class="dd-translation"><i class="fas fa-language"></i> ${s.trans}</span>
+    </div>
+  `).join('');
+  el('#dragScoreDisplay').textContent=0;
+}
+
+let dragItem=null;
+document.addEventListener('dragstart',e=>{
+  const word=e.target.closest('.draggable-word');
+  if(word){
+    dragItem=word;
+    e.dataTransfer.setData('text/plain',word.dataset.word);
+    setTimeout(()=>word.classList.add('dragging'),10);
+  }
+});
+document.addEventListener('dragend',e=>{
+  const word=e.target.closest('.draggable-word');
+  if(word) word.classList.remove('dragging');
+});
+document.addEventListener('dragover',e=>{
+  const slot=e.target.closest('.drop-slot');
+  if(slot){
+    e.preventDefault();
+    slot.classList.add('drag-over');
+  }
+});
+document.addEventListener('dragleave',e=>{
+  const slot=e.target.closest('.drop-slot');
+  if(slot) slot.classList.remove('drag-over');
+});
+document.addEventListener('drop',e=>{
+  const slot=e.target.closest('.drop-slot');
+  if(slot){
+    e.preventDefault();
+    slot.classList.remove('drag-over');
+    if(!dragItem) return;
+    const val=dragItem.dataset.word;
+    if(slot.textContent==='ضع هنا' || !slot.classList.contains('filled')){
+      slot.textContent=val;
+      slot.classList.add('filled');
+      dragItem.remove();
+    }
+  }
+});
+
+function evaluateDragDrop(){
+  if(dragEvaluated) return;
+  let correct=0;
+  els('.drop-slot').forEach(slot=>{
+    if(slot.textContent.trim()===slot.dataset.ans){
+      slot.classList.add('filled');
+      slot.style.background='#c6f6d5';
+      slot.style.borderColor='#48bb78';
+      correct++;
+    }else{
+      slot.style.background='#fed7d7';
+      slot.style.borderColor='#f56565';
+    }
+  });
+  dragScore=correct;
+  dragEvaluated=true;
+  el('#dragScoreDisplay').textContent=`${dragScore}/${dragDropData.sentences.length}`;
+  showFeedback(`نتيجة السحب: ${correct}/${dragDropData.sentences.length}`,(correct===dragDropData.sentences.length)?'success':'warning');
+  saveState();
+  updateGlobalProgressBar();
+}
+
+function speakAllDrag(){
+  let i=0;
+  const arr=dragDropData.sentences;
+  function step(){
+    if(i>=arr.length) return;
+    speak(arr[i].tmpl.replace('___',arr[i].ans));
+    i++;
+    setTimeout(step,2500);
+  }
+  step();
+}
+
+/* ====================== الاختبار ====================== */
+function startQuizTimer(){
+  if(quizTimerInterval) clearInterval(quizTimerInterval);
+  quizTimerInterval=setInterval(()=>{
+    quizTimer++;
+    const mm=String(Math.floor(quizTimer/60)).padStart(2,'0');
+    const ss=String(quizTimer%60).padStart(2,'0');
+    el('#quizTimer').textContent=`${mm}:${ss}`;
+    saveState();
+  },1000);
+}
+function stopQuizTimer(){
+  if(quizTimerInterval){
+    clearInterval(quizTimerInterval);
+    quizTimerInterval=null;
+  }
+}
+function renderQuizQuestion(){
+  el('#quizTotal').textContent=quizQuestions.length;
+  if(quizIndex>=quizQuestions.length){
+    showQuizResults();
+    return;
+  }
+  const q=quizQuestions[quizIndex];
+  el('#quizProgressNum').textContent=quizIndex+1;
+  el('#quizQuestionBox').innerHTML=`${q.q}`;
+  el('#quizOptionsBox').innerHTML=q.options.map((op,i)=>`
+    <div class="quiz-option" data-qopt="${i}" role="button" tabindex="0">${op}</div>
+  `).join('');
+  el('#quizScoreTemp').textContent=`${quizScore}/${quizQuestions.length}`;
+  if(!quizTimerInterval) startQuizTimer();
+}
+function submitQuizAnswer(){
+  if(quizIndex>=quizQuestions.length) return;
+  if(quizSelected===null){showFeedback('اختر إجابة أولاً','warning');return;}
+  const q=quizQuestions[quizIndex];
+  const options=els('.quiz-option');
+  options.forEach(o=>{
+    const idx=+o.dataset.qopt;
+    if(idx===q.ans) o.classList.add('correct');
+    else if(idx===quizSelected) o.classList.add('incorrect');
+    o.style.pointerEvents='none';
+  });
+  if(quizSelected===q.ans){
+    quizScore++;
+    showFeedback('صحيح ✔️','success');
+  }else{
+    showFeedback('خطأ ❌ ' + q.exp,'error',5000);
+  }
+  quizSelected=null;
+  saveState();
+  updateGlobalProgressBar();
+  setTimeout(()=>{
+    quizIndex++;
+    renderQuizQuestion();
+  },1400);
+}
+function showQuizResults(){
+  stopQuizTimer();
+  const box=el('#quizResultsBox');
+  const percent=Math.round((quizScore/quizQuestions.length)*100);
+  box.style.display='flex';
+  box.innerHTML=`
+    <div class="final-score">${percent}%</div>
+    <div class="medal-badge">${percent>=80?'🥇':percent>=60?'🥈':'🏅'}</div>
+    <p style="font-size:.8rem;font-weight:600;color:#4a5568">نتيجتك: ${quizScore}/${quizQuestions.length} في مدة ${formatTime(quizTimer)}</p>
+    <div class="score-breakdown">
+      <div class="break-card"><i class="fas fa-clock"></i> الوقت: ${formatTime(quizTimer)}</div>
+      <div class="break-card"><i class="fas fa-check-circle"></i> صحيحة: ${quizScore}</div>
+      <div class="break-card"><i class="fas fa-times-circle"></i> خاطئة: ${quizQuestions.length-quizScore}</div>
+      <div class="break-card"><i class="fas fa-percentage"></i> النسبة: ${percent}%</div>
+    </div>
+    <div class="btn-row">
+      <button class="big-btn" id="btnQuizAgain"><i class="fas fa-redo"></i> إعادة الاختبار</button>
+      <button class="big-btn blue" data-section-jump="exercise1"><i class="fas fa-book"></i> مراجعة التمارين</button>
+    </div>
+  `;
+  saveState();
+  updateGlobalProgressBar();
+}
+
+function restartQuiz(full=true){
+  if(full && !confirm('إعادة الاختبار من البداية؟')) return;
+  quizIndex=0;
+  quizScore=0;
+  quizSelected=null;
+  quizTimer=0;
+  el('#quizResultsBox').style.display='none';
+  renderQuizQuestion();
+  saveState();
+  updateGlobalProgressBar();
+  startQuizTimer();
+}
+
+function formatTime(sec){
+  const m=String(Math.floor(sec/60)).padStart(2,'0');
+  const s=String(sec%60).padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+/* ====================== التنقل بين الأقسام ====================== */
+function setSection(id){
+  currentSection=id;
+  els('.section').forEach(sec=>sec.classList.toggle('active',sec.id===id));
+  els('.nav-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.section===id));
+  saveState();
+  if(id==='quiz'){ renderQuizQuestion(); }
+  if(id==='pronunciation'){ renderPronunciation(); }
+  if(id==='exercise1'){ renderFillExercise(); }
+  if(id==='exercise2'){ initDragDrop(); }
+  if(id==='vocabulary'){ renderVocabulary(); }
+  if(id==='phrases'){ renderPhrases(); }
+  updateGlobalProgressBar();
+}
+
+/* ====================== التهيئة الأولى ====================== */
+function renderAllSections(skipFocus){
+  renderVocabulary();
+  renderPhrases();
+  renderPronunciation();
+  renderFillExercise();
+  initDragDrop();
+  renderQuizQuestion();
+  updateGlobalProgressBar();
+  if(!skipFocus){
+    const activeSec=el('.section.active');
+    if(activeSec) activeSec.focus();
+  }
+}
+
+function initSessionTimer(){
+  if(sessionTimerInterval) clearInterval(sessionTimerInterval);
+  sessionTimerInterval=setInterval(()=>{
+    sessionSeconds++;
+    const mm=String(Math.floor(sessionSeconds/60)).padStart(2,'0');
+    const ss=String(sessionSeconds%60).padStart(2,'0');
+    el('#sessionTimer').textContent=`${mm}:${ss}`;
+  },1000);
+}
+
+/* ====================== الأحداث (تفويض) ====================== */
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('.nav-btn');
+  if(nav){
+    setSection(nav.dataset.section);
+  }
+
+  const vcat=e.target.closest('.filter-btn[data-vcat]');
+  if(vcat){
+    vocabCategory=vcat.dataset.vcat;
+    renderVocabulary();
+    saveState();
+  }
+
+  const pcat=e.target.closest('.filter-btn[data-pcat]');
+  if(pcat){
+    phraseCategory=pcat.dataset.pcat;
+    renderPhrases();
+    saveState();
+  }
+
+  const mode=e.target.closest('.mode-btn');
+  if(mode){
+    pronMode=mode.dataset.pmode;
+    pronIndex=0;
+    renderPronunciation();
+    saveState();
+  }
+
+  const flipBtn=e.target.closest('[data-flip]');
+  if(flipBtn){
+    const term=flipBtn.dataset.flip;
+    const card=e.target.closest('.vocab-card');
+    if(card) card.classList.toggle('flipped');
+  }
+
+  const speakBtn=e.target.closest('[data-say]');
+  if(speakBtn){
+    const txt = speakBtn.dataset.say;
+    const lang= speakBtn.dataset.lang || 'fr-FR';
+    const slow= !!speakBtn.dataset.slow;
+    speak(txt,lang,speakBtn,slow);
+  }
+
+  if(e.target.id==='btnPronPlay'){
+    const data=pronunciationData[pronMode];
+    if(data && data[pronIndex]) speak(data[pronIndex].fr,'fr-FR',e.target);
+  }
+  if(e.target.id==='btnPronSlow'){
+    const data=pronunciationData[pronMode];
+    if(data && data[pronIndex]) speak(data[pronIndex].fr,'fr-FR',e.target,true);
+  }
+  if(e.target.id==='btnPronNext'){
+    const data=pronunciationData[pronMode];
+    if(!data) return;
+    pronIndex++;
+    if(pronIndex>=data.length){
+      pronIndex=0;
+      pronCounters[pronMode]=Math.min(pronCounters[pronMode]+data.length,data.length);
+      showFeedback('تم استعراض جميع عناصر هذا القسم','info');
+    }else{
+      pronCounters[pronMode]=Math.min(pronCounters[pronMode]+1,data.length);
+    }
+    renderPronunciation();
+    saveState();
+    updateGlobalProgressBar();
+  }
+  if(e.target.id==='btnPronRestart'){
+    pronIndex=0;
+    pronCounters[pronMode]=0;
+    renderPronunciation();
+    saveState();
+    updateGlobalProgressBar();
+  }
+
+  // املأ الفراغ
+  if(e.target.id==='btnFillCheck') checkFillAnswer();
+  if(e.target.id==='btnFillNext') nextFill();
+  if(e.target.id==='btnFillHint') toggleFillHint();
+  if(e.target.id==='btnFillRestart') restartFill();
+
+  // سحب وإفلات
+  if(e.target.id==='btnDDCheck') evaluateDragDrop();
+  if(e.target.id==='btnDDReset'){ initDragDrop(); saveState(); updateGlobalProgressBar(); }
+  if(e.target.id==='btnDDSpeak') speakAllDrag();
+
+  // الاختبار
+  if(e.target.id==='btnQuizSubmit') submitQuizAnswer();
+  if(e.target.id==='btnQuizSpeak'){
+    if(quizIndex<quizQuestions.length){
+      speak(quizQuestions[quizIndex].q,'ar-SA',e.target);
+    }
+  }
+  if(e.target.id==='btnQuizRestart') restartQuiz(true);
+  if(e.target.id==='btnQuizAgain') restartQuiz(true);
+  if(e.target.dataset.sectionJump){
+    setSection(e.target.dataset.sectionJump);
+  }
+
+  if(e.target.id==='btnResetAll') resetAllProgress();
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'){
+    if(currentSection==='exercise1') checkFillAnswer();
+    if(currentSection==='quiz') submitQuizAnswer();
+  }
+});
+
+document.addEventListener('click',e=>{
+  const opt=e.target.closest('.quiz-option');
+  if(opt){
+    if(opt.classList.contains('correct')||opt.classList.contains('incorrect')) return;
+    els('.quiz-option').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    quizSelected=+opt.dataset.qopt;
+  }
+});
+
+/* ====================== بحث المفردات ====================== */
+el('#vocabSearch').addEventListener('input',()=>{
+  renderVocabulary();
+});
+
+/* ====================== بدء التشغيل ====================== */
+function initApp(){
+  loadState();
+  el('#todayDate').textContent=new Date().toLocaleDateString('ar-EG',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  renderAllSections(true);
+  initSessionTimer();
+  if(savedStateLoaded){
+    showFeedback('تم تحميل تقدمك السابق','success',2500);
+  }else{
+    showFeedback('مرحباً! ابدأ رحلتك الآن','info',2500);
+  }
+  updateGlobalProgressBar();
+}
+
+window.addEventListener('beforeunload',saveState);
+window.addEventListener('error',err=>{
+  console.error(err);
+  showFeedback('خطأ غير متوقع: '+err.message,'error',5000);
+});
+
+initApp();
+</script>
+</body>
+</html>
