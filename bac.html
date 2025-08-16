@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام البكالوريا الجديد 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">✨ نظام البكالوريا الجديد 2026</h1>
+            <div class="flex items-center gap-4">
+                <span id="slideCounter" class="text-sm">1 / 8</span>
+                <div class="w-32 bg-white/20 rounded-full h-2">
+                    <div id="progressBar" class="progress-bar bg-white h-2 rounded-full" style="width: 12.5%"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slides Container -->
+    <div class="max-w-6xl mx-auto p-6">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="gradient-bg rounded-3xl p-12 text-white text-center min-h-[600px] flex flex-col justify-center">
+                <div class="text-6xl mb-6">✨</div>
+                <h1 class="text-5xl font-bold mb-8">نظام البكالوريا الجديد 2026</h1>
+                <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-4xl mx-auto">
+                    <p class="text-xl mb-4">تنفيذًا لتوجيهات الأستاذ الدكتور <strong>محمد عبد اللطيف</strong></p>
+                    <p class="text-lg mb-4">وزير التربية والتعليم والتعليم الفني</p>
+                    <p class="text-lg mb-4">برعاية الأستاذ <strong>محمد رمضان غريب</strong></p>
+                    <p class="text-base mb-4">وكيل أول وزارة التربية والتعليم بمحافظة الشرقية</p>
+                    <p class="text-base">وتحت إشراف الأستاذ <strong>أحمد عبد العظيم</strong></p>
+                    <p class="text-sm mb-4">مدير عام الإدارة التعليمية بديرب نجم</p>
+                    <div class="border-t border-white/20 pt-6 mt-6">
+                        <p class="text-lg font-semibold">تقدم مدرسة د/ محمد ربيع فلاح</p>
+                        <p class="text-base">شرح لنظام البكالوريا الجديد عام ٢٠٢٦</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: First Year Subjects -->
+        <div class="slide">
+            <div class="bg-white rounded-3xl p-12 shadow-2xl min-h-[600px]">
+                <div class="text-center mb-12">
+                    <div class="text-5xl mb-4">📚</div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">مواد الصف الأول الثانوي</h2>
+                    <p class="text-xl text-gray-600">المواد الأساسية التي يدرسها جميع الطلاب</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-8 text-white">
+                        <h3 class="text-2xl font-bold mb-6">المواد الأساسية</h3>
+                        <ul class="space-y-3 text-lg">
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                التربية الدينية والأخلاقية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                اللغة العربية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                اللغة الإنجليزية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                الرياضيات
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                الفلسفة والمنطق
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                التاريخ المصري
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                العلوم المتكاملة
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-green-500 to-teal-600 rounded-2xl p-8 text-white">
+                        <h3 class="text-2xl font-bold mb-6">مواد لا تُضاف للمجموع</h3>
+                        <ul class="space-y-3 text-lg">
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                البرمجة وعلوم الحاسب
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-2 h-2 bg-white rounded-full"></span>
+                                اللغة الأجنبية الثانية
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Specialization Overview -->
+        <div class="slide">
+            <div class="bg-white rounded-3xl p-12 shadow-2xl min-h-[600px]">
+                <div class="text-center mb-12">
+                    <div class="text-5xl mb-4">🎓</div>
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">المسارات التخصصية</h2>
+                    <p class="text-xl text-gray-600">الصف الثاني والثالث الثانوي - 4 مسارات للاختيار</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="card-hover bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl p-8 text-white text-center">
+                        <div class="text-4xl mb-4">🏥</div>
+                        <h3 class="text-2xl font-bold mb-3">مسار الطب وعلوم الحياة</h3>
+                        <p class="text-lg opacity-90">للطلاب الراغبين في دراسة الطب والعلوم الطبية</p>
+                    </div>
+                    
+                    <div class="card-hover bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-8 text-white text-center">
+                        <div class="text-4xl mb-4">⚙️</div>
+                        <h3 class="text-2xl font-bold mb-3">مسار الهندسة وعلوم الحاسب</h3>
+                        <p class="text-lg opacity-90">للطلاب الراغبين في دراسة الهندسة والتكنولوجيا</p>
+                    </div>
+                    
+                    <div class="card-hover bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-8 text-white text-center">
+                        <div class="text-4xl mb-4">💼</div>
+                        <h3 class="text-2xl font-bold mb-3">مسار الأعمال</h3>
+                        <p class="text-lg opacity-90">للطلاب الراغبين في دراسة إدارة الأعمال والاقتصاد</p>
+                    </div>
+                    
+                    <div class="card-hover bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl p-8 text-white text-center">
+                        <div class="text-4xl mb-4">🎨</div>
+                        <h3 class="text-2xl font-bold mb-3">مسار الآداب والفنون</h3>
+                        <p class="text-lg opacity-90">للطلاب الراغبين في دراسة الأدب والعلوم الإنسانية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Medical Track -->
+        <div class="slide">
+            <div class="bg-gradient-to-br from-red-50 to-pink-50 rounded-3xl p-12 shadow-2xl min-h-[600px]">
+                <div class="text-center mb-12">
+                    <div class="text-5xl mb-4">🏥</div>
+                    <h2 class="text-4xl font-bold text-red-600 mb-4">مسار الطب وعلوم الحياة</h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-bold text-red-600 mb-6 text-center">الصف الثاني الثانوي</h3>
+                        <ul class="space-y-4 text-lg">
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                لغة عربية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                لغة إنجليزية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                تاريخ مصري
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                رياضيات أو فيزياء
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-bold text-red-600 mb-6 text-center">الصف الثالث الثانوي</h3>
+                        <ul class="space-y-4 text-lg">
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                تربية دينية وأخلاقية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                <strong>أحياء (مستوى رفيع)</strong>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                                <strong>كيمياء (مستوى رفيع)</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Engineering Track -->
+        <div class="slide">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-12 shadow-2xl min-h-[600px]">
+                <div class="text-center mb-12">
+                    <div class="text-5xl mb-4">⚙️</div>
+                    <h2 class="text-4xl font-bold text-blue-600 mb-4">مسار الهندسة وعلوم الحاسب</h2>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-bold text-blue-600 mb-6 text-center">الصف الثاني الثانوي</h3>
+                        <ul class="space-y-4 text-lg">
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                لغة عربية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                لغة إنجليزية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                تاريخ مصري
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                كيمياء أو برمجة
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-bold text-blue-600 mb-6 text-center">الصف الثالث الثانوي</h3>
+                        <ul class="space-y-4 text-lg">
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                تربية دينية وأخلاقية
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                <strong>رياضيات (مستوى رفيع)</strong>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                <strong>فيزياء (مستوى رفيع)</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Business & Arts Tracks -->
+        <div class="slide">
+            <div class="bg-white rounded-3xl p-12 shadow-2xl min-h-[600px]">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Business Track -->
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8">
+                        <div class="text-center mb-8">
+                            <div class="text-4xl mb-4">💼</div>
+                            <h2 class="text-3xl font-bold text-green-600 mb-4">مسار الأعمال</h2>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-xl p-6 shadow-md">
+                                <h3 class="text-xl font-bold text-green-600 mb-4">الصف الثاني</h3>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• لغة عربية</li>
+                                    <li>• لغة إنجليزية</li>
+                                    <li>• تاريخ مصري</li>
+                                    <li>• محاسبة أو إدارة أعمال</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl p-6 shadow-md">
+                                <h3 class="text-xl font-bold text-green-600 mb-4">الصف الثالث</h3>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• تربية دينية وأخلاقية</li>
+                                    <li>• <strong>اقتصاد (مستوى رفيع)</strong></li>
+                                    <li>• رياضيات</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Arts Track -->
+                    <div class="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-8">
+                        <div class="text-center mb-8">
+                            <div class="text-4xl mb-4">🎨</div>
+                            <h2 class="text-3xl font-bold text-purple-600 mb-4">مسار الآداب والفنون</h2>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-xl p-6 shadow-md">
+                                <h3 class="text-xl font-bold text-purple-600 mb-4">الصف الثاني</h3>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• لغة عربية</li>
+                                    <li>• لغة إنجليزية</li>
+                                    <li>• تاريخ مصري</li>
+                                    <li>• علم نفس أو اللغة الأجنبية الثانية</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white rounded-xl p-6 shadow-md">
+                                <h3 class="text-xl font-bold text-purple-600 mb-4">الصف الثالث</h3>
+                                <ul class="space-y-2 text-sm">
+                                    <li>• تربية دينية وأخلاقية</li>
+                                    <li>• <strong>جغرافيا (مستوى رفيع)</strong></li>
+                                    <li>• إحصاء</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Exam System -->
+        <div class="slide">
+            <div class="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-3xl p-12 shadow-2xl min-h-[600px]">
+                <div class="text-center mb-12">
+                    <div class="text-5xl mb-4">📝</div>
+                    <h2 class="text-4xl font-bold text-orange-600 mb-4">نظام الامتحانات</h2>
+                    <p class="text-xl text-gray-600">محاولتان لكل صف مع اعتماد الدرجة الأعلى</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-6 text-center">الصف الثاني الثانوي</h3>
+                        <div class="space-y-6">
+                            <div class="bg-green-100 rounded-xl p-6 border-r-4 border-green-500">
+                                <h4 class="font-bold text-green-700 mb-2">المحاولة الأولى</h4>
+                                <p class="text-green-600">شهر مايو - مجانية</p>
+                            </div>
+                            <div class="bg-blue-100 rounded-xl p-6 border-r-4 border-blue-500">
+                                <h4 class="font-bold text-blue-700 mb-2">المحاولة الثانية</h4>
+                                <p class="text-blue-600">شهر يوليو - رسوم 500 جنيه</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-lg">
+                        <h3 class="text-2xl font-bold text-orange-600 mb-6 text-center">الصف الثالث الثانوي</h3>
+                        <div class="space-y-6">
+                            <div class="bg-green-100 rounded-xl p-6 border-r-4 border-green-500">
+                                <h4 class="font-bold text-green-700 mb-2">المحاولة الأولى</h4>
+                                <p class="text-green-600">شهر يونيو - مجانية</p>
+                            </div>
+                            <div class="bg-blue-100 rounded-xl p-6 border-r-4 border-blue-500">
+                                <h4 class="font-bold text-blue-700 mb-2">المحاولة الثانية</h4>
+                                <p class="text-blue-600">شهر أغسطس - رسوم 500 جنيه</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl p-8 text-white text-center">
+                    <h3 class="text-2xl font-bold mb-4">🔹 المجموع الكلي</h3>
+                    <p class="text-xl">700 درجة على مدار السنتين</p>
+                    <p class="text-lg mt-2 opacity-90">يتم اعتماد الدرجة الأعلى من المحاولتين</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Goals -->
+        <div class="slide">
+            <div class="gradient-bg rounded-3xl p-12 text-white min-h-[600px] flex flex-col justify-center">
+                <div class="text-center mb-12">
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h2 class="text-4xl font-bold mb-4">أهداف النظام الجديد</h2>
+                    <p class="text-xl opacity-90">كما أكد الأستاذ محمد رمضان غريب، وكيل أول الوزارة</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                        <div class="text-4xl mb-4 text-center">🧠</div>
+                        <h3 class="text-2xl font-bold mb-4 text-center">تخفيف الضغط النفسي</h3>
+                        <p class="text-lg text-center opacity-90">تخفيف الضغط النفسي عن الطالب والأسرة والقضاء على ظاهرة الدروس الخصوصية</p>
+                    </div>
+                    
+                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                        <div class="text-4xl mb-4 text-center">💡</div>
+                        <h3 class="text-2xl font-bold mb-4 text-center">تطوير التعليم</h3>
+                        <p class="text-lg text-center opacity-90">نقل التعليم من الحفظ والتلقين إلى الفهم، الابتكار، التفكير المنطقي، وتنمية المهارات</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <div class="text-3xl mb-4">🌟</div>
+                    <h3 class="text-2xl font-bold">نحو مستقبل تعليمي أفضل</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls -->
+    <div class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-2xl p-4 flex items-center gap-4">
+        <button id="prevBtn" class="bg-gray-200 hover:bg-gray-300 rounded-full p-3 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </button>
+        
+        <div class="flex gap-2">
+            <button class="slide-dot w-3 h-3 rounded-full bg-blue-500" data-slide="0"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="1"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="2"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="3"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="4"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="5"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="6"></button>
+            <button class="slide-dot w-3 h-3 rounded-full bg-gray-300" data-slide="7"></button>
+        </div>
+        
+        <button id="nextBtn" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6 mt-12">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="flex items-center justify-center gap-2 text-lg">
+                <span>🎨</span>
+                <span>أهداء وتصميم</span>
+                <span class="font-bold text-blue-400">جمال عسكر</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const slideCounter = document.getElementById('slideCounter');
+        const progressBar = document.getElementById('progressBar');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const slideDots = document.querySelectorAll('.slide-dot');
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            slideDots[currentSlide].classList.remove('bg-blue-500');
+            slideDots[currentSlide].classList.add('bg-gray-300');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            
+            slides[currentSlide].classList.add('active');
+            slideDots[currentSlide].classList.remove('bg-gray-300');
+            slideDots[currentSlide].classList.add('bg-blue-500');
+            
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+            progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+            
+            // Update button states
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+            
+            if (prevBtn.disabled) {
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            if (nextBtn.disabled) {
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        slideDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'970345fa15dfe1f1',t:'MTc1NTM3MTg2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
