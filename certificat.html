@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الشهادات المحسّن</title>
+    <!-- استيراد الخطوط من جوجل -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Great+Vibes&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700&family=Parisienne&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --classic-gold: #c09553;
+            --classic-dark: #3a2a1a;
+            --classic-bg: #fdfaf3;
+            --modern-blue: #0d6efd;
+            --modern-dark: #212529;
+            --modern-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #e9ecef;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .main-title {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+            align-items: end;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .control-group input,
+        .control-group select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Cairo', sans-serif;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .control-group input[type="file"] { padding: 5px; }
+        
+        #export-pdf {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            grid-column: 1 / -1; /* Make button span full width */
+            justify-self: center;
+            width: 50%;
+            margin-top: 10px;
+        }
+        #export-pdf:hover { background-color: #0056b3; }
+
+        /* Certificate Wrapper */
+        .certificate-wrapper {
+            padding: 20px;
+            background: #e0e0e0;
+            border-radius: 5px;
+        }
+
+        /* Certificate Base Styles */
+        .certificate {
+            padding: 40px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            box-sizing: border-box;
+            transition: all 0.4s ease-in-out;
+            overflow: hidden;
+        }
+        .certificate-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        #logo-img-top {
+            max-height: 80px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        #watermark-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            opacity: 0.08;
+            max-width: 50%;
+            max-height: 50%;
+            display: none;
+        }
+
+        .cert-name { margin: 20px 0; font-weight: 400; }
+        .cert-body { line-height: 1.8; margin-bottom: 40px; }
+
+        .signature-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            margin-top: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .signature-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+        .signature-block p { margin: 0; }
+        #signature-img {
+            max-height: 50px;
+            margin-bottom: 5px;
+            display: none;
+        }
+        .line { border-bottom: 1px solid; width: 100%; }
+
+        /* --- Template 1: Classic Gold --- */
+        .certificate.template1 {
+            background-color: var(--classic-bg);
+            color: var(--classic-dark);
+            font-family: 'Merriweather', serif;
+            border: 2px solid #c09553;
+        }
+        .certificate.template1::before, .certificate.template1::after {
+            content: '';
+            position: absolute;
+            border: 1px solid var(--classic-gold);
+            inset: 6px;
+            pointer-events: none;
+        }
+        .certificate.template1 .cert-title {
+            font-family: 'Great Vibes', cursive;
+            color: var(--classic-gold);
+            font-size: 56px;
+        }
+        .certificate.template1 .cert-name {
+            font-family: 'Parisienne', cursive;
+            font-size: 48px;
+            color: var(--classic-dark);
+        }
+        .certificate.template1 .line { border-color: var(--classic-gold); }
+
+        /* --- Template 2: Modern Blue --- */
+        .certificate.template2 {
+            background-color: var(--modern-bg);
+            color: var(--modern-dark);
+            font-family: 'Montserrat', sans-serif;
+            border: 10px solid var(--modern-blue);
+        }
+        .certificate.template2::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 1px solid var(--modern-blue);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .certificate.template2 .cert-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 36px;
+            color: var(--modern-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .certificate.template2 .cert-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 40px;
+            color: var(--modern-dark);
+        }
+        .certificate.template2 .line { border-color: var(--modern-blue); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="main-title">مولد الشهادات المحسّن</h1>
+        <div class="controls">
+            <div class="control-group">
+                <label for="name" data-ar="اسم المستلم:" data-en="Recipient's Name:" data-fr="Nom du Récipiendaire:">اسم المستلم:</label>
+                <input type="text" id="name" placeholder="أدخل الاسم هنا">
+            </div>
+            <div class="control-group">
+                <label for="reason" data-ar="سبب التكريم:" data-en="Reason for Honor:" data-fr="Raison de l'Honneur:">سبب التكريم:</label>
+                <input type="text" id="reason" placeholder="لإكماله دورة...">
+            </div>
+            <div class="control-group">
+                <label for="template" data-ar="اختر التصميم:" data-en="Choose Template:" data-fr="Choisissez le Modèle:">اختر التصميم:</label>
+                <select id="template">
+                    <option value="template1" data-ar="كلاسيكي (ذهبي)" data-en="Classic (Gold)" data-fr="Classique (Or)">كلاسيكي (ذهبي)</option>
+                    <option value="template2" data-ar="حديث (أزرق)" data-en="Modern (Blue)" data-fr="Moderne (Bleu)">حديث (أزرق)</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="language" data-ar="اختر اللغة:" data-en="Choose Language:" data-fr="Choisissez la Langue:">اختر اللغة:</label>
+                <select id="language">
+                    <option value="ar">العربية</option>
+                    <option value="en">English</option>
+                    <option value="fr">Français</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="logo-upload" data-ar="ارفع الشعار:" data-en="Upload Logo:" data-fr="Télécharger le Logo:">ارفع الشعار:</label>
+                <input type="file" id="logo-upload" accept="image/*">
+            </div>
+            <div class="control-group">
+                <label for="signature-upload" data-ar="ارفع توقيعك:" data-en="Upload Signature:" data-fr="Télécharger la Signature:">ارفع توقيعك:</label>
+                <input type="file" id="signature-upload" accept="image/*">
+            </div>
+            <div class="control-group">
+                 <label for="logo-position" data-ar="موضع الشعار:" data-en="Logo Position:" data-fr="Position du Logo:">موضع الشعار:</label>
+                <select id="logo-position">
+                    <option value="top" data-ar="في الأعلى" data-en="Top Center" data-fr="En Haut">في الأعلى</option>
+                    <option value="watermark" data-ar="علامة مائية" data-en="Watermark" data-fr="Filigrane">علامة مائية</option>
+                </select>
+            </div>
+            <button id="export-pdf" data-ar="تصدير إلى PDF" data-en="Export to PDF" data-fr="Exporter en PDF">تصدير إلى PDF</button>
+        </div>
+
+        <div class="certificate-wrapper">
+            <div id="certificate" class="certificate template1">
+                <img id="watermark-logo" src="" alt="Watermark">
+                <div class="certificate-content">
+                    <img id="logo-img-top" src="" alt="Logo">
+                    <h1 class="cert-title" data-ar="شهادة تقدير" data-en="Certificate of Appreciation" data-fr="Certificat d'Appréciation">شهادة تقدير</h1>
+                    <p class="cert-subtitle" data-ar="تُمنح إلى" data-en="This certificate is awarded to" data-fr="Ce certificat est décerné à">تُمنح إلى</p>
+                    <p class="cert-name">الاسم يظهر هنا</p>
+                    <p class="cert-body" 
+                       data-ar-template="لـ {reason}. نتمنى له كل التوفيق في مساعيه المستقبلية." 
+                       data-en-template="For {reason}. We wish them all the best in their future endeavors." 
+                       data-fr-template="Pour {reason}. Nous lui souhaitons le meilleur dans ses projets futurs.">
+                    </p>
+                    <div class="signature-area">
+                        <div class="signature-block">
+                            <img id="signature-img" src="" alt="Signature" />
+                            <div class="line"></div>
+                            <p class="cert-signature" data-ar="توقيع المدير" data-en="Director's Signature" data-fr="Signature du Directeur">توقيع المدير</p>
+                        </div>
+                        <div class="signature-block">
+                            <p id="cert-date-value"></p>
+                            <div class="line"></div>
+                            <p class="cert-date" data-ar="التاريخ" data-en="Date" data-fr="Date">التاريخ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('name');
+            const reasonInput = document.getElementById('reason');
+            const templateSelect = document.getElementById('template');
+            const languageSelect = document.getElementById('language');
+            const signatureUpload = document.getElementById('signature-upload');
+            const logoUpload = document.getElementById('logo-upload');
+            const logoPositionSelect = document.getElementById('logo-position');
+            const exportButton = document.getElementById('export-pdf');
+            const certificate = document.getElementById('certificate');
+            const certName = certificate.querySelector('.cert-name');
+            const certBody = certificate.querySelector('.cert-body');
+            const signatureImg = document.getElementById('signature-img');
+            const logoImgTop = document.getElementById('logo-img-top');
+            const watermarkLogo = document.getElementById('watermark-logo');
+            const certDateValue = document.getElementById('cert-date-value');
+
+            const placeholders = {
+                name: { ar: 'أدخل الاسم هنا', en: 'Enter name here', fr: 'Entrez le nom ici' },
+                defaultName: { ar: 'الاسم يظهر هنا', en: 'Name Appears Here', fr: 'Le Nom Apparaît Ici' },
+                reason: { ar: 'إكماله دورة...', en: 'completing the course...', fr: 'avoir terminé le cours...' },
+                defaultReason: { ar: 'إكماله دورة [اسم الدورة]', en: 'completing the [Course Name] course', fr: 'avoir terminé le cours de [Nom du cours]' }
+            };
+
+            function handleFileUpload(event, callback) {
+                if (event.target.files && event.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => callback(e.target.result);
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            }
+
+            logoUpload.addEventListener('change', (e) => handleFileUpload(e, (src) => {
+                logoImgTop.src = src;
+                watermarkLogo.src = src;
+                updateLogoPosition();
+            }));
+
+            signatureUpload.addEventListener('change', (e) => handleFileUpload(e, (src) => {
+                signatureImg.src = src;
+                signatureImg.style.display = 'block';
+            }));
+
+            function updateLogoPosition() {
+                const position = logoPositionSelect.value;
+                if(logoImgTop.src.includes('data:image')) { // check if logo exists
+                    logoImgTop.style.display = position === 'top' ? 'block' : 'none';
+                    watermarkLogo.style.display = position === 'watermark' ? 'block' : 'none';
+                }
+            }
+
+            function updateCertificateText() {
+                const lang = languageSelect.value;
+                certName.textContent = nameInput.value || placeholders.defaultName[lang];
+                const reasonTemplate = certBody.dataset[`${lang}Template`];
+                const reasonText = reasonInput.value || placeholders.defaultReason[lang];
+                certBody.textContent = reasonTemplate.replace('{reason}', reasonText);
+            }
+
+            function updateTemplate() {
+                certificate.className = 'certificate ' + templateSelect.value;
+            }
+
+            function updateLanguage() {
+                const lang = languageSelect.value;
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                
+                document.querySelectorAll('[data-ar]').forEach(el => {
+                    if (el.dataset[lang]) {
+                        if(el.tagName === 'OPTION') { el.text = el.dataset[lang]; }
+                        else { el.textContent = el.dataset[lang]; }
+                    }
+                });
+
+                nameInput.placeholder = placeholders.name[lang];
+                reasonInput.placeholder = placeholders.reason[lang];
+                updateCertificateText();
+            }
+
+            function updateDate() {
+                const today = new Date();
+                const lang = languageSelect.value;
+                const locale = lang === 'ar' ? 'ar-EG' : lang === 'fr' ? 'fr-FR' : 'en-GB';
+                certDateValue.textContent = today.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+            }
+
+            nameInput.addEventListener('input', updateCertificateText);
+            reasonInput.addEventListener('input', updateCertificateText);
+            templateSelect.addEventListener('change', updateTemplate);
+            logoPositionSelect.addEventListener('change', updateLogoPosition);
+            languageSelect.addEventListener('change', () => {
+                updateLanguage();
+                updateDate();
+            });
+
+            exportButton.addEventListener('click', () => {
+                // Temporarily hide controls for cleaner screenshot
+                const wrapper = document.querySelector('.certificate-wrapper');
+                const originalBg = wrapper.style.background;
+                wrapper.style.background = 'none';
+
+                html2canvas(certificate, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: null,
+                    scrollX: -window.scrollX,
+                    scrollY: -window.scrollY,
+                    windowWidth: document.documentElement.offsetWidth,
+                    windowHeight: document.documentElement.offsetHeight
+                }).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF({
+                        orientation: 'landscape',
+                        unit: 'px',
+                        format: [canvas.width, canvas.height]
+                    });
+                    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+                    pdf.save('certificate.pdf');
+                    
+                    // Restore background
+                    wrapper.style.background = originalBg;
+                });
+            });
+
+            // Initial setup
+            updateLanguage();
+            updateTemplate();
+            updateDate();
+        });
+    </script>
+
+</body>
+</html>
