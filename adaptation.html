@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأنظمة الحية - التكيف والبقاء | Les Systèmes Vivants</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .french-text {
+            font-family: 'Roboto', sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .quiz-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .quiz-option:hover {
+            background-color: #e0f2fe;
+            transform: scale(1.02);
+        }
+        
+        .correct {
+            background-color: #c8e6c9 !important;
+            border-color: #4caf50 !important;
+        }
+        
+        .incorrect {
+            background-color: #ffcdd2 !important;
+            border-color: #f44336 !important;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        .bilingual-card {
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .animal-illustration {
+            width: 120px;
+            height: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin: 0 auto;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 mb-8">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold mb-4 bounce">🌟 Les Systèmes Vivants | الأنظمة الحية 🌟</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="french-text">
+                    <h2 class="text-2xl font-semibold">Adaptation et survie</h2>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-semibold">التكيف والبقاء</h2>
+                </div>
+            </div>
+            <p class="text-lg opacity-90">Sciences 4ème Primaire - العلوم للصف الرابع الابتدائي</p>
+            
+            <!-- Progress Tracker -->
+            <div class="mt-6 bg-white bg-opacity-20 rounded-full p-2 max-w-md mx-auto">
+                <div class="flex justify-between items-center text-sm mb-2">
+                    <span>التقدم | Progrès</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="bg-white bg-opacity-30 rounded-full h-3">
+                    <div id="progressBar" class="progress-bar bg-yellow-400 h-3 rounded-full" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 max-w-6xl">
+        <!-- Introduction -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <div class="text-center mb-6">
+                <h3 class="text-3xl font-bold text-purple-700 mb-4">🎯 Que vas-tu apprendre ? | ماذا سوف تتعلم؟</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gradient-to-r from-green-100 to-green-200 p-4 rounded-xl bilingual-card">
+                        <div class="text-2xl mb-2">🦎</div>
+                        <div class="french-text text-sm font-semibold text-green-700">Adaptation et survie</div>
+                        <div class="text-sm font-semibold text-green-700">التكيف والبقاء</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-100 to-blue-200 p-4 rounded-xl bilingual-card">
+                        <div class="text-2xl mb-2">🌳</div>
+                        <div class="french-text text-sm font-semibold text-blue-700">Les types d'adaptation</div>
+                        <div class="text-sm font-semibold text-blue-700">أنواع التكيف</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-100 to-yellow-200 p-4 rounded-xl bilingual-card">
+                        <div class="text-2xl mb-2">🐾</div>
+                        <div class="french-text text-sm font-semibold text-yellow-700">L'adaptation chez les animaux</div>
+                        <div class="text-sm font-semibold text-yellow-700">التكيف عند الحيوانات</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-pink-100 to-pink-200 p-4 rounded-xl bilingual-card">
+                        <div class="text-2xl mb-2">🌿</div>
+                        <div class="french-text text-sm font-semibold text-pink-700">L'adaptation chez les plantes</div>
+                        <div class="text-sm font-semibold text-pink-700">التكيف عند النباتات</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 gap-8 mb-8">
+            <!-- Idea 1 - Bilingual -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 card-hover fade-in">
+                <h3 class="text-2xl font-bold text-blue-700 mb-4 text-center">
+                    💡 Idée 1 | الفكرة الأولى
+                </h3>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- French Content -->
+                    <div class="bilingual-card bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl">
+                        <h4 class="french-text text-xl font-semibold text-gray-700 mb-4">
+                            Pourquoi les êtres vivants doivent-ils changer ?
+                        </h4>
+                        <p class="french-text text-lg leading-relaxed text-gray-700">
+                            Parfois, le monde peut être difficile pour les animaux et les plantes. Il peut faire très chaud ou très froid. Parfois, il n'y a pas assez d'eau ou de nourriture. Pour survivre, les êtres vivants doivent trouver une solution. Cette solution s'appelle <strong class="text-purple-600">l'adaptation</strong>.
+                        </p>
+                    </div>
+                    
+                    <!-- Arabic Content -->
+                    <div class="bilingual-card bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl">
+                        <h4 class="text-xl font-semibold text-gray-700 mb-4">
+                            لماذا يجب على الكائنات الحية أن تتغير؟
+                        </h4>
+                        <p class="text-lg leading-relaxed text-gray-700">
+                            في بعض الأحيان، يمكن أن يكون العالم صعباً على الحيوانات والنباتات. قد يكون الجو حاراً جداً أو بارداً جداً. وأحياناً، لا يوجد ماء أو طعام كافٍ. لكي تتمكن الكائنات الحية من البقاء، يجب أن تجد حلاً. هذا الحل يسمى <strong class="text-purple-600">التكيف</strong>.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Interactive Question -->
+                <div class="mt-8 bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
+                    <h4 class="text-xl font-bold text-green-700 mb-4 text-center">
+                        🤔 Question interactive | سؤال تفاعلي
+                    </h4>
+                    <div class="quiz-container">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                            <p class="french-text text-lg font-semibold text-center">Que signifie "s'adapter" ?</p>
+                            <p class="text-lg font-semibold text-center">ماذا يعني "التكيف"؟</p>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkAnswer(this, false, 1)">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                    <span class="french-text">a) Dormir longtemps</span>
+                                    <span>أ) النوم لفترة طويلة</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkAnswer(this, true, 1)">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                    <span class="french-text">b) Changer pour survivre</span>
+                                    <span>ب) التغيير للبقاء على قيد الحياة</span>
+                                </div>
+                            </div>
+                            <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkAnswer(this, false, 1)">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                    <span class="french-text">c) Changer de couleur seulement</span>
+                                    <span>ج) تغيير اللون فقط</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Bat Section -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <h3 class="text-3xl font-bold text-center text-purple-700 mb-8">
+                🦇 Les Chauves-Souris | الخفافيش
+            </h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- French Content -->
+                <div class="bilingual-card bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-2xl">
+                    <p class="french-text text-lg leading-relaxed text-gray-700 mb-4">
+                        Tu pourrais penser que les chauves-souris, comme celles illustrées sur cette page, sont effrayantes.
+                    </p>
+                    <p class="french-text text-lg leading-relaxed text-gray-700 mb-4">
+                        En fait, les chauves-souris sont assez importantes pour les humains et les autres organismes vivants.
+                    </p>
+                    <p class="french-text text-lg leading-relaxed text-gray-700">
+                        Les scientifiques considèrent souvent un animal particulier comme faisant partie d'une communauté plus vaste d'organismes vivants.
+                    </p>
+                </div>
+                
+                <!-- Arabic Content -->
+                <div class="bilingual-card bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-2xl">
+                    <p class="text-lg leading-relaxed text-gray-700 mb-4">
+                        قد تظن أن الخفافيش، مثل تلك المرسومة في هذه الصفحة، مخيفة.
+                    </p>
+                    <p class="text-lg leading-relaxed text-gray-700 mb-4">
+                        في الواقع، الخفافيش مهمة جدًا للبشر والكائنات الحية الأخرى.
+                    </p>
+                    <p class="text-lg leading-relaxed text-gray-700">
+                        غالبًا ما يعتبر العلماء أن الحيوان الواحد جزء من مجتمع أكبر من الكائنات الحية.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bat Superpowers -->
+            <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl p-6 mb-8">
+                <h4 class="text-2xl font-bold text-center text-purple-700 mb-6">
+                    🦇 Les chauves-souris : des petites héroïnes de la nuit ! | الخفافيش: بطلات صغيرات في الليل!
+                </h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Flying Power -->
+                    <div class="bg-white rounded-xl p-4 text-center pulse">
+                        <div class="text-4xl mb-3">🪶</div>
+                        <div class="space-y-2">
+                            <p class="french-text font-semibold text-purple-700">Elles ont des ailes comme les oiseaux</p>
+                            <p class="font-semibold text-purple-700">لديها أجنحة مثل الطيور</p>
+                            <p class="french-text text-sm text-gray-600">Cela leur permet de voler dans le ciel !</p>
+                            <p class="text-sm text-gray-600">وهذا يساعدها على الطيران في السماء!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Eating Insects -->
+                    <div class="bg-white rounded-xl p-4 text-center pulse">
+                        <div class="text-4xl mb-3">🦟</div>
+                        <div class="space-y-2">
+                            <p class="french-text font-semibold text-green-700">Elles mangent des moustiques et des insectes</p>
+                            <p class="font-semibold text-green-700">تأكل البعوض والحشرات</p>
+                            <p class="french-text text-sm text-gray-600">Elles nous aident à ne pas nous faire piquer !</p>
+                            <p class="text-sm text-gray-600">وتساعدنا كي لا نتعرض للسعات!</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Helping Flowers -->
+                    <div class="bg-white rounded-xl p-4 text-center pulse">
+                        <div class="text-4xl mb-3">🌸</div>
+                        <div class="space-y-2">
+                            <p class="french-text font-semibold text-pink-700">Elles aident les fleurs à grandir</p>
+                            <p class="font-semibold text-pink-700">تساعد الزهور على النمو</p>
+                            <p class="french-text text-sm text-gray-600">Comme les abeilles et les papillons, elles transportent le pollen.</p>
+                            <p class="text-sm text-gray-600">مثل النحل والفراشات، تنقل حبوب اللقاح.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Echolocation -->
+                    <div class="bg-white rounded-xl p-4 text-center pulse">
+                        <div class="text-4xl mb-3">📡</div>
+                        <div class="space-y-2">
+                            <p class="french-text font-semibold text-blue-700">Elles ont un super pouvoir : l'écholocation</p>
+                            <p class="font-semibold text-blue-700">لديها قدرة خارقة: تحديد الموقع بالصدى</p>
+                            <p class="french-text text-sm text-gray-600">Même si elles ne voient pas bien, elles font des petits sons pour savoir où aller, comme un radar magique !</p>
+                            <p class="text-sm text-gray-600">حتى لو لم تكن ترى جيدًا، تصدر أصواتًا صغيرة لتعرف أين تذهب، مثل رادار سحري!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Bat Quiz -->
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-2xl">
+                <h4 class="text-xl font-bold text-indigo-700 mb-4 text-center">
+                    🤔 Question sur les chauves-souris | سؤال عن الخفافيش
+                </h4>
+                <div class="quiz-container">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                        <p class="french-text text-lg font-semibold text-center">Est-ce que les chauves-souris peuvent voler comme les oiseaux ?</p>
+                        <p class="text-lg font-semibold text-center">هل تستطيع الخفافيش الطيران مثل الطيور؟</p>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkAnswer(this, true, 'bat1')">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                <span class="french-text">✅ Oui, elles ont des ailes qui leur permettent de voler</span>
+                                <span>✅ نعم، لديها أجنحة تسمح لها بالطيران</span>
+                            </div>
+                        </div>
+                        <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkAnswer(this, false, 'bat1')">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                <span class="french-text">❌ Non, elles ne peuvent que marcher</span>
+                                <span>❌ لا، تستطيع المشي فقط</span>
+                            </div>
+                        </div>
+                        <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkAnswer(this, false, 'bat1')">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                <span class="french-text">❌ Non, elles nagent seulement</span>
+                                <span>❌ لا، تسبح فقط</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animals Examples -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <h3 class="text-3xl font-bold text-center text-orange-700 mb-8">
+                🐾 Exemples d'adaptation chez les animaux | أمثلة على التكيف عند الحيوانات
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Fox -->
+                <div class="bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl p-6 text-center pulse">
+                    <!-- SVG Fox Illustration -->
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <circle cx="60" cy="45" r="25" fill="#FF6B35" stroke="#E55A2B" stroke-width="2"/>
+                            <circle cx="50" cy="40" r="3" fill="#000"/>
+                            <circle cx="70" cy="40" r="3" fill="#000"/>
+                            <path d="M55 50 Q60 55 65 50" stroke="#000" stroke-width="2" fill="none"/>
+                            <polygon points="40,25 45,15 50,25" fill="#FF6B35"/>
+                            <polygon points="70,25 75,15 80,25" fill="#FF6B35"/>
+                            <ellipse cx="60" cy="75" rx="20" ry="30" fill="#FF8C42"/>
+                            <ellipse cx="60" cy="95" rx="8" ry="15" fill="#FFB366"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-orange-700 mb-3">Le Renard | الثعلب</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Fourrure épaisse comme un manteau</p>
+                        <p class="text-gray-700">فرو سميك مثل معطف دافئ</p>
+                    </div>
+                </div>
+                
+                <!-- Camel -->
+                <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl p-6 text-center pulse">
+                    <!-- SVG Camel Illustration -->
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <ellipse cx="60" cy="70" rx="35" ry="20" fill="#D4A574"/>
+                            <circle cx="45" cy="45" r="15" fill="#E6B887"/>
+                            <circle cx="42" cy="42" r="2" fill="#000"/>
+                            <path d="M38 48 Q42 52 46 48" stroke="#000" stroke-width="1.5" fill="none"/>
+                            <ellipse cx="70" cy="35" rx="8" ry="15" fill="#D4A574"/>
+                            <rect x="25" y="85" width="4" height="20" fill="#8B4513"/>
+                            <rect x="35" y="85" width="4" height="20" fill="#8B4513"/>
+                            <rect x="75" y="85" width="4" height="20" fill="#8B4513"/>
+                            <rect x="85" y="85" width="4" height="20" fill="#8B4513"/>
+                            <path d="M30 25 Q35 15 40 25" stroke="#8B4513" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-yellow-700 mb-3">Le Chameau | الجمل</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Stocke l'eau et la graisse</p>
+                        <p class="text-gray-700">يخزن الماء والدهون</p>
+                    </div>
+                </div>
+                
+                <!-- Bat -->
+                <div class="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl p-6 text-center pulse">
+                    <!-- SVG Bat Illustration -->
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <ellipse cx="60" cy="60" rx="8" ry="12" fill="#4A4A4A"/>
+                            <circle cx="57" cy="55" r="1" fill="#FFF"/>
+                            <circle cx="63" cy="55" r="1" fill="#FFF"/>
+                            <path d="M30 45 Q45 35 60 45 Q75 35 90 45 Q85 65 60 70 Q35 65 30 45" fill="#2D2D2D"/>
+                            <path d="M45 50 Q50 45 55 50" stroke="#000" stroke-width="1" fill="none"/>
+                            <path d="M65 50 Q70 45 75 50" stroke="#000" stroke-width="1" fill="none"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-purple-700 mb-3">La Chauve-souris | الخفاش</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Utilise l'écholocation</p>
+                        <p class="text-gray-700">يستخدم تحديد الموقع بالصدى</p>
+                    </div>
+                </div>
+                
+                <!-- Polar Bear -->
+                <div class="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-6 text-center pulse">
+                    <!-- SVG Polar Bear Illustration -->
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <ellipse cx="60" cy="70" rx="25" ry="18" fill="#F0F8FF"/>
+                            <circle cx="60" cy="45" r="18" fill="#F0F8FF"/>
+                            <circle cx="55" cy="42" r="2" fill="#000"/>
+                            <circle cx="65" cy="42" r="2" fill="#000"/>
+                            <ellipse cx="60" cy="48" rx="3" ry="2" fill="#000"/>
+                            <circle cx="45" cy="35" r="6" fill="#F0F8FF"/>
+                            <circle cx="75" cy="35" r="6" fill="#F0F8FF"/>
+                            <rect x="45" y="85" width="6" height="15" fill="#F0F8FF"/>
+                            <rect x="69" y="85" width="6" height="15" fill="#F0F8FF"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-cyan-700 mb-3">L'Ours polaire | الدب القطبي</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Fourrure blanche épaisse</p>
+                        <p class="text-gray-700">فرو أبيض سميك</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plants Examples -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <h3 class="text-3xl font-bold text-center text-green-700 mb-8">
+                🌿 L'adaptation chez les plantes | التكيف عند النباتات
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Palm Tree -->
+                <div class="bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <rect x="55" y="60" width="10" height="40" fill="#8B4513"/>
+                            <path d="M60 60 Q40 30 20 20" stroke="#228B22" stroke-width="4" fill="none"/>
+                            <path d="M60 60 Q50 25 35 15" stroke="#228B22" stroke-width="4" fill="none"/>
+                            <path d="M60 60 Q60 20 60 10" stroke="#228B22" stroke-width="4" fill="none"/>
+                            <path d="M60 60 Q70 25 85 15" stroke="#228B22" stroke-width="4" fill="none"/>
+                            <path d="M60 60 Q80 30 100 20" stroke="#228B22" stroke-width="4" fill="none"/>
+                            <ellipse cx="60" cy="105" rx="15" ry="5" fill="#8B4513" opacity="0.3"/>
+                            <!-- Roots underground -->
+                            <path d="M60 100 Q50 110 45 120" stroke="#654321" stroke-width="2" opacity="0.7"/>
+                            <path d="M60 100 Q70 110 75 120" stroke="#654321" stroke-width="2" opacity="0.7"/>
+                            <path d="M60 100 Q60 115 60 125" stroke="#654321" stroke-width="3" opacity="0.7"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-green-700 mb-3">Le Palmier | النخيل</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Longues racines profondes</p>
+                        <p class="text-gray-700">جذور طويلة عميقة</p>
+                    </div>
+                </div>
+                
+                <!-- Cactus -->
+                <div class="bg-gradient-to-br from-teal-100 to-cyan-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <ellipse cx="60" cy="70" rx="20" ry="35" fill="#228B22"/>
+                            <ellipse cx="40" cy="60" rx="8" ry="20" fill="#228B22"/>
+                            <ellipse cx="80" cy="65" rx="8" ry="15" fill="#228B22"/>
+                            <!-- Spines -->
+                            <line x1="45" y1="45" x2="42" y2="40" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="55" y1="40" x2="52" y2="35" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="65" y1="40" x2="68" y2="35" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="75" y1="45" x2="78" y2="40" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="50" y1="60" x2="47" y2="55" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="70" y1="60" x2="73" y2="55" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="60" y1="80" x2="57" y2="75" stroke="#8B4513" stroke-width="1"/>
+                            <line x1="60" y1="90" x2="63" y2="85" stroke="#8B4513" stroke-width="1"/>
+                            <!-- Flower -->
+                            <circle cx="65" cy="35" r="4" fill="#FF69B4"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-teal-700 mb-3">Le Cactus | الصبار</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Stocke l'eau, épines protectrices</p>
+                        <p class="text-gray-700">يخزن الماء، أشواك واقية</p>
+                    </div>
+                </div>
+                
+                <!-- Lotus -->
+                <div class="bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <!-- Water -->
+                            <ellipse cx="60" cy="90" rx="50" ry="15" fill="#87CEEB" opacity="0.6"/>
+                            <!-- Lily pad -->
+                            <ellipse cx="60" cy="75" rx="25" ry="15" fill="#228B22"/>
+                            <path d="M60 75 L75 70" stroke="#006400" stroke-width="2"/>
+                            <!-- Flower -->
+                            <circle cx="60" cy="50" r="8" fill="#FFB6C1"/>
+                            <circle cx="55" cy="45" r="6" fill="#FF69B4"/>
+                            <circle cx="65" cy="45" r="6" fill="#FF69B4"/>
+                            <circle cx="60" cy="40" r="6" fill="#FF1493"/>
+                            <circle cx="60" cy="50" r="3" fill="#FFD700"/>
+                            <!-- Stem -->
+                            <line x1="60" y1="58" x2="60" y2="75" stroke="#228B22" stroke-width="3"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-pink-700 mb-3">Le Lotus | اللوتس</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Flotte sur l'eau</p>
+                        <p class="text-gray-700">يطفو على الماء</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Human Adaptation -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <h3 class="text-3xl font-bold text-center text-indigo-700 mb-8">
+                👥 Et les humains, comment s'adaptent-ils ? | وكيف يتكيف البشر؟
+            </h3>
+            
+            <div class="mb-6 text-center">
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-2xl">
+                    <p class="text-lg">
+                        <span class="french-text font-semibold">Nous aussi, les humains, nous nous adaptons ! Mais nous le faisons différemment.</span>
+                    </p>
+                    <p class="text-lg mt-2">
+                        <span class="font-semibold">نحن البشر أيضاً نتكيف! لكننا نفعل ذلك بشكل مختلف.</span>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <!-- Winter clothing -->
+                            <ellipse cx="60" cy="70" rx="20" ry="25" fill="#2563EB"/>
+                            <circle cx="60" cy="40" r="12" fill="#FDB462"/>
+                            <circle cx="57" cy="37" r="1" fill="#000"/>
+                            <circle cx="63" cy="37" r="1" fill="#000"/>
+                            <path d="M57 42 Q60 45 63 42" stroke="#000" stroke-width="1" fill="none"/>
+                            <!-- Hat -->
+                            <ellipse cx="60" cy="30" rx="15" ry="8" fill="#DC2626"/>
+                            <circle cx="60" cy="22" r="3" fill="#FFF"/>
+                            <!-- Coat -->
+                            <rect x="45" y="50" width="30" height="35" rx="5" fill="#1E40AF"/>
+                            <!-- Arms -->
+                            <ellipse cx="35" cy="60" rx="8" ry="15" fill="#1E40AF"/>
+                            <ellipse cx="85" cy="60" rx="8" ry="15" fill="#1E40AF"/>
+                            <!-- Gloves -->
+                            <circle cx="35" cy="75" r="5" fill="#DC2626"/>
+                            <circle cx="85" cy="75" r="5" fill="#DC2626"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-blue-700 mb-3">
+                        <span class="french-text">Quand il fait froid</span><br>
+                        <span>في الجو البارد</span>
+                    </h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Manteaux, gants, bonnets</p>
+                        <p class="text-gray-700">معاطف، قفازات، قبعات</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <!-- Summer clothing -->
+                            <circle cx="60" cy="40" r="12" fill="#FDB462"/>
+                            <circle cx="57" cy="37" r="1" fill="#000"/>
+                            <circle cx="63" cy="37" r="1" fill="#000"/>
+                            <path d="M57 42 Q60 45 63 42" stroke="#000" stroke-width="1" fill="none"/>
+                            <!-- T-shirt -->
+                            <rect x="50" y="50" width="20" height="25" rx="3" fill="#FCD34D"/>
+                            <!-- Shorts -->
+                            <rect x="52" y="75" width="16" height="15" rx="2" fill="#3B82F6"/>
+                            <!-- Arms -->
+                            <ellipse cx="42" cy="58" rx="6" ry="12" fill="#FDB462"/>
+                            <ellipse cx="78" cy="58" rx="6" ry="12" fill="#FDB462"/>
+                            <!-- Sun -->
+                            <circle cx="90" cy="20" r="8" fill="#FCD34D"/>
+                            <path d="M90 5 L90 10 M90 30 L90 35 M75 20 L80 20 M100 20 L105 20" stroke="#FCD34D" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-yellow-700 mb-3">
+                        <span class="french-text">Quand il fait chaud</span><br>
+                        <span>في الجو الحار</span>
+                    </h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Vêtements légers</p>
+                        <p class="text-gray-700">ملابس خفيفة</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <!-- House -->
+                            <rect x="30" y="60" width="60" height="40" fill="#8B4513"/>
+                            <polygon points="25,60 60,30 95,60" fill="#DC2626"/>
+                            <rect x="45" y="75" width="12" height="20" fill="#654321"/>
+                            <rect x="65" y="70" width="15" height="15" fill="#87CEEB"/>
+                            <path d="M65 77.5 L80 77.5 M72.5 70 L72.5 85" stroke="#000" stroke-width="1"/>
+                            <!-- Chimney with smoke -->
+                            <rect x="75" y="40" width="8" height="20" fill="#8B4513"/>
+                            <circle cx="79" cy="35" r="2" fill="#D1D5DB" opacity="0.7"/>
+                            <circle cx="81" cy="30" r="2" fill="#D1D5DB" opacity="0.5"/>
+                            <circle cx="77" cy="25" r="2" fill="#D1D5DB" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-green-700 mb-3">
+                        <span class="french-text">Maisons chauffées</span><br>
+                        <span>بيوت مدفأة</span>
+                    </h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Chauffage en hiver</p>
+                        <p class="text-gray-700">تدفئة في الشتاء</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 text-center pulse">
+                    <div class="animal-illustration mb-4">
+                        <svg viewBox="0 0 120 120" class="w-full h-full">
+                            <!-- Air conditioner -->
+                            <rect x="40" y="50" width="40" height="25" rx="5" fill="#E5E7EB"/>
+                            <rect x="45" y="55" width="30" height="15" fill="#374151"/>
+                            <path d="M50 62 L70 62 M50 67 L70 67" stroke="#9CA3AF" stroke-width="2"/>
+                            <!-- Cool air lines -->
+                            <path d="M35 80 Q40 85 45 80 Q50 75 55 80" stroke="#3B82F6" stroke-width="2" fill="none"/>
+                            <path d="M65 80 Q70 85 75 80 Q80 75 85 80" stroke="#3B82F6" stroke-width="2" fill="none"/>
+                            <!-- Snowflake -->
+                            <g transform="translate(60,35)">
+                                <path d="M0,-8 L0,8 M-8,0 L8,0 M-6,-6 L6,6 M-6,6 L6,-6" stroke="#3B82F6" stroke-width="2"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-bold text-purple-700 mb-3">
+                        <span class="french-text">Climatisation</span><br>
+                        <span>تكييف الهواء</span>
+                    </h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="french-text text-gray-700">Refroidissement en été</p>
+                        <p class="text-gray-700">تبريد في الصيف</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Games Section -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <h3 class="text-3xl font-bold text-center text-indigo-700 mb-8">
+                🎮 Jeux Éducatifs | الألعاب التعليمية
+            </h3>
+            
+            <!-- Game 1: Animal Matching -->
+            <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-6 mb-8">
+                <h4 class="text-2xl font-bold text-center text-blue-700 mb-6">
+                    🎯 Jeu 1: Associe l'animal à son adaptation | لعبة ١: اربط الحيوان بتكيفه
+                </h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Animals Column -->
+                    <div class="space-y-4">
+                        <h5 class="text-lg font-semibold text-center mb-4">
+                            <span class="french-text">Animaux | </span><span>الحيوانات</span>
+                        </h5>
+                        <div class="space-y-3">
+                            <div class="animal-card bg-white p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-blue-400 transition-colors" data-animal="camel" onclick="selectAnimal(this)">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-3xl">🐫</div>
+                                    <div>
+                                        <p class="french-text font-semibold">Le Chameau</p>
+                                        <p class="font-semibold">الجمل</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="animal-card bg-white p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-blue-400 transition-colors" data-animal="bat" onclick="selectAnimal(this)">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-3xl">🦇</div>
+                                    <div>
+                                        <p class="french-text font-semibold">La Chauve-souris</p>
+                                        <p class="font-semibold">الخفاش</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="animal-card bg-white p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-blue-400 transition-colors" data-animal="polarbear" onclick="selectAnimal(this)">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-3xl">🐻‍❄️</div>
+                                    <div>
+                                        <p class="french-text font-semibold">L'Ours polaire</p>
+                                        <p class="font-semibold">الدب القطبي</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Adaptations Column -->
+                    <div class="space-y-4">
+                        <h5 class="text-lg font-semibold text-center mb-4">
+                            <span class="french-text">Adaptations | </span><span>التكيفات</span>
+                        </h5>
+                        <div class="space-y-3">
+                            <div class="adaptation-card bg-white p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-green-400 transition-colors" data-adaptation="camel" onclick="selectAdaptation(this)">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-3xl">💧</div>
+                                    <div>
+                                        <p class="french-text font-semibold">Stocke l'eau et la graisse</p>
+                                        <p class="font-semibold">يخزن الماء والدهون</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="adaptation-card bg-white p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-green-400 transition-colors" data-adaptation="bat" onclick="selectAdaptation(this)">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-3xl">📡</div>
+                                    <div>
+                                        <p class="french-text font-semibold">Utilise l'écholocation</p>
+                                        <p class="font-semibold">يستخدم تحديد الموقع بالصدى</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="adaptation-card bg-white p-4 rounded-xl border-2 border-gray-200 cursor-pointer hover:border-green-400 transition-colors" data-adaptation="polarbear" onclick="selectAdaptation(this)">
+                                <div class="flex items-center space-x-4">
+                                    <div class="text-3xl">🧥</div>
+                                    <div>
+                                        <p class="french-text font-semibold">Fourrure blanche épaisse</p>
+                                        <p class="font-semibold">فرو أبيض سميك</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <div id="matchingScore" class="text-lg font-semibold mb-4">
+                        <span class="french-text">Score: </span><span>النتيجة: </span><span id="matchScore">0</span>/3
+                    </div>
+                    <button onclick="resetMatching()" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors">
+                        <span class="french-text">Recommencer | </span><span>إعادة البدء</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game 2: Drag and Drop Ecosystem -->
+            <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 mb-8">
+                <h4 class="text-2xl font-bold text-center text-green-700 mb-6">
+                    🌍 Jeu 2: Construis ton écosystème | لعبة ٢: ابن نظامك البيئي
+                </h4>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Available Elements -->
+                    <div class="space-y-4">
+                        <h5 class="text-lg font-semibold text-center">
+                            <span class="french-text">Éléments disponibles</span><br>
+                            <span>العناصر المتاحة</span>
+                        </h5>
+                        <div id="availableElements" class="space-y-3">
+                            <div class="ecosystem-element bg-white p-3 rounded-xl border-2 border-gray-200 cursor-move hover:shadow-lg transition-shadow" draggable="true" data-element="sun">
+                                <div class="flex items-center space-x-3">
+                                    <div class="text-2xl">☀️</div>
+                                    <div>
+                                        <p class="french-text text-sm font-semibold">Soleil</p>
+                                        <p class="text-sm font-semibold">الشمس</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ecosystem-element bg-white p-3 rounded-xl border-2 border-gray-200 cursor-move hover:shadow-lg transition-shadow" draggable="true" data-element="tree">
+                                <div class="flex items-center space-x-3">
+                                    <div class="text-2xl">🌳</div>
+                                    <div>
+                                        <p class="french-text text-sm font-semibold">Arbre</p>
+                                        <p class="text-sm font-semibold">شجرة</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ecosystem-element bg-white p-3 rounded-xl border-2 border-gray-200 cursor-move hover:shadow-lg transition-shadow" draggable="true" data-element="rabbit">
+                                <div class="flex items-center space-x-3">
+                                    <div class="text-2xl">🐰</div>
+                                    <div>
+                                        <p class="french-text text-sm font-semibold">Lapin</p>
+                                        <p class="text-sm font-semibold">أرنب</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ecosystem-element bg-white p-3 rounded-xl border-2 border-gray-200 cursor-move hover:shadow-lg transition-shadow" draggable="true" data-element="water">
+                                <div class="flex items-center space-x-3">
+                                    <div class="text-2xl">💧</div>
+                                    <div>
+                                        <p class="french-text text-sm font-semibold">Eau</p>
+                                        <p class="text-sm font-semibold">ماء</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ecosystem Canvas -->
+                    <div class="lg:col-span-2">
+                        <h5 class="text-lg font-semibold text-center mb-4">
+                            <span class="french-text">Ton écosystème</span><br>
+                            <span>نظامك البيئي</span>
+                        </h5>
+                        <div id="ecosystemCanvas" class="bg-gradient-to-b from-sky-200 to-green-200 rounded-2xl p-6 min-h-64 border-4 border-dashed border-gray-300 relative">
+                            <div class="text-center text-gray-500 mt-20">
+                                <p class="french-text">Glisse les éléments ici</p>
+                                <p>اسحب العناصر هنا</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <button onclick="checkEcosystem()" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-colors mr-4">
+                                <span class="french-text">Vérifier | </span><span>تحقق</span>
+                            </button>
+                            <button onclick="resetEcosystem()" class="bg-gray-600 text-white px-6 py-3 rounded-full hover:bg-gray-700 transition-colors">
+                                <span class="french-text">Recommencer | </span><span>إعادة البدء</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 3: Adaptation Quiz Wheel -->
+            <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 mb-8">
+                <h4 class="text-2xl font-bold text-center text-purple-700 mb-6">
+                    🎡 Jeu 3: Roue des adaptations | لعبة ٣: عجلة التكيفات
+                </h4>
+                
+                <div class="text-center">
+                    <div class="relative inline-block">
+                        <!-- Spinning Wheel -->
+                        <div id="adaptationWheel" class="w-64 h-64 rounded-full border-8 border-purple-600 relative overflow-hidden mx-auto mb-6 cursor-pointer" onclick="spinWheel()">
+                            <div class="absolute inset-0 bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 via-blue-400 via-purple-400 to-pink-400"></div>
+                            <div class="absolute inset-4 bg-white rounded-full flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-4xl mb-2" id="wheelEmoji">🎯</div>
+                                    <p class="text-sm font-semibold" id="wheelText">
+                                        <span class="french-text">Clique pour tourner!</span><br>
+                                        <span>اضغط للدوران!</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Pointer -->
+                            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-2">
+                                <div class="w-0 h-0 border-l-4 border-r-4 border-b-8 border-l-transparent border-r-transparent border-b-purple-600"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="wheelQuestion" class="hidden bg-white p-6 rounded-2xl border-2 border-purple-200 max-w-2xl mx-auto">
+                        <h5 class="text-lg font-semibold mb-4" id="questionTitle"></h5>
+                        <div id="wheelOptions" class="space-y-3"></div>
+                        <div class="mt-4">
+                            <span class="french-text">Score de la roue: </span><span>نتيجة العجلة: </span>
+                            <span id="wheelScore" class="font-bold text-purple-600">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game 4: Memory Card Game -->
+            <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl p-6">
+                <h4 class="text-2xl font-bold text-center text-orange-700 mb-6">
+                    🧠 Jeu 4: Mémoire des adaptations | لعبة ٤: ذاكرة التكيفات
+                </h4>
+                
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center space-x-4 bg-white p-4 rounded-full">
+                        <div>
+                            <span class="french-text">Paires trouvées: </span><span>الأزواج المكتشفة: </span>
+                            <span id="memoryScore" class="font-bold text-orange-600">0</span>/6
+                        </div>
+                        <div>
+                            <span class="french-text">Essais: </span><span>المحاولات: </span>
+                            <span id="memoryAttempts" class="font-bold text-red-600">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="memoryGrid" class="grid grid-cols-3 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                    <!-- Memory cards will be generated by JavaScript -->
+                </div>
+                
+                <div class="text-center mt-6">
+                    <button onclick="resetMemoryGame()" class="bg-orange-600 text-white px-6 py-3 rounded-full hover:bg-orange-700 transition-colors">
+                        <span class="french-text">Nouvelle partie | </span><span>لعبة جديدة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Quiz - 10 Questions -->
+        <div class="bg-white rounded-3xl shadow-xl p-8 mb-8 card-hover fade-in">
+            <h3 class="text-3xl font-bold text-center text-purple-700 mb-8">
+                🎯 Examen Final | الاختبار النهائي
+            </h3>
+            
+            <div class="mb-6 text-center">
+                <div class="bg-gradient-to-r from-purple-100 to-pink-100 rounded-full p-4 inline-block">
+                    <span class="text-lg font-semibold">Score: <span id="finalScore">0</span>/10</span>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">1. Que signifie "adaptation" ? | </span>
+                    <span>١. ماذا يعني "التكيف"؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkFinalAnswer(this, false, 1)">
+                        <span class="french-text">Dormir beaucoup | </span><span>النوم كثيراً</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4" onclick="checkFinalAnswer(this, true, 1)">
+                        <span class="french-text">Changer pour survivre | </span><span>التغيير للبقاء</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">2. Comment le palmier trouve-t-il l'eau ? | </span>
+                    <span>٢. كيف يجد النخيل الماء؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 2)">
+                        <span class="french-text">Pluie seulement | </span><span>المطر فقط</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 2)">
+                        <span class="french-text">Racines profondes | </span><span>جذور عميقة</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 2)">
+                        <span class="french-text">Air humide | </span><span>الهواء الرطب</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">3. Que stocke le chameau ? | </span>
+                    <span>٣. ماذا يخزن الجمل؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 3)">
+                        <span class="french-text">Eau et graisse | </span><span>الماء والدهون</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 3)">
+                        <span class="french-text">Seulement du sable | </span><span>الرمل فقط</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">4. Comment la chauve-souris voit-elle la nuit ? | </span>
+                    <span>٤. كيف يرى الخفاش في الليل؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 4)">
+                        <span class="french-text">Yeux très grands | </span><span>عيون كبيرة جداً</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 4)">
+                        <span class="french-text">Écholocation | </span><span>تحديد الموقع بالصدى</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">5. Pourquoi le cactus a-t-il des épines ? | </span>
+                    <span>٥. لماذا للصبار أشواك؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 5)">
+                        <span class="french-text">Protection et économie d'eau | </span><span>الحماية وتوفير الماء</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 5)">
+                        <span class="french-text">Pour la beauté | </span><span>للجمال فقط</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">6. Comment l'ours polaire reste-t-il au chaud ? | </span>
+                    <span>٦. كيف يبقى الدب القطبي دافئاً؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 6)">
+                        <span class="french-text">Fourrure épaisse | </span><span>فرو سميك</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 6)">
+                        <span class="french-text">Il court vite | </span><span>يجري بسرعة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">7. Comment les humains s'adaptent-ils au froid ? | </span>
+                    <span>٧. كيف يتكيف البشر مع البرد؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 7)">
+                        <span class="french-text">Changent leur corps | </span><span>يغيرون أجسامهم</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 7)">
+                        <span class="french-text">Portent des vêtements chauds | </span><span>يرتدون ملابس دافئة</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">8. Où flotte le lotus ? | </span>
+                    <span>٨. أين يطفو اللوتس؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 8)">
+                        <span class="french-text">Dans l'air | </span><span>في الهواء</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 8)">
+                        <span class="french-text">Sur l'eau | </span><span>على الماء</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 8)">
+                        <span class="french-text">Sous terre | </span><span>تحت الأرض</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">9. Pourquoi le renard a-t-il une fourrure épaisse ? | </span>
+                    <span>٩. لماذا للثعلب فرو سميك؟</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 9)">
+                        <span class="french-text">Pour rester au chaud | </span><span>ليبقى دافئاً</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 9)">
+                        <span class="french-text">Pour voler | </span><span>للطيران</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="quiz-question mb-8 p-6 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl">
+                <p class="text-lg font-semibold mb-4 text-center">
+                    <span class="french-text">10. L'adaptation aide les êtres vivants à : | </span>
+                    <span>١٠. التكيف يساعد الكائنات الحية على:</span>
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, false, 10)">
+                        <span class="french-text">Changer de couleur | </span><span>تغيير اللون</span>
+                    </div>
+                    <div class="quiz-option border-2 border-gray-200 rounded-xl p-4 text-center" onclick="checkFinalAnswer(this, true, 10)">
+                        <span class="french-text">Survivre dans leur environnement | </span><span>البقاء في بيئتهم</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="quizResults" class="hidden mt-8 p-6 bg-gradient-to-r from-green-100 to-emerald-100 rounded-2xl text-center">
+                <h4 class="text-2xl font-bold text-green-700 mb-4">🎉 Félicitations! | تهانينا!</h4>
+                <p class="text-lg mb-4">
+                    <span class="french-text">Votre score final: </span>
+                    <span>نتيجتك النهائية: </span>
+                    <span id="finalScoreDisplay" class="font-bold text-2xl text-purple-600"></span>
+                </p>
+                <div id="scoreMessage" class="text-lg font-semibold"></div>
+                <button onclick="resetQuiz()" class="mt-4 bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition-colors">
+                    <span class="french-text">Recommencer | </span><span>إعادة المحاولة</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-3xl shadow-xl p-8 text-center">
+            <h3 class="text-3xl font-bold mb-6">🌟 Résumé de la leçon | ملخص الدرس</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-lg">
+                <div class="bg-white bg-opacity-20 rounded-2xl p-6">
+                    <div class="text-4xl mb-3">🔄</div>
+                    <div class="space-y-2">
+                        <p class="french-text font-semibold">L'adaptation = changer pour survivre</p>
+                        <p class="font-semibold">التكيف = التغيير للبقاء على قيد الحياة</p>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-2xl p-6">
+                    <div class="text-4xl mb-3">🐾</div>
+                    <div class="space-y-2">
+                        <p class="french-text font-semibold">Les animaux changent leur corps</p>
+                        <p class="font-semibold">الحيوانات تغير أجسامها</p>
+                    </div>
+                </div>
+                <div class="bg-white bg-opacity-20 rounded-2xl p-6">
+                    <div class="text-4xl mb-3">👥</div>
+                    <div class="space-y-2">
+                        <p class="french-text font-semibold">Les humains changent leurs outils</p>
+                        <p class="font-semibold">البشر يغيرون أدواتهم</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Key Examples -->
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div class="bg-white bg-opacity-15 rounded-xl p-3">
+                    <div class="text-2xl mb-1">🦊</div>
+                    <p class="french-text">Fourrure épaisse</p>
+                    <p>فرو سميك</p>
+                </div>
+                <div class="bg-white bg-opacity-15 rounded-xl p-3">
+                    <div class="text-2xl mb-1">🐫</div>
+                    <p class="french-text">Stocke l'eau</p>
+                    <p>يخزن الماء</p>
+                </div>
+                <div class="bg-white bg-opacity-15 rounded-xl p-3">
+                    <div class="text-2xl mb-1">🌴</div>
+                    <p class="french-text">Racines profondes</p>
+                    <p>جذور عميقة</p>
+                </div>
+                <div class="bg-white bg-opacity-15 rounded-xl p-3">
+                    <div class="text-2xl mb-1">🧥</div>
+                    <p class="french-text">Vêtements chauds</p>
+                    <p>ملابس دافئة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 py-8 text-center text-gray-600">
+        <div class="container mx-auto px-4">
+            <div class="bg-white rounded-2xl shadow-lg p-6 max-w-2xl mx-auto">
+                <h4 class="text-2xl font-bold text-purple-700 mb-4">🎓 Félicitations! | تهانينا!</h4>
+                <div class="space-y-2">
+                    <p class="french-text text-lg">Tu as terminé la leçon sur l'adaptation et la survie!</p>
+                    <p class="text-lg">لقد أكملت درس التكيف والبقاء بنجاح!</p>
+                </div>
+                
+                <!-- Progress Summary -->
+                <div class="mt-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl">
+                    <p class="text-sm text-gray-600 mb-2">
+                        <span class="french-text">Ton progrès est sauvegardé automatiquement</span> |
+                        <span>تقدمك محفوظ تلقائياً</span>
+                    </p>
+                    <div class="flex justify-center items-center space-x-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-purple-600" id="footerProgress">0%</div>
+                            <div class="text-xs text-gray-500">
+                                <span class="french-text">Complété</span> | <span>مكتمل</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-sm text-gray-500">
+                    <span class="french-text">Sciences 4ème Primaire - Système Vivants</span><br>
+                    <span>العلوم للصف الرابع الابتدائي - الأنظمة الحية</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Progress tracking system
+        let studentProgress = {
+            lessonStarted: false,
+            questionsAnswered: [],
+            finalQuizScore: 0,
+            finalQuizCompleted: false,
+            totalTimeSpent: 0,
+            startTime: Date.now()
+        };
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('scienceAdaptationProgress');
+            if (saved) {
+                studentProgress = { ...studentProgress, ...JSON.parse(saved) };
+                updateProgressBar();
+            }
+            studentProgress.lessonStarted = true;
+            studentProgress.startTime = Date.now();
+            saveProgress();
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            studentProgress.totalTimeSpent += (Date.now() - studentProgress.startTime) / 1000;
+            localStorage.setItem('scienceAdaptationProgress', JSON.stringify(studentProgress));
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const totalSteps = 11; // 1 intro question + 10 final quiz questions
+            const completedSteps = studentProgress.questionsAnswered.length + (studentProgress.finalQuizCompleted ? 1 : 0);
+            const percentage = Math.round((completedSteps / totalSteps) * 100);
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = percentage + '%';
+            
+            // Update footer progress
+            const footerProgress = document.getElementById('footerProgress');
+            if (footerProgress) {
+                footerProgress.textContent = percentage + '%';
+            }
+        }
+
+        let score = 0;
+        let totalQuestions = 0;
+        let finalQuizScore = 0;
+        let finalQuizAnswered = [];
+
+        function checkAnswer(element, isCorrect, questionId) {
+            // Prevent multiple clicks on the same quiz
+            const siblings = element.parentElement.children;
+            let alreadyAnswered = false;
+            
+            for (let sibling of siblings) {
+                if (sibling.classList.contains('correct') || sibling.classList.contains('incorrect')) {
+                    alreadyAnswered = true;
+                    break;
+                }
+            }
+            
+            if (alreadyAnswered) return;
+            
+            totalQuestions++;
+            
+            // Track progress
+            if (questionId && !studentProgress.questionsAnswered.includes(questionId)) {
+                studentProgress.questionsAnswered.push(questionId);
+                updateProgressBar();
+                saveProgress();
+            }
+            
+            // Remove hover effects from all options in this quiz
+            for (let sibling of siblings) {
+                sibling.style.pointerEvents = 'none';
+            }
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                score++;
+                
+                // Show success message
+                const successMsg = document.createElement('div');
+                successMsg.className = 'mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center font-semibold';
+                successMsg.innerHTML = '🎉 Correct! Bravo! | إجابة صحيحة! أحسنت!';
+                element.parentElement.appendChild(successMsg);
+                
+                // Add celebration animation
+                element.style.animation = 'bounce 0.6s ease';
+                
+            } else {
+                element.classList.add('incorrect');
+                
+                // Show the correct answer
+                for (let sibling of siblings) {
+                    if (sibling !== element) {
+                        const correctOption = element.parentElement.querySelector('[onclick*="true"]');
+                        if (correctOption) {
+                            correctOption.classList.add('correct');
+                        }
+                    }
+                }
+                
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center font-semibold';
+                errorMsg.innerHTML = '❌ Incorrect. Essaie encore! | إجابة خاطئة. حاول مرة أخرى!';
+                element.parentElement.appendChild(errorMsg);
+            }
+        }
+
+        function checkFinalAnswer(element, isCorrect, questionNumber) {
+            // Prevent multiple clicks on the same question
+            const questionDiv = element.closest('.quiz-question');
+            const siblings = questionDiv.querySelectorAll('.quiz-option');
+            let alreadyAnswered = false;
+            
+            for (let sibling of siblings) {
+                if (sibling.classList.contains('correct') || sibling.classList.contains('incorrect')) {
+                    alreadyAnswered = true;
+                    break;
+                }
+            }
+            
+            if (alreadyAnswered) return;
+            
+            // Mark this question as answered
+            if (!finalQuizAnswered.includes(questionNumber)) {
+                finalQuizAnswered.push(questionNumber);
+            }
+            
+            // Remove hover effects from all options in this question
+            siblings.forEach(sibling => {
+                sibling.style.pointerEvents = 'none';
+            });
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                finalQuizScore++;
+                
+                // Show success message
+                const successMsg = document.createElement('div');
+                successMsg.className = 'mt-3 p-2 bg-green-100 border border-green-400 text-green-700 rounded-lg text-center font-semibold text-sm';
+                successMsg.innerHTML = '✅ Correct! | صحيح!';
+                questionDiv.appendChild(successMsg);
+                
+            } else {
+                element.classList.add('incorrect');
+                
+                // Show the correct answer
+                siblings.forEach(sibling => {
+                    if (sibling !== element && sibling.onclick.toString().includes('true')) {
+                        sibling.classList.add('correct');
+                    }
+                });
+                
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'mt-3 p-2 bg-red-100 border border-red-400 text-red-700 rounded-lg text-center font-semibold text-sm';
+                errorMsg.innerHTML = '❌ Incorrect | خطأ';
+                questionDiv.appendChild(errorMsg);
+            }
+            
+            // Update score display
+            document.getElementById('finalScore').textContent = finalQuizScore;
+            
+            // Check if all questions are answered
+            if (finalQuizAnswered.length === 10) {
+                setTimeout(() => {
+                    showFinalResults();
+                }, 1000);
+            }
+            
+            // Update progress
+            studentProgress.finalQuizScore = finalQuizScore;
+            updateProgressBar();
+            saveProgress();
+        }
+
+        function showFinalResults() {
+            const resultsDiv = document.getElementById('quizResults');
+            const scoreDisplay = document.getElementById('finalScoreDisplay');
+            const messageDiv = document.getElementById('scoreMessage');
+            
+            scoreDisplay.textContent = `${finalQuizScore}/10 (${Math.round((finalQuizScore/10)*100)}%)`;
+            
+            let message = '';
+            let bgClass = '';
+            
+            if (finalQuizScore >= 9) {
+                message = '🌟 Excellent! Parfait! | ممتاز! مثالي!';
+                bgClass = 'from-green-100 to-emerald-100';
+            } else if (finalQuizScore >= 7) {
+                message = '👍 Très bien! Bon travail! | جيد جداً! عمل رائع!';
+                bgClass = 'from-blue-100 to-cyan-100';
+            } else if (finalQuizScore >= 5) {
+                message = '📚 Bien! Continue à étudier! | جيد! واصل الدراسة!';
+                bgClass = 'from-yellow-100 to-orange-100';
+            } else {
+                message = '💪 Continue! Révise la leçon! | استمر! راجع الدرس!';
+                bgClass = 'from-red-100 to-pink-100';
+            }
+            
+            messageDiv.innerHTML = message;
+            resultsDiv.className = `mt-8 p-6 bg-gradient-to-r ${bgClass} rounded-2xl text-center`;
+            resultsDiv.classList.remove('hidden');
+            
+            // Mark quiz as completed
+            studentProgress.finalQuizCompleted = true;
+            updateProgressBar();
+            saveProgress();
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            // Reset final quiz
+            finalQuizScore = 0;
+            finalQuizAnswered = [];
+            document.getElementById('finalScore').textContent = '0';
+            document.getElementById('quizResults').classList.add('hidden');
+            
+            // Reset all quiz options
+            const allOptions = document.querySelectorAll('.quiz-option');
+            allOptions.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+            
+            // Remove all messages
+            const messages = document.querySelectorAll('.mt-3, .mt-4');
+            messages.forEach(msg => {
+                if (msg.classList.contains('bg-green-100') || msg.classList.contains('bg-red-100')) {
+                    msg.remove();
+                }
+            });
+            
+            // Reset progress
+            studentProgress.finalQuizCompleted = false;
+            studentProgress.finalQuizScore = 0;
+            updateProgressBar();
+            saveProgress();
+        }
+
+        // Initialize progress tracking on page load
+        window.addEventListener('load', function() {
+            loadProgress();
+            
+            // Animate cards
+            const cards = document.querySelectorAll('.fade-in');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+        
+        // Save progress when leaving page
+        window.addEventListener('beforeunload', function() {
+            saveProgress();
+        });
+        
+        // Add scroll animations
+        window.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Auto-save progress every 30 seconds
+        setInterval(saveProgress, 30000);
+
+        // Game 1: Animal Matching Game
+        let selectedAnimal = null;
+        let selectedAdaptation = null;
+        let matchingScore = 0;
+        let matchedPairs = [];
+
+        function selectAnimal(element) {
+            // Remove previous selection
+            document.querySelectorAll('.animal-card').forEach(card => {
+                card.classList.remove('border-blue-600', 'bg-blue-50');
+            });
+            
+            // Select current animal
+            element.classList.add('border-blue-600', 'bg-blue-50');
+            selectedAnimal = element.dataset.animal;
+            
+            // Check for match if adaptation is also selected
+            if (selectedAdaptation) {
+                checkMatch();
+            }
+        }
+
+        function selectAdaptation(element) {
+            // Remove previous selection
+            document.querySelectorAll('.adaptation-card').forEach(card => {
+                card.classList.remove('border-green-600', 'bg-green-50');
+            });
+            
+            // Select current adaptation
+            element.classList.add('border-green-600', 'bg-green-50');
+            selectedAdaptation = element.dataset.adaptation;
+            
+            // Check for match if animal is also selected
+            if (selectedAnimal) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            if (selectedAnimal === selectedAdaptation && !matchedPairs.includes(selectedAnimal)) {
+                // Correct match!
+                matchingScore++;
+                matchedPairs.push(selectedAnimal);
+                
+                // Mark as matched
+                document.querySelector(`[data-animal="${selectedAnimal}"]`).classList.add('border-green-600', 'bg-green-100');
+                document.querySelector(`[data-adaptation="${selectedAdaptation}"]`).classList.add('border-green-600', 'bg-green-100');
+                
+                // Show success message
+                showMatchMessage(true);
+                
+                // Update score
+                document.getElementById('matchScore').textContent = matchingScore;
+                
+                // Check if all matches found
+                if (matchingScore === 3) {
+                    setTimeout(() => {
+                        alert('🎉 Félicitations! Tu as trouvé toutes les paires! | تهانينا! لقد وجدت جميع الأزواج!');
+                    }, 500);
+                }
+            } else {
+                // Wrong match
+                showMatchMessage(false);
+            }
+            
+            // Reset selections
+            selectedAnimal = null;
+            selectedAdaptation = null;
+        }
+
+        function showMatchMessage(isCorrect) {
+            const message = document.createElement('div');
+            message.className = `fixed top-4 right-4 p-4 rounded-lg text-white font-semibold z-50 ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`;
+            message.innerHTML = isCorrect ? 
+                '✅ Bonne paire! | زوج صحيح!' : 
+                '❌ Essaie encore! | حاول مرة أخرى!';
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 2000);
+        }
+
+        function resetMatching() {
+            selectedAnimal = null;
+            selectedAdaptation = null;
+            matchingScore = 0;
+            matchedPairs = [];
+            
+            document.getElementById('matchScore').textContent = '0';
+            
+            // Reset all cards
+            document.querySelectorAll('.animal-card, .adaptation-card').forEach(card => {
+                card.className = card.className.replace(/border-\w+-\d+|bg-\w+-\d+/g, '');
+                card.classList.add('bg-white', 'border-gray-200');
+            });
+        }
+
+        // Game 2: Ecosystem Builder
+        let ecosystemElements = [];
+
+        function initEcosystemGame() {
+            const elements = document.querySelectorAll('.ecosystem-element');
+            const canvas = document.getElementById('ecosystemCanvas');
+            
+            elements.forEach(element => {
+                element.addEventListener('dragstart', handleDragStart);
+            });
+            
+            canvas.addEventListener('dragover', handleDragOver);
+            canvas.addEventListener('drop', handleDrop);
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.element);
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const elementType = e.dataTransfer.getData('text/plain');
+            const canvas = document.getElementById('ecosystemCanvas');
+            
+            // Create dropped element
+            const droppedElement = document.createElement('div');
+            droppedElement.className = 'absolute bg-white p-2 rounded-lg border-2 border-gray-300 cursor-move';
+            droppedElement.dataset.element = elementType;
+            
+            // Get emoji and text for element
+            const elementData = {
+                sun: { emoji: '☀️', fr: 'Soleil', ar: 'الشمس' },
+                tree: { emoji: '🌳', fr: 'Arbre', ar: 'شجرة' },
+                rabbit: { emoji: '🐰', fr: 'Lapin', ar: 'أرنب' },
+                water: { emoji: '💧', fr: 'Eau', ar: 'ماء' }
+            };
+            
+            const data = elementData[elementType];
+            droppedElement.innerHTML = `
+                <div class="text-center">
+                    <div class="text-2xl mb-1">${data.emoji}</div>
+                    <div class="text-xs">
+                        <div class="french-text">${data.fr}</div>
+                        <div>${data.ar}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Position element
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left - 40;
+            const y = e.clientY - rect.top - 40;
+            
+            droppedElement.style.left = Math.max(0, Math.min(x, canvas.offsetWidth - 80)) + 'px';
+            droppedElement.style.top = Math.max(0, Math.min(y, canvas.offsetHeight - 80)) + 'px';
+            
+            canvas.appendChild(droppedElement);
+            ecosystemElements.push(elementType);
+            
+            // Remove placeholder text if first element
+            if (ecosystemElements.length === 1) {
+                const placeholder = canvas.querySelector('.text-center.text-gray-500');
+                if (placeholder) placeholder.remove();
+            }
+        }
+
+        function checkEcosystem() {
+            const requiredElements = ['sun', 'tree', 'rabbit', 'water'];
+            const hasAllElements = requiredElements.every(element => ecosystemElements.includes(element));
+            
+            if (hasAllElements) {
+                alert('🌟 Parfait! Ton écosystème est complet! | مثالي! نظامك البيئي مكتمل!');
+            } else {
+                const missing = requiredElements.filter(element => !ecosystemElements.includes(element));
+                alert(`❌ Il manque: ${missing.join(', ')} | ينقص: ${missing.join(', ')}`);
+            }
+        }
+
+        function resetEcosystem() {
+            ecosystemElements = [];
+            const canvas = document.getElementById('ecosystemCanvas');
+            canvas.innerHTML = `
+                <div class="text-center text-gray-500 mt-20">
+                    <p class="french-text">Glisse les éléments ici</p>
+                    <p>اسحب العناصر هنا</p>
+                </div>
+            `;
+        }
+
+        // Game 3: Spinning Wheel
+        let wheelQuestions = [
+            {
+                emoji: '🦇',
+                fr: 'Comment la chauve-souris navigue-t-elle la nuit ?',
+                ar: 'كيف يتنقل الخفاش في الليل؟',
+                options: [
+                    { fr: 'Écholocation', ar: 'تحديد الموقع بالصدى', correct: true },
+                    { fr: 'Vision nocturne', ar: 'الرؤية الليلية', correct: false },
+                    { fr: 'Odorat', ar: 'حاسة الشم', correct: false }
+                ]
+            },
+            {
+                emoji: '🐫',
+                fr: 'Que stocke le chameau pour survivre ?',
+                ar: 'ماذا يخزن الجمل للبقاء؟',
+                options: [
+                    { fr: 'Eau et graisse', ar: 'الماء والدهون', correct: true },
+                    { fr: 'Seulement de l\'eau', ar: 'الماء فقط', correct: false },
+                    { fr: 'Nourriture seulement', ar: 'الطعام فقط', correct: false }
+                ]
+            },
+            {
+                emoji: '🐻‍❄️',
+                fr: 'Comment l\'ours polaire reste-t-il au chaud ?',
+                ar: 'كيف يبقى الدب القطبي دافئاً؟',
+                options: [
+                    { fr: 'Fourrure épaisse', ar: 'فرو سميك', correct: true },
+                    { fr: 'Il bouge beaucoup', ar: 'يتحرك كثيراً', correct: false },
+                    { fr: 'Il mange chaud', ar: 'يأكل طعاماً ساخناً', correct: false }
+                ]
+            }
+        ];
+        
+        let currentWheelQuestion = null;
+        let wheelScore = 0;
+
+        function spinWheel() {
+            const wheel = document.getElementById('adaptationWheel');
+            const emoji = document.getElementById('wheelEmoji');
+            const text = document.getElementById('wheelText');
+            
+            // Spin animation
+            wheel.style.transform = 'rotate(' + (Math.random() * 360 + 720) + 'deg)';
+            wheel.style.transition = 'transform 2s ease-out';
+            
+            setTimeout(() => {
+                // Select random question
+                currentWheelQuestion = wheelQuestions[Math.floor(Math.random() * wheelQuestions.length)];
+                
+                // Update wheel display
+                emoji.textContent = currentWheelQuestion.emoji;
+                text.innerHTML = '<span class="french-text">Question!</span><br><span>سؤال!</span>';
+                
+                // Show question
+                showWheelQuestion();
+                
+                // Reset transform
+                wheel.style.transform = 'rotate(0deg)';
+                wheel.style.transition = 'none';
+            }, 2000);
+        }
+
+        function showWheelQuestion() {
+            const questionDiv = document.getElementById('wheelQuestion');
+            const titleDiv = document.getElementById('questionTitle');
+            const optionsDiv = document.getElementById('wheelOptions');
+            
+            titleDiv.innerHTML = `
+                <span class="french-text">${currentWheelQuestion.fr}</span><br>
+                <span>${currentWheelQuestion.ar}</span>
+            `;
+            
+            optionsDiv.innerHTML = '';
+            currentWheelQuestion.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'quiz-option border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-purple-50';
+                optionDiv.innerHTML = `
+                    <span class="french-text">${option.fr}</span> | <span>${option.ar}</span>
+                `;
+                optionDiv.onclick = () => checkWheelAnswer(optionDiv, option.correct);
+                optionsDiv.appendChild(optionDiv);
+            });
+            
+            questionDiv.classList.remove('hidden');
+        }
+
+        function checkWheelAnswer(element, isCorrect) {
+            // Disable all options
+            document.querySelectorAll('#wheelOptions .quiz-option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                wheelScore++;
+                document.getElementById('wheelScore').textContent = wheelScore;
+            } else {
+                element.classList.add('incorrect');
+                // Show correct answer
+                document.querySelectorAll('#wheelOptions .quiz-option').forEach(opt => {
+                    if (opt !== element && currentWheelQuestion.options.find(o => o.correct && (opt.textContent.includes(o.fr) || opt.textContent.includes(o.ar)))) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            setTimeout(() => {
+                document.getElementById('wheelQuestion').classList.add('hidden');
+                document.getElementById('wheelEmoji').textContent = '🎯';
+                document.getElementById('wheelText').innerHTML = '<span class="french-text">Clique pour tourner!</span><br><span>اضغط للدوران!</span>';
+            }, 3000);
+        }
+
+        // Game 4: Memory Card Game
+        let memoryCards = [
+            { id: 1, emoji: '🦇', text: 'Chauve-souris | خفاش' },
+            { id: 1, emoji: '📡', text: 'Écholocation | تحديد الموقع' },
+            { id: 2, emoji: '🐫', text: 'Chameau | جمل' },
+            { id: 2, emoji: '💧', text: 'Stocke l\'eau | يخزن الماء' },
+            { id: 3, emoji: '🐻‍❄️', text: 'Ours polaire | دب قطبي' },
+            { id: 3, emoji: '🧥', text: 'Fourrure épaisse | فرو سميك' },
+            { id: 4, emoji: '🌵', text: 'Cactus | صبار' },
+            { id: 4, emoji: '🌵', text: 'Épines | أشواك' },
+            { id: 5, emoji: '🌴', text: 'Palmier | نخيل' },
+            { id: 5, emoji: '🌿', text: 'Racines profondes | جذور عميقة' },
+            { id: 6, emoji: '🦊', text: 'Renard | ثعلب' },
+            { id: 6, emoji: '🧥', text: 'Fourrure chaude | فرو دافئ' }
+        ];
+        
+        let flippedCards = [];
+        let matchedCards = [];
+        let memoryAttempts = 0;
+        let memoryGameScore = 0;
+
+        function initMemoryGame() {
+            const grid = document.getElementById('memoryGrid');
+            const shuffledCards = [...memoryCards].sort(() => Math.random() - 0.5);
+            
+            grid.innerHTML = '';
+            shuffledCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card bg-gradient-to-br from-orange-200 to-red-200 rounded-xl p-4 cursor-pointer hover:shadow-lg transition-all transform hover:scale-105';
+                cardElement.dataset.cardId = card.id;
+                cardElement.dataset.index = index;
+                
+                cardElement.innerHTML = `
+                    <div class="card-front text-center">
+                        <div class="text-3xl mb-2">❓</div>
+                        <div class="text-xs font-semibold">
+                            <span class="french-text">Clique!</span><br>
+                            <span>اضغط!</span>
+                        </div>
+                    </div>
+                    <div class="card-back hidden text-center">
+                        <div class="text-2xl mb-2">${card.emoji}</div>
+                        <div class="text-xs font-semibold">${card.text}</div>
+                    </div>
+                `;
+                
+                cardElement.onclick = () => flipCard(cardElement, card);
+                grid.appendChild(cardElement);
+            });
+        }
+
+        function flipCard(cardElement, card) {
+            if (flippedCards.length >= 2 || flippedCards.includes(cardElement) || matchedCards.includes(card.id)) {
+                return;
+            }
+            
+            // Flip card
+            cardElement.querySelector('.card-front').classList.add('hidden');
+            cardElement.querySelector('.card-back').classList.remove('hidden');
+            cardElement.classList.add('bg-blue-100');
+            
+            flippedCards.push(cardElement);
+            
+            if (flippedCards.length === 2) {
+                memoryAttempts++;
+                document.getElementById('memoryAttempts').textContent = memoryAttempts;
+                
+                setTimeout(() => {
+                    checkMemoryMatch();
+                }, 1000);
+            }
+        }
+
+        function checkMemoryMatch() {
+            const card1 = flippedCards[0];
+            const card2 = flippedCards[1];
+            const id1 = parseInt(card1.dataset.cardId);
+            const id2 = parseInt(card2.dataset.cardId);
+            
+            if (id1 === id2) {
+                // Match found!
+                card1.classList.add('bg-green-100', 'border-green-400');
+                card2.classList.add('bg-green-100', 'border-green-400');
+                matchedCards.push(id1);
+                memoryGameScore++;
+                
+                document.getElementById('memoryScore').textContent = memoryGameScore;
+                
+                if (memoryGameScore === 6) {
+                    setTimeout(() => {
+                        alert('🎉 Bravo! Tu as trouvé toutes les paires! | أحسنت! لقد وجدت جميع الأزواج!');
+                    }, 500);
+                }
+            } else {
+                // No match - flip back
+                card1.querySelector('.card-front').classList.remove('hidden');
+                card1.querySelector('.card-back').classList.add('hidden');
+                card1.classList.remove('bg-blue-100');
+                
+                card2.querySelector('.card-front').classList.remove('hidden');
+                card2.querySelector('.card-back').classList.add('hidden');
+                card2.classList.remove('bg-blue-100');
+            }
+            
+            flippedCards = [];
+        }
+
+        function resetMemoryGame() {
+            flippedCards = [];
+            matchedCards = [];
+            memoryAttempts = 0;
+            memoryGameScore = 0;
+            
+            document.getElementById('memoryScore').textContent = '0';
+            document.getElementById('memoryAttempts').textContent = '0';
+            
+            initMemoryGame();
+        }
+
+        // Initialize games when page loads
+        window.addEventListener('load', function() {
+            initEcosystemGame();
+            initMemoryGame();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972d9dc3706fe15a',t:'MTc1NTgxNTg1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
