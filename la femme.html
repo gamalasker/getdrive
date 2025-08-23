@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>frenchapeau - درس تفاعلي محسّن</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --background-light: #f8fafc;
+            --border-color: #e5e7eb;
+            --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-heavy: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .arabic-text {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .french-text {
+            font-family: 'Roboto', sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scale-in {
+            animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateX(-30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+
+        @keyframes scaleIn {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        .progress-bar {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .question-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .option-button {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .option-button:hover::before {
+            left: 100%;
+        }
+
+        .option-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .option-button.selected {
+            background: linear-gradient(135deg, var(--primary-color), #6366f1);
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+
+        .option-button.correct {
+            background: linear-gradient(135deg, var(--secondary-color), #059669);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .option-button.incorrect {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, var(--accent-color), #f97316);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            top: -10px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .question-card {
+                padding: 1rem;
+            }
+        }
+
+        .dark-mode {
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --background-light: #374151;
+            --border-color: #4b5563;
+        }
+
+        /* Performance optimizations */
+        .will-change-transform {
+            will-change: transform;
+        }
+
+        .gpu-acceleration {
+            transform: translateZ(0);
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element text-6xl" style="top: 10%; left: 10%; animation-delay: 0s;">🇫🇷</div>
+        <div class="floating-element text-4xl" style="top: 20%; right: 15%; animation-delay: 1s;">📚</div>
+        <div class="floating-element text-5xl" style="bottom: 20%; left: 20%; animation-delay: 2s;">🎯</div>
+        <div class="floating-element text-3xl" style="top: 60%; right: 25%; animation-delay: 3s;">⭐</div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 z-50 flex items-center justify-center glass-effect">
+        <div class="text-center">
+            <div class="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-white text-xl font-semibold">جاري التحميل...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="glass-effect shadow-lg relative">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-center flex-1">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white drop-shadow-lg">🇫🇷 تعلم الفرنسية</h1>
+                    <p class="text-white/80 mt-2">درس تفاعلي محسّن مع اختبار ذكي</p>
+                </div>
+                <button id="darkModeToggle" class="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-all">
+                    <span class="text-2xl">🌙</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-6 py-8 max-w-5xl">
+        <!-- Video Section -->
+        <div id="videoSection" class="fade-in">
+            <div class="glass-effect rounded-2xl shadow-xl p-6 mb-8 question-card">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 flex items-center">
+                    📹 الفيديو التعليمي
+                    <span class="mr-auto text-sm bg-red-500 text-white px-3 py-1 rounded-full">مباشر</span>
+                </h2>
+                
+                <!-- Video Player with Enhanced UI -->
+                <div class="relative mb-6">
+                    <div id="videoPlayer" class="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl overflow-hidden shadow-lg">
+                        <iframe class="w-full h-full" 
+                                src="https://www.youtube.com/embed/Y_cd0hfCu-s" 
+                                frameborder="0" 
+                                allowfullscreen
+                                loading="lazy">
+                        </iframe>
+                    </div>
+                    <!-- Video Controls Overlay -->
+                    <div class="absolute bottom-4 left-4 flex gap-2">
+                        <button class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all">
+                            ⏸️
+                        </button>
+                        <button class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all">
+                            🔊
+                        </button>
+                        <button class="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all">
+                            ⚙️
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enhanced Video Description -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-6">
+                    <h3 class="font-bold text-white mb-3 text-xl flex items-center">
+                        📝 وصف الفيديو
+                        <span class="mr-auto text-sm bg-blue-500 px-2 py-1 rounded">5 دقائق</span>
+                    </h3>
+                    <p class="text-white/90 leading-relaxed text-lg">
+                        هذا الفيديو يحكي قصة "بيتي" البالغة من العمر 85 عاماً والتي تعيش في الطابق الرابع بدون مصعد. 
+                        تمشي بيتي أكثر من 10 كيلومترات يومياً وتشارك قصتها وحكمتها حول أهمية الحركة والمشي في الحياة. 
+                        ستتعلم من خلال هذا الفيديو مفردات فرنسية مفيدة حول الحياة اليومية والصحة والنشاط البدني.
+                    </p>
+                    
+                    <!-- Key Learning Points -->
+                    <div class="mt-4 grid md:grid-cols-2 gap-4">
+                        <div class="bg-white/10 rounded-lg p-3">
+                            <h4 class="font-semibold text-white mb-2">🎯 نقاط التعلم الرئيسية:</h4>
+                            <ul class="text-white/80 text-sm space-y-1">
+                                <li>• الأرقام والأعمار</li>
+                                <li>• وصف الأنشطة اليومية</li>
+                                <li>• المفردات المتعلقة بالصحة</li>
+                                <li>• التعبير عن الوقت والمسافات</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white/10 rounded-lg p-3">
+                            <h4 class="font-semibold text-white mb-2">⏱️ مدة المشاهدة المقترحة:</h4>
+                            <p class="text-white/80 text-sm">شاهد الفيديو مرتين على الأقل قبل البدء في الاختبار للحصول على أفضل النتائج</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="startQuiz()" 
+                        class="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg will-change-transform">
+                    🚀 ابدأ الاختبار التفاعلي
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quizSection" class="hidden fade-in">
+            <div class="glass-effect rounded-2xl shadow-xl p-6 mb-8 question-card">
+                <!-- Enhanced Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-bold text-white">التقدم</span>
+                        <span id="progressText" class="text-sm font-bold text-white bg-white/20 px-3 py-1 rounded-full">1 من 20</span>
+                    </div>
+                    <div class="w-full bg-white/20 rounded-full h-4 overflow-hidden">
+                        <div id="progressBar" class="progress-bar h-4 rounded-full shadow-inner" style="width: 5%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-white/70 mt-2">
+                        <span>البداية</span>
+                        <span id="progressPercentage">5%</span>
+                        <span>النهاية</span>
+                    </div>
+                </div>
+
+                <!-- Enhanced Question Card -->
+                <div id="questionCard" class="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8 border border-white/20">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <h3 class="text-xl md:text-2xl font-bold text-white french-text flex-1" id="questionText">
+                            Comment dit-on "Bonjour" en français ?
+                        </h3>
+                        <div class="flex gap-3">
+                            <span id="timeStamp" class="bg-blue-500/80 text-white px-3 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+                                ⏰ 00:00
+                            </span>
+                            <span id="questionNumber" class="bg-white/20 text-white px-3 py-2 rounded-full text-sm font-semibold">
+                                1/20
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Question Type Indicator -->
+                    <div class="mb-4">
+                        <span id="questionType" class="bg-purple-500/80 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                            📝 سؤال معرفي
+                        </span>
+                    </div>
+
+                    <div id="optionsContainer" class="space-y-4">
+                        <!-- Options will be inserted here -->
+                    </div>
+
+                    <!-- Answer Feedback -->
+                    <div id="feedbackContainer" class="hidden mt-6 p-4 rounded-lg"></div>
+                </div>
+
+                <!-- Enhanced Navigation -->
+                <div class="flex flex-col md:flex-row justify-between gap-4">
+                    <button id="prevBtn" onclick="previousQuestion()" 
+                            class="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" 
+                            disabled>
+                        ← السابق
+                    </button>
+                    
+                    <div class="flex gap-3">
+                        <button id="hintBtn" onclick="showHint()" 
+                                class="bg-yellow-500/80 hover:bg-yellow-600/80 text-white px-4 py-3 rounded-xl font-semibold transition-all">
+                            💡 تلميح
+                        </button>
+                        <button id="skipBtn" onclick="skipQuestion()" 
+                                class="bg-gray-500/80 hover:bg-gray-600/80 text-white px-4 py-3 rounded-xl font-semibold transition-all">
+                            ⏭️ تخطي
+                        </button>
+                    </div>
+                    
+                    <button id="nextBtn" onclick="nextQuestion()" 
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2" 
+                            disabled>
+                        التالي →
+                    </button>
+                </div>
+
+                <!-- Quiz Stats -->
+                <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                    <div class="bg-white/10 rounded-lg p-3">
+                        <div class="text-2xl font-bold text-green-400" id="correctAnswers">0</div>
+                        <div class="text-xs text-white/70">إجابات صحيحة</div>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-3">
+                        <div class="text-2xl font-bold text-red-400" id="wrongAnswers">0</div>
+                        <div class="text-xs text-white/70">إجابات خاطئة</div>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-3">
+                        <div class="text-2xl font-bold text-yellow-400" id="skippedAnswers">0</div>
+                        <div class="text-xs text-white/70">أسئلة متخطاة</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Results Section -->
+        <div id="resultsSection" class="hidden fade-in">
+            <div class="glass-effect rounded-2xl shadow-xl p-8 text-center">
+                <!-- Animated Success Icon -->
+                <div class="mb-6 scale-in">
+                    <div class="text-8xl mb-4 animate-bounce">🎉</div>
+                    <h2 class="text-4xl font-bold text-white mb-2">تهانينا!</h2>
+                    <p class="text-white/80 text-lg">لقد أكملت الاختبار بنجاح</p>
+                </div>
+
+                <!-- Enhanced Score Display -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-8 mb-8">
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-5xl font-bold text-green-400 mb-2" id="finalScore">0/20</div>
+                            <div class="text-lg text-white/70">النتيجة النهائية</div>
+                        </div>
+                        <div class="text-center">
+                            <div id="scorePercentage" class="text-5xl font-bold text-blue-400 mb-2">0%</div>
+                            <div class="text-lg text-white/70">النسبة المئوية</div>
+                        </div>
+                        <div class="text-center">
+                            <div id="timeTaken" class="text-5xl font-bold text-purple-400 mb-2">0:00</div>
+                            <div class="text-lg text-white/70">الوقت المستغرق</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level Badge with Animation -->
+                <div class="mb-8">
+                    <div id="levelBadge" class="level-badge inline-block px-8 py-4 rounded-full text-white font-bold text-xl shadow-lg">
+                        🌟 مستوى متوسط
+                    </div>
+                </div>
+
+                <!-- Detailed Performance Analysis -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-8 text-right">
+                    <h3 class="text-2xl font-bold text-white mb-6 text-center">📊 تحليل الأداء</h3>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-4">📈 الإحصائيات:</h4>
+                            <div id="performanceStats" class="space-y-3 text-white/80">
+                                <!-- Stats will be inserted here -->
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-4">📚 توصيات التحسين:</h4>
+                            <div id="recommendations" class="space-y-3 text-white/80">
+                                <!-- Recommendations will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Action Buttons -->
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <button onclick="restartQuiz()" 
+                            class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg">
+                        🔄 إعادة الاختبار
+                    </button>
+                   
+                    <button onclick="backToVideo()" 
+                            class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-lg">
+                        📹 العودة للفيديو
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script>
+        // Enhanced Quiz Data with more metadata
+        const quizData = [
+            {
+                question: "Quel âge a Betti dans la vidéo ?",
+                options: ["75 ans", "80 ans", "85 ans", "90 ans"],
+                correct: 2,
+                timeStamp: "00:06",
+                type: "factual",
+                hint: "Écoutez attentivement au début de la vidéo",
+                explanation: "Betti a 85 ans, comme mentionné au début de la vidéo."
+            },
+            {
+                question: "À quel étage vit Betti ?",
+                options: ["2e étage", "3e étage", "4e étage", "5e étage"],
+                correct: 2,
+                timeStamp: "00:06",
+                type: "factual",
+                hint: "Il n'y a pas d'ascenseur dans son immeuble",
+                explanation: "Betti vit au 4e étage sans ascenseur."
+            },
+            {
+                question: "Combien de kilomètres Betti marche-t-elle chaque jour ?",
+                options: ["5 km", "Plus de 10 km", "15 km", "20 km"],
+                correct: 1,
+                timeStamp: "00:09",
+                type: "quantitative",
+                hint: "C'est une distance impressionnante pour son âge",
+                explanation: "Betti marche plus de 10 kilomètres chaque jour."
+            },
+            {
+                question: "Où Betti va-t-elle se rendre dans la vidéo ?",
+                options: ["Au marché", "Chez le médecin", "Au cimetière", "À la pharmacie"],
+                correct: 2,
+                timeStamp: "00:14",
+                type: "contextual",
+                hint: "C'est un lieu de recueillement",
+                explanation: "Dans la vidéo, Betti se rend au cimetière."
+            },
+            {
+                question: "Quand Betti était petite, où allait-elle à l'école ?",
+                options: ["En ville", "À la campagne en Normandie", "À Paris", "En Bretagne"],
+                correct: 1,
+                timeStamp: "00:38",
+                type: "biographical",
+                hint: "Une région connue pour ses paysages ruraux",
+                explanation: "Betti allait à l'école à la campagne en Normandie."
+            },
+            // Continue with the rest of your questions...
+            {
+                question: "Combien de kilomètres Betti faisait-elle pour aller à l'école ?",
+                options: ["3-4 km", "5-6 km", "7-8 km", "10 km"],
+                correct: 1,
+                timeStamp: "00:41",
+                type: "quantitative",
+                hint: "Une distance considérable pour une enfant",
+                explanation: "Betti faisait 5-6 kilomètres pour aller à l'école."
+            },
+            // Add more questions with enhanced metadata...
+        ];
+
+        // Enhanced Application State
+        class QuizApp {
+            constructor() {
+                this.currentQuestion = 0;
+                this.userAnswers = [];
+                this.score = 0;
+                this.startTime = null;
+                this.endTime = null;
+                this.correctCount = 0;
+                this.wrongCount = 0;
+                this.skippedCount = 0;
+                this.hintsUsed = 0;
+                this.darkMode = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.hideLoadingScreen();
+                this.setupEventListeners();
+                this.setupPerformanceOptimizations();
+            }
+
+            hideLoadingScreen() {
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loadingScreen').style.display = 'none';
+                    }, 300);
+                }, 1000);
+            }
+
+            setupEventListeners() {
+                // Dark mode toggle
+                document.getElementById('darkModeToggle').addEventListener('click', () => {
+                    this.toggleDarkMode();
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.previousQuestion();
+                    if (e.key === 'ArrowRight') this.nextQuestion();
+                    if (e.key === 'Enter') this.nextQuestion();
+                    if (e.key === 'h' || e.key === 'H') this.showHint();
+                });
+            }
+
+            setupPerformanceOptimizations() {
+                // Preload critical resources
+                const criticalElements = document.querySelectorAll('.will-change-transform');
+                criticalElements.forEach(el => {
+                    el.style.transform = 'translateZ(0)';
+                });
+            }
+
+            toggleDarkMode() {
+                this.darkMode = !this.darkMode;
+                document.body.classList.toggle('dark-mode', this.darkMode);
+                
+                const toggle = document.getElementById('darkModeToggle');
+                toggle.innerHTML = this.darkMode ? '<span class="text-2xl">☀️</span>' : '<span class="text-2xl">🌙</span>';
+                
+                this.showToast(this.darkMode ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع النهاري', 'info');
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                const colors = {
+                    success: 'bg-green-500',
+                    error: 'bg-red-500',
+                    info: 'bg-blue-500',
+                    warning: 'bg-yellow-500'
+                };
+                
+                toast.className = `${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-300 translate-x-full`;
+                toast.textContent = message;
+                
+                const container = document.getElementById('toastContainer');
+                container.appendChild(toast);
+                
+                // Animate in
+                setTimeout(() => {
+                    toast.classList.remove('translate-x-full');
+                }, 100);
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    toast.classList.add('translate-x-full');
+                    setTimeout(() => container.removeChild(toast), 300);
+                }, 3000);
+            }
+
+            startQuiz() {
+                document.getElementById('videoSection').classList.add('hidden');
+                document.getElementById('quizSection').classList.remove('hidden');
+                
+                this.currentQuestion = 0;
+                this.userAnswers = [];
+                this.score = 0;
+                this.startTime = new Date();
+                this.correctCount = 0;
+                this.wrongCount = 0;
+                this.skippedCount = 0;
+                this.hintsUsed = 0;
+                
+                this.displayQuestion();
+                this.showToast('بدأ الاختبار! حظاً موفقاً 🍀', 'success');
+            }
+
+            displayQuestion() {
+                const question = quizData[this.currentQuestion];
+                
+                // Update question content
+                document.getElementById('questionText').textContent = question.question;
+                document.getElementById('timeStamp').innerHTML = `⏰ ${question.timeStamp}`;
+                document.getElementById('questionNumber').textContent = `${this.currentQuestion + 1}/${quizData.length}`;
+                
+                // Update question type
+                const typeMap = {
+                    factual: '📝 سؤال معرفي',
+                    quantitative: '🔢 سؤال رقمي',
+                    contextual: '🎯 سؤال سياقي',
+                    biographical: '👤 سؤال شخصي'
+                };
+                document.getElementById('questionType').textContent = typeMap[question.type] || '📝 سؤال معرفي';
+                
+                // Generate options
+                const optionsContainer = document.getElementById('optionsContainer');
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const button = document.createElement('button');
+                    const isFrench = this.detectFrenchText(option);
+                    
+                    button.className = `option-button w-full p-4 border-2 border-white/30 rounded-xl hover:border-white/60 transition-all text-lg font-medium ${isFrench ? 'french-text' : 'text-left'}`;
+                    button.textContent = option;
+                    button.onclick = () => this.selectAnswer(index, button);
+                    
+                    // Add option letter
+                    const optionLetter = String.fromCharCode(65 + index);
+                    const letterSpan = document.createElement('span');
+                    letterSpan.className = 'bg-white/20 text-white px-2 py-1 rounded-full text-sm mr-3';
+                    letterSpan.textContent = optionLetter;
+                    button.insertBefore(letterSpan, button.firstChild);
+                    
+                    optionsContainer.appendChild(button);
+                });
+
+                // Update progress
+                const progress = ((this.currentQuestion + 1) / quizData.length) * 100;
+                document.getElementById('progressText').textContent = `${this.currentQuestion + 1} من ${quizData.length}`;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressPercentage').textContent = `${Math.round(progress)}%`;
+                
+                // Update navigation
+                document.getElementById('prevBtn').disabled = this.currentQuestion === 0;
+                document.getElementById('nextBtn').disabled = this.userAnswers[this.currentQuestion] === undefined;
+                
+                // Hide feedback
+                document.getElementById('feedbackContainer').classList.add('hidden');
+                
+                // Update stats
+                this.updateStats();
+                
+                // Restore previous answer if exists
+                if (this.userAnswers[this.currentQuestion] !== undefined) {
+                    const buttons = document.querySelectorAll('.option-button');
+                    this.selectAnswer(this.userAnswers[this.currentQuestion], buttons[this.userAnswers[this.currentQuestion]]);
+                }
+            }
+
+            detectFrenchText(text) {
+                const frenchPatterns = [
+                    /[àâäéèêëïîôöùûüÿç]/i, // French accents
+                    /\b(le|la|les|un|une|des|du|de|et|ou|mais|donc|car|ni|or|est|sont|avoir|être|aller|faire|dire|voir|savoir|pouvoir|falloir|vouloir|venir|prendre|donner|parler|aimer|temps|personne|année|jour|fois|main|vie|moment|pays|question|cas|part|lieu|milieu|façon|homme|enfant|monde|famille|groupe|problème|service|fin|société|conseil|effet|situation|action|entreprise|force|attention|relation|travail|développement|histoire|politique|résultat|place|réalité|raison|état|niveau|sens|projet|prix|point|recherche|organisation|système|programme|parole|nombre|eau|cause|voix|corps|maison|route|centre|image|droit|condition|moyen|gouvernement|création|formation|direction|production|gestion|utilisation|administration|communication|information|construction|protection|éducation|transformation|décision|position|disposition|proposition|composition|opposition|comparaison|division|union|réunion|action|fonction|mention|intention|attention|extension|dimension|expression|impression|discussion|mission|transmission|permission|commission|profession|possession|succession|procession|progression|régression|agression|depression|compression|suppression|oppression|répression|concession|récession|session|passion|compassion|fashion|nation|station|vacation|occupation|préoccupation|application|explication|implication|complication|publication|multiplication|simplification|classification|qualification|quantification|identification|modification|diversification|specification|verification|clarification|purification|amplification|glorification|notification|certification|ratification|satisfaction|fraction|action|attraction|extraction|contraction|détraction|abstraction|distraction|interaction|transaction|réaction|création|récréation|procréation|génération|régénération|dégénération|vénération|modération|considération|désespération|exagération|accélération|décélération|température|littérature|culture|nature|aventure|mesure|figure|blessure|nourriture|ouverture|fermeture|couverture|découverte|liberté|propriété|société|variété|nouveauté|beauté|spécialité|réalité|qualité|quantité|capacité|facilité|difficulté|possibilité|impossibilité|probabilité|responsabilité|disponibilité|compatibilité|incompatibilité|instabilité|immobilité|mobilité|utilité|inutilité|gratuité|sécurité|insécurité|pureté|impureté|maturité|immaturité|autorité|priorité|minorité|majorité|supériorité|infériorité|antériorité|postériorité|intériorité|extériorité)/i
+                ];
+                
+                return frenchPatterns.some(pattern => pattern.test(text));
+            }
+
+            selectAnswer(answerIndex, buttonElement) {
+                // Remove previous selections
+                document.querySelectorAll('.option-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Highlight selected answer
+                buttonElement.classList.add('selected');
+                
+                this.userAnswers[this.currentQuestion] = answerIndex;
+                document.getElementById('nextBtn').disabled = false;
+                
+                // Show immediate feedback (optional)
+                this.showAnswerFeedback(answerIndex);
+            }
+
+            showAnswerFeedback(answerIndex) {
+                const question = quizData[this.currentQuestion];
+                const isCorrect = answerIndex === question.correct;
+                const feedback = document.getElementById('feedbackContainer');
+                
+                feedback.className = `mt-6 p-4 rounded-lg ${isCorrect ? 'bg-green-500/20 border border-green-500/30' : 'bg-yellow-500/20 border border-yellow-500/30'}`;
+                feedback.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">${isCorrect ? '✅' : 'ℹ️'}</span>
+                        <div>
+                            <div class="font-semibold text-white">${isCorrect ? 'إجابة صحيحة!' : 'تفسير:'}</div>
+                            <div class="text-white/80 mt-1">${question.explanation}</div>
+                        </div>
+                    </div>
+                `;
+                feedback.classList.remove('hidden');
+            }
+
+            showHint() {
+                const question = quizData[this.currentQuestion];
+                if (question.hint) {
+                    this.hintsUsed++;
+                    this.showToast(`💡 تلميح: ${question.hint}`, 'info');
+                }
+            }
+
+            skipQuestion() {
+                this.userAnswers[this.currentQuestion] = -1; // -1 indicates skipped
+                this.skippedCount++;
+                this.nextQuestion();
+                this.showToast('تم تخطي السؤال', 'warning');
+            }
+
+            nextQuestion() {
+                if (this.userAnswers[this.currentQuestion] !== undefined) {
+                    if (this.currentQuestion < quizData.length - 1) {
+                        this.currentQuestion++;
+                        this.displayQuestion();
+                    } else {
+                        this.finishQuiz();
+                    }
+                }
+            }
+
+            previousQuestion() {
+                if (this.currentQuestion > 0) {
+                    this.currentQuestion--;
+                    this.displayQuestion();
+                }
+            }
+
+            updateStats() {
+                document.getElementById('correctAnswers').textContent = this.correctCount;
+                document.getElementById('wrongAnswers').textContent = this.wrongCount;
+                document.getElementById('skippedAnswers').textContent = this.skippedCount;
+            }
+
+            finishQuiz() {
+                this.endTime = new Date();
+                
+                // Calculate final scores
+                this.score = 0;
+                this.correctCount = 0;
+                this.wrongCount = 0;
+                this.skippedCount = 0;
+                
+                for (let i = 0; i < quizData.length; i++) {
+                    if (this.userAnswers[i] === quizData[i].correct) {
+                        this.score++;
+                        this.correctCount++;
+                    } else if (this.userAnswers[i] === -1) {
+                        this.skippedCount++;
+                    } else if (this.userAnswers[i] !== undefined) {
+                        this.wrongCount++;
+                    }
+                }
+                
+                this.showResults();
+                this.createConfetti();
+            }
+
+            showResults() {
+                document.getElementById('quizSection').classList.add('hidden');
+                document.getElementById('resultsSection').classList.remove('hidden');
+                
+                const percentage = Math.round((this.score / quizData.length) * 100);
+                const timeTaken = this.formatTime((this.endTime - this.startTime) / 1000);
+                
+                // Update score displays
+                document.getElementById('finalScore').textContent = `${this.score}/${quizData.length}`;
+                document.getElementById('scorePercentage').textContent = `${percentage}%`;
+                document.getElementById('timeTaken').textContent = timeTaken;
+                
+                // Generate level and recommendations
+                const { level, recommendations, stats } = this.generatePerformanceAnalysis(percentage);
+                
+                document.getElementById('levelBadge').textContent = level;
+                
+                // Update performance stats
+                const statsContainer = document.getElementById('performanceStats');
+                statsContainer.innerHTML = stats.map(stat => 
+                    `<div class="flex justify-between items-center p-2 bg-white/5 rounded">
+                        <span>${stat.label}:</span>
+                        <span class="font-bold">${stat.value}</span>
+                    </div>`
+                ).join('');
+                
+                // Update recommendations
+                const recommendationsContainer = document.getElementById('recommendations');
+                recommendationsContainer.innerHTML = recommendations.map(rec => 
+                    `<div class="p-2 bg-white/5 rounded">${rec}</div>`
+                ).join('');
+            }
+
+            generatePerformanceAnalysis(percentage) {
+                let level, recommendations;
+                
+                if (percentage >= 90) {
+                    level = "🏆 مستوى ممتاز";
+                    recommendations = [
+                        "• رائع! أنت تتقن الأساسيات بشكل ممتاز",
+                        "• جرب التحدث مع متحدثين أصليين للغة الفرنسية",
+                        "• ابدأ في قراءة الصحف والمجلات الفرنسية",
+                        "• شاهد الأفلام الفرنسية بدون ترجمة"
+                    ];
+                } else if (percentage >= 80) {
+                    level = "🌟 مستوى متقدم";
+                    recommendations = [
+                        "• ممتاز! مستواك جيد جداً في الأساسيات",
+                        "• جرب مشاهدة أفلام فرنسية مع ترجمة",
+                        "• ابدأ في قراءة كتب بسيطة باللغة الفرنسية",
+                        "• انضم لمجموعات محادثة فرنسية عبر الإنترنت"
+                    ];
+                } else if (percentage >= 60) {
+                    level = "📚 مستوى متوسط";
+                    recommendations = [
+                        "• مستوى جيد! تحتاج لمزيد من التدريب",
+                        "• راجع قواعد التحيات والعبارات الأساسية",
+                        "• استمع لبودكاست فرنسي للمبتدئين",
+                        "• تدرب على النطق يومياً لمدة 15 دقيقة"
+                    ];
+                } else {
+                    level = "🌱 مستوى مبتدئ";
+                    recommendations = [
+                        "• لا تقلق، البداية دائماً صعبة!",
+                        "• ركز على تعلم العبارات الأساسية أولاً",
+                        "• استخدم تطبيقات تعلم اللغة مثل Duolingo",
+                        "• شاهد فيديوهات تعليمية للمبتدئين يومياً"
+                    ];
+                }
+                
+                const stats = [
+                    { label: "الإجابات الصحيحة", value: `${this.correctCount}/${quizData.length}` },
+                    { label: "الإجابات الخاطئة", value: this.wrongCount },
+                    { label: "الأسئلة المتخطاة", value: this.skippedCount },
+                    { label: "التلميحات المستخدمة", value: this.hintsUsed },
+                    { label: "متوسط الوقت/سؤال", value: this.formatTime(((this.endTime - this.startTime) / 1000) / quizData.length) }
+                ];
+                
+                return { level, recommendations, stats };
+            }
+
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            createConfetti() {
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const confetti = document.createElement('div');
+                        confetti.className = 'confetti';
+                        confetti.style.left = Math.random() * 100 + 'vw';
+                        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                        confetti.textContent = ['🎉', '🎊', '⭐', '🌟', '✨'][Math.floor(Math.random() * 5)];
+                        confetti.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                        
+                        document.body.appendChild(confetti);
+                        
+                        setTimeout(() => {
+                            if (confetti.parentNode) {
+                                confetti.parentNode.removeChild(confetti);
+                            }
+                        }, 5000);
+                    }, i * 100);
+                }
+            }
+
+            shareResults() {
+                const percentage = Math.round((this.score / quizData.length) * 100);
+                const shareText = `لقد حصلت على ${this.score}/${quizData.length} (${percentage}%) في اختبار تعلم الفرنسية! 🇫🇷`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'نتائج اختبار تعلم الفرنسية',
+                        text: shareText,
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(shareText + ' ' + window.location.href)
+                        .then(() => this.showToast('تم نسخ النتائج إلى الحافظة!', 'success'))
+                        .catch(() => this.showToast('فشل في نسخ النتائج', 'error'));
+                }
+            }
+
+            restartQuiz() {
+                this.currentQuestion = 0;
+                this.userAnswers = [];
+                this.score = 0;
+                this.startTime = null;
+                this.endTime = null;
+                this.correctCount = 0;
+                this.wrongCount = 0;
+                this.skippedCount = 0;
+                this.hintsUsed = 0;
+                
+                document.getElementById('resultsSection').classList.add('hidden');
+                this.startQuiz();
+            }
+
+            backToVideo() {
+                document.getElementById('resultsSection').classList.add('hidden');
+                document.getElementById('videoSection').classList.remove('hidden');
+            }
+        }
+
+        // Initialize the application
+        let quizApp;
+        document.addEventListener('DOMContentLoaded', () => {
+            quizApp = new QuizApp();
+        });
+
+        // Global functions for button onclick handlers
+        function startQuiz() { quizApp.startQuiz(); }
+        function nextQuestion() { quizApp.nextQuestion(); }
+        function previousQuestion() { quizApp.previousQuestion(); }
+        function showHint() { quizApp.showHint(); }
+        function skipQuestion() { quizApp.skipQuestion(); }
+        function restartQuiz() { quizApp.restartQuiz(); }
+        function backToVideo() { quizApp.backToVideo(); }
+        function shareResults() { quizApp.shareResults(); }
+    </script>
+</body>
+</html>
+
+
+
+
