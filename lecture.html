@@ -522,7 +522,6 @@
         let userSettings = JSON.parse(localStorage.getItem('userSettings') || '{"dailyGoal": 500}');
         let currentLevel = localStorage.getItem('currentLevel') || 'beginner';
 
-        // القاموس
         // القاموس الموسع
         const dictionary = {
             // === الأساسيات والضمائر ===
@@ -569,8 +568,7 @@
             // === العائلة والأشخاص ===
             "famille": "عائلة", "père": "أب", "mère": "أم", "parents": "والدان", "enfant": "طفل", "fils": "ابن", "fille": "ابنة",
             "frère": "أخ", "sœur": "أخت", "grand-père": "جد", "grand-mère": "جدة", "oncle": "عم", "tante": "عمة",
-            "cousin": "ابن عم", "cousine": "ابنة عم", "mari": "زوج", "femme": "زوجة", "ami": "صديق", "amie": "صديقة",
-            "homme": "رجل", "femme": "امرأة", "garçon": "فتى", "fille": "فتاة", "bébé": "طفل رضيع", "personne": "شخص",
+            "cousin": "ابن عم", "cousine": "ابنة عم", "mari": "زوج", "femme": "امرأة", "garçon": "فتى", "fille": "فتاة", "bébé": "طفل رضيع", "personne": "شخص",
             "auteurs": "مؤلفون", "professeurs": "أساتذة", "penseurs": "مفكرون", "scientifiques": "علماء",
             "visiteurs": "زوار", "individu": "فرد",
             
@@ -841,9 +839,6 @@
                     <button class="btn btn-success speak-text">
                         <i class="fas fa-volume-up"></i> نطق
                     </button>
-                    <button class="btn btn-warning pause-text" style="display: none;">
-                        <i class="fas fa-pause"></i> إيقاف مؤقت
-                    </button>
                     <button class="btn btn-danger stop-text" style="display: none;">
                         <i class="fas fa-stop"></i> إيقاف
                     </button>
@@ -883,7 +878,6 @@
         function setupLessonCard(card, lesson) {
             const startBtn = card.querySelector('.start-reading');
             const speakBtn = card.querySelector('.speak-text');
-            const pauseBtn = card.querySelector('.pause-text');
             const stopBtn = card.querySelector('.stop-text');
             const timerDisplay = card.querySelector('.timer-display');
             const resultDiv = card.querySelector('.lesson-result');
@@ -987,24 +981,16 @@
 
             // النطق
             speakBtn.addEventListener('click', () => {
+                // إلغاء أي نطق حالي
+                window.speechSynthesis.cancel();
                 const text = textElement.textContent;
                 const rate = parseFloat(rateSelect.value);
                 speakText(text, rate);
                 
+                // عرض زر الإيقاف فقط
                 speakBtn.style.display = 'none';
-                pauseBtn.style.display = 'inline-flex';
                 stopBtn.style.display = 'inline-flex';
                 isSpeaking = true;
-            });
-
-            pauseBtn.addEventListener('click', () => {
-                if (window.speechSynthesis.paused) {
-                    window.speechSynthesis.resume();
-                    pauseBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
-                } else {
-                    window.speechSynthesis.pause();
-                    pauseBtn.innerHTML = '<i class="fas fa-play"></i> استئناف';
-                }
             });
 
             stopBtn.addEventListener('click', () => {
@@ -1014,12 +1000,11 @@
 
             function resetSpeechControls() {
                 speakBtn.style.display = 'inline-flex';
-                pauseBtn.style.display = 'none';
                 stopBtn.style.display = 'none';
-                pauseBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
                 isSpeaking = false;
             }
-
+            
+            // تحديث حالة الأزرار عند انتهاء النطق التلقائي
             window.speechSynthesis.onend = () => {
                 if(isSpeaking) {
                     resetSpeechControls();
@@ -1035,7 +1020,6 @@
         }
 
         function speakText(text, rate) {
-            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'fr-FR';
             utterance.rate = rate;
