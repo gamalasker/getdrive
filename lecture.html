@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Français Lecture Accélérée - منصة تعليمية متقدمة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --warning: #f39c12;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo h1 {
+            font-family: 'Lobster', cursive;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nav-container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-buttons {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn.active,
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Page Container */
+        .page-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Reading Cards */
+        .reading-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--primary);
+        }
+
+        .french-text {
+            font-size: 1.3rem;
+            line-height: 2;
+            text-align: left;
+            direction: ltr;
+            color: var(--dark);
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .french-text .word {
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .french-text .word:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-success { background: var(--secondary); }
+        .btn-warning { background: var(--warning); }
+        .btn-danger { background: var(--accent); }
+
+        /* Timer */
+        .timer-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-align: center;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, var(--secondary), #27ae60);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin: 1rem 0;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: absolute;
+            background: var(--dark);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tooltip.show { opacity: 1; }
+
+        /* Goal Progress */
+        .goal-progress {
+            background: var(--light);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .goal-fill {
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 1rem; }
+            .nav-buttons { justify-content: center; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .page-container { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-book-reader"></i> Français Lecture</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">GA</div>
+                <div>
+                    <div>مرحباً، gamalasker</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;" id="current-date"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-buttons">
+            <button class="nav-btn active" data-page="dashboard">
+                <i class="fas fa-tachometer-alt"></i> لوحة التحكم
+            </button>
+            <button class="nav-btn" data-page="lessons">
+                <i class="fas fa-book"></i> الدروس
+            </button>
+            <button class="nav-btn" data-page="progress">
+                <i class="fas fa-trophy"></i> التقدم
+            </button>
+            <button class="nav-btn" data-page="dictionary">
+                <i class="fas fa-language"></i> القاموس
+            </button>
+            <button class="nav-btn" data-page="settings">
+                <i class="fas fa-cog"></i> الإعدادات
+            </button>
+        </div>
+    </nav>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <div class="page-container">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-home"></i></div>
+                    <h2>لوحة التحكم الرئيسية</h2>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="total-wpm">0</span>
+                        <div>متوسط السرعة</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="total-texts">0</span>
+                        <div>نصوص مكتملة</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="words-learned">0</span>
+                        <div>كلمات متعلمة</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="current-level">مبتدئ</span>
+                        <div>المستوى الحالي</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-target"></i> الهدف اليومي</h3>
+                    <div class="goal-progress">
+                        <div class="goal-fill" id="daily-goal-progress" style="width: 0%"></div>
+                    </div>
+                    <p>اقرأ <span id="daily-goal-target">500</span> كلمة اليوم | مكتمل: <span id="daily-goal-current">0</span></p>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-clock"></i> آخر النشاطات</h3>
+                    <div id="recent-activities">
+                        <p style="text-align: center; color: #666;">لا توجد أنشطة بعد</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons Page -->
+        <div class="page" id="lessons">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-book-open"></i></div>
+                    <h2>دروس القراءة</h2>
+                </div>
+                
+                <div class="controls">
+                    <button class="btn btn-success" id="add-custom-text">
+                        <i class="fas fa-plus"></i> إضافة نص جديد
+                    </button>
+                    <select id="level-filter" style="padding: 0.8rem; border-radius: 10px; border: 2px solid var(--light);">
+                        <option value="all">جميع المستويات</option>
+                        <option value="beginner">مبتدئ</option>
+                        <option value="intermediate">متوسط</option>
+                        <option value="advanced">متقدم</option>
+                    </select>
+                </div>
+
+                <div id="custom-text-form" style="display: none;" class="card">
+                    <h3>إضافة نص جديد</h3>
+                    <textarea id="new-text-content" placeholder="ألصق النص الفرنسي هنا..." rows="5" style="width: 100%; padding: 1rem; border-radius: 10px; border: 2px solid var(--light);"></textarea>
+                    <div class="controls">
+                        <button class="btn btn-success" id="save-custom-text">حفظ النص</button>
+                        <button class="btn" id="cancel-custom-text">إلغاء</button>
+                    </div>
+                </div>
+
+                <div id="lessons-container">
+                    <!-- سيتم ملء الدروس هنا -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Page -->
+        <div class="page" id="progress">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h2>تقدمي وإحصائياتي</h2>
+                </div>
+                <canvas id="progress-chart" style="max-height: 400px;"></canvas>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-download"></i> تصدير البيانات</h3>
+                <p>يمكنك تصدير بياناتك لحفظها أو نقلها لجهاز آخر</p>
+                <div class="controls">
+                    <button class="btn btn-success" id="export-data">
+                        <i class="fas fa-download"></i> تصدير البيانات
+                    </button>
+                    <button class="btn" id="clear-data">
+                        <i class="fas fa-trash"></i> مسح البيانات
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dictionary Page -->
+        <div class="page" id="dictionary">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-book"></i></div>
+                    <h2>القاموس التفاعلي</h2>
+                </div>
+                
+                <input type="text" id="word-search" placeholder="ابحث عن كلمة فرنسية..." style="width: 100%; padding: 1rem; border-radius: 10px; border: 2px solid var(--light); margin-bottom: 1rem;">
+                
+                <div id="learned-words">
+                    <h3><i class="fas fa-star"></i> الكلمات المتعلمة</h3>
+                    <div id="words-list">
+                        <p style="text-align: center; color: #666;">لا توجد كلمات متعلمة بعد</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="settings">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon"><i class="fas fa-cog"></i></div>
+                    <h2>الإعدادات</h2>
+                </div>
+                
+                <div style="display: grid; gap: 2rem;">
+                    <div>
+                        <h4><i class="fas fa-target"></i> الهدف اليومي</h4>
+                        <input type="number" id="daily-goal-setting" value="500" min="100" max="2000" style="padding: 0.8rem; border-radius: 10px; border: 2px solid var(--light); width: 150px;">
+                        <span>كلمة يومياً</span>
+                        <button class="btn" id="save-goal" style="margin-right: 1rem;">حفظ</button>
+                    </div>
+                    
+                    <div>
+                        <h4><i class="fas fa-trash"></i> إعادة تعيين البيانات</h4>
+                        <button class="btn btn-danger" id="reset-data">مسح جميع البيانات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // تخزين البيانات
+        let progressData = JSON.parse(localStorage.getItem('progressData') || '[]');
+        let learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '{}');
+        let userSettings = JSON.parse(localStorage.getItem('userSettings') || '{"dailyGoal": 500}');
+        let currentLevel = localStorage.getItem('currentLevel') || 'beginner';
+
+        // القاموس
+        const dictionary = {
+    // === الأساسيات والضمائر ===
+    "je": "أنا", "tu": "أنت", "il": "هو", "elle": "هي", "nous": "نحن", "vous": "أنتم", "ils": "هم", "elles": "هن",
+    "mon": "ـي", "ma": "ـي", "mes": "ـي", "ton": "ـك", "ta": "ـك", "tes": "ـك", "son": "ـه", "sa": "ـها", "ses": "ـه/ـها",
+    "notre": "ـنا", "votre": "ـكم", "leur": "ـهم", "leurs": "ـهم",
+    
+    // === الأفعال الأساسية ===
+    "être": "يكون", "avoir": "يملك", "faire": "يفعل", "aller": "يذهب", "venir": "يأتي", "voir": "يرى",
+    "savoir": "يعرف", "pouvoir": "يستطيع", "vouloir": "يريد", "devoir": "يجب", "falloir": "يلزم",
+    "dire": "يقول", "parler": "يتكلم", "écouter": "يستمع", "entendre": "يسمع", "regarder": "ينظر",
+    "prendre": "يأخذ", "donner": "يعطي", "mettre": "يضع", "porter": "يحمل", "tenir": "يمسك",
+    "manger": "يأكل", "boire": "يشرب", "dormir": "ينام", "se lever": "يستيقظ", "se coucher": "ينام",
+    "travailler": "يعمل", "étudier": "يدرس", "apprendre": "يتعلم", "enseigner": "يعلم", "lire": "يقرأ",
+    "écrire": "يكتب", "comprendre": "يفهم", "expliquer": "يشرح", "demander": "يسأل", "répondre": "يجيب",
+    "acheter": "يشتري", "vendre": "يبيع", "payer": "يدفع", "coûter": "يكلف", "gagner": "يربح",
+    "partir": "يغادر", "arriver": "يصل", "rester": "يبقى", "rentrer": "يعود", "sortir": "يخرج",
+    "aimer": "يحب", "détester": "يكره", "préférer": "يفضل", "choisir": "يختار", "décider": "يقرر",
+    
+    // === التحيات والمجاملات ===
+    "bonjour": "مرحباً", "bonsoir": "مساء الخير", "salut": "أهلاً", "au revoir": "وداعاً", "à bientôt": "أراك قريباً",
+    "s'il vous plaît": "من فضلك", "merci": "شكراً", "de rien": "عفواً", "excusez-moi": "عذراً", "pardon": "آسف",
+    "comment allez-vous": "كيف حالك", "ça va": "بخير", "très bien": "بخير جداً", "et vous": "وأنت",
+    
+    // === الأرقام ===
+    "un": "واحد", "deux": "اثنان", "trois": "ثلاثة", "quatre": "أربعة", "cinq": "خمسة", "six": "ستة",
+    "sept": "سبعة", "huit": "ثمانية", "neuf": "تسعة", "dix": "عشرة", "vingt": "عشرون", "cent": "مائة",
+    "mille": "ألف", "million": "مليون", "premier": "أول", "deuxième": "ثاني", "dernier": "آخر",
+    
+    // === الزمن والتاريخ ===
+    "aujourd'hui": "اليوم", "hier": "أمس", "demain": "غداً", "maintenant": "الآن", "avant": "قبل", "après": "بعد",
+    "lundi": "الاثنين", "mardi": "الثلاثاء", "mercredi": "الأربعاء", "jeudi": "الخميس", "vendredi": "الجمعة",
+    "samedi": "السبت", "dimanche": "الأحد", "semaine": "أسبوع", "mois": "شهر", "année": "سنة",
+    "janvier": "يناير", "février": "فبراير", "mars": "مارس", "avril": "أبريل", "mai": "مايو", "juin": "يونيو",
+    "juillet": "يوليو", "août": "أغسطس", "septembre": "سبتمبر", "octobre": "أكتوبر", "novembre": "نوفمبر", "décembre": "ديسمبر",
+    "matin": "صباح", "midi": "ظهر", "après-midi": "بعد الظهر", "soir": "مساء", "nuit": "ليل",
+    "heure": "ساعة", "minute": "دقيقة", "seconde": "ثانية", "temps": "وقت", "moment": "لحظة",
+    
+    // === العائلة والأشخاص ===
+    "famille": "عائلة", "père": "أب", "mère": "أم", "parents": "والدان", "enfant": "طفل", "fils": "ابن", "fille": "ابنة",
+    "frère": "أخ", "sœur": "أخت", "grand-père": "جد", "grand-mère": "جدة", "oncle": "عم", "tante": "عمة",
+    "cousin": "ابن عم", "cousine": "ابنة عم", "mari": "زوج", "femme": "زوجة", "ami": "صديق", "amie": "صديقة",
+    "homme": "رجل", "femme": "امرأة", "garçon": "فتى", "fille": "فتاة", "bébé": "طفل رضيع", "personne": "شخص",
+    
+    // === المنزل ===
+    "maison": "منزل", "appartement": "شقة", "chambre": "غرفة", "cuisine": "مطبخ", "salon": "صالة", "salle de bain": "حمام",
+    "jardin": "حديقة", "porte": "باب", "fenêtre": "نافذة", "mur": "جدار", "toit": "سقف", "escalier": "سلم",
+    "table": "طاولة", "chaise": "كرسي", "lit": "سرير", "armoire": "خزانة", "télévision": "تلفزيون", "ordinateur": "حاسوب",
+    
+    // === الطعام والشراب ===
+    "nourriture": "طعام", "pain": "خبز", "eau": "ماء", "lait": "حليب", "café": "قهوة", "thé": "شاي",
+    "viande": "لحم", "poisson": "سمك", "légume": "خضار", "fruit": "فاكهة", "pomme": "تفاحة", "orange": "برتقالة",
+    "banane": "موزة", "tomate": "طماطم", "carotte": "جزر", "pomme de terre": "بطاطا", "riz": "أرز", "pâtes": "معكرونة",
+    "fromage": "جبن", "beurre": "زبدة", "œuf": "بيضة", "sucre": "سكر", "sel": "ملح", "poivre": "فلفل",
+    "restaurant": "مطعم", "menu": "قائمة الطعام", "petit-déjeuner": "فطور", "déjeuner": "غداء", "dîner": "عشاء",
+    
+    // === المدينة والنقل ===
+    "ville": "مدينة", "paris": "باريس", "france": "فرنسا", "pays": "بلد", "rue": "شارع", "avenue": "جادة",
+    "place": "ساحة", "pont": "جسر", "parc": "حديقة عامة", "musée": "متحف", "église": "كنيسة", "hôpital": "مستشفى",
+    "école": "مدرسة", "université": "جامعة", "bibliothèque": "مكتبة", "banque": "بنك", "poste": "مكتب البريد",
+    "magasin": "متجر", "marché": "سوق", "supermarché": "سوبر ماركت", "pharmacie": "صيدلية", "hôtel": "فندق",
+    "voiture": "سيارة", "bus": "حافلة", "métro": "مترو", "train": "قطار", "avion": "طائرة", "vélo": "دراجة",
+    "taxi": "تاكسي", "gare": "محطة", "aéroport": "مطار", "billet": "تذكرة", "voyage": "رحلة",
+    
+    // === الطبيعة والطقس ===
+    "nature": "طبيعة", "ciel": "سماء", "soleil": "شمس", "lune": "قمر", "étoile": "نجمة", "nuage": "سحابة",
+    "pluie": "مطر", "neige": "ثلج", "vent": "ريح", "orage": "عاصفة", "chaud": "حار", "froid": "بارد",
+    "mer": "بحر", "océan": "محيط", "lac": "بحيرة", "rivière": "نهر", "montagne": "جبل", "forêt": "غابة",
+    "arbre": "شجرة", "fleur": "زهرة", "animal": "حيوان", "chien": "كلب", "chat": "قطة", "oiseau": "طائر",
+    
+    // === الألوان والأشكال ===
+    "couleur": "لون", "blanc": "أبيض", "noir": "أسود", "rouge": "أحمر", "bleu": "أزرق", "vert": "أخضر",
+    "jaune": "أصفر", "orange": "برتقالي", "violet": "بنفسجي", "rose": "وردي", "gris": "رمادي", "marron": "بني",
+    "grand": "كبير", "petit": "صغير", "long": "طويل", "court": "قصير", "large": "عريض", "étroit": "ضيق",
+    
+    // === المشاعر والصفات ===
+    "heureux": "سعيد", "triste": "حزين", "content": "راضي", "en colère": "غاضب", "fatigué": "متعب", "malade": "مريض",
+    "bon": "جيد", "mauvais": "سيء", "beau": "جميل", "laid": "قبيح", "nouveau": "جديد", "vieux": "قديم",
+    "facile": "سهل", "difficile": "صعب", "important": "مهم", "intéressant": "مثير للاهتمام", "ennuyeux": "مملّ",
+    "rapide": "سريع", "lent": "بطيء", "fort": "قوي", "faible": "ضعيف", "riche": "غني", "pauvre": "فقير",
+    
+    // === العمل والمهن ===
+    "travail": "عمل", "métier": "مهنة", "bureau": "مكتب", "entreprise": "شركة", "patron": "رئيس", "collègue": "زميل",
+    "médecin": "طبيب", "professeur": "أستاذ", "étudiant": "طالب", "ingénieur": "مهندس", "avocat": "محامي",
+    "infirmière": "ممرضة", "policier": "شرطي", "vendeur": "بائع", "cuisinier": "طباخ", "chauffeur": "سائق",
+    
+    // === الثقافة والترفيه ===
+    "culture": "ثقافة", "française": "فرنسية", "art": "فن", "musique": "موسيقى", "film": "فيلم", "livre": "كتاب",
+    "théâtre": "مسرح", "cinéma": "سينما", "concert": "حفلة موسيقية", "exposition": "معرض", "fête": "حفلة",
+    "sport": "رياضة", "football": "كرة القدم", "tennis": "تنس", "natation": "سباحة", "course": "جري",
+    "vacances": "عطلة", "loisir": "هواية", "jeu": "لعبة", "cadeau": "هدية", "anniversaire": "عيد ميلاد",
+    
+    // === كلمات متقدمة ===
+    "développement": "تطوير", "environnement": "بيئة", "société": "مجتمع", "économie": "اقتصاد", "politique": "سياسة",
+    "technologie": "تكنولوجيا", "science": "علم", "recherche": "بحث", "découverte": "اكتشاف", "invention": "اختراع",
+    "communication": "تواصل", "information": "معلومة", "connaissance": "معرفة", "expérience": "تجربة", "compétence": "مهارة",
+    "objectif": "هدف", "projet": "مشروع", "résultat": "نتيجة", "succès": "نجاح", "échec": "فشل",
+    "problème": "مشكلة", "solution": "حل", "décision": "قرار", "choix": "اختيار", "opinion": "رأي",
+    "qualité": "جودة", "quantité": "كمية", "valeur": "قيمة", "prix": "سعر", "coût": "تكلفة",  "profondément": "بعمق",
+    
+    // === تعبيرات شائعة ===
+    "il y a": "يوجد", "il faut": "يجب", "ça va": "بخير", "c'est": "هذا", "voici": "هنا", "voilà": "هناك",
+    "peut-être": "ربما", "bien sûr": "بالطبع", "d'accord": "موافق", "en effet": "في الواقع", "par exemple": "مثلاً",
+    "tout à fait": "تماماً", "pas du tout": "إطلاقاً", "encore": "مرة أخرى", "déjà": "بالفعل", "jamais": "أبداً",
+    "toujours": "دائماً", "souvent": "غالباً", "quelquefois": "أحياناً", "rarement": "نادراً", "beaucoup": "كثيراً",
+    "un peu": "قليلاً", "assez": "كافي", "trop": "كثير جداً", "très": "جداً", "plus": "أكثر", "moins": "أقل"
+};
+
+        // الدروس الافتراضية
+        const defaultLessons = [
+    // === مستوى مبتدئ (Beginner) ===
+    {
+        id: 'lesson1',
+        title: 'التعارف والتحية',
+        level: 'beginner',
+        text: 'Bonjour, je m\'appelle Marie. J\'habite à Paris avec ma famille. Nous avons un petit appartement près du centre-ville.'
+    },
+    {
+        id: 'lesson2',
+        title: 'في المطعم',
+        level: 'beginner',
+        text: 'Je voudrais un café, s\'il vous plaît. Et aussi un croissant. Combien ça coûte ? Merci beaucoup. Au revoir.'
+    },
+    {
+        id: 'lesson3',
+        title: 'الألوان والأرقام',
+        level: 'beginner',
+        text: 'J\'aime le rouge et le bleu. J\'ai vingt ans. Ma sœur a quinze ans. Nous habitons dans une maison blanche.'
+    },
+    {
+        id: 'lesson4',
+        title: 'الطقس اليوم',
+        level: 'beginner',
+        text: 'Aujourd\'hui, il fait beau. Le soleil brille. Je porte une robe rouge. Je vais au parc avec mon chien.'
+    },
+    {
+        id: 'lesson5',
+        title: 'التسوق البسيط',
+        level: 'beginner',
+        text: 'Je vais au marché. J\'achète des pommes et des oranges. Le vendeur est très gentil. Les fruits sont délicieux.'
+    },
+
+    // === مستوى متوسط (Intermediate) ===
+    {
+        id: 'lesson6',
+        title: 'الحياة اليومية',
+        level: 'intermediate',
+        text: 'Le matin, je prends le métro pour aller au travail. J\'aime beaucoup ma ville parce qu\'elle est très belle et il y a beaucoup de choses intéressantes à voir.'
+    },
+    {
+        id: 'lesson7',
+        title: 'رحلة إلى الريف',
+        level: 'intermediate',
+        text: 'Le week-end dernier, nous avons visité la campagne française. Les paysages étaient magnifiques avec leurs champs verts et leurs petits villages traditionnels. Nous avons dégusté du fromage local et du vin rouge excellent.'
+    },
+    {
+        id: 'lesson8',
+        title: 'الدراسة في الجامعة',
+        level: 'intermediate',
+        text: 'Marie étudie la littérature française à la Sorbonne. Elle suit des cours passionnants sur les auteurs classiques. Ses professeurs sont compétents et l\'atmosphère universitaire est stimulante pour ses recherches.'
+    },
+    {
+        id: 'lesson9',
+        title: 'الصداقة والعلاقات',
+        level: 'intermediate',
+        text: 'Les vrais amis sont précieux dans la vie. Ils nous soutiennent dans les moments difficiles et partagent nos joies. L\'amitié sincère se construit avec le temps, la confiance mutuelle et le respect des différences.'
+    },
+    {
+        id: 'lesson10',
+        title: 'التكنولوجيا الحديثة',
+        level: 'intermediate',
+        text: 'Internet a révolutionné notre façon de communiquer. Les réseaux sociaux permettent de rester en contact avec des personnes du monde entier. Cependant, il est important de faire attention à notre vie privée en ligne.'
+    },
+
+    // === مستوى متقدم (Advanced) ===
+    {
+        id: 'lesson11',
+        title: 'الثقافة الفرنسية',
+        level: 'advanced',
+        text: 'La culture française est riche et diverse. Elle est connue pour sa gastronomie exceptionnelle, son art raffiné, et son patrimoine historique remarquable. Les musées parisiens attirent des millions de visiteurs chaque année.'
+    },
+    {
+        id: 'lesson12',
+        title: 'التحديات البيئية المعاصرة',
+        level: 'advanced',
+        text: 'Le réchauffement climatique constitue l\'un des défis majeurs du XXIe siècle. Les scientifiques s\'accordent sur la nécessité d\'adopter des politiques environnementales ambitieuses pour préserver la biodiversité et assurer un développement durable aux générations futures.'
+    },
+    {
+        id: 'lesson13',
+        title: 'الفلسفة والتفكير النقدي',
+        level: 'advanced',
+        text: 'La philosophie nous invite à questionner nos certitudes et à développer notre esprit critique. Les grands penseurs français comme Descartes, Voltaire et Sartre ont profondément influencé la pensée occidentale par leurs réflexions sur l\'existence, la liberté et la condition humaine.'
+    },
+    {
+        id: 'lesson14',
+        title: 'الاقتصاد العالمي والعولمة',
+        level: 'advanced',
+        text: 'La mondialisation économique a transformé les échanges commerciaux internationaux. Cette interconnexion croissante des marchés financiers soulève des questions complexes concernant les inégalités sociales, la souveraineté nationale et la régulation des multinationales dans un contexte géopolitique instable.'
+    },
+    {
+        id: 'lesson15',
+        title: 'الأدب الفرنسي الكلاسيكي',
+        level: 'advanced',
+        text: 'Les œuvres de Victor Hugo, Marcel Proust et Albert Camus constituent des chefs-d\'œuvre incontournables de la littérature française. Leurs écrits explorent avec une profondeur psychologique remarquable les thèmes universels de l\'amour, de la mort, de l\'identité et de la quête existentielle de l\'individu moderne.'
+    }
+];
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('التطبيق يتم تحميله...');
+            initializeApp();
+        });
+
+        function initializeApp() {
+            setupNavigation();
+            updateCurrentDate();
+            loadLessons();
+            updateDashboard();
+            loadLearnedWords();
+            setupEventListeners();
+            console.log('التطبيق تم تحميله بنجاح');
+        }
+
+        function setupNavigation() {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetPage = btn.dataset.page;
+                    console.log('الانتقال إلى صفحة:', targetPage);
+                    showPage(targetPage);
+                    
+                    // تحديث الزر النشط
+                    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        }
+
+        function showPage(pageId) {
+            // إخفاء جميع الصفحات
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // إظهار الصفحة المطلوبة
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                console.log('تم عرض صفحة:', pageId);
+                
+                // معالجة خاصة لصفحة التقدم
+                if (pageId === 'progress') {
+                    setTimeout(() => updateProgressChart(), 100);
+                }
+            }
+        }
+
+        function updateCurrentDate() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-EG', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('current-date').textContent = dateStr;
+        }
+
+        function loadLessons() {
+            const container = document.getElementById('lessons-container');
+            container.innerHTML = '';
+
+            // تحميل الدروس المخصصة
+            const customLessons = JSON.parse(localStorage.getItem('customLessons') || '[]');
+            const allLessons = [...defaultLessons, ...customLessons];
+
+            allLessons.forEach(lesson => {
+                const lessonCard = createLessonCard(lesson);
+                container.appendChild(lessonCard);
+            });
+            
+            console.log('تم تحميل', allLessons.length, 'درس');
+        }
+
+        function createLessonCard(lesson) {
+            const card = document.createElement('div');
+            card.className = 'reading-card';
+            card.dataset.level = lesson.level;
+            
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3><i class="fas fa-book-open"></i> ${lesson.title}</h3>
+                    <span style="background: var(--primary); color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                        ${getLevelText(lesson.level)}
+                    </span>
+                </div>
+                <div class="french-text">${wrapWordsInSpans(lesson.text)}</div>
+                <div class="controls">
+                    <button class="btn start-reading">
+                        <i class="fas fa-play"></i> ابدأ القراءة
+                    </button>
+                    <button class="btn btn-success speak-text">
+                        <i class="fas fa-volume-up"></i> نطق
+                    </button>
+                    <button class="btn btn-warning pause-text" style="display: none;">
+                        <i class="fas fa-pause"></i> إيقاف مؤقت
+                    </button>
+                    <button class="btn btn-danger stop-text" style="display: none;">
+                        <i class="fas fa-stop"></i> إيقاف
+                    </button>
+                    <select class="speech-rate" style="padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">
+                        <option value="0.8">بطيئة</option>
+                        <option value="1" selected>عادية</option>
+                        <option value="1.2">سريعة</option>
+                    </select>
+                </div>
+                <div class="timer-display" style="display: none;">00:00</div>
+                <div class="lesson-result" style="display: none;"></div>
+            `;
+
+            setupLessonCard(card, lesson);
+            return card;
+        }
+
+        function wrapWordsInSpans(text) {
+            return text.split(/(\s+)/).map(word => {
+                const cleanWord = word.replace(/[.,!?;']/g, '').toLowerCase();
+                if (cleanWord.trim() && dictionary[cleanWord]) {
+                    return `<span class="word" data-word="${cleanWord}">${word}</span>`;
+                }
+                return word;
+            }).join('');
+        }
+
+        function getLevelText(level) {
+            const levels = {
+                'beginner': 'مبتدئ',
+                'intermediate': 'متوسط',
+                'advanced': 'متقدم'
+            };
+            return levels[level] || 'مبتدئ';
+        }
+
+        function setupLessonCard(card, lesson) {
+            const startBtn = card.querySelector('.start-reading');
+            const speakBtn = card.querySelector('.speak-text');
+            const pauseBtn = card.querySelector('.pause-text');
+            const stopBtn = card.querySelector('.stop-text');
+            const timerDisplay = card.querySelector('.timer-display');
+            const resultDiv = card.querySelector('.lesson-result');
+            const textElement = card.querySelector('.french-text');
+            const rateSelect = card.querySelector('.speech-rate');
+
+            let startTime;
+            let timerInterval;
+            let isReading = false;
+
+            // معالجة النقر على الكلمات
+            card.querySelectorAll('.word').forEach(wordSpan => {
+                wordSpan.addEventListener('click', (e) => {
+                    showWordTranslation(e.target, e.target.dataset.word);
+                    addToLearnedWords(e.target.dataset.word);
+                });
+            });
+
+            // بدء/إنهاء القراءة
+            startBtn.addEventListener('click', () => {
+                if (!isReading) {
+                    startReading();
+                } else {
+                    stopReading();
+                }
+            });
+
+            function startReading() {
+                isReading = true;
+                startTime = Date.now();
+                startBtn.innerHTML = '<i class="fas fa-stop"></i> إنهاء القراءة';
+                startBtn.classList.add('btn-danger');
+                timerDisplay.style.display = 'block';
+                resultDiv.style.display = 'none';
+                
+                timerInterval = setInterval(updateTimer, 1000);
+                console.log('بدأ قراءة:', lesson.title);
+            }
+
+            function stopReading() {
+                if (!isReading) return;
+                
+                isReading = false;
+                clearInterval(timerInterval);
+                
+                const endTime = Date.now();
+                const readingTime = (endTime - startTime) / 1000;
+                const wordCount = textElement.textContent.trim().split(/\s+/).length;
+                const wpm = Math.round((wordCount / readingTime) * 60);
+                
+                // حفظ التقدم
+                const progressEntry = {
+                    lessonId: lesson.id,
+                    lessonTitle: lesson.title,
+                    wpm: wpm,
+                    date: new Date().toISOString(),
+                    wordCount: wordCount,
+                    timeSpent: readingTime
+                };
+                
+                progressData.push(progressEntry);
+                localStorage.setItem('progressData', JSON.stringify(progressData));
+                
+                showReadingResult(wpm, wordCount, readingTime);
+                
+                // إعادة تعيين واجهة المستخدم
+                startBtn.innerHTML = '<i class="fas fa-play"></i> ابدأ القراءة';
+                startBtn.classList.remove('btn-danger');
+                timerDisplay.style.display = 'none';
+                
+                updateDashboard();
+                console.log('انتهى من قراءة:', lesson.title, 'السرعة:', wpm);
+            }
+
+            function updateTimer() {
+                if (!isReading) return;
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            function showReadingResult(wpm, wordCount, timeSpent) {
+                let levelAdvice = '';
+                if (wpm < 100) levelAdvice = 'جيد! حاول زيادة السرعة تدريجياً';
+                else if (wpm < 150) levelAdvice = 'ممتاز! سرعة جيدة جداً';
+                else levelAdvice = 'رائع! سرعة احترافية';
+
+                resultDiv.innerHTML = `
+                    <div class="result-box">
+                        <h4><i class="fas fa-chart-line"></i> نتيجة القراءة</h4>
+                        <p><strong>السرعة:</strong> ${wpm} كلمة/دقيقة</p>
+                        <p><strong>عدد الكلمات:</strong> ${wordCount} كلمة</p>
+                        <p><strong>الوقت المستغرق:</strong> ${Math.round(timeSpent)} ثانية</p>
+                        <p><strong>التقييم:</strong> ${levelAdvice}</p>
+                    </div>
+                `;
+                resultDiv.style.display = 'block';
+            }
+
+            // النطق
+            speakBtn.addEventListener('click', () => {
+                const text = textElement.textContent;
+                const rate = parseFloat(rateSelect.value);
+                speakText(text, rate);
+                
+                speakBtn.style.display = 'none';
+                pauseBtn.style.display = 'inline-flex';
+                stopBtn.style.display = 'inline-flex';
+            });
+
+            pauseBtn.addEventListener('click', () => {
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                    pauseBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
+                } else {
+                    window.speechSynthesis.pause();
+                    pauseBtn.innerHTML = '<i class="fas fa-play"></i> استئناف';
+                }
+            });
+
+            stopBtn.addEventListener('click', () => {
+                window.speechSynthesis.cancel();
+                resetSpeechControls();
+            });
+
+            function resetSpeechControls() {
+                speakBtn.style.display = 'inline-flex';
+                pauseBtn.style.display = 'none';
+                stopBtn.style.display = 'none';
+                pauseBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
+            }
+        }
+
+        function speakText(text, rate) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR';
+            utterance.rate = rate;
+            
+            utterance.onend = () => {
+                document.querySelectorAll('.reading-card').forEach(card => {
+                    const speakBtn = card.querySelector('.speak-text');
+                    const pauseBtn = card.querySelector('.pause-text');
+                    const stopBtn = card.querySelector('.stop-text');
+                    
+                    if (speakBtn) speakBtn.style.display = 'inline-flex';
+                    if (pauseBtn) pauseBtn.style.display = 'none';
+                    if (stopBtn) stopBtn.style.display = 'none';
+                });
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function showWordTranslation(element, word) {
+            const tooltip = document.getElementById('tooltip');
+            const translation = dictionary[word];
+            
+            if (translation) {
+                tooltip.textContent = translation;
+                tooltip.classList.add('show');
+                
+                const rect = element.getBoundingClientRect();
+                tooltip.style.left = `${rect.left + window.pageXOffset}px`;
+                tooltip.style.top = `${rect.bottom + window.pageYOffset + 5}px`;
+                
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        function addToLearnedWords(word) {
+            if (dictionary[word] && !learnedWords[word]) {
+                learnedWords[word] = {
+                    translation: dictionary[word],
+                    learnedAt: new Date().toISOString()
+                };
+                localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+                updateDashboard();
+                loadLearnedWords();
+                console.log('تم إضافة كلمة جديدة:', word);
+            }
+        }
+
+        function loadLearnedWords() {
+            const container = document.getElementById('words-list');
+            const words = Object.keys(learnedWords);
+            
+            if (words.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">لا توجد كلمات متعلمة بعد</p>';
+                return;
+            }
+            
+            container.innerHTML = words.map(word => `
+                <div style="background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--primary); box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${word}</strong> - ${learnedWords[word].translation}
+                        </div>
+                        <small style="color: #666;">
+                            ${new Date(learnedWords[word].learnedAt).toLocaleDateString('ar-EG')}
+                        </small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateDashboard() {
+            // تحديث الإحصائيات
+            document.getElementById('total-texts').textContent = progressData.length;
+            document.getElementById('words-learned').textContent = Object.keys(learnedWords).length;
+            
+            if (progressData.length > 0) {
+                const avgWpm = Math.round(progressData.reduce((sum, entry) => sum + entry.wpm, 0) / progressData.length);
+                document.getElementById('total-wpm').textContent = avgWpm;
+            }
+            
+            updateDailyGoalProgress();
+            updateRecentActivities();
+        }
+
+        function updateDailyGoalProgress() {
+            const today = new Date().toDateString();
+            const todayEntries = progressData.filter(entry => 
+                new Date(entry.date).toDateString() === today
+            );
+            
+            const wordsReadToday = todayEntries.reduce((sum, entry) => sum + entry.wordCount, 0);
+            const dailyGoal = userSettings.dailyGoal;
+            const progress = Math.min((wordsReadToday / dailyGoal) * 100, 100);
+            
+            document.getElementById('daily-goal-progress').style.width = `${progress}%`;
+            document.getElementById('daily-goal-current').textContent = wordsReadToday;
+            document.getElementById('daily-goal-target').textContent = dailyGoal;
+        }
+
+        function updateRecentActivities() {
+            const container = document.getElementById('recent-activities');
+            const recentEntries = progressData.slice(-5).reverse();
+            
+            if (recentEntries.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">لا توجد أنشطة بعد</p>';
+                return;
+            }
+            
+            container.innerHTML = recentEntries.map(entry => `
+                <div style="padding: 0.8rem; border-left: 3px solid var(--primary); margin-bottom: 0.5rem; background: #f8f9fa; border-radius: 5px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span><strong>${entry.lessonTitle}</strong></span>
+                        <small>${new Date(entry.date).toLocaleDateString('ar-EG')}</small>
+                    </div>
+                    <div style="color: #666; font-size: 0.9rem;">
+                        السرعة: ${entry.wpm} كلمة/دقيقة | الكلمات: ${entry.wordCount}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateProgressChart() {
+            const ctx = document.getElementById('progress-chart');
+            if (!ctx) return;
+            
+            // تدمير المخطط الموجود
+            if (window.progressChart) {
+                window.progressChart.destroy();
+            }
+            
+            const chartData = progressData.slice(-10);
+            
+            if (chartData.length === 0) {
+                ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
+                return;
+            }
+            
+            window.progressChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: chartData.map(entry => new Date(entry.date).toLocaleDateString('ar-EG')),
+                    datasets: [{
+                        label: 'سرعة القراءة (كلمة/دقيقة)',
+                        data: chartData.map(entry => entry.wpm),
+                        borderColor: 'rgb(52, 152, 219)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'تطور سرعة القراءة' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, title: { display: true, text: 'كلمة/دقيقة' } }
+                    }
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            // إضافة نص مخصص
+            document.getElementById('add-custom-text').addEventListener('click', () => {
+                document.getElementById('custom-text-form').style.display = 'block';
+            });
+            
+            document.getElementById('cancel-custom-text').addEventListener('click', () => {
+                document.getElementById('custom-text-form').style.display = 'none';
+                document.getElementById('new-text-content').value = '';
+            });
+            
+            document.getElementById('save-custom-text').addEventListener('click', () => {
+                const text = document.getElementById('new-text-content').value.trim();
+                if (text) {
+                    const customLessons = JSON.parse(localStorage.getItem('customLessons') || '[]');
+                    const newLesson = {
+                        id: 'custom_' + Date.now(),
+                        title: 'نص مخصص ' + (customLessons.length + 1),
+                        level: 'intermediate',
+                        text: text
+                    };
+                    
+                    customLessons.push(newLesson);
+                    localStorage.setItem('customLessons', JSON.stringify(customLessons));
+                    
+                    loadLessons();
+                    document.getElementById('custom-text-form').style.display = 'none';
+                    document.getElementById('new-text-content').value = '';
+                    console.log('تم إضافة نص مخصص');
+                }
+            });
+
+            // فلتر المستوى
+            document.getElementById('level-filter').addEventListener('change', (e) => {
+                const selectedLevel = e.target.value;
+                const cards = document.querySelectorAll('.reading-card');
+                
+                cards.forEach(card => {
+                    if (selectedLevel === 'all' || card.dataset.level === selectedLevel) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // البحث في القاموس
+            document.getElementById('word-search').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm) {
+                    const words = Object.keys(dictionary).filter(word => 
+                        word.includes(searchTerm) || dictionary[word].includes(searchTerm)
+                    );
+                    
+                    if (words.length > 0) {
+                        const wordsList = document.getElementById('words-list');
+                        wordsList.innerHTML = words.slice(0, 10).map(word => `
+                            <div style="background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 10px; border-left: 4px solid var(--primary); box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div><strong>${word}</strong> - ${dictionary[word]}</div>
+                                    <button class="btn" style="padding: 0.3rem 0.8rem;" onclick="addToLearnedWords('${word}')">
+                                        <i class="fas fa-plus"></i> أضف
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                } else {
+                    loadLearnedWords();
+                }
+            });
+
+            // الإعدادات
+            document.getElementById('save-goal').addEventListener('click', () => {
+                const newGoal = parseInt(document.getElementById('daily-goal-setting').value);
+                if (newGoal >= 100 && newGoal <= 2000) {
+                    userSettings.dailyGoal = newGoal;
+                    localStorage.setItem('userSettings', JSON.stringify(userSettings));
+                    updateDashboard();
+                    alert('تم حفظ الهدف الجديد!');
+                }
+            });
+
+            // تصدير البيانات
+            document.getElementById('export-data').addEventListener('click', () => {
+                const data = {
+                    progressData: progressData,
+                    learnedWords: learnedWords,
+                    userSettings: userSettings,
+                    exportDate: new Date().toISOString()
+                };
+                
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = 'french-reading-data.json';
+                link.click();
+            });
+
+            // مسح البيانات
+            document.getElementById('clear-data').addEventListener('click', () => {
+                if (confirm('هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                    localStorage.removeItem('progressData');
+                    localStorage.removeItem('learnedWords');
+                    localStorage.removeItem('customLessons');
+                    location.reload();
+                }
+            });
+
+            document.getElementById('reset-data').addEventListener('click', () => {
+                if (confirm('هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            });
+
+            console.log('تم إعداد جميع معالجات الأحداث');
+        }
+
+        // إضافة دالة عامة للنافذة
+        window.addToLearnedWords = addToLearnedWords;
+    </script>
+</body>
+</html>
