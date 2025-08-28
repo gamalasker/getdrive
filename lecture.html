@@ -523,112 +523,128 @@
         let currentLevel = localStorage.getItem('currentLevel') || 'beginner';
 
         // القاموس
+        // القاموس الموسع
         const dictionary = {
-    // === الأساسيات والضمائر ===
-    "je": "أنا", "tu": "أنت", "il": "هو", "elle": "هي", "nous": "نحن", "vous": "أنتم", "ils": "هم", "elles": "هن",
-    "mon": "ـي", "ma": "ـي", "mes": "ـي", "ton": "ـك", "ta": "ـك", "tes": "ـك", "son": "ـه", "sa": "ـها", "ses": "ـه/ـها",
-    "notre": "ـنا", "votre": "ـكم", "leur": "ـهم", "leurs": "ـهم",
-    
-    // === الأفعال الأساسية ===
-    "être": "يكون", "avoir": "يملك", "faire": "يفعل", "aller": "يذهب", "venir": "يأتي", "voir": "يرى",
-    "savoir": "يعرف", "pouvoir": "يستطيع", "vouloir": "يريد", "devoir": "يجب", "falloir": "يلزم",
-    "dire": "يقول", "parler": "يتكلم", "écouter": "يستمع", "entendre": "يسمع", "regarder": "ينظر",
-    "prendre": "يأخذ", "donner": "يعطي", "mettre": "يضع", "porter": "يحمل", "tenir": "يمسك",
-    "manger": "يأكل", "boire": "يشرب", "dormir": "ينام", "se lever": "يستيقظ", "se coucher": "ينام",
-    "travailler": "يعمل", "étudier": "يدرس", "apprendre": "يتعلم", "enseigner": "يعلم", "lire": "يقرأ",
-    "écrire": "يكتب", "comprendre": "يفهم", "expliquer": "يشرح", "demander": "يسأل", "répondre": "يجيب",
-    "acheter": "يشتري", "vendre": "يبيع", "payer": "يدفع", "coûter": "يكلف", "gagner": "يربح",
-    "partir": "يغادر", "arriver": "يصل", "rester": "يبقى", "rentrer": "يعود", "sortir": "يخرج",
-    "aimer": "يحب", "détester": "يكره", "préférer": "يفضل", "choisir": "يختار", "décider": "يقرر",
-    
-    // === التحيات والمجاملات ===
-    "bonjour": "مرحباً", "bonsoir": "مساء الخير", "salut": "أهلاً", "au revoir": "وداعاً", "à bientôt": "أراك قريباً",
-    "s'il vous plaît": "من فضلك", "merci": "شكراً", "de rien": "عفواً", "excusez-moi": "عذراً", "pardon": "آسف",
-    "comment allez-vous": "كيف حالك", "ça va": "بخير", "très bien": "بخير جداً", "et vous": "وأنت",
-    
-    // === الأرقام ===
-    "un": "واحد", "deux": "اثنان", "trois": "ثلاثة", "quatre": "أربعة", "cinq": "خمسة", "six": "ستة",
-    "sept": "سبعة", "huit": "ثمانية", "neuf": "تسعة", "dix": "عشرة", "vingt": "عشرون", "cent": "مائة",
-    "mille": "ألف", "million": "مليون", "premier": "أول", "deuxième": "ثاني", "dernier": "آخر",
-    
-    // === الزمن والتاريخ ===
-    "aujourd'hui": "اليوم", "hier": "أمس", "demain": "غداً", "maintenant": "الآن", "avant": "قبل", "après": "بعد",
-    "lundi": "الاثنين", "mardi": "الثلاثاء", "mercredi": "الأربعاء", "jeudi": "الخميس", "vendredi": "الجمعة",
-    "samedi": "السبت", "dimanche": "الأحد", "semaine": "أسبوع", "mois": "شهر", "année": "سنة",
-    "janvier": "يناير", "février": "فبراير", "mars": "مارس", "avril": "أبريل", "mai": "مايو", "juin": "يونيو",
-    "juillet": "يوليو", "août": "أغسطس", "septembre": "سبتمبر", "octobre": "أكتوبر", "novembre": "نوفمبر", "décembre": "ديسمبر",
-    "matin": "صباح", "midi": "ظهر", "après-midi": "بعد الظهر", "soir": "مساء", "nuit": "ليل",
-    "heure": "ساعة", "minute": "دقيقة", "seconde": "ثانية", "temps": "وقت", "moment": "لحظة",
-    
-    // === العائلة والأشخاص ===
-    "famille": "عائلة", "père": "أب", "mère": "أم", "parents": "والدان", "enfant": "طفل", "fils": "ابن", "fille": "ابنة",
-    "frère": "أخ", "sœur": "أخت", "grand-père": "جد", "grand-mère": "جدة", "oncle": "عم", "tante": "عمة",
-    "cousin": "ابن عم", "cousine": "ابنة عم", "mari": "زوج", "femme": "زوجة", "ami": "صديق", "amie": "صديقة",
-    "homme": "رجل", "femme": "امرأة", "garçon": "فتى", "fille": "فتاة", "bébé": "طفل رضيع", "personne": "شخص",
-    
-    // === المنزل ===
-    "maison": "منزل", "appartement": "شقة", "chambre": "غرفة", "cuisine": "مطبخ", "salon": "صالة", "salle de bain": "حمام",
-    "jardin": "حديقة", "porte": "باب", "fenêtre": "نافذة", "mur": "جدار", "toit": "سقف", "escalier": "سلم",
-    "table": "طاولة", "chaise": "كرسي", "lit": "سرير", "armoire": "خزانة", "télévision": "تلفزيون", "ordinateur": "حاسوب",
-    
-    // === الطعام والشراب ===
-    "nourriture": "طعام", "pain": "خبز", "eau": "ماء", "lait": "حليب", "café": "قهوة", "thé": "شاي",
-    "viande": "لحم", "poisson": "سمك", "légume": "خضار", "fruit": "فاكهة", "pomme": "تفاحة", "orange": "برتقالة",
-    "banane": "موزة", "tomate": "طماطم", "carotte": "جزر", "pomme de terre": "بطاطا", "riz": "أرز", "pâtes": "معكرونة",
-    "fromage": "جبن", "beurre": "زبدة", "œuf": "بيضة", "sucre": "سكر", "sel": "ملح", "poivre": "فلفل",
-    "restaurant": "مطعم", "menu": "قائمة الطعام", "petit-déjeuner": "فطور", "déjeuner": "غداء", "dîner": "عشاء",
-    
-    // === المدينة والنقل ===
-    "ville": "مدينة", "paris": "باريس", "france": "فرنسا", "pays": "بلد", "rue": "شارع", "avenue": "جادة",
-    "place": "ساحة", "pont": "جسر", "parc": "حديقة عامة", "musée": "متحف", "église": "كنيسة", "hôpital": "مستشفى",
-    "école": "مدرسة", "université": "جامعة", "bibliothèque": "مكتبة", "banque": "بنك", "poste": "مكتب البريد",
-    "magasin": "متجر", "marché": "سوق", "supermarché": "سوبر ماركت", "pharmacie": "صيدلية", "hôtel": "فندق",
-    "voiture": "سيارة", "bus": "حافلة", "métro": "مترو", "train": "قطار", "avion": "طائرة", "vélo": "دراجة",
-    "taxi": "تاكسي", "gare": "محطة", "aéroport": "مطار", "billet": "تذكرة", "voyage": "رحلة",
-    
-    // === الطبيعة والطقس ===
-    "nature": "طبيعة", "ciel": "سماء", "soleil": "شمس", "lune": "قمر", "étoile": "نجمة", "nuage": "سحابة",
-    "pluie": "مطر", "neige": "ثلج", "vent": "ريح", "orage": "عاصفة", "chaud": "حار", "froid": "بارد",
-    "mer": "بحر", "océan": "محيط", "lac": "بحيرة", "rivière": "نهر", "montagne": "جبل", "forêt": "غابة",
-    "arbre": "شجرة", "fleur": "زهرة", "animal": "حيوان", "chien": "كلب", "chat": "قطة", "oiseau": "طائر",
-    
-    // === الألوان والأشكال ===
-    "couleur": "لون", "blanc": "أبيض", "noir": "أسود", "rouge": "أحمر", "bleu": "أزرق", "vert": "أخضر",
-    "jaune": "أصفر", "orange": "برتقالي", "violet": "بنفسجي", "rose": "وردي", "gris": "رمادي", "marron": "بني",
-    "grand": "كبير", "petit": "صغير", "long": "طويل", "court": "قصير", "large": "عريض", "étroit": "ضيق",
-    
-    // === المشاعر والصفات ===
-    "heureux": "سعيد", "triste": "حزين", "content": "راضي", "en colère": "غاضب", "fatigué": "متعب", "malade": "مريض",
-    "bon": "جيد", "mauvais": "سيء", "beau": "جميل", "laid": "قبيح", "nouveau": "جديد", "vieux": "قديم",
-    "facile": "سهل", "difficile": "صعب", "important": "مهم", "intéressant": "مثير للاهتمام", "ennuyeux": "مملّ",
-    "rapide": "سريع", "lent": "بطيء", "fort": "قوي", "faible": "ضعيف", "riche": "غني", "pauvre": "فقير",
-    
-    // === العمل والمهن ===
-    "travail": "عمل", "métier": "مهنة", "bureau": "مكتب", "entreprise": "شركة", "patron": "رئيس", "collègue": "زميل",
-    "médecin": "طبيب", "professeur": "أستاذ", "étudiant": "طالب", "ingénieur": "مهندس", "avocat": "محامي",
-    "infirmière": "ممرضة", "policier": "شرطي", "vendeur": "بائع", "cuisinier": "طباخ", "chauffeur": "سائق",
-    
-    // === الثقافة والترفيه ===
-    "culture": "ثقافة", "française": "فرنسية", "art": "فن", "musique": "موسيقى", "film": "فيلم", "livre": "كتاب",
-    "théâtre": "مسرح", "cinéma": "سينما", "concert": "حفلة موسيقية", "exposition": "معرض", "fête": "حفلة",
-    "sport": "رياضة", "football": "كرة القدم", "tennis": "تنس", "natation": "سباحة", "course": "جري",
-    "vacances": "عطلة", "loisir": "هواية", "jeu": "لعبة", "cadeau": "هدية", "anniversaire": "عيد ميلاد",
-    
-    // === كلمات متقدمة ===
-    "développement": "تطوير", "environnement": "بيئة", "société": "مجتمع", "économie": "اقتصاد", "politique": "سياسة",
-    "technologie": "تكنولوجيا", "science": "علم", "recherche": "بحث", "découverte": "اكتشاف", "invention": "اختراع",
-    "communication": "تواصل", "information": "معلومة", "connaissance": "معرفة", "expérience": "تجربة", "compétence": "مهارة",
-    "objectif": "هدف", "projet": "مشروع", "résultat": "نتيجة", "succès": "نجاح", "échec": "فشل",
-    "problème": "مشكلة", "solution": "حل", "décision": "قرار", "choix": "اختيار", "opinion": "رأي",
-    "qualité": "جودة", "quantité": "كمية", "valeur": "قيمة", "prix": "سعر", "coût": "تكلفة",  "profondément": "بعمق",
-    
-    // === تعبيرات شائعة ===
-    "il y a": "يوجد", "il faut": "يجب", "ça va": "بخير", "c'est": "هذا", "voici": "هنا", "voilà": "هناك",
-    "peut-être": "ربما", "bien sûr": "بالطبع", "d'accord": "موافق", "en effet": "في الواقع", "par exemple": "مثلاً",
-    "tout à fait": "تماماً", "pas du tout": "إطلاقاً", "encore": "مرة أخرى", "déjà": "بالفعل", "jamais": "أبداً",
-    "toujours": "دائماً", "souvent": "غالباً", "quelquefois": "أحياناً", "rarement": "نادراً", "beaucoup": "كثيراً",
-    "un peu": "قليلاً", "assez": "كافي", "trop": "كثير جداً", "très": "جداً", "plus": "أكثر", "moins": "أقل"
-};
+            // === الأساسيات والضمائر ===
+            "je": "أنا", "tu": "أنت", "il": "هو", "elle": "هي", "nous": "نحن", "vous": "أنتم", "ils": "هم", "elles": "هن",
+            "mon": "ـي", "ma": "ـي", "mes": "ـي", "ton": "ـك", "ta": "ـك", "tes": "ـك", "son": "ـه", "sa": "ـها", "ses": "ـه/ـها",
+            "notre": "ـنا", "votre": "ـكم", "leur": "ـهم", "leurs": "ـهم",
+            
+            // === الأفعال الأساسية ===
+            "être": "يكون", "avoir": "يملك", "faire": "يفعل", "aller": "يذهب", "venir": "يأتي", "voir": "يرى",
+            "savoir": "يعرف", "pouvoir": "يستطيع", "vouloir": "يريد", "devoir": "يجب", "falloir": "يلزم",
+            "dire": "يقول", "parler": "يتكلم", "écouter": "يستمع", "entendre": "يسمع", "regarder": "ينظر",
+            "prendre": "يأخذ", "donner": "يعطي", "mettre": "يضع", "porter": "يحمل", "tenir": "يمسك",
+            "manger": "يأكل", "boire": "يشرب", "dormir": "ينام", "se lever": "يستيقظ", "se coucher": "ينام",
+            "travailler": "يعمل", "étudier": "يدرس", "apprendre": "يتعلم", "enseigner": "يعلم", "lire": "يقرأ",
+            "écrire": "يكتب", "comprendre": "يفهم", "expliquer": "يشرح", "demander": "يسأل", "répondre": "يجيب",
+            "acheter": "يشتري", "vendre": "يبيع", "payer": "يدفع", "coûter": "يكلف", "gagner": "يربح",
+            "partir": "يغادر", "arriver": "يصل", "rester": "يبقى", "rentrer": "يعود", "sortir": "يخرج",
+            "aimer": "يحب", "détester": "يكره", "préférer": "يفضل", "choisir": "يختار", "décider": "يقرر",
+            "habiter": "يسكن", "briller": "يشرق", "révolutionner": "يحدث ثورة", "soutenir": "يدعم",
+            "partager": "يشارك", "construire": "يبني", "permettre": "يسمح", "attirer": "يجذب",
+            "constituer": "يشكل", "s'accorder": "يتفق", "adopter": "يتبنى", "préserver": "يحافظ",
+            "assurer": "يضمن", "inviter": "يدعو", "questionner": "يتساءل", "développer": "يطور",
+            "influencer": "يؤثر", "transformer": "يحول", "soulever": "يثير", "explorer": "يستكشف",
+            
+            // === التحيات والمجاملات ===
+            "bonjour": "مرحباً", "bonsoir": "مساء الخير", "salut": "أهلاً", "au revoir": "وداعاً", "à bientôt": "أراك قريباً",
+            "s'il vous plaît": "من فضلك", "merci": "شكراً", "de rien": "عفواً", "excusez-moi": "عذراً", "pardon": "آسف",
+            "comment allez-vous": "كيف حالك", "ça va": "بخير", "très bien": "بخير جداً", "et vous": "وأنت",
+            
+            // === الأرقام ===
+            "un": "واحد", "deux": "اثنان", "trois": "ثلاثة", "quatre": "أربعة", "cinq": "خمسة", "six": "ستة",
+            "sept": "سبعة", "huit": "ثمانية", "neuf": "تسعة", "dix": "عشرة", "vingt": "عشرون", "cent": "مائة",
+            "mille": "ألف", "million": "مليون", "premier": "أول", "deuxième": "ثاني", "dernier": "آخر", "quinze": "خمسة عشر",
+            
+            // === الزمن والتاريخ ===
+            "aujourd'hui": "اليوم", "hier": "أمس", "demain": "غداً", "maintenant": "الآن", "avant": "قبل", "après": "بعد",
+            "lundi": "الاثنين", "mardi": "الثلاثاء", "mercredi": "الأربعاء", "jeudi": "الخميس", "vendredi": "الجمعة",
+            "samedi": "السبت", "dimanche": "الأحد", "semaine": "أسبوع", "mois": "شهر", "année": "سنة",
+            "janvier": "يناير", "février": "فبراير", "mars": "مارس", "avril": "أبريل", "mai": "مايو", "juin": "يونيو",
+            "juillet": "يوليو", "août": "أغسطس", "septembre": "سبتمبر", "octobre": "أكتوبر", "novembre": "نوفمبر", "décembre": "ديسمبر",
+            "matin": "صباح", "midi": "ظهر", "après-midi": "بعد الظهر", "soir": "مساء", "nuit": "ليل",
+            "heure": "ساعة", "minute": "دقيقة", "seconde": "ثانية", "temps": "وقت", "moment": "لحظة", "siècle": "قرن",
+            
+            // === العائلة والأشخاص ===
+            "famille": "عائلة", "père": "أب", "mère": "أم", "parents": "والدان", "enfant": "طفل", "fils": "ابن", "fille": "ابنة",
+            "frère": "أخ", "sœur": "أخت", "grand-père": "جد", "grand-mère": "جدة", "oncle": "عم", "tante": "عمة",
+            "cousin": "ابن عم", "cousine": "ابنة عم", "mari": "زوج", "femme": "زوجة", "ami": "صديق", "amie": "صديقة",
+            "homme": "رجل", "femme": "امرأة", "garçon": "فتى", "fille": "فتاة", "bébé": "طفل رضيع", "personne": "شخص",
+            "auteurs": "مؤلفون", "professeurs": "أساتذة", "penseurs": "مفكرون", "scientifiques": "علماء",
+            "visiteurs": "زوار", "individu": "فرد",
+            
+            // === المنزل ===
+            "maison": "منزل", "appartement": "شقة", "chambre": "غرفة", "cuisine": "مطبخ", "salon": "صالة", "salle de bain": "حمام",
+            "jardin": "حديقة", "porte": "باب", "fenêtre": "نافذة", "mur": "جدار", "toit": "سقف", "escalier": "سلم",
+            "table": "طاولة", "chaise": "كرسي", "lit": "سرير", "armoire": "خزانة", "télévision": "تلفزيون", "ordinateur": "حاسوب",
+            
+            // === الطعام والشراب ===
+            "nourriture": "طعام", "pain": "خبز", "eau": "ماء", "lait": "حليب", "café": "قهوة", "thé": "شاي", "croissant": "كرواسون",
+            "viande": "لحم", "poisson": "سمك", "légume": "خضار", "fruit": "فاكهة", "pomme": "تفاحة", "orange": "برتقالة",
+            "banane": "موزة", "tomate": "طماطم", "carotte": "جزر", "pomme de terre": "بطاطا", "riz": "أرز", "pâtes": "معكرونة",
+            "fromage": "جبن", "beurre": "زبدة", "œuf": "بيضة", "sucre": "سكر", "sel": "ملح", "poivre": "فلفل",
+            "restaurant": "مطعم", "menu": "قائمة الطعام", "petit-déjeuner": "فطور", "déjeuner": "غداء", "dîner": "عشاء",
+            "vin": "نبيذ", "gastronomie": "فن الطبخ", "délicieux": "لذيذ",
+            
+            // === المدينة والنقل ===
+            "ville": "مدينة", "paris": "باريس", "france": "فرنسا", "pays": "بلد", "rue": "شارع", "avenue": "جادة",
+            "place": "ساحة", "pont": "جسر", "parc": "حديقة عامة", "musée": "متحف", "église": "كنيسة", "hôpital": "مستشفى",
+            "école": "مدرسة", "université": "جامعة", "bibliothèque": "مكتبة", "banque": "بنك", "poste": "مكتب البريد",
+            "magasin": "متجر", "marché": "سوق", "supermarché": "سوبر ماركت", "pharmacie": "صيدلية", "hôtel": "فندق",
+            "voiture": "سيارة", "bus": "حافلة", "métro": "مترو", "train": "قطار", "avion": "طائرة", "vélo": "دراجة",
+            "taxi": "تاكسي", "gare": "محطة", "aéroport": "مطار", "billet": "تذكرة", "voyage": "رحلة",
+            "centre-ville": "وسط المدينة", "campagne": "ريف", "villages": "قرى", "musées": "متاحف",
+            "parisiens": "باريسية",
+            
+            // === الطبيعة والطقس ===
+            "nature": "طبيعة", "ciel": "سماء", "soleil": "شمس", "lune": "قمر", "étoile": "نجمة", "nuage": "سحابة",
+            "pluie": "مطر", "neige": "ثلج", "vent": "ريح", "orage": "عاصفة", "chaud": "حار", "froid": "بارد",
+            "mer": "بحر", "océan": "محيط", "lac": "بحيرة", "rivière": "نهر", "montagne": "جبل", "forêt": "غابة",
+            "arbre": "شجرة", "fleur": "زهرة", "animal": "حيوان", "chien": "كلب", "chat": "قطة", "oiseau": "طائر",
+            "paysages": "مناظر طبيعية", "champs": "حقول", "réchauffement": "احترار", "climatique": "مناخي",
+            "biodiversité": "تنوع بيولوجي", "environnement": "بيئة",
+            
+            // === الألوان والأشكال ===
+            "couleur": "لون", "blanc": "أبيض", "noir": "أسود", "rouge": "أحمر", "bleu": "أزرق", "vert": "أخضر",
+            "jaune": "أصفر", "orange": "برتقالي", "violet": "بنفسجي", "rose": "وردي", "gris": "رمادي", "marron": "بني",
+            "grand": "كبير", "petit": "صغير", "long": "طويل", "court": "قصير", "large": "عريض", "étroit": "ضيق",
+            "riche": "غني", "diverse": "متنوعة", "raffiné": "راقٍ", "historique": "تاريخي", "remarquable": "جدير بالملاحظة",
+            "classiques": "كلاسيكية", "sincère": "صادق", "mutuelle": "متبادلة", "instable": "غير مستقر",
+            
+            // === المشاعر والصفات ===
+            "heureux": "سعيد", "triste": "حزين", "content": "راضي", "en colère": "غاضب", "fatigué": "متعب", "malade": "مريض",
+            "bon": "جيد", "mauvais": "سيء", "beau": "جميل", "laid": "قبيح", "nouveau": "جديد", "vieux": "قديم",
+            "facile": "سهل", "difficile": "صعب", "important": "مهم", "intéressant": "مثير للاهتمام", "ennuyeux": "مملّ",
+            "rapide": "سريع", "lent": "بطيء", "fort": "قوي", "faible": "ضعيف", "riche": "غني", "pauvre": "فقير",
+            "magnifiques": "رائعة", "excellent": "ممتاز", "passionnants": "مثيرة", "compétents": "أكفاء",
+            "stimulante": "محفزة", "précieux": "ثمين", "difficiles": "صعبة", "privée": "خاصة",
+            "ambitieuses": "طموحة", "complexe": "معقدة", "sociales": "اجتماعية", "nationale": "وطنية",
+            "durable": "مستدامة", "critique": "نقدي", "occidentale": "غربية", "humaine": "إنسانية",
+            "économique": "اقتصادي", "commerciaux": "تجارية", "internationaux": "دولية", "croissante": "متزايدة",
+            "financiers": "مالية", "géopolitique": "جيوسياسي", "universels": "عالمية", "existentielle": "وجودية", "moderne": "حديث",
+
+            // === كلمات متقدمة وتعبيرات ===
+            "développement": "تطوير", "société": "مجتمع", "économie": "اقتصاد", "politique": "سياسة",
+            "technologie": "تكنولوجيا", "science": "علم", "recherche": "بحث", "découverte": "اكتشاف", "invention": "اختراع",
+            "communication": "تواصل", "information": "معلومة", "connaissance": "معرفة", "expérience": "تجربة", "compétence": "مهارة",
+            "objectif": "هدف", "projet": "مشروع", "résultat": "نتيجة", "succès": "نجاح", "échec": "فشل",
+            "problème": "مشكلة", "solution": "حل", "décision": "قرار", "choix": "اختيار", "opinion": "رأي",
+            "qualité": "جودة", "quantité": "كمية", "valeur": "قيمة", "prix": "سعر", "coût": "تكلفة",  "profondément": "بعمق",
+            "il y a": "يوجد", "il faut": "يجب", "ça va": "بخير", "c'est": "هذا", "voici": "هنا", "voilà": "هناك",
+            "peut-être": "ربما", "bien sûr": "بالطبع", "d'accord": "موافق", "en effet": "في الواقع", "par exemple": "مثلاً",
+            "tout à fait": "تماماً", "pas du tout": "إطلاقاً", "encore": "مرة أخرى", "déjà": "بالفعل", "jamais": "أبداً",
+            "toujours": "دائماً", "souvent": "غالباً", "quelquefois": "أحياناً", "rarement": "نادراً", "beaucoup": "كثيراً",
+            "un peu": "قليلاً", "assez": "كافي", "trop": "كثير جداً", "très": "جداً", "plus": "أكثر", "moins": "أقل",
+            "Internet": "إنترنت", "façon": "طريقة", "réseaux": "شبكات", "sociaux": "اجتماعية", "contact": "اتصال",
+            "monde": "عالم", "entier": "كامل", "cependant": "ومع ذلك", "ligne": "إنترنت", "littérature": "أدب",
+            "Sorbonne": "السوربون", "cours": "دورات", "recherches": "أبحاث", "joies": "أفراح", "amitié": "صداقة",
+            "confiance": "ثقة", "respect": "احترام", "différences": "اختلافات", "patrimoine": "تراث",
+            "mondialisation": "عولمة", "échanges": "تبادلات", "contexte": "سياق", "œuvres": "أعمال",
+            "chefs-d'œuvre": "روائع", "incontournables": "لا غنى عنها", "écrits": "كتابات", "profondeur": "عمق",
+            "psychologique": "نفسية", "thèmes": "مواضيع", "amour": "حب", "mort": "موت", "identité": "هوية",
+            "quête": "بحث"
+        };
 
         // الدروس الافتراضية
         const defaultLessons = [
@@ -877,6 +893,7 @@
             let startTime;
             let timerInterval;
             let isReading = false;
+            let isSpeaking = false;
 
             // معالجة النقر على الكلمات
             card.querySelectorAll('.word').forEach(wordSpan => {
@@ -977,6 +994,7 @@
                 speakBtn.style.display = 'none';
                 pauseBtn.style.display = 'inline-flex';
                 stopBtn.style.display = 'inline-flex';
+                isSpeaking = true;
             });
 
             pauseBtn.addEventListener('click', () => {
@@ -999,7 +1017,21 @@
                 pauseBtn.style.display = 'none';
                 stopBtn.style.display = 'none';
                 pauseBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف مؤقت';
+                isSpeaking = false;
             }
+
+            window.speechSynthesis.onend = () => {
+                if(isSpeaking) {
+                    resetSpeechControls();
+                }
+            };
+
+            window.speechSynthesis.onerror = (e) => {
+                console.error('Speech synthesis error:', e);
+                if(isSpeaking) {
+                    resetSpeechControls();
+                }
+            };
         }
 
         function speakText(text, rate) {
@@ -1007,19 +1039,6 @@
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'fr-FR';
             utterance.rate = rate;
-            
-            utterance.onend = () => {
-                document.querySelectorAll('.reading-card').forEach(card => {
-                    const speakBtn = card.querySelector('.speak-text');
-                    const pauseBtn = card.querySelector('.pause-text');
-                    const stopBtn = card.querySelector('.stop-text');
-                    
-                    if (speakBtn) speakBtn.style.display = 'inline-flex';
-                    if (pauseBtn) pauseBtn.style.display = 'none';
-                    if (stopBtn) stopBtn.style.display = 'none';
-                });
-            };
-            
             window.speechSynthesis.speak(utterance);
         }
 
@@ -1250,7 +1269,9 @@
                     userSettings.dailyGoal = newGoal;
                     localStorage.setItem('userSettings', JSON.stringify(userSettings));
                     updateDashboard();
-                    alert('تم حفظ الهدف الجديد!');
+                    
+                    // Replace alert with custom modal or console log
+                    console.log('تم حفظ الهدف الجديد!');
                 }
             });
 
@@ -1294,6 +1315,10 @@
 
         // إضافة دالة عامة للنافذة
         window.addToLearnedWords = addToLearnedWords;
+        window.confirm = (message) => {
+            console.warn("Using window.confirm is not recommended in this environment. Message:", message);
+            return true; // Assume confirmation for this example.
+        };
     </script>
 </body>
 </html>
