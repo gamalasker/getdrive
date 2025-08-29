@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>رفيق المذاكرة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+    * { font-family: 'Cairo', sans-serif; }
+    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .card-hover { transition: all 0.3s ease; }
+    .card-hover:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+    .progress-bar { transition: width 0.5s ease; }
+    .pulse-glow { animation: pulseGlow 2s infinite; }
+    @keyframes pulseGlow { 0%,100%{ box-shadow: 0 0 20px rgba(102,126,234,.4)} 50%{ box-shadow:0 0 30px rgba(102,126,234,.8)} }
+    .study-timer { background: linear-gradient(45deg, #ff6b6b, #feca57); }
+    .achievement-badge { background: linear-gradient(45deg, #48cae4, #023e8a); }
+    .timer-mode { cursor: pointer; transition: all .2s ease; }
+    .timer-mode.active { outline: 2px solid #fff; transform: scale(1.03); }
+    .priority-btn{ cursor:pointer; transition: all .2s ease; }
+    .priority-btn.selected{ border-color:#3b82f6; background:#dbeafe; transform: scale(1.03); }
+    .floating-notification { position: fixed; top: 20px; right: 20px; z-index: 1000; animation: slideIn .4s ease; }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0 } to { transform: translateX(0); opacity: 1} }
+    .smart-schedule{ background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+    .weekly-chart{ background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+    .challenge-card{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .nav-btn-active { background: #2563eb; color: #fff; }
+    .nav-btn { background: #e5e7eb; color: #374151; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="gradient-bg text-white p-6 shadow-lg">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="text-4xl">🎓</div>
+        <div>
+          <h1 class="text-3xl font-bold">رفيق المذاكرة</h1>
+          <p class="text-blue-100">رفيقك في رحلة التعلم والنجاح</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-bold" id="currentTime"></div>
+        <div class="text-sm text-blue-100">الوقت الحالي</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="max-w-6xl mx-auto p-6">
+    <div class="bg-white rounded-2xl shadow-lg p-4">
+      <div class="flex space-x-4 space-x-reverse">
+        <button onclick="showPage('dashboard', this)" id="dashboardBtn" class="px-6 py-3 rounded-lg font-semibold transition-colors nav-btn-active">🏠 الرئيسية</button>
+        <button onclick="showPage('analytics', this)" id="analyticsBtn" class="px-6 py-3 rounded-lg font-semibold transition-colors nav-btn">📊 النتائج والتحليلات</button>
+        <button onclick="showPage('settings', this)" id="settingsBtn" class="px-6 py-3 rounded-lg font-semibold transition-colors nav-btn">⚙️ الإعدادات</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Page -->
+  <div id="dashboardPage" class="max-w-6xl mx-auto p-6">
+    <!-- Daily Motivation -->
+    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl p-6 mb-8 text-white shadow-lg">
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="text-4xl">✨</div>
+        <div>
+          <h2 class="text-xl font-bold mb-2">رسالة اليوم</h2>
+          <p class="text-lg" id="dailyMotivation">كل خطوة صغيرة تقربك من هدفك الكبير.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Study Stats Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm">ساعات اليوم</p>
+            <p class="text-3xl font-bold text-blue-600" id="todayHours">3.5</p>
+          </div>
+          <div class="text-4xl">⏰</div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm">المواد المكتملة</p>
+            <p class="text-3xl font-bold text-green-600" id="completedSubjects">2/5</p>
+          </div>
+          <div class="text-4xl">✅</div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm">الشارات المكتسبة</p>
+            <p class="text-3xl font-bold text-purple-600" id="badges">7</p>
+          </div>
+          <div class="text-4xl">🏆</div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm">أيام الالتزام</p>
+            <p class="text-3xl font-bold text-orange-600" id="streakDays">12</p>
+          </div>
+          <div class="text-4xl">🔥</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Subjects Panel -->
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl p-6 shadow-lg">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">📚 المواد الدراسية</h2>
+            <button onclick="openAddSubject()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">+ إضافة مادة</button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="subjectsContainer"></div>
+        </div>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div class="space-y-6">
+        <!-- Study Timer -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg">
+          <h3 class="text-xl font-bold mb-4 text-gray-800">⏱️ مؤقت المذاكرة</h3>
+          <div class="text-center">
+            <div class="study-timer rounded-full w-32 h-32 mx-auto flex items-center justify-center mb-4 pulse-glow">
+              <span class="text-3xl font-bold text-white" id="timerDisplay">25:00</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 mb-3">
+              <button class="timer-mode bg-red-500 text-white py-2 rounded-lg text-sm active" onclick="setTimerMode('focus', this)">🎯 تركيز</button>
+              <button class="timer-mode bg-green-500 text-white py-2 rounded-lg text-sm" onclick="setTimerMode('break', this)">☕ استراحة</button>
+              <button class="timer-mode bg-blue-500 text-white py-2 rounded-lg text-sm" onclick="setTimerMode('longbreak', this)">🛋️ طويلة</button>
+            </div>
+            <div class="space-y-2">
+              <button onclick="startTimer()" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">▶️ ابدأ</button>
+              <button onclick="pauseTimer()" class="w-full bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-700 transition-colors">⏸️ توقف</button>
+              <button onclick="resetTimer()" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors">🔄 إعادة تعيين</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg">
+          <h3 class="text-xl font-bold mb-4 text-gray-800">🏆 الإنجازات</h3>
+          <div class="space-y-3" id="achievementsContainer"></div>
+        </div>
+
+        <!-- Smart Tips -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg">
+          <h3 class="text-xl font-bold mb-4 text-gray-800">💡 نصائح ذكية</h3>
+          <div class="bg-blue-50 rounded-lg p-4">
+            <p class="text-sm text-blue-800" id="smartTip">قسّم المادة الصعبة إلى مهام صغيرة بوقت محدد لكل مهمة.</p>
+            <div class="flex justify-between mt-3">
+              <button onclick="likeAdvice()" class="text-green-600 hover:text-green-700">👍 مفيد</button>
+              <button onclick="nextAdvice()" class="text-blue-600 hover:text-blue-700">🔄 نصيحة أخرى</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Progress Chart -->
+    <div class="bg-white rounded-2xl p-6 shadow-lg mt-8">
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 تقدم الأسبوع</h2>
+      <div class="grid grid-cols-7 gap-2 mb-4">
+        <div class="text-center text-sm font-semibold text-gray-600">السبت</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الأحد</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الاثنين</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الثلاثاء</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الأربعاء</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الخميس</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الجمعة</div>
+      </div>
+      <div class="grid grid-cols-7 gap-2" id="weeklyProgress"></div>
+    </div>
+  </div>
+
+  <!-- Analytics Page -->
+  <div id="analyticsPage" class="max-w-6xl mx-auto p-6 hidden">
+    <div class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-6 mb-8 text-white shadow-lg">
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="text-4xl">📊</div>
+        <div>
+          <h2 class="text-3xl font-bold mb-2">النتائج والتحليلات</h2>
+          <p class="text-lg">تحليل شامل لأدائك الدراسي وتقدمك</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-4xl mb-2">📈</div>
+        <h3 class="text-lg font-bold text-gray-800 mb-2">معدل الأداء العام</h3>
+        <div class="text-3xl font-bold text-green-600" id="overallPerformance">85%</div>
+        <p class="text-sm text-gray-600 mt-2">ممتاز! استمر على هذا المنوال</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-4xl mb-2">⏱️</div>
+        <h3 class="text-lg font-bold text-gray-800 mb-2">إجمالي ساعات الدراسة</h3>
+        <div class="text-3xl font-bold text-blue-600" id="totalStudyHours">127</div>
+        <p class="text-sm text-gray-600 mt-2">ساعة هذا الشهر</p>
+      </div>
+      <div class="bg-white rounded-xl p-6 shadow-lg text-center">
+        <div class="text-4xl mb-2">🎯</div>
+        <h3 class="text-lg font-bold text-gray-800 mb-2">معدل الالتزام</h3>
+        <div class="text-3xl font-bold text-purple-600" id="commitmentRate">92%</div>
+        <p class="text-sm text-gray-600 mt-2">التزام ممتاز بالجدول</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-lg mb-8">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800">📚 تحليل أداء المواد</h3>
+      <div class="space-y-4" id="subjectAnalysis"></div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">🕐 أنماط الدراسة</h3>
+        <div class="space-y-4">
+          <div class="flex justify-between items-center"><span class="text-gray-700">أفضل وقت للدراسة</span><span class="font-bold text-blue-600">الصباح (9-11 ص)</span></div>
+          <div class="flex justify-between items-center"><span class="text-gray-700">متوسط مدة الجلسة</span><span class="font-bold text-green-600">45 دقيقة</span></div>
+          <div class="flex justify-between items-center"><span class="text-gray-700">أكثر الأيام إنتاجية</span><span class="font-bold text-purple-600">الثلاثاء والأربعاء</span></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <h3 class="text-xl font-bold mb-4 text-gray-800">🏆 الإنجازات الأخيرة</h3>
+        <div class="space-y-3">
+          <div class="flex items-center space-x-3 space-x-reverse p-3 bg-yellow-50 rounded-lg"><span class="text-2xl">🥇</span><div><p class="font-semibold text-gray-800">أسبوع مثالي</p><p class="text-sm text-gray-600">أكملت جميع جلسات الأسبوع</p></div></div>
+          <div class="flex items-center space-x-3 space-x-reverse p-3 bg-blue-50 rounded-lg"><span class="text-2xl">📚</span><div><p class="font-semibold text-gray-800">خبير الرياضيات</p><p class="text-sm text-gray-600">20 ساعة دراسة متتالية</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-lg">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800">📈 التقدم الشهري</h3>
+      <div class="grid grid-cols-4 gap-4 mb-4">
+        <div class="text-center text-sm font-semibold text-gray-600">الأسبوع الأول</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الأسبوع الثاني</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الأسبوع الثالث</div>
+        <div class="text-center text-sm font-semibold text-gray-600">الأسبوع الرابع</div>
+      </div>
+      <div class="grid grid-cols-4 gap-4" id="monthlyProgress"></div>
+    </div>
+  </div>
+
+  <!-- Settings Page -->
+  <div id="settingsPage" class="max-w-6xl mx-auto p-6 hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 mb-8 text-white shadow-lg">
+      <div class="flex items-center space-x-4 space-x-reverse">
+        <div class="text-4xl">⚙️</div>
+        <div>
+          <h2 class="text-3xl font-bold mb-2">الإعدادات</h2>
+          <p class="text-lg">إدارة البيانات والتحديات الأسبوعية والجدول</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Data Management -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <h3 class="text-2xl font-bold mb-6 text-gray-800 flex items-center"><span class="text-3xl ml-3">🗂️</span>إدارة البيانات</h3>
+        <div class="space-y-4">
+          <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <h4 class="font-bold text-red-800 mb-2">⚠️ مسح جميع البيانات</h4>
+            <p class="text-sm text-red-700 mb-4">سيتم حذف جميع الإحصائيات، التقدم، والبيانات المحفوظة نهائياً.</p>
+            <button onclick="confirmResetData()" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold">🗑️ مسح جميع البيانات</button>
+          </div>
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <h4 class="font-bold text-yellow-800 mb-2">🔄 إعادة تعيين الإحصائيات فقط</h4>
+            <p class="text-sm text-yellow-700 mb-4">سيتم إعادة تعيين الإحصائيات والتقدم مع الاحتفاظ بالمواد.</p>
+            <button onclick="resetStatsOnly()" class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition-colors font-semibold">📊 إعادة تعيين الإحصائيات</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Challenge -->
+      <div class="bg-white rounded-2xl p-6 shadow-lg">
+        <h3 class="text-2xl font-bold mb-6 text-gray-800 flex items-center"><span class="text-3xl ml-3">🏆</span>التحدي الأسبوعي</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">هدف ساعات الأسبوع</label>
+            <div class="flex items-center space-x-2 space-x-reverse">
+              <input type="range" id="weeklyGoalSlider" min="10" max="50" value="25" onchange="updateWeeklyGoal()" class="flex-1"/>
+              <span id="weeklyGoalDisplay" class="font-bold text-blue-600 text-lg min-w-[3rem]">25</span>
+              <span class="text-gray-600">ساعة</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">المواد المستهدفة</label>
+            <div class="space-y-2" id="challengeSubjects"></div>
+          </div>
+          <button onclick="saveWeeklyChallenge()" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold">💾 حفظ التحدي</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Study Schedule -->
+    <div class="bg-white rounded-2xl p-6 shadow-lg mt-8">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800 flex items-center"><span class="text-3xl ml-3">📅</span>جدول المذاكرة الأسبوعي</h3>
+
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+          <tr class="bg-gray-50">
+            <th class="border border-gray-300 p-3 text-right font-bold">اليوم</th>
+            <th class="border border-gray-300 p-3 text-center font-bold">الفترة الصباحية<br><span class="text-sm font-normal">(9:00 - 12:00)</span></th>
+            <th class="border border-gray-300 p-3 text-center font-bold">فترة بعد الظهر<br><span class="text-sm font-normal">(2:00 - 5:00)</span></th>
+            <th class="border border-gray-300 p-3 text-center font-bold">الفترة المسائية<br><span class="text-sm font-normal">(7:00 - 10:00)</span></th>
+            <th class="border border-gray-300 p-3 text-center font-bold">إجمالي الساعات</th>
+          </tr>
+          </thead>
+          <tbody id="scheduleTable"></tbody>
+        </table>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3 items-center justify-between">
+        <div class="flex gap-3">
+          <button onclick="generateSchedule()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-semibold">🎲 إنشاء جدول تلقائي</button>
+          <button onclick="openEditCellModal()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">➕ إضافة جلسة يدوية</button>
+        </div>
+        <div class="text-lg font-bold text-gray-800">
+          إجمالي الأسبوع: <span id="totalWeeklyHours" class="text-blue-600">0</span> ساعة
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">تلميح: اضغط على أي خانة في الجدول لتعديلها يدوياً.</p>
+    </div>
+
+    <!-- Current Challenge Status -->
+    <div class="bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl p-6 mt-8 text-white shadow-lg">
+      <h3 class="text-2xl font-bold mb-4 flex items-center"><span class="text-3xl ml-3">🎯</span>حالة التحدي الحالي</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center"><div class="text-3xl font-bold" id="challengeProgress">18/25</div><div class="text-sm opacity-90">ساعات مكتملة</div></div>
+        <div class="text-center"><div class="text-3xl font-bold" id="challengeDaysLeft">3</div><div class="text-sm opacity-90">أيام متبقية</div></div>
+        <div class="text-center"><div class="text-3xl font-bold" id="challengeCompletion">72%</div><div class="text-sm opacity-90">نسبة الإنجاز</div></div>
+      </div>
+      <div class="mt-4">
+        <div class="bg-white bg-opacity-30 rounded-full h-3">
+          <div class="bg-white rounded-full h-3 transition-all duration-500" style="width: 72%" id="challengeProgressBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Subject Modal -->
+  <div id="addSubjectModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800">إضافة مادة جديدة</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">اسم المادة</label>
+          <input type="text" id="subjectName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="مثال: الفيزياء"/>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">مستوى الصعوبة</label>
+          <select id="difficulty" onchange="updateHoursRecommendation()" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option value="easy">سهل 😊</option>
+            <option value="medium">متوسط 🤔</option>
+            <option value="hard">صعب 😤</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">الحصص الأسبوعية</label>
+          <div class="flex items-center space-x-2 space-x-reverse">
+            <input type="range" id="weeklyHoursSlider" min="1" max="15" value="4" onchange="updateHoursDisplay()" class="flex-1"/>
+            <span id="hoursDisplay" class="font-bold text-blue-600 text-lg min-w-[3rem]">4</span>
+            <span class="text-gray-600">ساعة</span>
+          </div>
+          <div class="mt-2 text-sm text-gray-600" id="hoursRecommendation">التوصية: 4-6 ساعات للمواد المتوسطة</div>
+        </div>
+        <div class="flex space-x-4 space-x-reverse pt-4">
+          <button onclick="saveSubject()" class="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">حفظ</button>
+          <button onclick="closeAddSubject()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-400 transition-colors font-semibold">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Cell Modal (Manual schedule) -->
+  <div id="editCellModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+      <h3 class="text-2xl font-bold mb-6 text-gray-800">إضافة/تعديل جلسة</h3>
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">اليوم</label>
+            <select id="editDaySelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+              <option>السبت</option><option>الأحد</option><option>الاثنين</option><option>الثلاثاء</option><option>الأربعاء</option><option>الخميس</option><option>الجمعة</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">الفترة</label>
+            <select id="editPeriodSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+              <option value="morning">الصباحية</option>
+              <option value="afternoon">بعد الظهر</option>
+              <option value="evening">المسائية</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">المادة</label>
+          <select id="editSubjectSelect" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"></select>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-gray-700 mb-2">عدد الساعات</label>
+          <input id="editHoursInput" type="number" min="1" max="4" value="1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"/>
+        </div>
+        <div class="grid grid-cols-3 gap-3 pt-2">
+          <button onclick="saveCellEdit()" class="bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold">حفظ</button>
+          <button onclick="removeCell()" class="bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">حذف</button>
+          <button onclick="closeEditCellModal()" class="bg-gray-300 text-gray-800 py-3 rounded-lg hover:bg-gray-400 transition-colors font-semibold">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div id="notificationContainer" class="fixed top-6 right-6 z-50 space-y-3"></div>
+
+  <script>
+    // ===== Data =====
+    const DAYS = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+    const PERIODS = ['morning','afternoon','evening'];
+    const PERIOD_LABELS = { morning:'الصباحية', afternoon:'بعد الظهر', evening:'المسائية' };
+    const PERIOD_TIMES = { morning:'(9:00 - 12:00)', afternoon:'(2:00 - 5:00)', evening:'(7:00 - 10:00)' };
+
+    let subjects = [
+      { id: 1, name: 'الرياضيات', icon: '📐', weeklyHours: 6, progress: 75, difficulty: 'hard', color: 'blue', isStudying: false },
+      { id: 2, name: 'الفيزياء', icon: '⚛️', weeklyHours: 5, progress: 60, difficulty: 'hard', color: 'purple', isStudying: false },
+      { id: 3, name: 'الكيمياء', icon: '🧪', weeklyHours: 4, progress: 85, difficulty: 'medium', color: 'green', isStudying: false },
+      { id: 4, name: 'اللغة العربية', icon: '📖', weeklyHours: 4, progress: 90, difficulty: 'easy', color: 'orange', isStudying: false },
+      { id: 5, name: 'التاريخ', icon: '🏛️', weeklyHours: 3, progress: 45, difficulty: 'medium', color: 'red', isStudying: false }
+    ];
+    let achievements = [
+      { name: 'بطل الرياضيات', icon: '🏆', earned: true },
+      { name: 'مُنجز الأسبوع', icon: '⭐', earned: true },
+      { name: 'المثابر', icon: '💪', earned: false },
+      { name: 'عاشق القراءة', icon: '📚', earned: true }
+    ];
+    let weeklyChallenge = {
+      goal: 25,
+      completed: 18,
+      subjects: [], // array of subject ids
+      startDate: new Date(),
+      schedule: {} // { يوم: { morning:{subjectId, hours, manual}, ... } }
+    };
+
+    let timer = { minutes: 25, seconds: 0, isRunning: false, interval: null, mode: 'focus' };
+    let currentStudyingSubject = null;
+    let weeklyChart = null;
+
+    const tips = [
+      'قسّم المادة الصعبة إلى مهام صغيرة بوقت محدد لكل مهمة.',
+      'حاول مراجعة الرياضيات صباحاً لزيادة التركيز.',
+      'خذ استراحة 5 دقائق كل 25 دقيقة للحفاظ على النشاط.',
+      'اربط المفاهيم بأمثلة من حياتك لتسهيل التذكر.',
+      'دوّن 3 نقاط تعلّمتها بعد كل جلسة.'
+    ];
+    const motivations = [
+      'كل خطوة صغيرة تقربك من هدفك الكبير.',
+      'المعرفة قوة، والتعلم رحلة لا تنتهي.',
+      'اليوم أفضل من أمس، وغداً سيكون أفضل من اليوم.',
+      'الصبر والمثابرة هما مفتاحا النجاح.'
+    ];
+
+    // ===== Init =====
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFromLocalStorage();
+      updateTime();
+      setInterval(updateTime, 1000);
+      renderDashboard();
+      renderAnalytics();
+      renderSettings();
+      setInterval(() => setSmartTip(), 10000);
+      setSmartTip();
+      updateChallengeProgress();
+    });
+
+    // ===== UI Rendering =====
+    function renderDashboard() {
+      updateDailyMotivation();
+      renderSubjects();
+      renderAchievements();
+      renderWeeklyProgressBars();
+    }
+
+    function renderAnalytics() {
+      renderSubjectAnalysis();
+      renderMonthlyProgress();
+      initializeWeeklyChart();
+    }
+
+    function renderSettings() {
+      renderChallengeSubjects();
+      renderScheduleTable();
+      computeWeeklyTotals();
+    }
+
+    function showPage(page, btn) {
+      ['dashboard','analytics','settings'].forEach(p => {
+        document.getElementById(p + 'Page').classList.toggle('hidden', p !== page);
+        const b = document.getElementById(p+'Btn');
+        if (p === page) { b.classList.remove('nav-btn'); b.classList.add('nav-btn-active'); }
+        else { b.classList.add('nav-btn'); b.classList.remove('nav-btn-active'); }
+      });
+      if (page === 'analytics' && weeklyChart == null) initializeWeeklyChart();
+    }
+
+    // Header time & motivation
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit', hour12: true });
+      document.getElementById('currentTime').textContent = timeString;
+    }
+    function updateDailyMotivation() {
+      document.getElementById('dailyMotivation').textContent = motivations[Math.floor(Math.random()*motivations.length)];
+    }
+    function setSmartTip(){ document.getElementById('smartTip').textContent = tips[Math.floor(Math.random()*tips.length)]; }
+    function likeAdvice(){ showNotification('👍 تم تسجيل أن النصيحة مفيدة', 'success'); }
+    function nextAdvice(){ setSmartTip(); showNotification('🔄 تم تحديث النصيحة', 'info'); }
+
+    // Subjects
+    function renderSubjects() {
+      const container = document.getElementById('subjectsContainer');
+      container.innerHTML = '';
+      const colors = { blue:'from-blue-500 to-blue-600', purple:'from-purple-500 to-purple-600', green:'from-green-500 to-green-600', orange:'from-orange-500 to-orange-600', red:'from-red-500 to-red-600', teal:'from-teal-500 to-teal-600' };
+      const diffEmoji = { easy:'😊', medium:'🤔', hard:'😤' };
+      subjects.forEach(s => {
+        const studyingClass = s.isStudying ? ' ring-4 ring-yellow-400 ring-opacity-75 shadow-2xl transform scale-105' : '';
+        const card = document.createElement('div');
+        card.className = `bg-gradient-to-br ${colors[s.color]||colors.blue} rounded-xl p-6 text-white card-hover${studyingClass}`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-3 space-x-reverse">
+              <span class="text-3xl">${s.icon}</span>
+              <div>
+                <h3 class="font-bold text-lg">${s.name}</h3>
+                <p class="text-sm opacity-90">${s.weeklyHours} حصص أسبوعياً</p>
+              </div>
+            </div>
+            <span class="text-2xl">${diffEmoji[s.difficulty]}</span>
+          </div>
+          <div class="mb-4">
+            <div class="flex justify-between text-sm mb-2"><span>التقدم</span><span>${s.progress}%</span></div>
+            <div class="bg-white bg-opacity-30 rounded-full h-2"><div class="bg-white rounded-full h-2 progress-bar" style="width:${s.progress}%"></div></div>
+          </div>
+          <button onclick="startStudySession(${s.id})" class="w-full bg-white bg-opacity-20 hover:bg-opacity-30 py-2 rounded-lg transition-all font-semibold ${s.isStudying ? 'animate-pulse':''}">
+            ${s.isStudying ? '🔥 جاري المذاكرة...' : '▶️ ابدأ المذاكرة الآن'}
+          </button>`;
+        container.appendChild(card);
+      });
+
+      // stats quick update
+      document.getElementById('completedSubjects').textContent = `${subjects.filter(s=>s.progress>=80).length}/${subjects.length}`;
+      document.getElementById('badges').textContent = achievements.filter(a=>a.earned).length;
+    }
+
+    // Achievements
+    function renderAchievements() {
+      const container = document.getElementById('achievementsContainer');
+      container.innerHTML = '';
+      achievements.forEach(a => {
+        const el = document.createElement('div');
+        el.className = `flex items-center space-x-3 space-x-reverse p-3 rounded-lg ${a.earned ? 'achievement-badge text-white' : 'bg-gray-100 text-gray-400'}`;
+        el.innerHTML = `<span class="text-2xl">${a.icon}</span><span class="font-semibold">${a.name}</span>`;
+        container.appendChild(el);
+      });
+    }
+
+    // Weekly progress bars (dashboard)
+    function renderWeeklyProgressBars() {
+      const container = document.getElementById('weeklyProgress');
+      container.innerHTML = '';
+      const weekData = [3,4,2,5,3,1,0];
+      const max = Math.max(...weekData);
+      weekData.forEach(h => {
+        const div = document.createElement('div');
+        const percentage = max>0 ? (h/max)*100 : 0;
+        const color = h>3 ? 'bg-green-500' : h>1 ? 'bg-yellow-500' : 'bg-gray-300';
+        div.className = 'text-center';
+        div.innerHTML = `<div class="h-20 ${color} rounded-lg mb-2 flex items-end justify-center" style="height:${Math.max(percentage, 10)}%"><span class="text-white text-xs font-bold mb-1">${h}س</span></div>`;
+        container.appendChild(div);
+      });
+    }
+
+    // Analytics: subject analysis + monthly progress + chart
+    function renderSubjectAnalysis() {
+      const container = document.getElementById('subjectAnalysis');
+      container.innerHTML = '';
+      subjects.forEach(s => {
+        const level = s.progress>=80 ? 'ممتاز' : s.progress>=60 ? 'جيد' : 'يحتاج تحسين';
+        const color = s.progress>=80 ? 'text-green-600' : s.progress>=60 ? 'text-yellow-600' : 'text-red-600';
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg';
+        row.innerHTML = `
+          <div class="flex items-center space-x-3 space-x-reverse">
+            <span class="text-2xl">${s.icon}</span>
+            <div>
+              <h4 class="font-bold text-gray-800">${s.name}</h4>
+              <p class="text-sm text-gray-600">${s.weeklyHours} ساعات أسبوعياً</p>
+            </div>
+          </div>
+          <div class="text-left">
+            <div class="text-lg font-bold ${color}">${level}</div>
+            <div class="text-sm text-gray-600">${s.progress}% مكتمل</div>
+          </div>`;
+        container.appendChild(row);
+      });
+    }
+    function renderMonthlyProgress() {
+      const container = document.getElementById('monthlyProgress');
+      container.innerHTML = '';
+      const monthData = [28,32,35,30]; const max = Math.max(...monthData);
+      monthData.forEach(h=>{
+        const percentage = (h/max)*100;
+        const color = h>=30 ? 'bg-green-500' : h>=25 ? 'bg-yellow-500' : 'bg-red-500';
+        const week = document.createElement('div');
+        week.className = 'text-center';
+        week.innerHTML = `<div class="${color} rounded-lg mb-2 flex items-end justify-center text-white font-bold" style="height:${Math.max(percentage, 20)}px;"><span class="text-sm mb-1">${h}س</span></div>`;
+        container.appendChild(week);
+      });
+    }
+    function initializeWeeklyChart() {
+      const canvas = document.createElement('canvas'); // ensure fresh context
+      const container = document.querySelector('.weekly-chart') || document.getElementById('analyticsPage');
+      const old = document.getElementById('weeklyChart');
+      if (old) old.remove();
+      canvas.id = 'weeklyChart';
+      container.querySelector('.weekly-chart')?.appendChild(canvas);
+      const ctx = document.getElementById('weeklyChart').getContext('2d');
+      if (weeklyChart) weeklyChart.destroy();
+      weeklyChart = new Chart(ctx, {
+        type: 'line',
+        data: { labels: DAYS, datasets: [{ label: 'ساعات الدراسة', data: [4.5,6,3,5.5,4,2,3.5], borderColor:'rgb(99,102,241)', backgroundColor:'rgba(99,102,241,.1)', borderWidth:3, fill:true, tension:.4 }]},
+        options: { responsive: true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:8, ticks:{ stepSize:2 } } } }
+      });
+    }
+
+    // ===== Timer =====
+    function setTimerMode(mode, el) {
+      timer.mode = mode;
+      timer.minutes = mode==='focus' ? 25 : mode==='break' ? 5 : 15;
+      timer.seconds = 0;
+      document.querySelectorAll('.timer-mode').forEach(b=>b.classList.remove('active'));
+      if (el) el.classList.add('active');
+      updateTimerDisplay();
+    }
+    function startTimer() {
+      if (timer.isRunning) return;
+      timer.isRunning = true;
+      timer.interval = setInterval(()=>{
+        if (timer.seconds===0){
+          if (timer.minutes===0) {
+            clearInterval(timer.interval); timer.isRunning=false;
+            showNotification('🎉 أحسنت! انتهت الجلسة.', 'success');
+            if (currentStudyingSubject && timer.mode==='focus') {
+              const subj = subjects.find(s=>s.id===currentStudyingSubject);
+              if (subj){ subj.progress = Math.min(100, subj.progress + 5); subj.isStudying=false; renderSubjects(); saveToLocalStorage(); }
+              currentStudyingSubject = null;
+            }
+            resetTimer();
+            return;
+          }
+          timer.minutes--; timer.seconds=59;
+        } else timer.seconds--;
+        updateTimerDisplay();
+      }, 1000);
+    }
+    function pauseTimer(){ if (!timer.isRunning) return; clearInterval(timer.interval); timer.isRunning=false; }
+    function resetTimer(){ clearInterval(timer.interval); timer.isRunning=false; timer.seconds=0; timer.minutes = timer.mode==='focus'?25:timer.mode==='break'?5:15; updateTimerDisplay(); }
+    function updateTimerDisplay(){ document.getElementById('timerDisplay').textContent = `${String(timer.minutes).padStart(2,'0')}:${String(timer.seconds).padStart(2,'0')}`; }
+
+    function startStudySession(subjectId) {
+      subjects.forEach(s=>s.isStudying=false);
+      const s = subjects.find(x=>x.id===subjectId); if (!s) return;
+      s.isStudying = true; currentStudyingSubject = s.id; renderSubjects();
+      showNotification(`🎯 بدء جلسة: ${s.name}. نصيحة: خذ استراحة كل 25 دقيقة.`, 'info');
+      setTimerMode('focus', document.querySelector('.timer-mode')); startTimer();
+    }
+
+    // ===== Settings: Challenges =====
+    function renderChallengeSubjects() {
+      const container = document.getElementById('challengeSubjects');
+      container.innerHTML = '';
+      subjects.forEach(s=>{
+        const row = document.createElement('div');
+        row.className = 'flex items-center space-x-3 space-x-reverse p-2 bg-gray-50 rounded-lg';
+        const checked = weeklyChallenge.subjects.includes(s.id) ? 'checked' : '';
+        row.innerHTML = `
+          <input type="checkbox" id="challenge_${s.id}" ${checked} class="w-4 h-4 text-blue-600" onchange="toggleChallengeSubject(${s.id})"/>
+          <label for="challenge_${s.id}" class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+            <span class="text-xl">${s.icon}</span><span class="font-semibold">${s.name}</span><span class="text-sm text-gray-600">(${s.weeklyHours}س)</span>
+          </label>`;
+        container.appendChild(row);
+      });
+    }
+    function toggleChallengeSubject(id) {
+      const i = weeklyChallenge.subjects.indexOf(id);
+      if (i>-1) weeklyChallenge.subjects.splice(i,1); else weeklyChallenge.subjects.push(id);
+      saveToLocalStorage();
+    }
+    function updateWeeklyGoal() {
+      const goal = parseInt(document.getElementById('weeklyGoalSlider').value,10);
+      weeklyChallenge.goal = goal; document.getElementById('weeklyGoalDisplay').textContent = goal;
+      updateChallengeProgress(); saveToLocalStorage();
+    }
+    function saveWeeklyChallenge() {
+      weeklyChallenge.startDate = new Date();
+      updateChallengeProgress(); saveToLocalStorage();
+      showNotification('✅ تم حفظ التحدي الأسبوعي', 'success');
+    }
+    function updateChallengeProgress() {
+      const completion = Math.round((weeklyChallenge.completed / weeklyChallenge.goal) * 100) || 0;
+      const daysLeft = 7 - Math.floor((new Date() - new Date(weeklyChallenge.startDate)) / (1000*60*60*24));
+      document.getElementById('challengeProgress').textContent = `${weeklyChallenge.completed}/${weeklyChallenge.goal}`;
+      document.getElementById('challengeDaysLeft').textContent = Math.max(0, daysLeft);
+      document.getElementById('challengeCompletion').textContent = `${completion}%`;
+      document.getElementById('challengeProgressBar').style.width = `${completion}%`;
+    }
+
+    // ===== Settings: Schedule (auto + manual) =====
+    function ensureScheduleShape() {
+      if (!weeklyChallenge.schedule || typeof weeklyChallenge.schedule!=='object') weeklyChallenge.schedule = {};
+      DAYS.forEach(d=>{
+        if (!weeklyChallenge.schedule[d]) weeklyChallenge.schedule[d] = {};
+        PERIODS.forEach(p=>{
+          const cell = weeklyChallenge.schedule[d][p];
+          if (cell && typeof cell==='object') { /* ok */ }
+        });
+      });
+    }
+
+    function renderScheduleTable() {
+      ensureScheduleShape();
+      const table = document.getElementById('scheduleTable');
+      table.innerHTML = '';
+      DAYS.forEach(day=>{
+        let dayHours = 0;
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+        let rowHTML = `<td class="border border-gray-300 p-3 font-semibold bg-gray-50">${day}</td>`;
+        PERIODS.forEach(period=>{
+          const cell = weeklyChallenge.schedule[day][period];
+          if (cell && cell.subjectId) {
+            const subj = subjects.find(s=>s.id===cell.subjectId);
+            dayHours += cell.hours || 0;
+            rowHTML += `
+              <td class="border border-gray-300 p-3 text-center cursor-pointer hover:bg-gray-50" onclick="openEditCellModal('${day}','${period}')">
+                <div class="flex items-center justify-center space-x-2 space-x-reverse">
+                  <span class="text-lg">${subj?.icon || '📚'}</span>
+                  <span class="font-semibold">${subj?.name || 'مادة'}</span>
+                </div>
+                <div class="text-sm text-gray-600 mt-1">${cell.hours||1} ساعة ${cell.manual ? ' • 📌' : ''}</div>
+              </td>`;
+          } else {
+            rowHTML += `<td class="border border-gray-300 p-3 text-center text-gray-400 cursor-pointer hover:bg-gray-50" onclick="openEditCellModal('${day}','${period}')">—</td>`;
+          }
+        });
+        rowHTML += `<td class="border border-gray-300 p-3 text-center font-bold text-blue-600">${dayHours} ساعة</td>`;
+        tr.innerHTML = rowHTML;
+        table.appendChild(tr);
+      });
+      computeWeeklyTotals();
+    }
+
+    function computeWeeklyTotals() {
+      let total = 0;
+      DAYS.forEach(d=>{
+        PERIODS.forEach(p=>{
+          const c = weeklyChallenge.schedule[d]?.[p];
+          if (c && c.hours) total += c.hours;
+        });
+      });
+      document.getElementById('totalWeeklyHours').textContent = total;
+    }
+
+    function generateSchedule() {
+      ensureScheduleShape();
+      // Fill only empty cells (do NOT override manual=true)
+      DAYS.forEach(day=>{
+        PERIODS.forEach(period=>{
+          const existing = weeklyChallenge.schedule[day][period];
+          if (existing && existing.manual) return; // keep manual edits
+          // 60% chance to create a session
+          if (!existing || !existing.subjectId) {
+            const available = subjects.filter(s => weeklyChallenge.subjects.includes(s.id));
+            const shouldCreate = Math.random() > 0.4 && available.length>0;
+            if (shouldCreate) {
+              const pick = available[Math.floor(Math.random()*available.length)];
+              const hours = Math.floor(Math.random()*3)+1; // 1-3
+              weeklyChallenge.schedule[day][period] = { subjectId: pick.id, hours, manual: false };
+            } else {
+              weeklyChallenge.schedule[day][period] = undefined;
+            }
+          }
+        });
+      });
+      renderScheduleTable();
+      saveToLocalStorage();
+      showNotification('📅 تم إنشاء/استكمال الجدول تلقائياً دون تعديل الجلسات اليدوية.', 'info');
+    }
+
+    // Manual edit modal
+    let editContext = { day: null, period: null };
+    function openEditCellModal(day=null, period=null) {
+      editContext.day = day || DAYS[0];
+      editContext.period = period || PERIODS[0];
+      // Fill selects
+      const daySel = document.getElementById('editDaySelect');
+      daySel.value = editContext.day;
+      const periodSel = document.getElementById('editPeriodSelect');
+      periodSel.value = editContext.period;
+      // Subjects dropdown
+      const subjSel = document.getElementById('editSubjectSelect');
+      subjSel.innerHTML = subjects.map(s=>`<option value="${s.id}">${s.icon} ${s.name}</option>`).join('');
+      // Prefill hours if exists
+      const cell = weeklyChallenge.schedule[editContext.day]?.[editContext.period];
+      document.getElementById('editHoursInput').value = cell?.hours || 1;
+      if (cell?.subjectId) subjSel.value = cell.subjectId;
+      document.getElementById('editCellModal').classList.remove('hidden');
+      document.getElementById('editCellModal').classList.add('flex');
+    }
+    function closeEditCellModal() {
+      document.getElementById('editCellModal').classList.add('hidden');
+      document.getElementById('editCellModal').classList.remove('flex');
+    }
+    function saveCellEdit() {
+      const day = document.getElementById('editDaySelect').value;
+      const period = document.getElementById('editPeriodSelect').value;
+      const subjectId = parseInt(document.getElementById('editSubjectSelect').value,10);
+      const hours = Math.min(4, Math.max(1, parseInt(document.getElementById('editHoursInput').value,10) || 1));
+      if (!weeklyChallenge.schedule[day]) weeklyChallenge.schedule[day] = {};
+      weeklyChallenge.schedule[day][period] = { subjectId, hours, manual: true };
+      renderScheduleTable();
+      saveToLocalStorage();
+      showNotification('✅ تم حفظ الجلسة اليدوية', 'success');
+      closeEditCellModal();
+    }
+    function removeCell() {
+      const day = document.getElementById('editDaySelect').value;
+      const period = document.getElementById('editPeriodSelect').value;
+      if (weeklyChallenge.schedule[day]) delete weeklyChallenge.schedule[day][period];
+      renderScheduleTable();
+      saveToLocalStorage();
+      showNotification('🗑️ تم حذف الجلسة', 'warning');
+      closeEditCellModal();
+    }
+
+    // Add Subject Modal
+    function openAddSubject(){ document.getElementById('addSubjectModal').classList.remove('hidden'); document.getElementById('addSubjectModal').classList.add('flex'); }
+    function closeAddSubject(){ document.getElementById('addSubjectModal').classList.add('hidden'); document.getElementById('addSubjectModal').classList.remove('flex'); }
+    function updateHoursDisplay(){ document.getElementById('hoursDisplay').textContent = document.getElementById('weeklyHoursSlider').value; }
+    function updateHoursRecommendation(){
+      const d = document.getElementById('difficulty').value;
+      const map = { easy:'التوصية: 2-4 ساعات للمواد السهلة', medium:'التوصية: 4-6 ساعات للمواد المتوسطة', hard:'التوصية: 6-10 ساعات للمواد الصعبة' };
+      document.getElementById('hoursRecommendation').textContent = map[d];
+    }
+    function saveSubject(){
+      const name = document.getElementById('subjectName').value.trim();
+      const weeklyHours = parseInt(document.getElementById('weeklyHoursSlider').value,10);
+      const difficulty = document.getElementById('difficulty').value;
+      if (!name) { showNotification('يرجى إدخال اسم المادة', 'error'); return; }
+      const icons = ['📚','🔬','🎨','🌍','💻','🎵','⚽','🧮','🧠','🗺️'];
+      const colors = ['blue','purple','green','orange','red','teal'];
+      const id = subjects.length ? Math.max(...subjects.map(s=>s.id))+1 : 1;
+      subjects.push({ id, name, icon: icons[Math.floor(Math.random()*icons.length)], weeklyHours, progress:0, difficulty, color: colors[Math.floor(Math.random()*colors.length)], isStudying:false });
+      renderSubjects();
+      renderChallengeSubjects();
+      saveToLocalStorage();
+      closeAddSubject();
+      showNotification(`✅ تم إضافة مادة "${name}"`, 'success');
+    }
+
+    // Data management
+    function confirmResetData() {
+      if (!confirm('⚠️ هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع.')) return;
+      subjects = [];
+      achievements = achievements.map(a=>({...a, earned:false}));
+      weeklyChallenge = { goal:25, completed:0, subjects:[], startDate:new Date(), schedule:{} };
+      currentStudyingSubject = null;
+      renderDashboard(); renderAnalytics(); renderSettings();
+      saveToLocalStorage();
+      showNotification('🗑️ تم مسح جميع البيانات', 'success');
+    }
+    function resetStatsOnly() {
+      if (!confirm('هل تريد إعادة تعيين الإحصائيات والتقدم فقط؟')) return;
+      subjects.forEach(s=>{ s.progress=0; s.isStudying=false; });
+      weeklyChallenge.completed = 0;
+      renderDashboard(); renderAnalytics(); updateChallengeProgress();
+      saveToLocalStorage();
+      showNotification('📊 تم إعادة تعيين الإحصائيات', 'success');
+    }
+
+    // Notifications
+    function showNotification(message, type='info', duration=3500) {
+      const container = document.getElementById('notificationContainer');
+      const el = document.createElement('div');
+      const colors = { success:'bg-green-100 text-green-800 border-green-300', error:'bg-red-100 text-red-800 border-red-300', warning:'bg-yellow-100 text-yellow-800 border-yellow-300', info:'bg-blue-100 text-blue-800 border-blue-300' };
+      el.className = `floating-notification border rounded-xl px-4 py-3 shadow-lg ${colors[type]||colors.info} whitespace-pre-line`;
+      el.textContent = message;
+      container.appendChild(el);
+      setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(20px)'; setTimeout(()=> el.remove(), 300); }, duration);
+    }
+
+    // Local Storage
+    function saveToLocalStorage(){
+      const data = { subjects, achievements, weeklyChallenge };
+      localStorage.setItem('studyBuddyMerged', JSON.stringify(data));
+    }
+    function loadFromLocalStorage(){
+      try{
+        const raw = localStorage.getItem('studyBuddyMerged');
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.subjects)) subjects = data.subjects;
+        if (Array.isArray(data.achievements)) achievements = data.achievements;
+        if (data.weeklyChallenge) weeklyChallenge = data.weeklyChallenge;
+      } catch(e){ /* ignore */ }
+    }
+  </script>
+</body>
+</html>
