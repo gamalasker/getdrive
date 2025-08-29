@@ -24,7 +24,7 @@
     .floating-notification { position: fixed; top: 20px; right: 20px; z-index: 1000; animation: slideIn .4s ease; }
     @keyframes slideIn { from { transform: translateX(100%); opacity: 0 } to { transform: translateX(0); opacity: 1} }
     .smart-schedule{ background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-    .weekly-chart{ background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+    .weekly-chart-container{ background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
     .challenge-card{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     .nav-btn-active { background: #2563eb; color: #fff; }
     .nav-btn { background: #e5e7eb; color: #374151; }
@@ -73,12 +73,12 @@
     </div>
 
     <!-- Study Stats Dashboard -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
       <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm">ساعات اليوم</p>
-            <p class="text-3xl font-bold text-blue-600" id="todayHours">3.5</p>
+            <p class="text-3xl font-bold text-blue-600" id="todayHours">0</p>
           </div>
           <div class="text-4xl">⏰</div>
         </div>
@@ -87,7 +87,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm">المواد المكتملة</p>
-            <p class="text-3xl font-bold text-green-600" id="completedSubjects">2/5</p>
+            <p class="text-3xl font-bold text-green-600" id="completedSubjects">0/0</p>
           </div>
           <div class="text-4xl">✅</div>
         </div>
@@ -96,7 +96,7 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm">الشارات المكتسبة</p>
-            <p class="text-3xl font-bold text-purple-600" id="badges">7</p>
+            <p class="text-3xl font-bold text-purple-600" id="badges">0</p>
           </div>
           <div class="text-4xl">🏆</div>
         </div>
@@ -105,9 +105,19 @@
         <div class="flex items-center justify-between">
           <div>
             <p class="text-gray-600 text-sm">أيام الالتزام</p>
-            <p class="text-3xl font-bold text-orange-600" id="streakDays">12</p>
+            <p class="text-3xl font-bold text-orange-600" id="streakDays">0</p>
           </div>
           <div class="text-4xl">🔥</div>
+        </div>
+      </div>
+      <!-- New Points Card -->
+      <div class="bg-white rounded-xl p-6 shadow-lg card-hover">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-gray-600 text-sm">نقاطي</p>
+            <p class="text-3xl font-bold text-yellow-500" id="myPoints">0</p>
+          </div>
+          <div class="text-4xl">✨</div>
         </div>
       </div>
     </div>
@@ -127,6 +137,14 @@
 
       <!-- Right Sidebar -->
       <div class="space-y-6">
+        <!-- Daily Challenge -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg">
+          <h3 class="text-xl font-bold mb-4 text-gray-800">✅ التحدي اليومي</h3>
+          <div id="dailyChallengeContainer" class="bg-blue-50 rounded-lg p-4 text-center">
+            <!-- Dynamic content will be injected here -->
+          </div>
+        </div>
+
         <!-- Study Timer -->
         <div class="bg-white rounded-2xl p-6 shadow-lg">
           <h3 class="text-xl font-bold mb-4 text-gray-800">⏱️ مؤقت المذاكرة</h3>
@@ -170,16 +188,7 @@
     <!-- Weekly Progress Chart -->
     <div class="bg-white rounded-2xl p-6 shadow-lg mt-8">
       <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 تقدم الأسبوع</h2>
-      <div class="grid grid-cols-7 gap-2 mb-4">
-        <div class="text-center text-sm font-semibold text-gray-600">السبت</div>
-        <div class="text-center text-sm font-semibold text-gray-600">الأحد</div>
-        <div class="text-center text-sm font-semibold text-gray-600">الاثنين</div>
-        <div class="text-center text-sm font-semibold text-gray-600">الثلاثاء</div>
-        <div class="text-center text-sm font-semibold text-gray-600">الأربعاء</div>
-        <div class="text-center text-sm font-semibold text-gray-600">الخميس</div>
-        <div class="text-center text-sm font-semibold text-gray-600">الجمعة</div>
-      </div>
-      <div class="grid grid-cols-7 gap-2" id="weeklyProgress"></div>
+      <div id="weeklyProgress" class="grid grid-cols-7 gap-2"></div>
     </div>
   </div>
 
@@ -199,20 +208,20 @@
       <div class="bg-white rounded-xl p-6 shadow-lg text-center">
         <div class="text-4xl mb-2">📈</div>
         <h3 class="text-lg font-bold text-gray-800 mb-2">معدل الأداء العام</h3>
-        <div class="text-3xl font-bold text-green-600" id="overallPerformance">85%</div>
-        <p class="text-sm text-gray-600 mt-2">ممتاز! استمر على هذا المنوال</p>
+        <div class="text-3xl font-bold text-green-600" id="overallPerformance">0%</div>
+        <p class="text-sm text-gray-600 mt-2" id="overallPerformanceText"></p>
       </div>
       <div class="bg-white rounded-xl p-6 shadow-lg text-center">
         <div class="text-4xl mb-2">⏱️</div>
         <h3 class="text-lg font-bold text-gray-800 mb-2">إجمالي ساعات الدراسة</h3>
-        <div class="text-3xl font-bold text-blue-600" id="totalStudyHours">127</div>
+        <div class="text-3xl font-bold text-blue-600" id="totalStudyHours">0</div>
         <p class="text-sm text-gray-600 mt-2">ساعة هذا الشهر</p>
       </div>
       <div class="bg-white rounded-xl p-6 shadow-lg text-center">
         <div class="text-4xl mb-2">🎯</div>
         <h3 class="text-lg font-bold text-gray-800 mb-2">معدل الالتزام</h3>
-        <div class="text-3xl font-bold text-purple-600" id="commitmentRate">92%</div>
-        <p class="text-sm text-gray-600 mt-2">التزام ممتاز بالجدول</p>
+        <div class="text-3xl font-bold text-purple-600" id="commitmentRate">0%</div>
+        <p class="text-sm text-gray-600 mt-2" id="commitmentRateText"></p>
       </div>
     </div>
 
@@ -224,17 +233,14 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
       <div class="bg-white rounded-2xl p-6 shadow-lg">
         <h3 class="text-xl font-bold mb-4 text-gray-800">🕐 أنماط الدراسة</h3>
-        <div class="space-y-4">
-          <div class="flex justify-between items-center"><span class="text-gray-700">أفضل وقت للدراسة</span><span class="font-bold text-blue-600">الصباح (9-11 ص)</span></div>
-          <div class="flex justify-between items-center"><span class="text-gray-700">متوسط مدة الجلسة</span><span class="font-bold text-green-600">45 دقيقة</span></div>
-          <div class="flex justify-between items-center"><span class="text-gray-700">أكثر الأيام إنتاجية</span><span class="font-bold text-purple-600">الثلاثاء والأربعاء</span></div>
+        <div class="space-y-4" id="studyPatterns">
+          <!-- Dynamic content will be injected here -->
         </div>
       </div>
       <div class="bg-white rounded-2xl p-6 shadow-lg">
         <h3 class="text-xl font-bold mb-4 text-gray-800">🏆 الإنجازات الأخيرة</h3>
-        <div class="space-y-3">
-          <div class="flex items-center space-x-3 space-x-reverse p-3 bg-yellow-50 rounded-lg"><span class="text-2xl">🥇</span><div><p class="font-semibold text-gray-800">أسبوع مثالي</p><p class="text-sm text-gray-600">أكملت جميع جلسات الأسبوع</p></div></div>
-          <div class="flex items-center space-x-3 space-x-reverse p-3 bg-blue-50 rounded-lg"><span class="text-2xl">📚</span><div><p class="font-semibold text-gray-800">خبير الرياضيات</p><p class="text-sm text-gray-600">20 ساعة دراسة متتالية</p></div></div>
+        <div class="space-y-3" id="recentAchievements">
+          <!-- Dynamic content will be injected here -->
         </div>
       </div>
     </div>
@@ -271,12 +277,12 @@
           <div class="bg-red-50 border border-red-200 rounded-lg p-4">
             <h4 class="font-bold text-red-800 mb-2">⚠️ مسح جميع البيانات</h4>
             <p class="text-sm text-red-700 mb-4">سيتم حذف جميع الإحصائيات، التقدم، والبيانات المحفوظة نهائياً.</p>
-            <button onclick="confirmResetData()" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold">🗑️ مسح جميع البيانات</button>
+            <button onclick="showConfirmModal('resetData')" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold">🗑️ مسح جميع البيانات</button>
           </div>
           <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
             <h4 class="font-bold text-yellow-800 mb-2">🔄 إعادة تعيين الإحصائيات فقط</h4>
             <p class="text-sm text-yellow-700 mb-4">سيتم إعادة تعيين الإحصائيات والتقدم مع الاحتفاظ بالمواد.</p>
-            <button onclick="resetStatsOnly()" class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition-colors font-semibold">📊 إعادة تعيين الإحصائيات</button>
+            <button onclick="showConfirmModal('resetStats')" class="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition-colors font-semibold">📊 إعادة تعيين الإحصائيات</button>
           </div>
         </div>
       </div>
@@ -337,13 +343,13 @@
     <div class="bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl p-6 mt-8 text-white shadow-lg">
       <h3 class="text-2xl font-bold mb-4 flex items-center"><span class="text-3xl ml-3">🎯</span>حالة التحدي الحالي</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="text-center"><div class="text-3xl font-bold" id="challengeProgress">18/25</div><div class="text-sm opacity-90">ساعات مكتملة</div></div>
-        <div class="text-center"><div class="text-3xl font-bold" id="challengeDaysLeft">3</div><div class="text-sm opacity-90">أيام متبقية</div></div>
-        <div class="text-center"><div class="text-3xl font-bold" id="challengeCompletion">72%</div><div class="text-sm opacity-90">نسبة الإنجاز</div></div>
+        <div class="text-center"><div class="text-3xl font-bold" id="challengeProgress">0/0</div><div class="text-sm opacity-90">ساعات مكتملة</div></div>
+        <div class="text-center"><div class="text-3xl font-bold" id="challengeDaysLeft">0</div><div class="text-sm opacity-90">أيام متبقية</div></div>
+        <div class="text-center"><div class="text-3xl font-bold" id="challengeCompletion">0%</div><div class="text-sm opacity-90">نسبة الإنجاز</div></div>
       </div>
       <div class="mt-4">
         <div class="bg-white bg-opacity-30 rounded-full h-3">
-          <div class="bg-white rounded-full h-3 transition-all duration-500" style="width: 72%" id="challengeProgressBar"></div>
+          <div class="bg-white rounded-full h-3 transition-all duration-500" style="width: 0%" id="challengeProgressBar"></div>
         </div>
       </div>
     </div>
@@ -421,6 +427,18 @@
     </div>
   </div>
 
+  <!-- Custom Confirmation Modal -->
+  <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 text-center">
+      <h3 class="text-xl font-bold mb-4 text-gray-800" id="confirmTitle"></h3>
+      <p class="text-gray-600 mb-6" id="confirmMessage"></p>
+      <div class="flex justify-center space-x-4 space-x-reverse">
+        <button id="confirmYesBtn" class="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors font-semibold">نعم</button>
+        <button id="confirmNoBtn" class="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-400 transition-colors font-semibold">إلغاء</button>
+      </div>
+    </div>
+  </div >
+
   <!-- Notifications -->
   <div id="notificationContainer" class="fixed top-6 right-6 z-50 space-y-3"></div>
 
@@ -429,32 +447,36 @@
     const DAYS = ['السبت','الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
     const PERIODS = ['morning','afternoon','evening'];
     const PERIOD_LABELS = { morning:'الصباحية', afternoon:'بعد الظهر', evening:'المسائية' };
-    const PERIOD_TIMES = { morning:'(9:00 - 12:00)', afternoon:'(2:00 - 5:00)', evening:'(7:00 - 10:00)' };
-
+    const PERIOD_HOURS = { morning:3, afternoon:3, evening:3 }; // Max hours per period
+    
     let subjects = [
-      { id: 1, name: 'الرياضيات', icon: '📐', weeklyHours: 6, progress: 75, difficulty: 'hard', color: 'blue', isStudying: false },
-      { id: 2, name: 'الفيزياء', icon: '⚛️', weeklyHours: 5, progress: 60, difficulty: 'hard', color: 'purple', isStudying: false },
-      { id: 3, name: 'الكيمياء', icon: '🧪', weeklyHours: 4, progress: 85, difficulty: 'medium', color: 'green', isStudying: false },
-      { id: 4, name: 'اللغة العربية', icon: '📖', weeklyHours: 4, progress: 90, difficulty: 'easy', color: 'orange', isStudying: false },
-      { id: 5, name: 'التاريخ', icon: '🏛️', weeklyHours: 3, progress: 45, difficulty: 'medium', color: 'red', isStudying: false }
+      { id: 1, name: 'الرياضيات', icon: '📐', weeklyHours: 6, progress: 0, difficulty: 'hard', color: 'blue', isStudying: false, studyLog: [] },
+      { id: 2, name: 'الفيزياء', icon: '⚛️', weeklyHours: 5, progress: 0, difficulty: 'hard', color: 'purple', isStudying: false, studyLog: [] },
+      { id: 3, name: 'الكيمياء', icon: '🧪', weeklyHours: 4, progress: 0, difficulty: 'medium', color: 'green', isStudying: false, studyLog: [] },
+      { id: 4, name: 'اللغة العربية', icon: '📖', weeklyHours: 4, progress: 0, difficulty: 'easy', color: 'orange', isStudying: false, studyLog: [] },
+      { id: 5, name: 'التاريخ', icon: '🏛️', weeklyHours: 3, progress: 0, difficulty: 'medium', color: 'red', isStudying: false, studyLog: [] }
     ];
     let achievements = [
-      { name: 'بطل الرياضيات', icon: '🏆', earned: true },
-      { name: 'مُنجز الأسبوع', icon: '⭐', earned: true },
-      { name: 'المثابر', icon: '💪', earned: false },
-      { name: 'عاشق القراءة', icon: '📚', earned: true }
+      { name: 'بداية رائعة', description: 'أكمل أول جلسة مذاكرة', icon: '🎉', earned: false, condition: (data) => data.studyLog.length >= 1 },
+      { name: 'المثابر', description: 'أكمل 7 جلسات مذاكرة في أسبوع', icon: '💪', earned: false, condition: (data) => data.studyLog.filter(log => new Date() - new Date(log.date) <= 7 * 24 * 60 * 60 * 1000).length >= 7 },
+      { name: 'بطل الرياضيات', description: 'أكمل 10 ساعات دراسة في الرياضيات', icon: '🏆', earned: false, condition: (data) => data.subjects.find(s => s.name === 'الرياضيات')?.studyLog.reduce((sum, log) => sum + (log.minutes / 60), 0) >= 10 },
+      { name: 'عاشق القراءة', description: 'أكمل 10 ساعات دراسة في اللغة العربية', icon: '📚', earned: false, condition: (data) => data.subjects.find(s => s.name === 'اللغة العربية')?.studyLog.reduce((sum, log) => sum + (log.minutes / 60), 0) >= 10 }
     ];
     let weeklyChallenge = {
       goal: 25,
-      completed: 18,
+      completed: 0,
       subjects: [], // array of subject ids
-      startDate: new Date(),
+      startDate: new Date().toISOString(),
       schedule: {} // { يوم: { morning:{subjectId, hours, manual}, ... } }
     };
+    let studyLog = []; // { date: ISOString, minutes: number, subjectId: number }
+    let points = 0;
+    let dailyChallenge = {}; // { date: 'YYYY-MM-DD', description: '...', completed: false, points: 0, condition: () => {} }
 
     let timer = { minutes: 25, seconds: 0, isRunning: false, interval: null, mode: 'focus' };
     let currentStudyingSubject = null;
     let weeklyChart = null;
+    let confirmCallback = null;
 
     const tips = [
       'قسّم المادة الصعبة إلى مهام صغيرة بوقت محدد لكل مهمة.',
@@ -469,31 +491,64 @@
       'اليوم أفضل من أمس، وغداً سيكون أفضل من اليوم.',
       'الصبر والمثابرة هما مفتاحا النجاح.'
     ];
+    
+    // Daily Challenge Templates
+    const dailyChallengeTemplates = [
+      {
+        description: 'أكمل جلستين مذاكرة.',
+        points: 20,
+        condition: () => studyLog.filter(log => new Date(log.date).toDateString() === new Date().toDateString()).length >= 2
+      },
+      {
+        description: 'ذاكر مادة من اختيارك لمدة 45 دقيقة.',
+        points: 30,
+        condition: () => studyLog.filter(log => new Date(log.date).toDateString() === new Date().toDateString() && log.minutes >= 45).length >= 1
+      },
+      {
+        description: 'أكمل جلسة مذاكرة صباحية (قبل الساعة 12 ظهراً).',
+        points: 25,
+        condition: () => studyLog.filter(log => new Date(log.date).toDateString() === new Date().toDateString() && new Date(log.date).getHours() < 12).length >= 1
+      },
+      {
+        description: 'أكمل جلسة مذاكرة في مادة "الرياضيات".',
+        points: 20,
+        condition: () => {
+          const mathSubject = subjects.find(s => s.name === 'الرياضيات');
+          return mathSubject ? studyLog.filter(log => new Date(log.date).toDateString() === new Date().toDateString() && log.subjectId === mathSubject.id).length >= 1 : false;
+        }
+      }
+    ];
 
     // ===== Init =====
     document.addEventListener('DOMContentLoaded', () => {
       loadFromLocalStorage();
       updateTime();
       setInterval(updateTime, 1000);
+      generateDailyChallenge();
       renderDashboard();
       renderAnalytics();
       renderSettings();
       setInterval(() => setSmartTip(), 10000);
       setSmartTip();
       updateChallengeProgress();
+      setupConfirmModal();
     });
 
     // ===== UI Rendering =====
     function renderDashboard() {
       updateDailyMotivation();
+      renderDailyChallenge();
       renderSubjects();
       renderAchievements();
-      renderWeeklyProgressBars();
+      updateDashboardStats();
     }
 
     function renderAnalytics() {
+      updateAnalyticsStats();
       renderSubjectAnalysis();
       renderMonthlyProgress();
+      renderStudyPatterns();
+      renderRecentAchievements();
       initializeWeeklyChart();
     }
 
@@ -510,7 +565,9 @@
         if (p === page) { b.classList.remove('nav-btn'); b.classList.add('nav-btn-active'); }
         else { b.classList.add('nav-btn'); b.classList.remove('nav-btn-active'); }
       });
-      if (page === 'analytics' && weeklyChart == null) initializeWeeklyChart();
+      if (page === 'analytics') {
+        renderAnalytics();
+      }
     }
 
     // Header time & motivation
@@ -525,6 +582,108 @@
     function setSmartTip(){ document.getElementById('smartTip').textContent = tips[Math.floor(Math.random()*tips.length)]; }
     function likeAdvice(){ showNotification('👍 تم تسجيل أن النصيحة مفيدة', 'success'); }
     function nextAdvice(){ setSmartTip(); showNotification('🔄 تم تحديث النصيحة', 'info'); }
+
+    // Dashboard Stats
+    function updateDashboardStats() {
+      const today = new Date().toLocaleDateString();
+      const todayHours = studyLog.filter(log => new Date(log.date).toLocaleDateString() === today)
+                                 .reduce((sum, log) => sum + log.minutes, 0) / 60;
+      document.getElementById('todayHours').textContent = todayHours.toFixed(1);
+      
+      const completedSubjects = subjects.filter(s => s.progress >= 80).length;
+      document.getElementById('completedSubjects').textContent = `${completedSubjects}/${subjects.length}`;
+      
+      const earnedBadges = achievements.filter(a => a.earned).length;
+      document.getElementById('badges').textContent = earnedBadges;
+      
+      const streakDays = calculateStreak();
+      document.getElementById('streakDays').textContent = streakDays;
+
+      document.getElementById('myPoints').textContent = points;
+
+      renderWeeklyProgressBars();
+    }
+
+    function calculateStreak() {
+      if (studyLog.length === 0) return 0;
+      const uniqueDates = [...new Set(studyLog.map(log => new Date(log.date).toLocaleDateString()))].sort();
+      let streak = 0;
+      let yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      let currentDay = new Date();
+
+      if (uniqueDates.includes(currentDay.toLocaleDateString())) {
+          streak = 1;
+      }
+      
+      for (let i = uniqueDates.length - 1; i >= 0; i--) {
+        const currentDate = new Date(uniqueDates[i]);
+        const previousDate = new Date(uniqueDates[i-1]);
+
+        if (i === uniqueDates.length -1) {
+            if (currentDate.toLocaleDateString() === new Date().toLocaleDateString() || currentDate.toLocaleDateString() === yesterday.toLocaleDateString()) {
+                streak = 1;
+            } else {
+                streak = 0;
+            }
+        }
+        
+        const diffInDays = (currentDate - previousDate) / (1000 * 60 * 60 * 24);
+        if (diffInDays === 1) {
+          streak++;
+        } else if (diffInDays > 1) {
+          break;
+        }
+      }
+      return streak;
+    }
+
+    // Daily Challenge
+    function generateDailyChallenge() {
+        const today = new Date().toISOString().slice(0, 10);
+        if (dailyChallenge.date === today && dailyChallenge.description) {
+            renderDailyChallenge();
+            return;
+        }
+        const newChallenge = dailyChallengeTemplates[Math.floor(Math.random() * dailyChallengeTemplates.length)];
+        dailyChallenge = {
+            date: today,
+            description: newChallenge.description,
+            completed: false,
+            points: newChallenge.points,
+            condition: newChallenge.condition
+        };
+        saveToLocalStorage();
+        renderDailyChallenge();
+    }
+
+    function renderDailyChallenge() {
+        const container = document.getElementById('dailyChallengeContainer');
+        if (dailyChallenge.completed) {
+            container.innerHTML = `
+              <p class="text-xl text-green-600 font-bold mb-2">✅ تم إكمال التحدي اليومي!</p>
+              <p class="text-sm text-gray-800">${dailyChallenge.description}</p>
+              <p class="text-lg font-bold text-yellow-500 mt-2">لقد كسبت ${dailyChallenge.points} نقاط!</p>
+            `;
+        } else {
+            container.innerHTML = `
+              <p class="text-lg text-blue-800 font-semibold mb-2">${dailyChallenge.description}</p>
+              <p class="text-sm text-gray-600">أكمل التحدي لتحصل على <span class="font-bold text-blue-600">${dailyChallenge.points}</span> نقطة.</p>
+            `;
+        }
+    }
+
+    function checkDailyChallengeCompletion() {
+        if (dailyChallenge.completed) return;
+        if (dailyChallenge.condition && dailyChallenge.condition()) {
+            dailyChallenge.completed = true;
+            points += dailyChallenge.points;
+            renderDailyChallenge();
+            updateDashboardStats();
+            showNotification(`🏆 تهانينا! لقد أكملت التحدي اليومي وكسبت ${dailyChallenge.points} نقطة.`, 'success');
+            saveToLocalStorage();
+        }
+    }
 
     // Subjects
     function renderSubjects() {
@@ -556,10 +715,6 @@
           </button>`;
         container.appendChild(card);
       });
-
-      // stats quick update
-      document.getElementById('completedSubjects').textContent = `${subjects.filter(s=>s.progress>=80).length}/${subjects.length}`;
-      document.getElementById('badges').textContent = achievements.filter(a=>a.earned).length;
     }
 
     // Achievements
@@ -578,16 +733,66 @@
     function renderWeeklyProgressBars() {
       const container = document.getElementById('weeklyProgress');
       container.innerHTML = '';
-      const weekData = [3,4,2,5,3,1,0];
-      const max = Math.max(...weekData);
-      weekData.forEach(h => {
+      const weeklyData = getWeeklyStudyHours();
+      const max = Math.max(...Object.values(weeklyData), 1);
+      DAYS.forEach(day => {
+        const h = weeklyData[day] || 0;
+        const percentage = (h / max) * 100;
+        const color = h > 3 ? 'bg-green-500' : h > 1 ? 'bg-yellow-500' : 'bg-gray-300';
         const div = document.createElement('div');
-        const percentage = max>0 ? (h/max)*100 : 0;
-        const color = h>3 ? 'bg-green-500' : h>1 ? 'bg-yellow-500' : 'bg-gray-300';
         div.className = 'text-center';
-        div.innerHTML = `<div class="h-20 ${color} rounded-lg mb-2 flex items-end justify-center" style="height:${Math.max(percentage, 10)}%"><span class="text-white text-xs font-bold mb-1">${h}س</span></div>`;
+        div.innerHTML = `<div class="h-20 flex-1 ${color} rounded-lg mb-2 flex items-end justify-center" style="height:${Math.max(percentage, 10)}%"><span class="text-white text-xs font-bold mb-1">${h.toFixed(1)}س</span></div>`;
         container.appendChild(div);
       });
+    }
+
+    function getWeeklyStudyHours() {
+      const weeklyHours = {};
+      const today = new Date();
+      const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+      studyLog.forEach(log => {
+        const logDate = new Date(log.date);
+        if (logDate >= startOfWeek) {
+          const day = DAYS[logDate.getDay()];
+          weeklyHours[day] = (weeklyHours[day] || 0) + log.minutes / 60;
+        }
+      });
+      return weeklyHours;
+    }
+
+    // Analytics Page Functions
+    function updateAnalyticsStats() {
+      const totalHours = studyLog.reduce((sum, log) => sum + log.minutes, 0) / 60;
+      document.getElementById('totalStudyHours').textContent = totalHours.toFixed(0);
+
+      // Overall Performance Calculation
+      const totalProgress = subjects.reduce((sum, s) => sum + s.progress, 0);
+      const overallPerformance = subjects.length > 0 ? (totalProgress / subjects.length) : 0;
+      document.getElementById('overallPerformance').textContent = `${overallPerformance.toFixed(0)}%`;
+      if (overallPerformance >= 80) {
+        document.getElementById('overallPerformanceText').textContent = 'ممتاز! استمر على هذا المنوال';
+      } else if (overallPerformance >= 60) {
+        document.getElementById('overallPerformanceText').textContent = 'جيد، يمكنك التحسن أكثر';
+      } else {
+        document.getElementById('overallPerformanceText').textContent = 'تحتاج إلى بذل المزيد من الجهد';
+      }
+
+      // Commitment Rate Calculation
+      const totalSessions = studyLog.length;
+      const totalPlannedSessions = DAYS.reduce((sum, day) => {
+        return sum + Object.values(weeklyChallenge.schedule[day] || {}).length;
+      }, 0);
+      const commitmentRate = totalPlannedSessions > 0 ? (totalSessions / totalPlannedSessions) * 100 : 0;
+      document.getElementById('commitmentRate').textContent = `${commitmentRate.toFixed(0)}%`;
+      if (commitmentRate >= 90) {
+        document.getElementById('commitmentRateText').textContent = 'التزام ممتاز بالجدول';
+      } else if (commitmentRate >= 70) {
+        document.getElementById('commitmentRateText').textContent = 'التزام جيد، حاول أن تكون أكثر انتظاماً';
+      } else {
+        document.getElementById('commitmentRateText').textContent = 'تحتاج لتحسين التزامك بالجدول';
+      }
+
+      updateChallengeProgress();
     }
 
     // Analytics: subject analysis + monthly progress + chart
@@ -595,8 +800,9 @@
       const container = document.getElementById('subjectAnalysis');
       container.innerHTML = '';
       subjects.forEach(s => {
-        const level = s.progress>=80 ? 'ممتاز' : s.progress>=60 ? 'جيد' : 'يحتاج تحسين';
-        const color = s.progress>=80 ? 'text-green-600' : s.progress>=60 ? 'text-yellow-600' : 'text-red-600';
+        const studyHours = s.studyLog.reduce((sum, log) => sum + (log.minutes / 60), 0).toFixed(1);
+        const level = s.progress >= 80 ? 'ممتاز' : s.progress >= 60 ? 'جيد' : 'يحتاج تحسين';
+        const color = s.progress >= 80 ? 'text-green-600' : s.progress >= 60 ? 'text-yellow-600' : 'text-red-600';
         const row = document.createElement('div');
         row.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg';
         row.innerHTML = `
@@ -604,7 +810,7 @@
             <span class="text-2xl">${s.icon}</span>
             <div>
               <h4 class="font-bold text-gray-800">${s.name}</h4>
-              <p class="text-sm text-gray-600">${s.weeklyHours} ساعات أسبوعياً</p>
+              <p class="text-sm text-gray-600">${studyHours} ساعات مكتملة</p>
             </div>
           </div>
           <div class="text-left">
@@ -614,33 +820,139 @@
         container.appendChild(row);
       });
     }
+
+    function getMonthlyStudyHours() {
+      const monthlyHours = {};
+      const today = new Date();
+      const startOfTodayMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const week = 1;
+      let weeklyData = 0;
+      
+      studyLog.forEach(log => {
+          const logDate = new Date(log.date);
+          const day = logDate.getDay();
+          const weekOfMonth = Math.ceil(logDate.getDate() / 7);
+
+          if(logDate >= startOfTodayMonth) {
+              if(!monthlyHours[`الأسبوع ${weekOfMonth}`]) {
+                  monthlyHours[`الأسبوع ${weekOfMonth}`] = 0;
+              }
+              monthlyHours[`الأسبوع ${weekOfMonth}`] += log.minutes / 60;
+          }
+      });
+      return monthlyHours;
+    }
+
     function renderMonthlyProgress() {
       const container = document.getElementById('monthlyProgress');
       container.innerHTML = '';
-      const monthData = [28,32,35,30]; const max = Math.max(...monthData);
-      monthData.forEach(h=>{
-        const percentage = (h/max)*100;
-        const color = h>=30 ? 'bg-green-500' : h>=25 ? 'bg-yellow-500' : 'bg-red-500';
-        const week = document.createElement('div');
-        week.className = 'text-center';
-        week.innerHTML = `<div class="${color} rounded-lg mb-2 flex items-end justify-center text-white font-bold" style="height:${Math.max(percentage, 20)}px;"><span class="text-sm mb-1">${h}س</span></div>`;
-        container.appendChild(week);
+      const monthData = getMonthlyStudyHours();
+      const weeks = ['الأسبوع الأول', 'الأسبوع الثاني', 'الأسبوع الثالث', 'الأسبوع الرابع'];
+      const max = Math.max(...Object.values(monthData), 1);
+      
+      weeks.forEach(week => {
+        const h = monthData[week] || 0;
+        const percentage = (h / max) * 100;
+        const color = h >= 30 ? 'bg-green-500' : h >= 25 ? 'bg-yellow-500' : 'bg-red-500';
+        const weekDiv = document.createElement('div');
+        weekDiv.className = 'text-center';
+        weekDiv.innerHTML = `<div class="${color} rounded-lg mb-2 flex items-end justify-center text-white font-bold" style="height:${Math.max(percentage, 20)}px;"><span class="text-sm mb-1">${h.toFixed(1)}س</span></div>`;
+        container.appendChild(weekDiv);
       });
     }
+
     function initializeWeeklyChart() {
-      const canvas = document.createElement('canvas'); // ensure fresh context
-      const container = document.querySelector('.weekly-chart') || document.getElementById('analyticsPage');
-      const old = document.getElementById('weeklyChart');
-      if (old) old.remove();
-      canvas.id = 'weeklyChart';
-      container.querySelector('.weekly-chart')?.appendChild(canvas);
-      const ctx = document.getElementById('weeklyChart').getContext('2d');
+      const canvas = document.getElementById('weeklyChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
       if (weeklyChart) weeklyChart.destroy();
+      const data = getWeeklyStudyHours();
+      const chartData = DAYS.map(day => data[day] || 0);
+
       weeklyChart = new Chart(ctx, {
         type: 'line',
-        data: { labels: DAYS, datasets: [{ label: 'ساعات الدراسة', data: [4.5,6,3,5.5,4,2,3.5], borderColor:'rgb(99,102,241)', backgroundColor:'rgba(99,102,241,.1)', borderWidth:3, fill:true, tension:.4 }]},
-        options: { responsive: true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, max:8, ticks:{ stepSize:2 } } } }
+        data: { 
+          labels: DAYS, 
+          datasets: [{ 
+            label: 'ساعات الدراسة', 
+            data: chartData, 
+            borderColor:'rgb(99,102,241)', 
+            backgroundColor:'rgba(99,102,241,.1)', 
+            borderWidth:3, 
+            fill:true, 
+            tension:.4 
+          }]
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false, 
+          plugins:{ 
+            legend:{ display: false } 
+          }, 
+          scales:{ 
+            y:{ 
+              beginAtZero: true, 
+              ticks:{ stepSize:2 } 
+            } 
+          } 
+        }
       });
+    }
+
+    function renderStudyPatterns() {
+        const container = document.getElementById('studyPatterns');
+        container.innerHTML = '';
+        if (studyLog.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-500">لا توجد بيانات كافية لتحديد الأنماط. ابدأ بالمذاكرة!</div>`;
+            return;
+        }
+
+        const studyHoursByTime = { 'الصباح': 0, 'بعد الظهر': 0, 'المساء': 0 };
+        const studyHoursByDay = {};
+        let totalSessions = 0;
+        let totalSessionMinutes = 0;
+        
+        studyLog.forEach(log => {
+            const date = new Date(log.date);
+            const hour = date.getHours();
+            const day = DAYS[date.getDay()];
+            
+            if (hour >= 9 && hour < 12) studyHoursByTime['الصباح'] += log.minutes / 60;
+            else if (hour >= 14 && hour < 17) studyHoursByTime['بعد الظهر'] += log.minutes / 60;
+            else if (hour >= 19 && hour < 22) studyHoursByTime['المساء'] += log.minutes / 60;
+
+            studyHoursByDay[day] = (studyHoursByDay[day] || 0) + (log.minutes / 60);
+
+            totalSessions++;
+            totalSessionMinutes += log.minutes;
+        });
+
+        const bestTime = Object.keys(studyHoursByTime).reduce((a, b) => studyHoursByTime[a] > studyHoursByTime[b] ? a : b);
+        const mostProductiveDay = Object.keys(studyHoursByDay).reduce((a, b) => studyHoursByDay[a] > studyHoursByDay[b] ? a : b);
+        const avgSessionDuration = totalSessions > 0 ? (totalSessionMinutes / totalSessions).toFixed(0) : 0;
+
+        container.innerHTML = `
+            <div class="flex justify-between items-center"><span class="text-gray-700">أفضل وقت للدراسة</span><span class="font-bold text-blue-600">${bestTime}</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-700">متوسط مدة الجلسة</span><span class="font-bold text-green-600">${avgSessionDuration} دقيقة</span></div>
+            <div class="flex justify-between items-center"><span class="text-gray-700">أكثر الأيام إنتاجية</span><span class="font-bold text-purple-600">${mostProductiveDay}</span></div>
+        `;
+    }
+
+    function renderRecentAchievements() {
+        const container = document.getElementById('recentAchievements');
+        container.innerHTML = '';
+        const recentEarned = achievements.filter(a => a.earned).slice(-3); // Show last 3 earned
+        if (recentEarned.length === 0) {
+            container.innerHTML = `<div class="text-center text-gray-500">لا توجد إنجازات مكتسبة بعد.</div>`;
+            return;
+        }
+
+        recentEarned.forEach(a => {
+            const div = document.createElement('div');
+            div.className = 'flex items-center space-x-3 space-x-reverse p-3 bg-blue-50 rounded-lg';
+            div.innerHTML = `<span class="text-2xl">${a.icon}</span><div><p class="font-semibold text-gray-800">${a.name}</p><p class="text-sm text-gray-600">${a.description}</p></div>`;
+            container.appendChild(div);
+        });
     }
 
     // ===== Timer =====
@@ -656,18 +968,31 @@
       if (timer.isRunning) return;
       timer.isRunning = true;
       timer.interval = setInterval(()=>{
-        if (timer.seconds===0){
-          if (timer.minutes===0) {
-            clearInterval(timer.interval); timer.isRunning=false;
+        if (timer.minutes === 0 && timer.seconds === 0) {
+            clearInterval(timer.interval);
+            timer.isRunning = false;
             showNotification('🎉 أحسنت! انتهت الجلسة.', 'success');
-            if (currentStudyingSubject && timer.mode==='focus') {
-              const subj = subjects.find(s=>s.id===currentStudyingSubject);
-              if (subj){ subj.progress = Math.min(100, subj.progress + 5); subj.isStudying=false; renderSubjects(); saveToLocalStorage(); }
-              currentStudyingSubject = null;
+            if (currentStudyingSubject && timer.mode === 'focus') {
+                const subj = subjects.find(s => s.id === currentStudyingSubject);
+                if (subj) {
+                    const minutesCompleted = 25; // Pomodoro session length
+                    subj.progress = Math.min(100, subj.progress + 5); 
+                    subj.isStudying = false; 
+                    studyLog.push({ date: new Date().toISOString(), minutes: minutesCompleted, subjectId: subj.id });
+                    points += 10; // Award points for completing a session
+                    checkAchievements();
+                    checkDailyChallengeCompletion();
+                    renderSubjects(); 
+                    saveToLocalStorage();
+                    updateDashboardStats();
+                    updateChallengeProgress();
+                }
+                currentStudyingSubject = null;
             }
             resetTimer();
             return;
-          }
+        }
+        if (timer.seconds===0){
           timer.minutes--; timer.seconds=59;
         } else timer.seconds--;
         updateTimerDisplay();
@@ -683,6 +1008,17 @@
       s.isStudying = true; currentStudyingSubject = s.id; renderSubjects();
       showNotification(`🎯 بدء جلسة: ${s.name}. نصيحة: خذ استراحة كل 25 دقيقة.`, 'info');
       setTimerMode('focus', document.querySelector('.timer-mode')); startTimer();
+    }
+
+    function checkAchievements() {
+        achievements.forEach(a => {
+            if (!a.earned && a.condition({ subjects, studyLog })) {
+                a.earned = true;
+                showNotification(`🌟 تهانينا! لقد حققت إنجاز "${a.name}"!`, 'success');
+            }
+        });
+        renderAchievements();
+        saveToLocalStorage();
     }
 
     // ===== Settings: Challenges =====
@@ -712,17 +1048,24 @@
       updateChallengeProgress(); saveToLocalStorage();
     }
     function saveWeeklyChallenge() {
-      weeklyChallenge.startDate = new Date();
-      updateChallengeProgress(); saveToLocalStorage();
+      weeklyChallenge.startDate = new Date().toISOString();
+      weeklyChallenge.completed = 0;
+      updateChallengeProgress(); 
+      saveToLocalStorage();
       showNotification('✅ تم حفظ التحدي الأسبوعي', 'success');
     }
     function updateChallengeProgress() {
-      const completion = Math.round((weeklyChallenge.completed / weeklyChallenge.goal) * 100) || 0;
-      const daysLeft = 7 - Math.floor((new Date() - new Date(weeklyChallenge.startDate)) / (1000*60*60*24));
-      document.getElementById('challengeProgress').textContent = `${weeklyChallenge.completed}/${weeklyChallenge.goal}`;
-      document.getElementById('challengeDaysLeft').textContent = Math.max(0, daysLeft);
-      document.getElementById('challengeCompletion').textContent = `${completion}%`;
-      document.getElementById('challengeProgressBar').style.width = `${completion}%`;
+        const today = new Date();
+        const startOfWeek = new Date(weeklyChallenge.startDate);
+        const daysLeft = Math.max(0, 7 - Math.floor((today - startOfWeek) / (1000 * 60 * 60 * 24)));
+        weeklyChallenge.completed = studyLog.filter(log => new Date(log.date) >= startOfWeek && weeklyChallenge.subjects.includes(log.subjectId)).reduce((sum, log) => sum + (log.minutes / 60), 0).toFixed(1);
+        
+        const completion = weeklyChallenge.goal > 0 ? (weeklyChallenge.completed / weeklyChallenge.goal) * 100 : 0;
+
+        document.getElementById('challengeProgress').textContent = `${weeklyChallenge.completed}/${weeklyChallenge.goal}`;
+        document.getElementById('challengeDaysLeft').textContent = daysLeft;
+        document.getElementById('challengeCompletion').textContent = `${completion.toFixed(0)}%`;
+        document.getElementById('challengeProgressBar').style.width = `${completion}%`;
     }
 
     // ===== Settings: Schedule (auto + manual) =====
@@ -730,10 +1073,6 @@
       if (!weeklyChallenge.schedule || typeof weeklyChallenge.schedule!=='object') weeklyChallenge.schedule = {};
       DAYS.forEach(d=>{
         if (!weeklyChallenge.schedule[d]) weeklyChallenge.schedule[d] = {};
-        PERIODS.forEach(p=>{
-          const cell = weeklyChallenge.schedule[d][p];
-          if (cell && typeof cell==='object') { /* ok */ }
-        });
       });
     }
 
@@ -783,25 +1122,38 @@
 
     function generateSchedule() {
       ensureScheduleShape();
-      // Fill only empty cells (do NOT override manual=true)
-      DAYS.forEach(day=>{
-        PERIODS.forEach(period=>{
-          const existing = weeklyChallenge.schedule[day][period];
-          if (existing && existing.manual) return; // keep manual edits
-          // 60% chance to create a session
-          if (!existing || !existing.subjectId) {
-            const available = subjects.filter(s => weeklyChallenge.subjects.includes(s.id));
-            const shouldCreate = Math.random() > 0.4 && available.length>0;
-            if (shouldCreate) {
-              const pick = available[Math.floor(Math.random()*available.length)];
-              const hours = Math.floor(Math.random()*3)+1; // 1-3
-              weeklyChallenge.schedule[day][period] = { subjectId: pick.id, hours, manual: false };
-            } else {
-              weeklyChallenge.schedule[day][period] = undefined;
-            }
-          }
-        });
-      });
+      const availableSubjects = subjects.filter(s => weeklyChallenge.subjects.includes(s.id));
+      if (availableSubjects.length === 0) {
+        showNotification('لا يمكن إنشاء جدول. يرجى اختيار مواد للتحدي أولاً.', 'warning');
+        return;
+      }
+      
+      const subjectHoursNeeded = {};
+      availableSubjects.forEach(s => subjectHoursNeeded[s.id] = s.weeklyHours);
+
+      const scheduleCopy = JSON.parse(JSON.stringify(weeklyChallenge.schedule));
+
+      for (let i = 0; i < DAYS.length * PERIODS.length; i++) {
+        const day = DAYS[i % DAYS.length];
+        const period = PERIODS[Math.floor(i / DAYS.length)];
+        
+        if (scheduleCopy[day][period]?.manual) continue;
+
+        const availableSlots = availableSubjects.filter(s => subjectHoursNeeded[s.id] > 0);
+        if (availableSlots.length === 0) break;
+
+        const pick = availableSlots[Math.floor(Math.random() * availableSlots.length)];
+        const hours = Math.min(3, subjectHoursNeeded[pick.id], Math.floor(Math.random() * 3) + 1);
+        
+        if (hours > 0) {
+            scheduleCopy[day][period] = { subjectId: pick.id, hours, manual: false };
+            subjectHoursNeeded[pick.id] -= hours;
+        } else {
+            scheduleCopy[day][period] = undefined;
+        }
+      }
+
+      weeklyChallenge.schedule = scheduleCopy;
       renderScheduleTable();
       saveToLocalStorage();
       showNotification('📅 تم إنشاء/استكمال الجدول تلقائياً دون تعديل الجلسات اليدوية.', 'info');
@@ -835,7 +1187,7 @@
       const day = document.getElementById('editDaySelect').value;
       const period = document.getElementById('editPeriodSelect').value;
       const subjectId = parseInt(document.getElementById('editSubjectSelect').value,10);
-      const hours = Math.min(4, Math.max(1, parseInt(document.getElementById('editHoursInput').value,10) || 1));
+      const hours = Math.min(3, Math.max(1, parseInt(document.getElementById('editHoursInput').value,10) || 1));
       if (!weeklyChallenge.schedule[day]) weeklyChallenge.schedule[day] = {};
       weeklyChallenge.schedule[day][period] = { subjectId, hours, manual: true };
       renderScheduleTable();
@@ -870,7 +1222,7 @@
       const icons = ['📚','🔬','🎨','🌍','💻','🎵','⚽','🧮','🧠','🗺️'];
       const colors = ['blue','purple','green','orange','red','teal'];
       const id = subjects.length ? Math.max(...subjects.map(s=>s.id))+1 : 1;
-      subjects.push({ id, name, icon: icons[Math.floor(Math.random()*icons.length)], weeklyHours, progress:0, difficulty, color: colors[Math.floor(Math.random()*colors.length)], isStudying:false });
+      subjects.push({ id, name, icon: icons[Math.floor(Math.random()*icons.length)], weeklyHours, progress:0, difficulty, color: colors[Math.floor(Math.random()*colors.length)], isStudying:false, studyLog: [] });
       renderSubjects();
       renderChallengeSubjects();
       saveToLocalStorage();
@@ -878,21 +1230,60 @@
       showNotification(`✅ تم إضافة مادة "${name}"`, 'success');
     }
 
+    // Custom Confirmation Modal
+    function setupConfirmModal() {
+      const confirmYesBtn = document.getElementById('confirmYesBtn');
+      const confirmNoBtn = document.getElementById('confirmNoBtn');
+      const confirmModal = document.getElementById('confirmModal');
+
+      confirmYesBtn.addEventListener('click', () => {
+        if (confirmCallback) {
+          confirmCallback();
+          confirmCallback = null;
+        }
+        confirmModal.classList.add('hidden');
+        confirmModal.classList.remove('flex');
+      });
+      confirmNoBtn.addEventListener('click', () => {
+        confirmCallback = null;
+        confirmModal.classList.add('hidden');
+        confirmModal.classList.remove('flex');
+      });
+    }
+
+    function showConfirmModal(action) {
+      document.getElementById('confirmModal').classList.remove('hidden');
+      document.getElementById('confirmModal').classList.add('flex');
+
+      if (action === 'resetData') {
+        document.getElementById('confirmTitle').textContent = 'تأكيد مسح البيانات';
+        document.getElementById('confirmMessage').textContent = '⚠️ هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع.';
+        confirmCallback = resetData;
+      } else if (action === 'resetStats') {
+        document.getElementById('confirmTitle').textContent = 'تأكيد إعادة تعيين الإحصائيات';
+        document.getElementById('confirmMessage').textContent = 'هل تريد إعادة تعيين الإحصائيات والتقدم فقط؟';
+        confirmCallback = resetStatsOnly;
+      }
+    }
+
     // Data management
-    function confirmResetData() {
-      if (!confirm('⚠️ هل أنت متأكد من مسح جميع البيانات؟ لا يمكن التراجع.')) return;
+    function resetData() {
       subjects = [];
       achievements = achievements.map(a=>({...a, earned:false}));
-      weeklyChallenge = { goal:25, completed:0, subjects:[], startDate:new Date(), schedule:{} };
+      weeklyChallenge = { goal:25, completed:0, subjects:[], startDate:new Date().toISOString(), schedule:{} };
+      studyLog = [];
+      points = 0;
       currentStudyingSubject = null;
       renderDashboard(); renderAnalytics(); renderSettings();
       saveToLocalStorage();
       showNotification('🗑️ تم مسح جميع البيانات', 'success');
     }
+    
     function resetStatsOnly() {
-      if (!confirm('هل تريد إعادة تعيين الإحصائيات والتقدم فقط؟')) return;
-      subjects.forEach(s=>{ s.progress=0; s.isStudying=false; });
+      subjects.forEach(s=>{ s.progress=0; s.isStudying=false; s.studyLog = []; });
       weeklyChallenge.completed = 0;
+      studyLog = [];
+      points = 0;
       renderDashboard(); renderAnalytics(); updateChallengeProgress();
       saveToLocalStorage();
       showNotification('📊 تم إعادة تعيين الإحصائيات', 'success');
@@ -911,7 +1302,7 @@
 
     // Local Storage
     function saveToLocalStorage(){
-      const data = { subjects, achievements, weeklyChallenge };
+      const data = { subjects, achievements, weeklyChallenge, studyLog, points, dailyChallenge };
       localStorage.setItem('studyBuddyMerged', JSON.stringify(data));
     }
     function loadFromLocalStorage(){
@@ -922,7 +1313,11 @@
         if (Array.isArray(data.subjects)) subjects = data.subjects;
         if (Array.isArray(data.achievements)) achievements = data.achievements;
         if (data.weeklyChallenge) weeklyChallenge = data.weeklyChallenge;
-      } catch(e){ /* ignore */ }
+        if (Array.isArray(data.studyLog)) studyLog = data.studyLog;
+        if (data.points !== undefined) points = data.points;
+        if (data.dailyChallenge) dailyChallenge = data.dailyChallenge;
+        checkAchievements();
+      } catch(e){ console.error("Error loading from local storage:", e); }
     }
   </script>
 </body>
