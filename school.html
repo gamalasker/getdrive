@@ -174,20 +174,20 @@
             <div>
                 <label class="block text-gray-700 font-semibold mb-2">رابط Google Apps Script:</label>
                 <input type="url" id="appsScriptUrl" class="w-full p-3 border border-gray-300 rounded-lg" 
-                       placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+                        placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
                 <p class="text-sm text-gray-500 mt-1">يجب نشر السكريبت كـ Web App</p>
             </div>
             
             <div>
                 <label class="block text-gray-700 font-semibold mb-2">اسم المعلم:</label>
                 <input type="text" id="teacherName" class="w-full p-3 border border-gray-300 rounded-lg" 
-                       placeholder="أدخل اسمك" value="gamalasker">
+                        placeholder="أدخل اسمك" value="gamalasker">
             </div>
             
             <div>
                 <label class="block text-gray-700 font-semibold mb-2">معرف المدرسة:</label>
                 <input type="text" id="schoolId" class="w-full p-3 border border-gray-300 rounded-lg" 
-                       placeholder="رمز المدرسة">
+                        placeholder="رمز المدرسة">
             </div>
             
             <button onclick="saveConfiguration()" class="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600">
@@ -538,7 +538,7 @@
 
     <script>
         // Configuration
-        let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiSfsJsO9RQ10Ihx2FUJI0DpsHEpYZ96eGbQbtYnRj__oyIMAoAiMggn2Q7tp-VuVawQ/exec';
+        let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZ9OAhkbka7VtR6cDMTuodI6bFhyEm7aYbNPiIigIqTwlOSbFF4dQ6ztwSCqZcBBPe1g/exec';
         let TEACHER_NAME = 'gamalasker';
         let SCHOOL_ID = '';
 
@@ -1334,14 +1334,6 @@
         window.addEventListener('error', function(e) {
             console.error('خطأ في التطبيق:', e.error);
         });
-
-        // Service worker for offline functionality (optional)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                // Service worker registration can be added here for offline support
-                console.log('النظام جاهز للعمل');
-            });
-        }
     </script>
 </body>
 </html>
