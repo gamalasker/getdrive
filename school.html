@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلوك بلس - إدارة الحضور والسلوك المدرسي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mascot {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .notification {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .api-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .api-online {
+            background: #10b981;
+            color: white;
+        }
+
+        .api-offline {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .student-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .student-card.selected {
+            border-color: #3B82F6;
+            background-color: #EBF8FF;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .config-panel {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: left 0.3s ease;
+            z-index: 1001;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .config-panel.open {
+            left: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- API Status Indicator -->
+    <div id="apiStatus" class="api-status api-offline">
+        🔴 غير متصل
+    </div>
+
+    <!-- Configuration Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Configuration Panel -->
+    <div id="configPanel" class="config-panel">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold">إعدادات النظام</h2>
+            <button onclick="toggleConfigPanel()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        </div>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">رابط Google Apps Script:</label>
+                <input type="url" id="appsScriptUrl" class="w-full p-3 border border-gray-300 rounded-lg" 
+                       placeholder="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec">
+                <p class="text-sm text-gray-500 mt-1">يجب نشر السكريبت كـ Web App</p>
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">اسم المعلم:</label>
+                <input type="text" id="teacherName" class="w-full p-3 border border-gray-300 rounded-lg" 
+                       placeholder="أدخل اسمك" value="gamalasker">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">معرف المدرسة:</label>
+                <input type="text" id="schoolId" class="w-full p-3 border border-gray-300 rounded-lg" 
+                       placeholder="رمز المدرسة">
+            </div>
+            
+            <button onclick="saveConfiguration()" class="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600">
+                💾 حفظ الإعدادات
+            </button>
+            
+            <button onclick="testConnection()" class="w-full bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600">
+                🔗 اختبار الاتصال
+            </button>
+        </div>
+        
+        <div class="mt-8 p-4 bg-gray-50 rounded-lg">
+            <h3 class="font-bold mb-2">تعليمات الإعداد:</h3>
+            <ol class="text-sm space-y-1 list-decimal list-inside">
+                <li>انسخ كود Google Apps Script</li>
+                <li>أنشئ مشروع جديد في script.google.com</li>
+                <li>انشر السكريبت كـ Web App</li>
+                <li>انسخ الرابط هنا</li>
+                <li>اضغط حفظ الإعدادات</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="text-4xl">🎓</div>
+                    <div>
+                        <h1 class="text-3xl font-bold">سلوك بلس</h1>
+                        <p class="text-blue-100">إدارة الحضور والسلوك المدرسي</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <span id="userIdDisplay" class="text-sm bg-white bg-opacity-20 rounded-lg px-3 py-1 text-blue-100">gamalasker</span>
+                    <button onclick="syncData()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-colors">
+                        <span id="syncIcon">🔄</span> مزامنة
+                    </button>
+                    <button onclick="toggleConfigPanel()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-4 py-2 rounded-lg transition-colors">
+                        <span>⚙️</span> إعدادات
+                    </button>
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <span class="text-2xl">👨‍🏫</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Daily Message -->
+    <div class="container mx-auto px-4 py-4">
+        <div class="bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-lg p-4 mb-6 flex items-center">
+            <div class="mascot text-4xl ml-4">🌟</div>
+            <div>
+                <h3 class="font-bold text-lg">رسالة اليوم</h3>
+                <p id="dailyMessage" class="text-green-100">مرحباً بك في يوم جديد مليء بالفرص والإنجازات!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 pb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Panel - Quick Actions -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="text-2xl ml-2">⚡</span>
+                        إجراءات سريعة
+                    </h2>
+                    
+                    <div class="space-y-3">
+                        <button onclick="showAttendanceModal()" class="w-full btn-primary text-white py-3 px-4 rounded-lg font-semibold transition-all">
+                            📝 تسجيل الحضور
+                        </button>
+                        <button onclick="showBehaviorModal()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-lg font-semibold transition-all hover:transform hover:translate-y-[-2px]">
+                            ⭐ تسجيل سلوك
+                        </button>
+                        <button onclick="showStudentModal()" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 px-4 rounded-lg font-semibold transition-all hover:transform hover:translate-y-[-2px]">
+                            👨‍🎓 إضافة طالب
+                        </button>
+                        <button onclick="exportData()" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold transition-all hover:transform hover:translate-y-[-2px]">
+                            📊 تصدير البيانات
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Star of the Week -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="text-2xl ml-2">🏆</span>
+                        نجم الأسبوع
+                    </h3>
+                    <div class="text-center" id="starOfWeek">
+                        <div class="text-center text-gray-500 py-4">
+                            <div class="loading mx-auto mb-2"></div>
+                            <p>جاري تحميل البيانات...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Main Dashboard -->
+            <div class="lg:col-span-2">
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow-lg p-4 card-hover">
+                        <div class="flex items-center">
+                            <div class="text-3xl text-blue-500">👥</div>
+                            <div class="mr-3">
+                                <div class="text-2xl font-bold text-gray-800" id="totalStudents">--</div>
+                                <div class="text-gray-600 text-sm">إجمالي الطلاب</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-4 card-hover">
+                        <div class="flex items-center">
+                            <div class="text-3xl text-green-500">✅</div>
+                            <div class="mr-3">
+                                <div class="text-2xl font-bold text-gray-800" id="presentToday">--</div>
+                                <div class="text-gray-600 text-sm">حاضر اليوم</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-4 card-hover">
+                        <div class="flex items-center">
+                            <div class="text-3xl text-red-500">❌</div>
+                            <div class="mr-3">
+                                <div class="text-2xl font-bold text-gray-800" id="absentToday">--</div>
+                                <div class="text-gray-600 text-sm">غائب اليوم</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-4 card-hover">
+                        <div class="flex items-center">
+                            <div class="text-3xl text-yellow-500">⭐</div>
+                            <div class="mr-3">
+                                <div class="text-2xl font-bold text-gray-800" id="positiveBehaviors">--</div>
+                                <div class="text-gray-600 text-sm">سلوك إيجابي</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">إحصائيات الحضور الأسبوعي</h3>
+                        <canvas id="attendanceChart" width="400" height="200"></canvas>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">توزيع السلوك</h3>
+                        <canvas id="behaviorChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <span class="text-2xl ml-2">📋</span>
+                        الأنشطة الأخيرة
+                    </h3>
+                    <div class="space-y-3" id="recentActivities">
+                        <div class="text-center text-gray-500 py-8">
+                            <div class="loading mx-auto mb-2"></div>
+                            <p>جاري تحميل الأنشطة...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Modal -->
+    <div id="studentModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">إضافة طالب جديد</h2>
+                        <button onclick="closeModal('studentModal')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">اسم الطالب:</label>
+                            <input type="text" id="studentName" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="أدخل اسم الطالب">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">رقم الطالب:</label>
+                            <input type="text" id="studentId" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="مثال: STD001">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">الصف:</label>
+                            <select id="studentClass" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option>الصف الأول أ</option>
+                                <option>الصف الأول ب</option>
+                                <option>الصف الثاني أ</option>
+                                <option>الصف الثاني ب</option>
+                                <option>الصف الثالث أ</option>
+                                <option>الصف الثالث ب</option>
+                                <option>الصف الرابع أ</option>
+                                <option>الصف الرابع ب</option>
+                                <option>الصف الخامس أ</option>
+                                <option>الصف الخامس ب</option>
+                                <option>الصف السادس أ</option>
+                                <option>الصف السادس ب</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 space-x-reverse mt-6">
+                        <button onclick="closeModal('studentModal')" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                            إلغاء
+                        </button>
+                        <button onclick="saveStudent()" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                            💾 حفظ الطالب
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Modal -->
+    <div id="attendanceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">تسجيل الحضور</h2>
+                        <button onclick="closeModal('attendanceModal')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="mb-4 flex justify-between items-center">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">اختر الصف:</label>
+                            <select id="classSelect" onchange="filterStudentsByClass()" class="p-3 border border-gray-300 rounded-lg">
+                                <option value="">جميع الصفوف</option>
+                            </select>
+                        </div>
+                        <div class="flex space-x-2 space-x-reverse">
+                            <button onclick="markAllPresent()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                                ✅ تحديد الكل حاضر
+                            </button>
+                            <button onclick="saveAllAttendance()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                💾 حفظ الحضور
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-96 overflow-y-auto" id="studentsList">
+                        <!-- Students will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Behavior Modal -->
+    <div id="behaviorModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 modal">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold text-gray-800">تسجيل سلوك</h2>
+                        <button onclick="closeModal('behaviorModal')" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">اسم الطالب:</label>
+                            <select id="studentNameSelect" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="">اختر الطالب...</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">نوع السلوك:</label>
+                            <select id="behaviorType" onchange="updateBehaviorPoints()" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="positive">إيجابي ⭐</option>
+                                <option value="negative">يحتاج تدخل ⚠️</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">التصنيف:</label>
+                            <select id="behaviorCategory" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option>احترام</option>
+                                <option>تعاون</option>
+                                <option>تركيز</option>
+                                <option>مشاركة</option>
+                                <option>انضباط</option>
+                                <option>إبداع</option>
+                                <option>مساعدة الآخرين</option>
+                                <option>التزام بالوقت</option>
+                                <option>نظافة</option>
+                                <option>أداء الواجبات</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">الملاحظات:</label>
+                            <textarea id="behaviorNotes" class="w-full p-3 border border-gray-300 rounded-lg h-24" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">النقاط:</label>
+                            <input type="number" id="behaviorPoints" class="w-full p-3 border border-gray-300 rounded-lg" value="5" min="1" max="20">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3 space-x-reverse mt-6">
+                        <button onclick="closeModal('behaviorModal')" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                            إلغاء
+                        </button>
+                        <button onclick="saveBehavior()" class="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+                            💾 حفظ السلوك
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Notification -->
+    <div id="successNotification" class="fixed top-4 left-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden notification z-50">
+        <div class="flex items-center">
+            <span class="text-xl ml-2">✅</span>
+            <span id="successMessage">تم الحفظ بنجاح!</span>
+        </div>
+    </div>
+
+    <!-- Error Notification -->
+    <div id="errorNotification" class="fixed top-4 left-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg hidden notification z-50">
+        <div class="flex items-center">
+            <span class="text-xl ml-2">❌</span>
+            <span id="errorMessage">حدث خطأ!</span>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        let APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiSfsJsO9RQ10Ihx2FUJI0DpsHEpYZ96eGbQbtYnRj__oyIMAoAiMggn2Q7tp-VuVawQ/exec';
+        let TEACHER_NAME = 'gamalasker';
+        let SCHOOL_ID = '';
+
+        // Global data stores
+        let students = [];
+        let attendanceData = [];
+        let behaviorData = [];
+        let attendanceSelections = {};
+        let classes = [
+            "الصف الأول أ", "الصف الأول ب", 
+            "الصف الثاني أ", "الصف الثاني ب", 
+            "الصف الثالث أ", "الصف الثالث ب",
+            "الصف الرابع أ", "الصف الرابع ب",
+            "الصف الخامس أ", "الصف الخامس ب",
+            "الصف السادس أ", "الصف السادس ب"
+        ];
+        let isOnline = false;
+
+        // Initialize charts
+        let attendanceChart, behaviorChart;
+
+        // Load configuration from localStorage
+        function loadConfiguration() {
+            const saved = localStorage.getItem('schoolSystemConfig');
+            if (saved) {
+                const config = JSON.parse(saved);
+                APPS_SCRIPT_URL = config.appsScriptUrl || '';
+                TEACHER_NAME = config.teacherName || 'gamalasker';
+                SCHOOL_ID = config.schoolId || '';
+                
+                document.getElementById('appsScriptUrl').value = APPS_SCRIPT_URL;
+                document.getElementById('teacherName').value = TEACHER_NAME;
+                document.getElementById('schoolId').value = SCHOOL_ID;
+                document.getElementById('userIdDisplay').textContent = TEACHER_NAME;
+            }
+        }
+
+        // Save configuration to localStorage
+        function saveConfiguration() {
+            const appsScriptUrl = document.getElementById('appsScriptUrl').value.trim();
+            const teacherName = document.getElementById('teacherName').value.trim();
+            const schoolId = document.getElementById('schoolId').value.trim();
+            
+            if (!appsScriptUrl) {
+                showNotification('يرجى إدخال رابط Google Apps Script', 'error');
+                return;
+            }
+            
+            if (!teacherName) {
+                showNotification('يرجى إدخال اسم المعلم', 'error');
+                return;
+            }
+            
+            const config = {
+                appsScriptUrl,
+                teacherName,
+                schoolId
+            };
+            
+            localStorage.setItem('schoolSystemConfig', JSON.stringify(config));
+            
+            APPS_SCRIPT_URL = appsScriptUrl;
+            TEACHER_NAME = teacherName;
+            SCHOOL_ID = schoolId;
+            
+            document.getElementById('userIdDisplay').textContent = TEACHER_NAME;
+            
+            showNotification('تم حفظ الإعدادات بنجاح', 'success');
+            toggleConfigPanel();
+            
+            // Test connection after saving
+            testConnection();
+        }
+
+        // Test connection to Google Apps Script
+        async function testConnection() {
+            if (!APPS_SCRIPT_URL) {
+                showNotification('يرجى إدخال رابط Google Apps Script أولاً', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            showNotification('جاري اختبار الاتصال...', 'success');
+            
+            try {
+                const response = await fetch(`${APPS_SCRIPT_URL}?action=getData&test=true`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                updateAPIStatus(true);
+                showNotification('تم الاتصال بنجاح! جاري تحميل البيانات...', 'success');
+                
+                // Load initial data
+                await fetchFromSheet();
+                
+            } catch (error) {
+                console.error('Connection test failed:', error);
+                updateAPIStatus(false);
+                showNotification(`فشل الاتصال: ${error.message}`, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Toggle configuration panel
+        function toggleConfigPanel() {
+            const panel = document.getElementById('configPanel');
+            const overlay = document.getElementById('overlay');
+            
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                overlay.classList.remove('show');
+            } else {
+                panel.classList.add('open');
+                overlay.classList.add('show');
+            }
+        }
+
+        // Close config panel when clicking overlay
+        document.getElementById('overlay').addEventListener('click', toggleConfigPanel);
+
+        // UI Utility Functions
+        function showNotification(message, type) {
+            const notification = document.getElementById(type === 'success' ? 'successNotification' : 'errorNotification');
+            const messageElement = document.getElementById(type === 'success' ? 'successMessage' : 'errorMessage');
+            
+            messageElement.textContent = message;
+            notification.classList.remove('hidden');
+            setTimeout(() => notification.classList.add('hidden'), 4000);
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function updateAPIStatus(online) {
+            isOnline = online;
+            const statusElement = document.getElementById('apiStatus');
+            if (online) {
+                statusElement.className = 'api-status api-online';
+                statusElement.innerHTML = '🟢 متصل بالخادم';
+            } else {
+                statusElement.className = 'api-status api-offline';
+                statusElement.innerHTML = '🔴 غير متصل';
+            }
+        }
+        
+        function showLoading(show) {
+            const syncIcon = document.getElementById('syncIcon');
+            if (show) {
+                syncIcon.innerHTML = '<div class="loading"></div>';
+            } else {
+                syncIcon.textContent = '🔄';
+            }
+        }
+
+        // Apps Script API Logic
+        async function fetchFromSheet() {
+            if (!APPS_SCRIPT_URL) {
+                showNotification('يرجى تكوين رابط Google Apps Script أولاً', 'error');
+                toggleConfigPanel();
+                return;
+            }
+
+            showLoading(true);
+            try {
+                const response = await fetch(`${APPS_SCRIPT_URL}?action=getData`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                students = data.students || [];
+                attendanceData = data.attendance || [];
+                behaviorData = data.behaviors || [];
+                
+                updateAPIStatus(true);
+                updateDashboard();
+                showNotification('تم تحميل البيانات بنجاح', 'success');
+                
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                updateAPIStatus(false);
+                showNotification(`خطأ في تحميل البيانات: ${error.message}`, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        async function postToSheet(data) {
+            if (!APPS_SCRIPT_URL) {
+                showNotification('يرجى تكوين رابط Google Apps Script أولاً', 'error');
+                return null;
+            }
+
+            showLoading(true);
+            try {
+                // Add recorder information
+                data.recorder = TEACHER_NAME;
+                
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                
+                updateAPIStatus(true);
+                return result;
+                
+            } catch (error) {
+                console.error('Error posting data:', error);
+                updateAPIStatus(false);
+                showNotification(`خطأ في حفظ البيانات: ${error.message}`, 'error');
+                return null;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function syncData() {
+            showNotification('جاري مزامنة البيانات...', 'success');
+            await fetchFromSheet();
+        }
+
+        // UI Update Functions
+        function updateDashboard() {
+            // Update statistics
+            document.getElementById('totalStudents').textContent = students.length;
+            
+            const today = new Date().toDateString();
+            const presentToday = attendanceData.filter(a => a.status === 'present' && new Date(a.timestamp).toDateString() === today).length;
+            document.getElementById('presentToday').textContent = presentToday;
+            
+            const absentToday = attendanceData.filter(a => a.status === 'absent' && new Date(a.timestamp).toDateString() === today).length;
+            document.getElementById('absentToday').textContent = absentToday;
+            
+            const positiveBehaviors = behaviorData.filter(b => b.type === 'positive').length;
+            document.getElementById('positiveBehaviors').textContent = positiveBehaviors;
+
+            // Update star of the week
+            updateStarOfWeek();
+            
+            // Update recent activities
+            updateRecentActivities();
+            
+            // Update charts
+            updateCharts();
+
+            // Update modals
+            updateStudentSelect();
+            loadStudentsForAttendance();
+        }
+
+        function updateStudentSelect() {
+            const select = document.getElementById('studentNameSelect');
+            const classesSelect = document.getElementById('classSelect');
+            
+            // Clear and populate student select
+            select.innerHTML = '<option value="">اختر الطالب...</option>';
+            students.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.id;
+                option.textContent = `${student.name} (${student.class})`;
+                select.appendChild(option);
+            });
+
+            // Clear and populate class select
+            classesSelect.innerHTML = '<option value="">جميع الصفوف</option>';
+            classes.forEach(cls => {
+                const option = document.createElement('option');
+                option.value = cls;
+                option.textContent = cls;
+                classesSelect.appendChild(option);
+            });
+        }
+
+        function updateStarOfWeek() {
+            const starContainer = document.getElementById('starOfWeek');
+            if (students.length === 0) {
+                starContainer.innerHTML = `
+                    <div class="w-20 h-20 bg-yellow-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                        <span class="text-3xl">👨‍🎓</span>
+                    </div>
+                    <h4 class="font-bold text-lg text-gray-800">لا توجد بيانات</h4>
+                    <p class="text-gray-600 text-sm">أضف طلابًا لترى نجم الأسبوع</p>
+                    <div class="flex justify-center mt-2">
+                        <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">
+                            ⭐ 0 نقطة
+                        </span>
+                    </div>`;
+                return;
+            }
+
+            const topStudent = students.reduce((prev, current) => (prev.points || 0) > (current.points || 0) ? prev : current, { points: 0 });
+
+            starContainer.innerHTML = `
+                <div class="w-20 h-20 bg-yellow-100 rounded-full mx-auto mb-3 flex items-center justify-center">
+                    <span class="text-3xl">🏆</span>
+                </div>
+                <h4 class="font-bold text-lg text-gray-800">${topStudent.name}</h4>
+                <p class="text-gray-600 text-sm">ID: ${topStudent.id}</p>
+                <div class="flex justify-center mt-2">
+                    <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">
+                        ⭐ ${topStudent.points || 0} نقطة
+                    </span>
+                </div>
+            `;
+        }
+        
+        function updateRecentActivities() {
+            const activitiesContainer = document.getElementById('recentActivities');
+            activitiesContainer.innerHTML = '';
+            
+            const sortedActivities = [...attendanceData.map(a => ({...a, type: 'attendance'})), ...behaviorData.map(b => ({...b, type: 'behavior'}))]
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            if (sortedActivities.length === 0) {
+                activitiesContainer.innerHTML = `<div class="text-center text-gray-500 py-4"><p>لا توجد أنشطة مسجلة بعد.</p></div>`;
+                return;
+            }
+            
+            const recentActivities = sortedActivities.slice(0, 8);
+            recentActivities.forEach((activity) => {
+                let emoji, bgColor, text, pointsText = '';
+                
+                if (activity.type === 'attendance') {
+                    emoji = activity.status === 'present' ? '✅' : activity.status === 'absent' ? '❌' : '⏰';
+                    bgColor = activity.status === 'present' ? 'bg-green-50' : activity.status === 'absent' ? 'bg-red-50' : 'bg-yellow-50';
+                    text = `تم تسجيل ${activity.status === 'present' ? 'حضور' : activity.status === 'absent' ? 'غياب' : 'تأخر'} للطالب ${activity.studentName}`;
+                } else if (activity.type === 'behavior') {
+                    emoji = activity.type === 'positive' ? '⭐' : '⚠️';
+                    bgColor = activity.type === 'positive' ? 'bg-yellow-50' : 'bg-red-50';
+                    text = `تم تسجيل سلوك "${activity.category}" للطالب ${activity.studentName}`;
+                    pointsText = activity.points > 0 ? `+${activity.points} نقاط` : `${activity.points} نقاط`;
+                }
+
+                const activityDiv = document.createElement('div');
+                activityDiv.className = `flex items-center p-3 ${bgColor} rounded-lg`;
+                activityDiv.innerHTML = `
+                    <div class="text-2xl ml-3">${emoji}</div>
+                    <div class="flex-1">
+                        <div class="font-semibold text-gray-800">${text}</div>
+                        <div class="text-gray-600 text-sm">${new Date(activity.timestamp).toLocaleString('ar-EG')}</div>
+                        ${activity.recorder ? `<div class="text-gray-500 text-xs">بواسطة: ${activity.recorder}</div>` : ''}
+                    </div>
+                    ${pointsText ? `<div class="${activity.points > 0 ? 'text-green-600' : 'text-red-600'} font-bold">${pointsText}</div>` : ''}
+                `;
+                activitiesContainer.appendChild(activityDiv);
+            });
+        }
+
+        function updateCharts() {
+            if (attendanceChart) {
+                const weeklyData = calculateWeeklyAttendance();
+                attendanceChart.data.datasets[0].data = weeklyData;
+                attendanceChart.update();
+            } else {
+                initAttendanceChart();
+            }
+
+            if (behaviorChart) {
+                const behaviorStats = calculateBehaviorStats();
+                behaviorChart.data.datasets[0].data = behaviorStats;
+                behaviorChart.update();
+            } else {
+                initBehaviorChart();
+            }
+        }
+
+        // Calculation Functions
+        function calculateWeeklyAttendance() {
+            const weekDays = [0, 0, 0, 0, 0, 0, 0];
+            const today = new Date();
+            const lastWeek = new Date(today);
+            lastWeek.setDate(today.getDate() - 7);
+
+            attendanceData.forEach(record => {
+                const recordDate = new Date(record.timestamp);
+                if (recordDate >= lastWeek && record.status === 'present') {
+                    const dayIndex = recordDate.getDay();
+                    weekDays[dayIndex]++;
+                }
+            });
+
+            const totalStudents = students.length;
+            if (totalStudents === 0) return [0, 0, 0, 0, 0, 0, 0];
+            return weekDays.map(count => Math.round((count / totalStudents) * 100));
+        }
+
+        function calculateBehaviorStats() {
+            const positive = behaviorData.filter(b => b.type === 'positive').length;
+            const negative = behaviorData.filter(b => b.type === 'negative').length;
+            const total = positive + negative;
+            
+            if (total === 0) return [50, 50]; // Equal distribution if no data
+            
+            return [
+                Math.round((positive / total) * 100),
+                Math.round((negative / total) * 100)
+            ];
+        }
+
+        // Modal Functions
+        function showStudentModal() {
+            document.getElementById('studentModal').classList.remove('hidden');
+        }
+
+        function showAttendanceModal() {
+            document.getElementById('attendanceModal').classList.remove('hidden');
+            loadStudentsForAttendance();
+        }
+
+        function showBehaviorModal() {
+            document.getElementById('behaviorModal').classList.remove('hidden');
+        }
+
+        function loadStudentsForAttendance() {
+            const studentsList = document.getElementById('studentsList');
+            const classSelect = document.getElementById('classSelect');
+            const selectedClass = classSelect.value;
+            
+            studentsList.innerHTML = '';
+            
+            if (students.length === 0) {
+                studentsList.innerHTML = `<div class="col-span-full text-center text-gray-500 py-4"><p>لا توجد بيانات طلاب. يرجى إضافة طلاب أولاً.</p></div>`;
+                return;
+            }
+            
+            const filteredStudents = selectedClass ? students.filter(s => s.class === selectedClass) : students;
+            
+            filteredStudents.forEach(student => {
+                const currentStatus = attendanceSelections[student.id] || '';
+                const studentDiv = document.createElement('div');
+                studentDiv.className = `student-card bg-gray-50 rounded-lg p-4 ${currentStatus ? 'selected' : ''}`;
+                studentDiv.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center">
+                            <span class="text-2xl ml-3">👨‍🎓</span>
+                            <div>
+                                <span class="font-semibold block">${student.name}</span>
+                                <div class="text-sm text-gray-500">ID: ${student.id}</div>
+                                <div class="text-sm text-gray-500">${student.class}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-yellow-600">⭐ ${student.points || 0}</div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2 space-x-reverse">
+                        <button onclick="selectAttendance('${student.id}', 'present')" 
+                                class="flex-1 px-3 py-2 rounded text-sm font-semibold transition-colors
+                                ${currentStatus === 'present' ? 'bg-green-500 text-white' : 'bg-green-100 text-green-700 hover:bg-green-200'}">
+                            ✅ حاضر
+                        </button>
+                        <button onclick="selectAttendance('${student.id}', 'absent')" 
+                                class="flex-1 px-3 py-2 rounded text-sm font-semibold transition-colors
+                                ${currentStatus === 'absent' ? 'bg-red-500 text-white' : 'bg-red-100 text-red-700 hover:bg-red-200'}">
+                            ❌ غائب
+                        </button>
+                        <button onclick="selectAttendance('${student.id}', 'late')" 
+                                class="flex-1 px-3 py-2 rounded text-sm font-semibold transition-colors
+                                ${currentStatus === 'late' ? 'bg-yellow-500 text-white' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}">
+                            ⏰ متأخر
+                        </button>
+                    </div>
+                `;
+                studentsList.appendChild(studentDiv);
+            });
+        }
+
+        function filterStudentsByClass() {
+            loadStudentsForAttendance();
+        }
+
+        function selectAttendance(studentId, status) {
+            attendanceSelections[studentId] = status;
+            loadStudentsForAttendance();
+        }
+
+        function markAllPresent() {
+            const classSelect = document.getElementById('classSelect');
+            const selectedClass = classSelect.value;
+            const filteredStudents = selectedClass ? students.filter(s => s.class === selectedClass) : students;
+            
+            filteredStudents.forEach(student => {
+                attendanceSelections[student.id] = 'present';
+            });
+            
+            loadStudentsForAttendance();
+            showNotification('تم تحديد جميع الطلاب كحاضرين', 'success');
+        }
+
+        async function saveAllAttendance() {
+            const selectedCount = Object.keys(attendanceSelections).length;
+            if (selectedCount === 0) {
+                showNotification('يرجى تحديد حضور الطلاب أولاً', 'error');
+                return;
+            }
+
+            // Prepare bulk attendance data
+            const attendanceRecords = [];
+            for (const [studentId, status] of Object.entries(attendanceSelections)) {
+                const student = students.find(s => s.id === studentId);
+                if (student) {
+                    attendanceRecords.push({
+                        studentId: studentId,
+                        studentName: student.name,
+                        status: status
+                    });
+                }
+            }
+
+            const result = await postToSheet({
+                action: 'bulkAttendance',
+                attendanceRecords: attendanceRecords
+            });
+
+            if (result && result.success) {
+                showNotification(`تم حفظ حضور ${attendanceRecords.length} طالب بنجاح`, 'success');
+                attendanceSelections = {}; // Clear selections
+                closeModal('attendanceModal');
+                await syncData();
+            } else {
+                showNotification('فشل في حفظ بيانات الحضور', 'error');
+            }
+        }
+
+        // Save Functions
+        async function saveStudent() {
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentId = document.getElementById('studentId').value.trim();
+            const studentClass = document.getElementById('studentClass').value;
+            
+            if (!studentName || !studentId) {
+                showNotification('يرجى ملء جميع البيانات المطلوبة', 'error');
+                return;
+            }
+
+            // Check if student ID already exists
+            if (students.find(s => s.id === studentId)) {
+                showNotification('رقم الطالب موجود مسبقاً', 'error');
+                return;
+            }
+
+            const result = await postToSheet({
+                action: 'addStudent',
+                studentName,
+                studentId,
+                studentClass
+            });
+
+            if (result && result.success) {
+                showNotification(`تم إضافة الطالب ${studentName} بنجاح`, 'success');
+                closeModal('studentModal');
+                
+                // Clear form
+                document.getElementById('studentName').value = '';
+                document.getElementById('studentId').value = '';
+                
+                await syncData();
+            } else {
+                showNotification('فشل في إضافة الطالب', 'error');
+            }
+        }
+
+        async function saveBehavior() {
+            const studentId = document.getElementById('studentNameSelect').value;
+            const behaviorType = document.getElementById('behaviorType').value;
+            const behaviorCategory = document.getElementById('behaviorCategory').value;
+            const behaviorNotes = document.getElementById('behaviorNotes').value;
+            const points = parseInt(document.getElementById('behaviorPoints').value) || 0;
+            
+            if (!studentId) {
+                showNotification('يرجى اختيار طالب أولاً', 'error');
+                return;
+            }
+            
+            const student = students.find(s => s.id == studentId);
+            if (!student) {
+                showNotification('الطالب غير موجود', 'error');
+                return;
+            }
+
+            const result = await postToSheet({
+                action: 'saveBehavior',
+                studentId,
+                behaviorType,
+                behaviorCategory,
+                behaviorNotes,
+                points: behaviorType === 'positive' ? points : -points,
+                studentName: student.name
+            });
+
+            if (result && result.success) {
+                showNotification(`تم تسجيل سلوك للطالب ${student.name}`, 'success');
+                closeModal('behaviorModal');
+                
+                // Reset form
+                document.getElementById('studentNameSelect').value = '';
+                document.getElementById('behaviorNotes').value = '';
+                document.getElementById('behaviorPoints').value = '5';
+                document.getElementById('behaviorType').value = 'positive';
+                
+                await syncData();
+            } else {
+                showNotification('فشل حفظ السلوك', 'error');
+            }
+        }
+
+        function updateBehaviorPoints() {
+            const behaviorType = document.getElementById('behaviorType').value;
+            const pointsInput = document.getElementById('behaviorPoints');
+            
+            if (behaviorType === 'negative') {
+                pointsInput.value = Math.abs(pointsInput.value);
+            }
+        }
+
+        // Export functionality
+        function exportData() {
+            const data = {
+                students,
+                attendanceData,
+                behaviorData,
+                exportDate: new Date().toISOString(),
+                teacher: TEACHER_NAME,
+                school: SCHOOL_ID
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `school_data_${TEACHER_NAME}_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('تم تصدير البيانات بنجاح', 'success');
+        }
+        
+        // Chart Initialization Functions
+        function initAttendanceChart() {
+            const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+            attendanceChart = new Chart(attendanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+                    datasets: [{
+                        label: 'نسبة الحضور',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `نسبة الحضور: ${context.parsed.y}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: { 
+                        y: { 
+                            beginAtZero: true, 
+                            max: 100, 
+                            title: { display: true, text: 'النسبة المئوية (%)' } 
+                        } 
+                    }
+                }
+            });
+        }
+        
+        function initBehaviorChart() {
+            const behaviorCtx = document.getElementById('behaviorChart').getContext('2d');
+            behaviorChart = new Chart(behaviorCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['سلوك إيجابي', 'يحتاج تدخل'],
+                    datasets: [{
+                        data: [50, 50],
+                        backgroundColor: ['rgb(34, 197, 94)', 'rgb(239, 68, 68)'],
+                        borderColor: 'rgb(255, 255, 255)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { 
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.parsed}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('تهيئة النظام...');
+            loadConfiguration();
+            initAttendanceChart();
+            initBehaviorChart();
+            
+            // Initial message
+            showNotification('مرحباً بك في سلوك بلس! يرجى تكوين Google Apps Script للبدء.', 'success');
+            
+            // Auto-test connection if URL is available
+            if (APPS_SCRIPT_URL) {
+                setTimeout(() => {
+                    testConnection();
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    toggleConfigPanel();
+                }, 2000);
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 'a':
+                        e.preventDefault();
+                        showAttendanceModal();
+                        break;
+                    case 'b':
+                        e.preventDefault();
+                        showBehaviorModal();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        showStudentModal();
+                        break;
+                }
+            }
+            
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                const modals = ['attendanceModal', 'behaviorModal', 'studentModal'];
+                modals.forEach(modalId => {
+                    const modal = document.getElementById(modalId);
+                    if (!modal.classList.contains('hidden')) {
+                        closeModal(modalId);
+                    }
+                });
+                
+                // Close config panel
+                const configPanel = document.getElementById('configPanel');
+                if (configPanel.classList.contains('open')) {
+                    toggleConfigPanel();
+                }
+            }
+        });
+
+        // Error handling for images and resources
+        window.addEventListener('error', function(e) {
+            console.error('خطأ في التطبيق:', e.error);
+        });
+
+        // Service worker for offline functionality (optional)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Service worker registration can be added here for offline support
+                console.log('النظام جاهز للعمل');
+            });
+        }
+    </script>
+</body>
+</html>
