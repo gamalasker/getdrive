@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>نظام الحضور المدرسي الذكي — حلول متقدمة للتعليم</title>
+  <meta name="description" content="نظام حضور مدرسي متطور يعمل دون إنترنت، مع واجهة عصرية وتقارير احترافية وتكامل Excel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'cairo': ['Cairo', 'system-ui', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'bounce-slow': 'bounce 3s infinite',
+            'fade-in': 'fadeIn 0.8s ease-out forwards',
+            'slide-up': 'slideUp 0.8s ease-out forwards',
+            'gradient': 'gradient 8s ease infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-20px)' } },
+            fadeIn: { '0%': { opacity: '0', transform: 'translateY(30px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+            slideUp: { '0%': { opacity: '0', transform: 'translateY(60px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+            gradient: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+          },
+          backgroundSize: { '400%': '400% 400%' }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Cairo', system-ui, -apple-system, sans-serif; }
+    .gradient-bg {
+      background: linear-gradient(-45deg, #667eea, #764ba2, #6366f1, #8b5cf6, #06b6d4);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .feature-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .feature-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.1) 100%);
+    }
+    .btn-glow { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); transition: all 0.3s ease; }
+    .btn-glow:hover { box-shadow: 0 0 30px rgba(99, 102, 241, 0.6); transform: translateY(-2px); }
+    .text-gradient {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .floating-shapes { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .shape { position: absolute; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+      animation: float 8s ease-in-out infinite;
+    }
+    .shape:nth-child(1){ top:10%; left:10%; width:80px; height:80px; animation-delay:0s; }
+    .shape:nth-child(2){ top:20%; right:10%; width:120px; height:120px; animation-delay:2s; }
+    .shape:nth-child(3){ bottom:20%; left:20%; width:60px; height:60px; animation-delay:4s; }
+    .shape:nth-child(4){ bottom:10%; right:20%; width:100px; height:100px; animation-delay:6s; }
+    .section-reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+    .section-reveal.revealed { opacity: 1; transform: translateY(0); }
+    .number-counter { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
+    @media (prefers-reduced-motion: reduce) {
+      .feature-card:hover { transform: translateY(-4px); }
+      .animation { animation: none; }
+    }
+    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+    .mobile-menu.open { transform: translateX(0); }
+
+    /* Robust Preloader */
+    .preloader {
+      position: fixed; inset: 0; background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity .45s ease, visibility .45s ease;
+    }
+    .preloader--hide { opacity: 0; visibility: hidden; pointer-events: none; }
+    .preloader__box { text-align: center; }
+    .preloader__spinner {
+      width: 64px; height: 64px; margin: 0 auto 12px;
+      border: 6px solid #e0e7ff; border-top-color: #4f46e5; border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .preloader__text { color: #4b5563; font-weight: 600; }
+    .preloader__skip { margin-top: 10px; font-size: 12px; color: #6366f1; cursor: pointer; text-decoration: underline; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Tabs (طريقة العمل) */
+    .tab-button { transition: all 0.3s ease; }
+    .tab-button.active { background: white; color: #4f46e5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79,70,229,0.15); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.5s ease-out; }
+  </style>
+</head>
+<body class="font-cairo bg-gray-50 text-gray-900 overflow-x-hidden">
+
+  <!-- Preloader -->
+  <div id="preloader" class="preloader" aria-live="polite" aria-busy="true">
+    <div class="preloader__box">
+      <div class="preloader__spinner" role="status" aria-label="Loading"></div>
+      <div class="preloader__text">جاري التحميل...</div>
+      <button id="preloaderSkip" class="preloader__skip" type="button">تخطي</button>
+    </div>
+  </div>
+
+  <!-- Header / Hero -->
+  <header class="relative min-h-screen overflow-hidden gradient-bg">
+    <div class="floating-shapes">
+      <div class="shape"></div><div class="shape"></div><div class="shape"></div><div class="shape"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-20 container mx-auto px-4 py-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl backdrop-blur-sm">🎓</div>
+          <div class="text-white">
+            <div class="text-sm opacity-90 font-medium">نظام الحضور</div>
+            <div class="text-xl font-black">المدرسي الذكي</div>
+          </div>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-8 text-white/90 font-medium">
+          <a href="#features" class="hover:text-white transition-colors duration-200 relative group">
+            الميزات <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-200 group-hover:w-full"></span>
+          </a>
+          <a href="#how" class="hover:text-white transition-colors duration-200 relative group">
+            طريقة العمل <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-200 group-hover:w-full"></span>
+          </a>
+          <a href="#stats" class="hover:text-white transition-colors duration-200 relative group">
+            الإحصائيات <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-200 group-hover:w-full"></span>
+          </a>
+          <a href="#cta" class="hover:text-white transition-colors duration-200 relative group">
+            ابدأ الآن <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-200 group-hover:w-full"></span>
+          </a>
+        </div>
+
+        <div class="hidden lg:block">
+          <a href="school-attendance-app.html" class="glass-card px-6 py-3 rounded-xl text-white font-bold hover:bg-white/20 transition-all duration-300 border border-white/30">فتح التطبيق</a>
+        </div>
+
+        <button id="mobile-menu-btn" class="lg:hidden text-white p-2" aria-label="فتح القائمة">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-80 h-full bg-white shadow-2xl z-30 lg:hidden">
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-xl">🎓</div>
+              <span class="font-bold text-gray-900">نظام الحضور</span>
+            </div>
+            <button id="close-menu" class="text-gray-500 hover:text-gray-700" aria-label="إغلاق القائمة">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+          </div>
+          <nav class="space-y-4">
+            <a href="#features" class="block py-3 text-gray-700 hover:text-indigo-600 font-medium transition-colors">الميزات</a>
+            <a href="#how" class="block py-3 text-gray-700 hover:text-indigo-600 font-medium transition-colors">طريقة العمل</a>
+            <a href="#stats" class="block py-3 text-gray-700 hover:text-indigo-600 font-medium transition-colors">الإحصائيات</a>
+            <a href="#cta" class="block py-3 text-gray-700 hover:text-indigo-600 font-medium transition-colors">ابدأ الآن</a>
+            <div class="pt-4 border-t border-gray-200">
+              <a href="school-attendance-app.html" class="block w-full text-center bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors">فتح التطبيق</a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 container mx-auto px-4 py-20 lg:py-32">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 text-white">
+          <div class="flex flex-wrap gap-3 mb-8">
+            <span class="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"><span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>مجاني بالكامل</span>
+            <span class="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"><span class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>يعمل دون إنترنت</span>
+            <span class="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"><span class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></span>تقارير احترافية</span>
+          </div>
+
+          <h1 class="text-3xl lg:text-6xl font-black leading-tight mb-4 animate-fade-in">
+            نظام الحضور المدرسي
+            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">الأذكى والأسرع</span>
+          </h1>
+
+          <p class="text-xl lg:text-2xl text-white/90 leading-relaxed mb-8 max-w-2xl animate-slide-up">
+            إدارة متطورة للحضور والغياب مع استيراد Excel وتقارير شاملة تتضمن بيانات المدرسة تلقائياً.
+            <span class="font-semibold text-yellow-300">كل شيء محلياً وآمن</span>
+          </p>
+
+          <div class="flex flex-wrap gap-4 mb-12 animate-slide-up" style="animation-delay: 0.3s;">
+            <a href="school-attendance-app.html" class="btn-glow bg-white text-indigo-700 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300">🚀 ابدأ الآن مجاناً</a>
+            <a href="#how" class="glass-card px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all duration-300 border border-white/30">🎬 شاهد طريقة العمل</a>
+          </div>
+
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-slide-up" style="animation-delay: 0.6s;">
+            <div class="glass-card p-4 rounded-xl text-center"><div class="text-2xl mb-2">⚡</div><div class="text-sm font-medium">تسجيل سريع</div></div>
+            <div class="glass-card p-4 rounded-xl text-center"><div class="text-2xl mb-2">📊</div><div class="text-sm font-medium">تقارير ذكية</div></div>
+            <div class="glass-card p-4 rounded-xl text-center"><div class="text-2xl mb-2">📥</div><div class="text-sm font-medium">استيراد Excel</div></div>
+            <div class="glass-card p-4 rounded-xl text-center"><div class="text-2xl mb-2">🔒</div><div class="text-sm font-medium">أمان محلي</div></div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="glass-strong rounded-3xl p-8 animate-float">
+            <div class="flex items-center justify-between mb-6">
+              <div><h3 class="text-xl font-bold text-gray-900">لوحة الحضور اليوم</h3><p class="text-gray-600 text-sm mt-1">الأحد، ١ سبتمبر ٢٠٢٥</p></div>
+              <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+            </div>
+            <div class="grid grid-cols-3 gap-4 mb-6">
+              <div class="bg-gradient-to-br from-green-500 to-emerald-600 p-4 rounded-2xl text-white"><div class="text-2xl font-black number-counter" id="present-count">42</div><div class="text-sm opacity-90">حاضر</div><div class="text-xs mt-1 opacity-75">✅ +5 اليوم</div></div>
+              <div class="bg-gradient-to-br from-red-500 to-rose-600 p-4 rounded-2xl text-white"><div class="text-2xl font-black number-counter" id="absent-count">8</div><div class="text-sm opacity-90">غائب</div><div class="text-xs mt-1 opacity-75">❌ -2 اليوم</div></div>
+              <div class="bg-gradient-to-br from-yellow-500 to-orange-600 p-4 rounded-2xl text-white"><div class="text-2xl font-black number-counter" id="late-count">3</div><div class="text-sm opacity-90">متأخر</div><div class="text-xs mt-1 opacity-75">⏰ ثابت</div></div>
+            </div>
+            <div class="mb-6">
+              <div class="flex justify-between items-center mb-2"><span class="text-sm font-medium text-gray-700">نسبة الحضور</span><span class="text-sm font-bold text-green-600" id="attendance-rate">84%</span></div>
+              <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden"><div class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full transition-all duration-1000 ease-out" style="width: 84%"></div></div>
+            </div>
+            <div class="space-y-3">
+              <a href="school-attendance-app.html#quickSection" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-xl font-bold transition-all duration-200 flex items-center justify-center gap-2">
+                ⚡ تسجيل سريع <span class="text-xs bg-white/20 px-2 py-1 rounded-full">جديد</span>
+              </a>
+              <div class="grid grid-cols-2 gap-3">
+                <a href="school-attendance-app.html#reportsSection" class="text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-xl font-medium transition-colors">📊 التقارير</a>
+                <a href="school-attendance-app.html#importSection" class="text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-xl font-medium transition-colors">📥 استيراد</a>
+              </div>
+            </div>
+            <div class="mt-6 pt-4 border-t border-gray-200">
+              <div class="flex items-center justify-between text-sm text-gray-500"><span>آخر تحديث: قبل دقيقتين</span><span class="flex items-center gap-1"><div class="w-2 h-2 bg-green-500 rounded-full"></div>متصل</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wave Separator -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 320" class="w-full h-32 fill-current text-gray-50">
+        <path d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+  </header>
+
+  <!-- How It Works -->
+  <section id="how" class="py-20 bg-white section-reveal">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+          <span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span> دليل مرئي
+        </div>
+        <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mb-4">كيف يعمل النظام؟ <span class="text-gradient block">خطوة بخطوة</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">رحلة سهلة ومبسطة من البداية حتى إنتاج التقارير الاحترافية</p>
+      </div>
+
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <button onclick="showStep(1)" class="tab-button active px-6 py-3 rounded-2xl font-bold border-2 border-indigo-200 text-indigo-600 hover:bg-indigo-50">١. الإعداد الأولي</button>
+          <button onclick="showStep(2)" class="tab-button px-6 py-3 rounded-2xl font-bold border-2 border-indigo-200 text-indigo-600 hover:bg-indigo-50">٢. استيراد الطلاب</button>
+          <button onclick="showStep(3)" class="tab-button px-6 py-3 rounded-2xl font-bold border-2 border-indigo-200 text-indigo-600 hover:bg-indigo-50">٣. تسجيل الحضور</button>
+          <button onclick="showStep(4)" class="tab-button px-6 py-3 rounded-2xl font-bold border-2 border-indigo-200 text-indigo-600 hover:bg-indigo-50">٤. التقارير والتصدير</button>
+        </div>
+
+        <div class="relative">
+          <!-- Step 1 -->
+          <div id="step-1" class="tab-content active">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">1</div>
+                  <div><h3 class="text-2xl font-bold text-gray-900">الإعداد الأولي</h3><p class="text-gray-600">ضبط معلومات المدرسة الأساسية</p></div>
+                </div>
+                <div class="space-y-4 mb-8">
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1"><span class="text-blue-600 text-sm font-bold">🏫</span></div><div><h4 class="font-bold text-gray-900 mb-1">أدخل اسم المدرسة</h4><p class="text-gray-600 text-sm">سيظهر في رأس جميع التقارير المُصدّرة</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-1"><span class="text-green-600 text-sm font-bold">📅</span></div><div><h4 class="font-bold text-gray-900 mb-1">حدد العام الدراسي</h4><p class="text-gray-600 text-sm">مثال: 2024-2025 أو 1446 هـ</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mt-1"><span class="text-purple-600 text-sm font-bold">⏰</span></div><div><h4 class="font-bold text-gray-900 mb-1">وقت بداية الدوام</h4><p class="text-gray-600 text-sm">لحساب التأخير والإحصائيات</p></div></div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                  <div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center"><span class="text-white text-sm">💡</span></div><h4 class="font-bold text-blue-900">نصيحة سريعة</h4></div>
+                  <p class="text-blue-800 text-sm leading-relaxed">هذه البيانات تُحفظ محلياً وتظهر تلقائياً في جميع التقارير. يمكنك تعديلها لاحقاً من قسم الإعدادات.</p>
+                </div>
+              </div>
+
+              <div class="bg-[#1e293b] rounded-2xl overflow-hidden shadow-2xl">
+                <div class="bg-[#334155] px-4 py-3 flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                  <span class="text-white text-sm mr-3">إعدادات النظام</span>
+                </div>
+                <div class="p-5 font-mono text-[13px] leading-6 text-gray-200">
+                  <div class="mb-2 text-green-400">📝 إعداد بيانات المدرسة:</div>
+                  <div><span class="text-blue-300">اسم المدرسة:</span> <span class="text-yellow-300">"مدرسة النور الأهلية"</span></div>
+                  <div><span class="text-blue-300">العام الدراسي:</span> <span class="text-yellow-300">"2024-2025"</span></div>
+                  <div><span class="text-blue-300">وقت البداية:</span> <span class="text-yellow-300">"07:00"</span></div>
+                  <div class="mt-3 text-green-400">✅ تم حفظ الإعدادات بنجاح</div>
+                  <div class="text-gray-500 text-xs mt-1">⏱️ الوقت المستغرق: 30 ثانية</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div id="step-2" class="tab-content">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">2</div>
+                  <div><h3 class="text-2xl font-bold text-gray-900">استيراد بيانات الطلاب</h3><p class="text-gray-600">إضافة قوائم الطلاب بطرق متعددة</p></div>
+                </div>
+                <div class="space-y-4 mb-8">
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-1"><span class="text-green-600 text-sm font-bold">📥</span></div><div><h4 class="font-bold text-gray-900 mb-1">تحميل قالب Excel</h4><p class="text-gray-600 text-sm">قالب جاهز بالأعمدة: الاسم | رقم الطالب | الهاتف</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mt-1"><span class="text-orange-600 text-sm font-bold">📂</span></div><div><h4 class="font-bold text-gray-900 mb-1">رفع الملف</h4><p class="text-gray-600 text-sm">سحب وإفلات أو اختيار ملف .xlsx/.csv</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mt-1"><span class="text-purple-600 text-sm font-bold">🎯</span></div><div><h4 class="font-bold text-gray-900 mb-1">تحديد الصف المستهدف</h4><p class="text-gray-600 text-sm">اختيار أو إدخال اسم الصف المخصص</p></div></div>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-2xl p-6">
+                  <div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center"><span class="text-white text-sm">⚡</span></div><h4 class="font-bold text-green-900">ميزات متقدمة</h4></div>
+                  <ul class="text-green-800 text-sm space-y-1">
+                    <li>• فلترة تلقائية للبيانات المكررة</li>
+                    <li>• معاينة مباشرة قبل الاستيراد</li>
+                    <li>• دعم آلاف الطلاب في ملف واحد</li>
+                    <li>• تقرير مفصل بنتائج الاستيراد</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-[#1e293b] rounded-2xl overflow-hidden shadow-2xl">
+                <div class="bg-[#334155] px-4 py-3 flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                  <span class="text-white text-sm mr-3">استيراد Excel</span>
+                </div>
+                <div class="p-5 font-mono text-[13px] leading-6 text-gray-200">
+                  <div class="mb-2 text-green-400">📊 معالجة ملف Excel:</div>
+                  <div><span class="text-blue-300">الملف:</span> <span class="text-yellow-300">"طلاب_الصف_الثالث.xlsx"</span></div>
+                  <div><span class="text-blue-300">الحجم:</span> <span class="text-yellow-300">47.2 KB</span></div>
+                  <div><span class="text-blue-300">الصفوف:</span> <span class="text-yellow-300">34 طالب</span></div>
+                  <div class="mt-3">
+                    <div class="text-blue-300">📋 معاينة البيانات:</div>
+                    <div class="bg-gray-700 p-2 rounded mt-1 text-xs">
+                      <div>أحمد محمد علي | 3001 | 0501234567</div>
+                      <div>فاطمة سالم أحمد | 3002 | 0509876543</div>
+                      <div>عبدالله خالد محمد | 3003 | 0507654321</div>
+                      <div class="text-gray-500">... و 31 طالب آخر</div>
+                    </div>
+                  </div>
+                  <div class="mt-3 text-green-400">✅ تم استيراد 34 طالب بنجاح</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div id="step-3" class="tab-content">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">3</div>
+                  <div><h3 class="text-2xl font-bold text-gray-900">تسجيل الحضور اليومي</h3><p class="text-gray-600">تسجيل سريع فردي أو جماعي</p></div>
+                </div>
+                <div class="space-y-4 mb-8">
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-1"><span class="text-green-600 text-sm font-bold">👤</span></div><div><h4 class="font-bold text-gray-900 mb-1">تسجيل فردي</h4><p class="text-gray-600 text-sm">اختيار الطالب + الحالة (حاضر/غائب/متأخر)</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1"><span class="text-blue-600 text-sm font-bold">👥</span></div><div><h4 class="font-bold text-gray-900 mb-1">تسجيل جماعي</h4><p class="text-gray-600 text-sm">تسجيل جميع طلاب الصف بحالة واحدة</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mt-1"><span class="text-yellow-600 text-sm font-bold">📊</span></div><div><h4 class="font-bold text-gray-900 mb-1">إحصائيات فورية</h4><p class="text-gray-600 text-sm">نسب ومؤشرات محدثة في الوقت الفعلي</p></div></div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-2xl p-6">
+                  <div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center"><span class="text-white text-sm">🚀</span></div><h4 class="font-bold text-purple-900">سرعة فائقة</h4></div>
+                  <p class="text-purple-800 text-sm leading-relaxed">تسجيل طالب واحد في أقل من 5 ثوانٍ، وتسجيل صف كامل (30 طالب) في أقل من دقيقة!</p>
+                </div>
+              </div>
+
+              <div class="bg-[#1e293b] rounded-2xl overflow-hidden shadow-2xl">
+                <div class="bg-[#334155] px-4 py-3 flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div><div class="w-3 h-3 rounded-full bg-yellow-400"></div><div class="w-3 h-3 rounded-full bg-green-400"></div>
+                  <span class="text-white text-sm mr-3">تسجيل الحضور</span>
+                </div>
+                <div class="p-5 font-mono text-[13px] leading-6 text-gray-200">
+                  <div class="mb-2 text-green-400">⚡ تسجيل سريع - الأحد ١ سبتمبر:</div>
+                  <div><span class="text-blue-300">[07:15]</span> أحمد محمد علي → <span class="text-green-400">حاضر ✅</span></div>
+                  <div><span class="text-blue-300">[07:16]</span> فاطمة سالم أحمد → <span class="text-green-400">حاضر ✅</span></div>
+                  <div><span class="text-blue-300">[07:18]</span> عبدالله خالد محمد → <span class="text-yellow-300">متأخر ⏰</span></div>
+                  <div><span class="text-blue-300">[07:20]</span> ميرا أحمد سعد → <span class="text-red-400">غائب ❌</span></div>
+                  <div class="mt-3 p-2 bg-gray-700 rounded">
+                    <div class="text-blue-300 text-xs">📊 إحصائيات مباشرة:</div>
+                    <div class="text-green-400 text-xs">• حاضر: 28 (82%)</div>
+                    <div class="text-red-400 text-xs">• غائب: 4 (12%)</div>
+                    <div class="text-yellow-300 text-xs">• متأخر: 2 (6%)</div>
+                  </div>
+                  <div class="mt-2 text-green-400 text-xs">⏱️ متوسط وقت التسجيل: 4 ثوانٍ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div id="step-4" class="tab-content">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div class="flex items-center gap-4 mb-6">
+                  <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold">4</div>
+                  <div><h3 class="text-2xl font-bold text-gray-900">التقارير والتصدير</h3><p class="text-gray-600">تقارير احترافية مع بيانات المدرسة</p></div>
+                </div>
+                <div class="space-y-4 mb-8">
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1"><span class="text-blue-600 text-sm font-bold">📄</span></div><div><h4 class="font-bold text-gray-900 mb-1">تقارير متنوعة</h4><p class="text-gray-600 text-sm">يومي، أسبوعي، شهري، ومخصص حسب التاريخ والصف</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mt-1"><span class="text-green-600 text-sm font-bold">📊</span></div><div><h4 class="font-bold text-gray-900 mb-1">تصدير شامل (Excel)</h4><p class="text-gray-600 text-sm">4 أوراق: بيانات المدرسة + الحضور + الطلاب + الإحصائيات</p></div></div>
+                  <div class="flex items-start gap-4"><div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mt-1"><span class="text-purple-600 text-sm font-bold">🧾</span></div><div><h4 class="font-bold text-gray-900 mb-1">CSV مع رأس المدرسة</h4><p class="text-gray-600 text-sm">تضمين تلقائي لاسم المدرسة والعام الدراسي</p></div></div>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 rounded-2xl p-6">
+                  <div class="flex items-center gap-3 mb-3"><div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center"><span class="text-white text-sm">📤</span></div><h4 class="font-bold text-orange-900">خيارات المشاركة</h4></div>
+                  <ul class="text-orange-800 text-sm space-y-1">
+                    <li>• طباعة مباشرة مع تنسيق احترافي</li>
+                    <li>• مشاركة عبر الويب أو واتساب</li>
+                    <li>• حفظ نسخ احتياطية JSON/Excel</li>
+                    <li>• تصدير إحصائيات موجزة أو مفصلة</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-[#1e293b] rounded-2xl overflow-hidden shadow-2xl">
+                <div class="bg-[#334155] px-4 py-3 flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div><div class="w-3 h-3 rounded-full bg-yellow-400"></div><div class="w-3 h-3 rounded-full bg-green-400"></div>
+                  <span class="text-white text-sm mr-3">إنشاء التقارير</span>
+                </div>
+                <div class="p-5 font-mono text-[13px] leading-6 text-gray-200">
+                  <div class="mb-2 text-green-400">📊 تقرير شامل - مدرسة النور الأهلية:</div>
+                  <div class="bg-gray-700 p-2 rounded mb-2"><div class="text-blue-300 text-xs">📋 ورقة 1: بيانات المدرسة</div><div class="text-gray-300 text-xs">اسم المدرسة، العام الدراسي، إجمالي الطلاب...</div></div>
+                  <div class="bg-gray-700 p-2 rounded mb-2"><div class="text-green-300 text-xs">📋 ورقة 2: الحضور (التقرير الحالي)</div><div class="text-gray-300 text-xs">سجلات الحضور بالتفصيل</div></div>
+                  <div class="bg-gray-700 p-2 rounded mb-2"><div class="text-purple-300 text-xs">📋 ورقة 3: الطلاب</div><div class="text-gray-300 text-xs">قائمة كاملة بأسماء وبيانات الطلاب</div></div>
+                  <div class="bg-gray-700 p-2 rounded mb-2"><div class="text-yellow-300 text-xs">📋 ورقة 4: إحصائيات اليوم</div><div class="text-gray-300 text-xs">نسب الحضور والغياب والتأخير</div></div>
+                  <div class="mt-2 text-green-400">✅ تم إنشاء "تقرير_شامل_2025-09-01.xlsx"</div>
+                  <div class="text-blue-300 text-xs">💾 الحجم: 127.3 KB | ⏱️ الوقت: 3 ثوانٍ</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits Summary -->
+        <div class="mt-20 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-8 lg:p-12">
+          <div class="text-center mb-12">
+            <h3 class="text-2xl lg:text-3xl font-black text-gray-900 mb-4">لماذا يختار المعلمون نظامنا؟</h3>
+            <p class="text-xl text-gray-600">توفير الوقت والجهد مع دقة عالية</p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="text-center"><div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4">⏱️</div><h4 class="text-xl font-bold text-gray-900 mb-2">توفير 85% من الوقت</h4><p class="text-gray-600">من 20 دقيقة يومياً إلى 3 دقائق فقط</p></div>
+            <div class="text-center"><div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4">🎯</div><h4 class="text-xl font-bold text-gray-900 mb-2">دقة 99.8%</h4><p class="text-gray-600">لا مزيد من الأخطاء الحسابية أو التكرار</p></div>
+            <div class="text-center"><div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4">📄</div><h4 class="text-xl font-bold text-gray-900 mb-2">تقارير احترافية</h4><p class="text-gray-600">جاهزة للمدير أو الإدارة التعليمية</p></div>
+          </div>
+          <div class="text-center mt-12">
+            <a href="school-attendance-app.html" class="inline-flex items-center gap-3 bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl">🚀 ابدأ الآن مجاناً
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+            </a>
+            <p class="text-gray-500 text-sm mt-3">لا حاجة للتسجيل • يعمل فوراً • مجاني بالكامل</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="stats" class="py-20 bg-gray-50 section-reveal">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mb-4">أرقام تتحدث عن <span class="text-gradient">التميز</span></h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">إحصائيات تعكس جودة وكفاءة نظام الحضور المدرسي</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4 animate-bounce-slow">🎯</div>
+          <div class="text-4xl font-black text-gray-900 mb-2 number-counter" data-target="99">99</div>
+          <div class="text-sm text-gray-600 font-medium">نسبة الدقة في التسجيل</div>
+          <div class="text-xs text-green-600 mt-1">+99.2% معدل نجاح</div>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4 animate-bounce-slow" style="animation-delay: .4s;">⚡</div>
+          <div class="text-4xl font-black text-gray-900 mb-2 number-counter" data-target="15">15</div>
+          <div class="text-sm text-gray-600 font-medium">ثانية متوسط وقت التسجيل</div>
+          <div class="text-xs text-green-600 mt-1">أسرع بـ 80%</div>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4 animate-bounce-slow" style="animation-delay: .8s;">📊</div>
+          <div class="text-4xl font-black text-gray-900 mb-2 number-counter" data-target="500">500</div>
+          <div class="text-sm text-gray-600 font-medium">مدرسة تستخدم النظام</div>
+          <div class="text-xs text-green-600 mt-1">نمو شهري +25%</div>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center text-3xl text-white mx-auto mb-4 animate-bounce-slow" style="animation-delay: 1.2s;">🏆</div>
+          <div class="text-4xl font-black text-gray-900 mb-2 number-counter" data-target="95">95</div>
+          <div class="text-sm text-gray-600 font-medium">نسبة رضا المستخدمين</div>
+          <div class="text-xs text-green-600 mt-1">تقييم ممتاز</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-20 bg-white section-reveal">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium mb-4"><span class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></span> ميزات متقدمة</div>
+        <h2 class="text-3xl lg:text-4xl font-black text-gray-900 mb-4">كل ما تحتاجه في <span class="text-gradient">نظام واحد</span></h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">أدوات متطورة لإدارة الحضور بكفاءة عالية ودقة متناهية</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="feature-card p-8 rounded-3xl group">
+          <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition-transform">🌐</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">يعمل دون إنترنت</h3>
+          <p class="text-gray-600 mb-4">نظام محلي 100% يحفظ البيانات على جهازك دون خوادم</p>
+          <div class="flex items-center gap-2 text-sm text-indigo-600 font-medium"><span>أمان كامل</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+        <div class="feature-card p-8 rounded-3xl group">
+          <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition-transform">📥</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">استيراد Excel متقدم</h3>
+          <p class="text-gray-600 mb-4">قوالب جاهزة وربط أعمدة ومعاينة قبل الاستيراد</p>
+          <div class="flex items-center gap-2 text-sm text-green-600 font-medium"><span>سهولة فائقة</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+        <div class="feature-card p-8 rounded-3xl group">
+          <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition-transform">⚡</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">تسجيل فوري</h3>
+          <p class="text-gray-600 mb-4">تسجيل فردي/جماعي مع إحصائيات مباشرة</p>
+          <div class="flex items-center gap-2 text-sm text-purple-600 font-medium"><span>سرعة فائقة</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+        <div class="feature-card p-8 rounded-3xl group">
+          <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition-transform">📊</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">تقارير احترافية</h3>
+          <p class="text-gray-600 mb-4">تقارير يومية/أسبوعية/شهرية ومخصصة</p>
+          <div class="flex items-center gap-2 text-sm text-orange-600 font-medium"><span>تحليل شامل</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+        <div class="feature-card p-8 rounded-3xl group">
+          <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition-transform">🧾</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">تصدير متعدد الصيغ</h3>
+          <p class="text-gray-600 mb-4">CSV وExcel مع تضمين بيانات المدرسة</p>
+          <div class="flex items-center gap-2 text-sm text-cyan-600 font-medium"><span>مرونة كاملة</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+        <div class="feature-card p-8 rounded-3xl group">
+          <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-green-600 rounded-2xl flex items-center justify-center text-2xl text-white mb-6 group-hover:scale-110 transition-transform">💾</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">نسخ احتياطي ذكي</h3>
+          <p class="text-gray-600 mb-4">حفظ/استيراد JSON ونقل بين الأجهزة</p>
+          <div class="flex items-center gap-2 text-sm text-teal-600 font-medium"><span>حماية البيانات</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="py-20 gradient-bg relative overflow-hidden section-reveal">
+    <div class="floating-shapes"><div class="shape"></div><div class="shape"></div><div class="shape"></div></div>
+    <div class="container mx-auto px-4 text-center text-white relative z-10">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl lg:text-5xl font-black mb-6 leading-tight">ابدأ رحلتك مع
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">نظام الحضور الأذكى</span>
+        </h2>
+        <p class="text-xl lg:text-2xl text-white/90 mb-8 leading-relaxed">انضم إلى المدارس التي وثقت بنظامنا لإدارة الحضور بكفاءة وأمان</p>
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+          <a href="school-attendance-app.html" class="btn-glow bg-white text-indigo-700 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 flex items-center gap-2">🚀 ابدأ مجاناً الآن
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+          </a>
+          <a href="#features" class="glass-card px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all duration-300 border border-white/30 flex items-center gap-2">📋 استكشف الميزات
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </a>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div class="glass-card p-6 rounded-2xl"><div class="text-3xl mb-3">🆓</div><div class="font-bold mb-2">مجاني بالكامل</div><div class="text-white/80 text-sm">بدون رسوم أو اشتراكات</div></div>
+          <div class="glass-card p-6 rounded-2xl"><div class="text-3xl mb-3">⚡</div><div class="font-bold mb-2">سريع وآمن</div><div class="text-white/80 text-sm">يعمل محلياً دون إنترنت</div></div>
+          <div class="glass-card p-6 rounded-2xl"><div class="text-3xl mb-3">🎯</div><div class="font-bold mb-2">سهل الاستخدام</div><div class="text-white/80 text-sm">واجهة بديهية</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <div class="flex items-center justify-center gap-3 mb-4">
+          <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center text-xl">🎓</div>
+          <div>
+            <div class="font-black text-lg">نظام الحضور المدرسي</div>
+            <div class="text-gray-400 text-sm">الحل الأذكى لإدارة الحضور</div>
+          </div>
+        </div>
+        <p class="text-gray-400 max-w-md mx-auto leading-relaxed mb-6">نظام متطور ومجاني لإدارة حضور الطلاب بكفاءة، مع تقارير احترافية وأمان محلي كامل.</p>
+        <div class="flex items-center justify-center gap-4 text-sm text-gray-500">
+          <span>© <span id="year">2025</span> نظام الحضور المدرسي</span><span>|</span>
+          <span class="flex items-center gap-1 text-green-400"><div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div> يعمل محلياً</span><span>|</span>
+          <a href="school-attendance-app.html" class="text-indigo-400 hover:text-indigo-300">فتح التطبيق</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Robust Preloader hide logic
+    (function () {
+      var pre = document.getElementById('preloader');
+      if (!pre) return;
+      function hidePreloader() {
+        if (pre.classList.contains('preloader--hide')) return;
+        pre.classList.add('preloader--hide');
+        setTimeout(function(){ pre.parentNode && pre.parentNode.removeChild(pre); }, 600);
+      }
+      var fallback = setTimeout(hidePreloader, 5000);
+      window.addEventListener('load', function(){ clearTimeout(fallback); hidePreloader(); });
+      document.addEventListener('DOMContentLoaded', function(){ setTimeout(hidePreloader, 2500); });
+      var skipBtn = document.getElementById('preloaderSkip');
+      if (skipBtn) skipBtn.addEventListener('click', hidePreloader);
+    })();
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenu = document.getElementById('close-menu');
+    if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+    if (closeMenu) closeMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          mobileMenu.classList.remove('open');
+        }
+      });
+    });
+
+    // Reveal on scroll
+    const revealObserver = new IntersectionObserver((entries)=> {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('revealed'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.section-reveal').forEach(el => revealObserver.observe(el));
+
+    // Number counters when stats visible
+    function animateNumbers() {
+      const counters = document.querySelectorAll('.number-counter[data-target]');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'), 10);
+        const duration = 1600;
+        const step = Math.max(1, Math.floor(target / (duration / 16)));
+        let current = 0;
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) { counter.textContent = target; clearInterval(timer); }
+          else { counter.textContent = current; }
+        }, 16);
+      });
+    }
+    const statsSection = document.getElementById('stats');
+    if (statsSection) {
+      const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) { animateNumbers(); statsObserver.unobserve(entry.target); } });
+      }, { threshold: 0.2 });
+      statsObserver.observe(statsSection);
+    }
+
+    // Tabs (How it works)
+    function showStep(n) {
+      const buttons = document.querySelectorAll('.tab-button');
+      const contents = document.querySelectorAll('.tab-content');
+      buttons.forEach((b, i) => b.classList.toggle('active', (i+1) === n));
+      contents.forEach((c, i) => c.classList.toggle('active', (i+1) === n));
+      // Ensure section is visible on mobile
+      const how = document.getElementById('how');
+      if (how) how.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    window.showStep = showStep;
+  </script>
+</body>
+</html>
