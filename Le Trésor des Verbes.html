@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>كنز التصريف - Le Trésor des Verbes</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Fredoka+One:wght@400&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* ========= Base ========= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root{
+            --bg1:#2c1810; --bg2:#8b4513; --gold:#daa520; --gold2:#b8860b;
+            --green:#32cd32; --green2:#228b22; --brown:#8b4513; --brown2:#654321;
+            --paper:#f4e4bc; --white:#fff; --text:#2d2d2d; --muted:#666;
+            --warn:#ff4444; --ok:#28a745; --accent1:#ff6b35; --accent2:#f7931e;
+            --royal:#2356c5;
+        }
+        html,body{ min-height:100%; }
+        body{
+            font-family:'Amiri', serif;
+            background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--gold));
+            color: var(--text);
+            overflow-x:hidden;
+        }
+        .game-container{ max-width:1200px; margin:0 auto; padding:20px; position:relative; }
+
+        /* ========= Header ========= */
+        .header{ text-align:center; margin-bottom: 18px; color:#fff; }
+        .game-title{
+            font-family:'Fredoka One', cursive;
+            font-size: 2.6rem; letter-spacing:.5px;
+            text-shadow:3px 3px 6px rgba(0,0,0,.5);
+            margin-bottom:8px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .subtitle{ font-size: 1.1rem; opacity:.9; }
+
+        /* ========= Map / Cards ========= */
+        .treasure-map{
+            background: var(--paper);
+            border: 8px solid var(--brown);
+            border-radius: 20px;
+            padding: 22px;
+            margin: 16px auto;
+            max-width: 900px;
+            position:relative;
+            box-shadow: inset 0 0 50px rgba(139, 69, 19, .25), 0 10px 30px rgba(0,0,0,.25);
+        }
+        .map-title{
+            text-align:center;
+            font-family:'Fredoka One', cursive;
+            font-size:1.6rem; color:var(--brown);
+            margin-bottom:18px;
+        }
+        .progress-bar{ width:100%; height: 18px; background: var(--brown); border-radius: 9px; overflow:hidden; }
+        .progress-fill{
+            height:100%; background: linear-gradient(90deg, var(--green), var(--green2));
+            width:0%; transition:width .6s ease; border-radius: 9px;
+        }
+        .progress-text{ text-align:center; color:var(--brown); font-weight:bold; margin:10px 0 16px; }
+
+        .map-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+        .map-piece{
+            aspect-ratio:1;
+            background: linear-gradient(135deg, var(--gold), var(--gold2));
+            border:3px solid var(--brown);
+            border-radius:14px;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            cursor:pointer; transition:transform .2s ease, box-shadow .2s ease;
+            position:relative; overflow:hidden; padding:8px; text-align:center;
+        }
+        .map-piece:hover{ transform:scale(1.035); box-shadow:0 8px 25px rgba(0,0,0,.28); }
+        .map-piece.completed{ background:linear-gradient(135deg, var(--green), var(--green2)); animation:glow 2s infinite alternate; }
+        @keyframes glow{ from{ box-shadow:0 0 16px var(--green);} to{ box-shadow: 0 0 30px var(--green), 0 0 46px var(--green);} }
+        .piece-number{ font-size:1.8rem; font-weight:700; color:#fff; text-shadow:2px 2px 4px rgba(0,0,0,.5); }
+        .piece-title{ font-size:.95rem; color:#fff; margin-top:4px; font-weight:700; }
+        .piece-subtitle{ font-size:.78rem; color:#f0f0f0; margin-top:2px; }
+        .piece-score { position: absolute; bottom: 8px; left: 8px; font-size: 0.8rem; color: #fff; font-weight: bold; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 6px; }
+        .lock-icon{ position:absolute; top:8px; right:8px; font-size:1.1rem; color:var(--brown); }
+
+        .start-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top: 6px; }
+
+        .btn{
+            appearance:none; border:none; cursor:pointer; font-weight:700;
+            border-radius: 22px; padding: 12px 22px; color:#fff;
+            background:linear-gradient(45deg, var(--accent1), var(--accent2));
+            box-shadow:0 6px 18px rgba(0,0,0,.25);
+            transition: transform .18s ease, box-shadow .18s ease, background .3s ease;
+        }
+        .btn:hover{ transform: translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.35); }
+        .btn.secondary{ background:linear-gradient(45deg, #555, #777); }
+        .btn.ghost{
+            background:transparent; border:2px solid var(--brown);
+            color:var(--brown); box-shadow:none;
+        }
+        .btn.small{ padding: 8px 14px; border-radius: 16px; font-size:.9rem; }
+
+        /* ========= Game Screen ========= */
+        .game-screen{
+            display:none; background:var(--paper); border:8px solid var(--brown); border-radius:20px;
+            padding: 18px; margin: 18px auto; max-width: 900px; box-shadow:0 10px 30px rgba(0,0,0,.25);
+        }
+
+        .topbar{
+            display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px;
+        }
+        .stats{
+            display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+            color:var(--brown); font-weight:700;
+        }
+        .badge{
+            background:#fff; border:2px solid var(--brown); color:var(--brown);
+            padding:6px 10px; border-radius:14px; font-size:.95rem; display:flex; align-items:center; gap:6px;
+        }
+        .timer{
+            display:flex; flex-direction:column; gap:6px; min-width:220px;
+        }
+        .timer-label{ color:var(--brown); font-weight:700; font-size:.95rem; }
+        .timer-bar{ height: 10px; background:#e6d7aa; border-radius: 6px; overflow:hidden; border:1px solid #d3be83; }
+        .timer-fill{ height:100%; width: 100%; background: linear-gradient(90deg, #12c2e9, #c471ed, #f64f59); transition: width .2s linear; }
+
+        .question-container{ text-align:center; margin:6px 0 16px; }
+        .question-title{ font-size:1.45rem; color:var(--brown); margin-bottom: 8px; }
+        .question-verb{ font-size: 1.9rem; color:var(--gold2); margin: 8px 0 4px; font-weight:700; }
+        .question-meta{ font-size:.98rem; color:var(--muted); }
+
+        .options-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:14px; margin:16px 0; }
+        .verb-card{
+            background:#fff; padding:16px; border-radius:14px; box-shadow:0 4px 15px rgba(0,0,0,.08);
+            border:3px solid transparent; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+            text-align:center; user-select:none; outline:none;
+        }
+        .verb-card:hover{ transform:translateY(-3px); box-shadow:0 8px 22px rgba(0,0,0,.16); }
+        .verb-card.correct{ border-color:var(--ok); background:#ecffef; animation:correctPulse .5s ease; }
+        .verb-card.incorrect{ border-color:var(--warn); background:#ffe7e7; animation:shake .45s ease; }
+        @keyframes correctPulse{ 0%{ transform:scale(1);} 50%{ transform:scale(1.035);} 100%{ transform:scale(1);} }
+        @keyframes shake{ 0%,100%{ transform:translateX(0);} 25%{ transform:translateX(-8px);} 75%{ transform:translateX(8px);} }
+
+        .treasure-reveal{ text-align:center; margin: 12px 0; display:none; }
+        .treasure-box{
+            width: 200px; height: 140px; margin: 0 auto 6px;
+            background:linear-gradient(45deg, var(--gold), var(--gold2));
+            border:4px solid var(--brown); border-radius:14px; display:flex; align-items:center; justify-content:center;
+            font-size:2.6rem; animation:treasureGlow 2s infinite alternate;
+        }
+        @keyframes treasureGlow{ from{ box-shadow:0 0 18px var(--gold);} to{ box-shadow:0 0 34px var(--gold), 0 0 50px var(--gold);} }
+
+        .toolbar{ display:flex; gap:10px; justify-content:center; margin-top: 12px; flex-wrap:wrap; }
+
+        /* ========= Floating helper ========= */
+        .frenchapeau{
+            position:fixed; bottom: 20px; right: 20px; width: 110px; height: 110px;
+            background: var(--brown); color:#fff; border-radius:50%;
+            display:flex; align-items:center; justify-content:center; font-size:2.4rem;
+            box-shadow:0 8px 22px rgba(0,0,0,.32); cursor:pointer; transition:transform .2s ease; z-index: 1000;
+        }
+        .frenchapeau:hover{ transform: scale(1.06) rotate(8deg); }
+        .hat{ position:absolute; top:-18px; font-size:1.9rem; animation:bounce 2s infinite; }
+        @keyframes bounce{ 0%,20%,50%,80%,100%{ transform:translateY(0);} 40%{ transform:translateY(-10px);} 60%{ transform:translateY(-5px);} }
+        .speech-bubble{
+            position:absolute; bottom: 120px; left: 50%; transform: translateX(-50%);
+            background:#fff; color:#333; padding: 12px 14px; border-radius: 14px;
+            box-shadow:0 4px 15px rgba(0,0,0,.2); max-width: 270px; font-size:.95rem; display:none; animation:fadeIn .45s ease;
+        }
+        .speech-bubble::after{
+            content:''; position:absolute; bottom:-10px; left: 50%; transform: translateX(-50%);
+            width:0; height:0;
+            border-left:10px solid transparent; border-right:10px solid transparent; border-top:10px solid #fff;
+        }
+        @keyframes fadeIn{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+
+        /* ========= Celebration ========= */
+        .celebration{ position:fixed; inset:0; pointer-events:none; z-index:1100; }
+        .confetti{ position:absolute; width:10px; height:10px; background:#ffd700; animation: confettiFall 3s linear forwards; }
+        @keyframes confettiFall{ to{ transform: translateY(100vh) rotate(360deg); opacity:0; } }
+
+        /* ========= Modal (replaces alert) ========= */
+        .modal{
+            position: fixed; inset:0; background: rgba(0,0,0,.45);
+            display:none; align-items:center; justify-content:center; z-index:1200; padding:18px;
+        }
+        .modal-card{
+            width:min(560px, 92vw); background:#fff; border-radius:16px; padding:18px;
+            box-shadow:0 12px 28px rgba(0,0,0,.35);
+        }
+        .modal-title{ font-weight:800; font-size:1.2rem; color:var(--brown); margin-bottom:8px; }
+        .modal-body{ color:#333; font-size:1rem; line-height:1.7; white-space: pre-wrap; }
+        .modal-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:14px; }
+
+        /* ========= Responsive ========= */
+        @media (max-width: 850px){
+            .map-grid{ grid-template-columns: repeat(2,1fr); }
+        }
+        @media (max-width: 560px){
+            .game-title{ font-size:2rem; }
+            .frenchapeau{ width:84px; height:84px; font-size:1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" aria-live="polite">
+        <div class="header" role="banner">
+            <h1 class="game-title">🏰 كنز التصريف</h1>
+            <p class="subtitle">Le Trésor des Verbes</p>
+        </div>
+
+        <!-- Map -->
+        <section id="mainMap" class="treasure-map" aria-label="خريطة المراحل">
+            <h2 class="map-title">🗺️ الخريطة القديمة - La Carte Ancienne</h2>
+            <div class="progress-bar" aria-label="شريط التقدم">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">التقدم: 0/6 مراحل مكتملة</div>
+            <div class="map-grid" id="mapGrid">
+                <div class="map-piece" data-level="1" tabindex="0" role="button" aria-label="ابدأ المرحلة الأولى">
+                    <div class="piece-number">1</div>
+                    <div class="piece-title">لغز المجموعات</div>
+                    <div class="piece-subtitle">Le Mystère des Groupes</div>
+                    <div class="lock-icon">🔓</div>
+                    <div class="piece-score" id="score-1" hidden></div>
+                </div>
+                <div class="map-piece" data-level="2" tabindex="0" role="button" aria-label="المرحلة الثانية">
+                    <div class="piece-number">2</div>
+                    <div class="piece-title">المجموعة الأولى</div>
+                    <div class="piece-subtitle">Premier Groupe</div>
+                    <div class="lock-icon">🔒</div>
+                    <div class="piece-score" id="score-2" hidden></div>
+                </div>
+                <div class="map-piece" data-level="3" tabindex="0" role="button" aria-label="المرحلة الثالثة">
+                    <div class="piece-number">3</div>
+                    <div class="piece-title">المجموعة الثانية</div>
+                    <div class="piece-subtitle">Deuxième Groupe</div>
+                    <div class="lock-icon">🔒</div>
+                    <div class="piece-score" id="score-3" hidden></div>
+                </div>
+                <div class="map-piece" data-level="4" tabindex="0" role="button" aria-label="المرحلة الرابعة">
+                    <div class="piece-number">4</div>
+                    <div class="piece-title">المجموعة الثالثة</div>
+                    <div class="piece-subtitle">Troisième Groupe</div>
+                    <div class="lock-icon">🔒</div>
+                    <div class="piece-score" id="score-4" hidden></div>
+                </div>
+                <div class="map-piece" data-level="5" tabindex="0" role="button" aria-label="المرحلة الخامسة">
+                    <div class="piece-number">5</div>
+                    <div class="piece-title">الاختبار الشامل</div>
+                    <div class="piece-subtitle">Le Grand Test</div>
+                    <div class="lock-icon">🔒</div>
+                    <div class="piece-score" id="score-5" hidden></div>
+                </div>
+                <div class="map-piece" data-level="6" tabindex="0" role="button" aria-label="المرحلة السادسة">
+                    <div class="piece-number">👑</div>
+                    <div class="piece-title">الكنز النهائي</div>
+                    <div class="piece-subtitle">Le Trésor Final</div>
+                    <div class="lock-icon">🔒</div>
+                    <div class="piece-score" id="score-6" hidden></div>
+                </div>
+            </div>
+            <div class="start-actions">
+                <button class="btn" id="startAdventureBtn">🚀 ابدأ المغامرة</button>
+                <button class="btn ghost" id="howToBtn" aria-haspopup="dialog">❓ كيف ألعب؟</button>
+                <button class="btn secondary small" id="resetBtn" title="إعادة ضبط التقدم">♻️ إعادة الضبط</button>
+            </div>
+        </section>
+
+        <!-- Game Screen -->
+        <section id="gameScreen" class="game-screen" aria-label="ساحة اللعب" hidden>
+            <div class="topbar">
+                <div class="stats">
+                    <button class="btn ghost small" id="backBtn" aria-label="عودة إلى الخريطة">← العودة للخريطة</button>
+                    <span class="badge" id="levelBadge">📍 المرحلة: 1</span>
+                    <span class="badge" id="qBadge">❓ السؤال: 1/5</span>
+                    <span class="badge" id="scoreBadge">⭐ النقاط: 0</span>
+                </div>
+                <div class="timer" aria-label="الوقت المتبقي">
+                    <span class="timer-label" id="timerLabel">⏳ الوقت: 20 ث</span>
+                    <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+                </div>
+            </div>
+            <div class="question-container">
+                <h3 class="question-title" id="questionTitle"></h3>
+                <div class="question-verb" id="questionVerb"></div>
+                <div class="question-meta" id="questionMeta"></div>
+            </div>
+            <div id="optionsContainer" class="options-grid" role="listbox" aria-label="خيارات الإجابة"></div>
+            <div class="treasure-reveal" id="treasureReveal">
+                <div class="treasure-box" aria-hidden="true">💎</div>
+                <p>أحسنت! لقد كشفت جزءاً من الكنز!</p>
+            </div>
+            <div class="toolbar">
+                <button id="nextButton" class="btn" style="display:none;">التالي ▶️</button>
+                <button id="tipButton" class="btn ghost">💡 تلميح</button>
+            </div>
+        </section>
+
+        <!-- Floating helper -->
+        <div class="frenchapeau" id="helperBtn" aria-haspopup="true" aria-controls="speechBubble" aria-label="Frenchapeau">
+            <div class="hat">🎩</div>
+            👨‍🏫
+            <div class="speech-bubble" id="speechBubble">مرحباً! أنا Frenchapeau، مرشدك في رحلة اكتشاف كنز التصريف!</div>
+        </div>
+
+        <!-- Celebration layer -->
+        <div class="celebration" id="celebration" aria-hidden="true"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-title" id="modalTitle">معلومة</div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-actions">
+                <button class="btn ghost" id="modalClose">حسناً</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* =======================
+          State and Global Variables
+        ======================== */
+        const STORAGE_KEY = 'verbTreasureProgress.v1';
+        const QUESTION_TIME = 20; // seconds per question
+
+        let currentLevel = 1;
+        let currentQuestion = 0;
+        let score = 0;
+        let completedLevels = 0;
+        let bestScores = {};
+        let currentQuestionData = {};
+
+        let timerId = null;
+        let timeLeft = QUESTION_TIME;
+        let speechVisible = false;
+
+        /* =======================
+          Verb Database
+          (Conjugations reviewed and corrected)
+        ======================== */
+        const verbDatabase = {
+            group1: [
+                { verb: "parler", conjugations: { je: "parle", tu: "parles", il: "parle", nous: "parlons", vous: "parlez", ils: "parlent" } },
+  { verb: "jouer", conjugations: { je: "joue", tu: "joues", il: "joue", nous: "jouons", vous: "jouez", ils: "jouent" } },
+  { verb: "étudier", conjugations: { je: "étudie", tu: "étudies", il: "étudie", nous: "étudions", vous: "étudiez", ils: "étudient" } },
+  { verb: "travailler", conjugations: { je: "travaille", tu: "travailles", il: "travaille", nous: "travaillons", vous: "travaillez", ils: "travaillent" } },
+  { verb: "regarder", conjugations: { je: "regarde", tu: "regardes", il: "regarde", nous: "regardons", vous: "regardez", ils: "regardent" } },
+  { verb: "écouter", conjugations: { je: "écoute", tu: "écoutes", il: "écoute", nous: "écoutons", vous: "écoutez", ils: "écoutent" } },
+  { verb: "danser", conjugations: { je: "danse", tu: "danses", il: "danse", nous: "dansons", vous: "dansez", ils: "dansent" } },
+  { verb: "chanter", conjugations: { je: "chante", tu: "chantes", il: "chante", nous: "chantons", vous: "chantez", ils: "chantent" } },
+  { verb: "marcher", conjugations: { je: "marche", tu: "marches", il: "marche", nous: "marchons", vous: "marchez", ils: "marchent" } },
+  { verb: "aimer", conjugations: { je: "aime", tu: "aimes", il: "aime", nous: "aimons", vous: "aimez", ils: "aiment" } },
+  { verb: "trouver", conjugations: { je: "trouve", tu: "trouves", il: "trouve", nous: "trouvons", vous: "trouvez", ils: "trouvent" } },
+  { verb: "donner", conjugations: { je: "donne", tu: "donnes", il: "donne", nous: "donnons", vous: "donnez", ils: "donnent" } },
+  { verb: "demander", conjugations: { je: "demande", tu: "demandes", il: "demande", nous: "demandons", vous: "demandez", ils: "demandent" } },
+  { verb: "rester", conjugations: { je: "reste", tu: "restes", il: "reste", nous: "restons", vous: "restez", ils: "restent" } },
+  { verb: "arriver", conjugations: { je: "arrive", tu: "arrives", il: "arrive", nous: "arrivons", vous: "arrivez", ils: "arrivent" } },
+  { verb: "tomber", conjugations: { je: "tombe", tu: "tombes", il: "tombe", nous: "tombons", vous: "tombez", ils: "tombent" } },
+  { verb: "entrer", conjugations: { je: "entre", tu: "entres", il: "entre", nous: "entrons", vous: "entrez", ils: "entrent" } },
+  { verb: "jouer", conjugations: { je: "joue", tu: "joues", il: "joue", nous: "jouons", vous: "jouez", ils: "jouent" } },
+  { verb: "porter", conjugations: { je: "porte", tu: "portes", il: "porte", nous: "portons", vous: "portez", ils: "portent" } },
+  { verb: "fermer", conjugations: { je: "ferme", tu: "fermes", il: "ferme", nous: "fermons", vous: "fermez", ils: "ferment" } },
+  { verb: "garder", conjugations: { je: "garde", tu: "gardes", il: "garde", nous: "gardons", vous: "gardez", ils: "gardent" } },
+  { verb: "montrer", conjugations: { je: "montre", tu: "montres", il: "montre", nous: "montrons", vous: "montrez", ils: "montrent" } },
+  { verb: "manger", conjugations: { je: "mange", tu: "manges", il: "mange", nous: "mangeons", vous: "mangez", ils: "mangent" } },
+  { verb: "nager", conjugations: { je: "nage", tu: "nages", il: "nage", nous: "nageons", vous: "nagez", ils: "nagent" } },
+  { verb: "voyager", conjugations: { je: "voyage", tu: "voyages", il: "voyage", nous: "voyageons", vous: "voyagez", ils: "voyagent" } },
+  { verb: "commencer", conjugations: { je: "commence", tu: "commences", il: "commence", nous: "commençons", vous: "commencez", ils: "commencent" } },
+  { verb: "placer", conjugations: { je: "place", tu: "places", il: "place", nous: "plaçons", vous: "placez", ils: "placent" } },
+  { verb: "lancer", conjugations: { je: "lance", tu: "lances", il: "lance", nous: "lançons", vous: "lancez", ils: "lancent" } },
+  { verb: "acheter", conjugations: { je: "achète", tu: "achètes", il: "achète", nous: "achetons", vous: "achetez", ils: "achètent" } },
+  { verb: "lever", conjugations: { je: "lève", tu: "lèves", il: "lève", nous: "levons", vous: "levez", ils: "lèvent" } },
+  { verb: "espérer", conjugations: { je: "espère", tu: "espères", il: "espère", nous: "espérons", vous: "espérez", ils: "espèrent" } },
+  { verb: "préférer", conjugations: { je: "préfère", tu: "préfères", il: "préfère", nous: "préférons", vous: "préférez", ils: "préfèrent" } },
+  { verb: "appeler", conjugations: { je: "appelle", tu: "appelles", il: "appelle", nous: "appelons", vous: "appelez", ils: "appellent" } },
+  { verb: "jeter", conjugations: { je: "jette", tu: "jettes", il: "jette", nous: "jetons", vous: "jetez", ils: "jettent" } },
+  { verb: "payer", conjugations: { je: "paie", tu: "paies", il: "paie", nous: "payons", vous: "payez", ils: "paient" } },
+  { verb: "essayer", conjugations: { je: "essaie", tu: "essaies", il: "essaie", nous: "essayons", vous: "essayez", ils: "essaient" } },
+  { verb: "envoyer", conjugations: { je: "envoie", tu: "envoies", il: "envoie", nous: "envoyons", vous: "envoyez", ils: "envoient" } },
+  { verb: "nettoyer", conjugations: { je: "nettoie", tu: "nettoies", il: "nettoie", nous: "nettoyons", vous: "nettoyez", ils: "nettoient" } }
+            ],
+            group2: [
+                { verb: "finir", conjugations: { je: "finis", tu: "finis", il: "finit", nous: "finissons", vous: "finissez", ils: "finissent" } },
+                { verb: "choisir", conjugations: { je: "choisis", tu: "choisis", il: "choisit", nous: "choisissons", vous: "choisissez", ils: "choisissent" } },
+                { verb: "grandir", conjugations: { je: "grandis", tu: "grandis", il: "grandit", nous: "grandissons", vous: "grandissez", ils: "grandissent" } },
+                { verb: "réussir", conjugations: { je: "réussis", tu: "réussis", il: "réussit", nous: "réussissons", vous: "réussissez", ils: "réussissent" } },
+                { verb: "remplir", conjugations: { je: "remplis", tu: "remplis", il: "remplit", nous: "remplissons", vous: "remplissez", ils: "remplissent" } },
+                { verb: "obéir", conjugations: { je: "obéis", tu: "obéis", il: "obéit", nous: "obéissons", vous: "obéissez", ils: "obéissent" } },
+                { verb: "réfléchir", conjugations: { je: "réfléchis", tu: "réfléchis", il: "réfléchit", nous: "réfléchissons", vous: "réfléchissez", ils: "réfléchissent" } },
+                { verb: "applaudir", conjugations: { je: "applaudis", tu: "applaudis", il: "applaudit", nous: "applaudissons", vous: "applaudissez", ils: "applaudissent" } },
+                { verb: "bâtir", conjugations: { je: "bâtis", tu: "bâtis", il: "bâtit", nous: "bâtissons", vous: "bâtissez", ils: "bâtissent" } },
+                { verb: "punir", conjugations: { je: "punis", tu: "punis", il: "punit", nous: "punissons", vous: "punissez", ils: "punissent" } },
+                { verb: "rougir", conjugations: { je: "rougis", tu: "rougis", il: "rougit", nous: "rougissons", vous: "rougissez", ils: "rougissent" } },
+                { verb: "jaunir", conjugations: { je: "jaunis", tu: "jaunis", il: "jaunit", nous: "jaunissons", vous: "jaunissez", ils: "jaunissent" } }
+            ],
+            group3: [
+                { verb: "être", conjugations: { je: "suis", tu: "es", il: "est", nous: "sommes", vous: "êtes", ils: "sont" } },
+                { verb: "avoir", conjugations: { je: "ai", tu: "as", il: "a", nous: "avons", vous: "avez", ils: "ont" } },
+                { verb: "faire", conjugations: { je: "fais", tu: "fais", il: "fait", nous: "faisons", vous: "faites", ils: "font" } },
+                { verb: "aller", conjugations: { je: "vais", tu: "vas", il: "va", nous: "allons", vous: "allez", ils: "vont" } },
+                { verb: "prendre", conjugations: { je: "prends", tu: "prends", il: "prend", nous: "prenons", vous: "prenez", ils: "prennent" } },
+                { verb: "venir", conjugations: { je: "viens", tu: "viens", il: "vient", nous: "venons", vous: "venez", ils: "viennent" } },
+                { verb: "voir", conjugations: { je: "vois", tu: "vois", il: "voit", nous: "voyons", vous: "voyez", ils: "voient" } },
+                { verb: "savoir", conjugations: { je: "sais", tu: "sais", il: "sait", nous: "savons", vous: "savez", ils: "savent" } },
+                { verb: "pouvoir", conjugations: { je: "peux", tu: "peux", il: "peut", nous: "pouvons", vous: "pouvez", ils: "peuvent" } },
+                { verb: "vouloir", conjugations: { je: "veux", tu: "veux", il: "veut", nous: "voulons", vous: "voulez", ils: "veulent" } },
+                { verb: "dire", conjugations: { je: "dis", tu: "dis", il: "dit", nous: "disons", vous: "dites", ils: "disent" } },
+                { verb: "mettre", conjugations: { je: "mets", tu: "mets", il: "met", nous: "mettons", vous: "mettez", ils: "mettent" } },
+                { verb: "boire", conjugations: { je: "bois", tu: "bois", il: "boit", nous: "buvons", vous: "buvez", ils: "boivent" } },
+                { verb: "lire", conjugations: { je: "lis", tu: "lis", il: "lit", nous: "lisons", vous: "lisez", ils: "lisent" } },
+                { verb: "écrire", conjugations: { je: "écris", tu: "écris", il: "écrit", nous: "écrivons", vous: "écrivez", ils: "écrivent" } },
+                { verb: "dormir", conjugations: { je: "dors", tu: "dors", il: "dort", nous: "dormons", vous: "dormez", ils: "dorment" } },
+                { verb: "partir", conjugations: { je: "pars", tu: "pars", il: "part", nous: "partons", vous: "partez", ils: "partent" } },
+				{ verb: "courir", conjugations: { je: "cours", tu: "cours", il: "court", nous: "courons", vous: "courez", ils: "courent" } },
+                { verb: "mourir", conjugations: { je: "meurs", tu: "meurs", il: "meurt", nous: "mourons", vous: "mourez", ils: "meurent" } },
+                { verb: "vivre", conjugations: { je: "vis", tu: "vis", il: "vit", nous: "vivons", vous: "vivez", ils: "vivent" } },
+                { verb: "suivre", conjugations: { je: "suis", tu: "suis", il: "suit", nous: "suivons", vous: "suivez", ils: "suivent" } },
+                { verb: "rire", conjugations: { je: "ris", tu: "ris", il: "rit", nous: "rions", vous: "riez", ils: "rient" } },
+                { verb: "sourire", conjugations: { je: "souris", tu: "souris", il: "sourit", nous: "sourions", vous: "souriez", ils: "sourient" } },
+  { verb: "conduire", conjugations: { je: "conduis", tu: "conduis", il: "conduit", nous: "conduisons", vous: "conduisez", ils: "conduisent" } },
+  { verb: "produire", conjugations: { je: "produis", tu: "produis", il: "produit", nous: "produisons", vous: "produisez", ils: "produisent" } },
+  { verb: "traduire", conjugations: { je: "traduis", tu: "traduis", il: "traduit", nous: "traduisons", vous: "traduisez", ils: "traduisent" } },
+  { verb: "connaître", conjugations: { je: "connais", tu: "connais", il: "connaît", nous: "connaissons", vous: "connaissez", ils: "connaissent" } },
+  { verb: "naître", conjugations: { je: "nais", tu: "nais", il: "naît", nous: "naissons", vous: "naissez", ils: "naissent" } },
+  { verb: "craindre", conjugations: { je: "crains", tu: "crains", il: "craint", nous: "craignons", vous: "craignez", ils: "craignent" } },
+  { verb: "atteindre", conjugations: { je: "atteins", tu: "atteins", il: "atteint", nous: "atteignons", vous: "atteignez", ils: "atteignent" } },
+  { verb: "éteindre", conjugations: { je: "éteins", tu: "éteins", il: "éteint", nous: "éteignons", vous: "éteignez", ils: "éteignent" } },
+  { verb: "peindre", conjugations: { je: "peins", tu: "peins", il: "peint", nous: "peignons", vous: "peignez", ils: "peignent" } },
+  { verb: "joindre", conjugations: { je: "joins", tu: "joins", il: "joint", nous: "joignons", vous: "joignez", ils: "joignent" } },
+  { verb: "battre", conjugations: { je: "bats", tu: "bats", il: "bat", nous: "battons", vous: "battez", ils: "battent" } },
+  { verb: "mettre", conjugations: { je: "mets", tu: "mets", il: "met", nous: "mettons", vous: "mettez", ils: "mettent" } },
+  { verb: "rompre", conjugations: { je: "romps", tu: "romps", il: "rompt", nous: "rompons", vous: "rompez", ils: "rompent" } },
+  { verb: "vaincre", conjugations: { je: "vaincs", tu: "vaincs", il: "vainc", nous: "vainquons", vous: "vainquez", ils: "vainquent" } }
+]
+                    };
+        const pronouns = ["je", "tu", "il", "elle", "nous", "vous", "ils", "elles"];
+
+        const levels = {
+            1: { title: "لغز المجموعات - Le Mystère des Groupes", questionCount: 8 },
+            2: { title: "تصريف المجموعة الأولى - Premier Groupe", questionCount: 12 },
+            3: { title: "تصريف المجموعة الثانية - Deuxième Groupe", questionCount: 12 },
+            4: { title: "تصريف المجموعة الثالثة - Troisième Groupe", questionCount: 15 },
+            5: { title: "الاختبار الشامل - Le Grand Test", questionCount: 20 },
+            6: { title: "الكنز النهائي - Le Trésor Final", questionCount: 20 }
+        };
+
+        const speeches = [
+            "مرحباً! أنا Frenchapeau، مرشدك في رحلة اكتشاف كنز التصريف!",
+            "كل فعل تصرفه بشكل صحيح، يرمم جزءاً من الخريطة!",
+            "أنت تقترب من الكنز... لا تستسلم!",
+            "ممتاز! أرى أنك تتقن التصريف بسرعة!",
+            "تذكر: المجموعة الأولى تنتهي بـ -er",
+            "المجموعة الثانية تنتهي بـ -ir والثالثة أفعال شاذة!"
+        ];
+
+        /* =======================
+          UI Utilities
+        ======================== */
+        const $ = (sel, root = document) => root.querySelector(sel);
+        const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+        const els = {
+            mainMap: $("#mainMap"),
+            gameScreen: $("#gameScreen"),
+            progressFill: $("#progressFill"),
+            progressText: $("#progressText"),
+            mapGrid: $("#mapGrid"),
+            startAdventureBtn: $("#startAdventureBtn"),
+            howToBtn: $("#howToBtn"),
+            resetBtn: $("#resetBtn"),
+            backBtn: $("#backBtn"),
+            questionTitle: $("#questionTitle"),
+            questionVerb: $("#questionVerb"),
+            questionMeta: $("#questionMeta"),
+            optionsContainer: $("#optionsContainer"),
+            nextButton: $("#nextButton"),
+            treasureReveal: $("#treasureReveal"),
+            celebration: $("#celebration"),
+            helperBtn: $("#helperBtn"),
+            speechBubble: $("#speechBubble"),
+            timerLabel: $("#timerLabel"),
+            timerFill: $("#timerFill"),
+            levelBadge: $("#levelBadge"),
+            qBadge: $("#qBadge"),
+            scoreBadge: $("#scoreBadge"),
+            tipButton: $("#tipButton"),
+            modal: $("#modal"),
+            modalTitle: $("#modalTitle"),
+            modalBody: $("#modalBody"),
+            modalClose: $("#modalClose"),
+        };
+
+        function show(el) { el.hidden = false; el.style.display = 'block'; }
+        function hide(el) { el.hidden = true; el.style.display = 'none'; }
+        
+        function toast(message, title = "معلومة") {
+            els.modalTitle.textContent = title;
+            els.modalBody.textContent = message;
+            els.modal.style.display = 'flex';
+        }
+        function closeToast() { els.modal.style.display = 'none'; }
+        function createConfetti(n = 26, duration = 3400) {
+            for (let i = 0; i < n; i++) {
+                const c = document.createElement('div');
+                c.className = 'confetti';
+                c.style.left = (Math.random() * 100) + '%';
+                c.style.backgroundColor = ['#ffd700', '#ff6b35', '#32cd32', '#ff69b4', '#9370db'][Math.floor(Math.random() * 5)];
+                c.style.animationDuration = (duration / 1000 + Math.random() * 1.5) + 's';
+                c.style.animationDelay = (Math.random() * 1.5) + 's';
+                els.celebration.appendChild(c);
+                setTimeout(() => c.remove(), duration + 2500);
+            }
+        }
+
+        /* =======================
+          Progress Management
+        ======================== */
+        function saveProgress() {
+            const data = { completedLevels, bestScores };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadProgress() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const data = JSON.parse(raw);
+                if (typeof data.completedLevels === 'number') completedLevels = data.completedLevels;
+                if (typeof data.bestScores === 'object') bestScores = data.bestScores;
+            } catch (e) {
+                console.error("Error loading progress from localStorage:", e);
+                // In case of error, just ignore and start fresh
+            }
+        }
+        
+        function resetProgress() {
+            completedLevels = 0;
+            bestScores = {};
+            localStorage.removeItem(STORAGE_KEY);
+            updateProgressUI();
+            toast("تمت إعادة ضبط التقدم بنجاح. بالتوفيق!", "إعادة الضبط");
+        }
+
+        function updateBestScore(level, newScore) {
+            bestScores[level] = Math.max(bestScores[level] || 0, newScore);
+        }
+
+        /* =======================
+          Language Helper Functions
+        ======================== */
+        function normalizePronoun(p) {
+            if (p === "elle") return "il";
+            if (p === "elles") return "ils";
+            return p;
+        }
+
+        function formatJe(pronoun, form) {
+            if (pronoun !== "je") return `${pronoun} ${form}`;
+            const first = (form || "").charAt(0).toLowerCase();
+            const vowels = "aàâäeéèêëiîïoôöuùûüyh";
+            if (vowels.includes(first)) return `j'${form}`;
+            return `je ${form}`;
+        }
+        function makeAnswer(pronoun, conj) {
+            return formatJe(pronoun, conj);
+        }
+        function groupLabel(g) {
+            if (g === 1) return "المجموعة الأولى (-er)";
+            if (g === 2) return "المجموعة الثانية (-ir)";
+            return "المجموعة الثالثة (شاذة)";
+        }
+        
+        /* =======================
+          Question Generation
+        ======================== */
+        function getAllVerbs() {
+            return [...verbDatabase.group1, ...verbDatabase.group2, ...verbDatabase.group3];
+        }
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function shuffle(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function generateRandomQuestion(level) {
+            switch (level) {
+                case 1: { // Classification
+                    const all = getAllVerbs();
+                    const v = pick(all);
+                    let gIndex = 1;
+                    if (verbDatabase.group2.find(x => x.verb === v.verb)) gIndex = 2;
+                    else if (verbDatabase.group3.find(x => x.verb === v.verb)) gIndex = 3;
+                    const options = ["المجموعة الأولى (-er)", "المجموعة الثانية (-ir)", "المجموعة الثالثة (شاذة)"];
+                    return {
+                        type: "classify",
+                        question: "صنّف هذا الفعل حسب مجموعته:",
+                        verb: v.verb,
+                        options,
+                        correctIndex: gIndex - 1,
+                        explanation: `${v.verb} ينتمي إلى ${groupLabel(gIndex)}`
+                    };
+                }
+                case 2:
+                case 3:
+                case 4:
+                case 5: {
+                    const pool = level === 2 ? verbDatabase.group1 :
+                                 level === 3 ? verbDatabase.group2 :
+                                 level === 4 ? verbDatabase.group3 :
+                                 getAllVerbs();
+                    const v = pick(pool);
+                    const pro = pick(pronouns);
+                    const correct = makeAnswer(pro, v.conjugations[normalizePronoun(pro)]);
+                    
+                    const wrongs = generateSmartWrongAnswers(v, pro, correct);
+                    const options = shuffle([correct, ...wrongs]).slice(0, 4);
+
+                    return {
+                        type: level === 5 ? "mixed" : "conjugate",
+                        question: level === 5 ? "اختبار شامل - اختر التصريف الصحيح:" : "اختر التصريف الصحيح:",
+                        display: `${v.verb} + ${pro}`,
+                        options,
+                        correctAnswer: correct,
+                        explanation: `${correct} - هو التصريف الصحيح.`
+                    };
+                }
+                case 6: { // Final Treasure
+                    return generateFinalLevelQuestion();
+                }
+            }
+        }
+
+        function generateSmartWrongAnswers(verbObj, pronoun, correct) {
+            const wrongSet = new Set();
+            const allVerbs = getAllVerbs().filter(v => v.verb !== verbObj.verb);
+            const altPronoun = pick(pronouns.filter(p => p !== pronoun));
+            const normPronoun = normalizePronoun(pronoun);
+            
+            // Wrong Answer 1: Same verb, different pronoun
+            if (altPronoun) {
+                const altConj = verbObj.conjugations[normalizePronoun(altPronoun)];
+                if (altConj) wrongSet.add(makeAnswer(altPronoun, altConj));
+            }
+
+            // Wrong Answer 2: Different verb, same pronoun
+            const otherVerb = pick(allVerbs);
+            if (otherVerb) {
+                const otherConj = otherVerb.conjugations[normPronoun];
+                if (otherConj) wrongSet.add(makeAnswer(pronoun, otherConj));
+            }
+
+            // Wrong Answer 3: Infinitive form
+            wrongSet.add(`${pronoun} ${verbObj.verb}`);
+
+            // Ensure we have at least 3 unique wrong answers
+            while (wrongSet.size < 3) {
+                const randomWrong = `خطأ ${Math.random().toString(36).substring(7)}`;
+                wrongSet.add(randomWrong);
+            }
+
+            const finalWrongs = Array.from(wrongSet).filter(w => w !== correct).slice(0, 3);
+            return finalWrongs;
+        }
+
+        function generateFinalLevelQuestion() {
+            const all = getAllVerbs();
+            const v = pick(all);
+            const pro = pick(pronouns);
+            const correct = makeAnswer(pro, v.conjugations[normalizePronoun(pro)]);
+
+            const wrongs = generateSmartWrongAnswers(v, pro, correct);
+            const options = shuffle([correct, ...wrongs]).slice(0, 4);
+
+            return {
+                type: "final",
+                question: "🏆 الكنز النهائي - اختر التصريف الصحيح:",
+                display: `${v.verb} + ${pro}`,
+                options,
+                correctAnswer: correct,
+                explanation: `${correct} - تصريف صحيح للكنز النهائي!`
+            };
+        }
+
+        /* =======================
+          Game Logic
+        ======================== */
+        function updateProgressUI() {
+            const percentage = (completedLevels / 6) * 100;
+            els.progressFill.style.width = percentage + '%';
+            els.progressText.textContent = `التقدم: ${completedLevels}/6 مراحل مكتملة`;
+
+            $$(".map-piece").forEach(piece => {
+                const lvl = parseInt(piece.dataset.level, 10);
+                const lock = piece.querySelector('.lock-icon');
+                const scoreEl = piece.querySelector('.piece-score');
+                piece.classList.toggle('completed', lvl <= completedLevels);
+                
+                if (lvl <= completedLevels) {
+                    lock.textContent = '✅';
+                } else if (lvl === completedLevels + 1) {
+                    lock.textContent = '🔓';
+                } else {
+                    lock.textContent = '🔒';
+                }
+
+                if (bestScores[lvl]) {
+                    scoreEl.textContent = `${bestScores[lvl]}%`;
+                    scoreEl.hidden = false;
+                } else {
+                    scoreEl.hidden = true;
+                }
+            });
+        }
+
+        function openGameScreen() {
+            hide(els.mainMap);
+            show(els.gameScreen);
+        }
+
+        function backToMap() {
+            stopTimer();
+            show(els.mainMap);
+            hide(els.gameScreen);
+            els.treasureReveal.style.display = 'none';
+            saveProgress();
+            updateProgressUI();
+        }
+
+        function startLevel(level) {
+            if (level > completedLevels + 1 && level !== 6) {
+                toast("يجب إكمال المراحل السابقة أولاً!", "تنبيه");
+                return;
+            }
+            if (level === 6 && completedLevels < 5) {
+                toast("يجب إكمال جميع المراحل السابقة للوصول للكنز النهائي!", "تنبيه");
+                return;
+            }
+            currentLevel = level;
+            currentQuestion = 0;
+            score = 0;
+            openGameScreen();
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const levelData = levels[currentLevel];
+            if (!levelData || currentQuestion >= levelData.questionCount) {
+                completeLevel();
+                return;
+            }
+
+            const q = generateRandomQuestion(currentLevel);
+            currentQuestionData = q;
+
+            els.levelBadge.textContent = `📍 المرحلة: ${currentLevel}`;
+            els.qBadge.textContent = `❓ السؤال: ${currentQuestion + 1}/${levelData.questionCount}`;
+            els.scoreBadge.textContent = `⭐ النقاط: ${score}`;
+
+            els.questionTitle.textContent = q.question;
+            els.questionVerb.textContent = q.verb || q.display || '';
+            els.questionMeta.textContent = `السؤال ${currentQuestion + 1} من ${levelData.questionCount}`;
+
+            els.optionsContainer.innerHTML = '';
+
+            const options = q.options || [];
+            options.forEach((optionText, index) => {
+                const card = document.createElement('button');
+                card.className = 'verb-card';
+                card.type = 'button';
+                card.setAttribute('role', 'option');
+                card.setAttribute('tabindex', '0');
+                card.textContent = optionText;
+                card.onclick = () => handleAnswer(card, index);
+                els.optionsContainer.appendChild(card);
+            });
+
+            els.nextButton.style.display = 'none';
+            els.treasureReveal.style.display = 'none';
+            startTimer(() => handleTimeout());
+        }
+
+        function handleAnswer(selectedCard, selectedIndex) {
+            stopTimer();
+            const q = currentQuestionData;
+            const isCorrect = ('correctAnswer' in q) ? (selectedCard.textContent === q.correctAnswer) : (selectedIndex === q.correctIndex);
+
+            $$(".verb-card", els.optionsContainer).forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                selectedCard.classList.add('correct');
+                score++;
+                els.scoreBadge.textContent = `⭐ النقاط: ${score}`;
+                showTreasureReveal();
+                toast(`✅ إجابة صحيحة!\n\n💡 ${q.explanation || 'أحسنت!'}`);
+            } else {
+                selectedCard.classList.add('incorrect');
+                if ('correctAnswer' in q) {
+                    $$(".verb-card", els.optionsContainer).forEach(btn => {
+                        if (btn.textContent === q.correctAnswer) btn.classList.add('correct');
+                    });
+                    toast(`❌ إجابة خاطئة!\n\n💡 الإجابة الصحيحة: ${q.correctAnswer}\n\n${q.explanation || ''}`, "إجابة خاطئة");
+                } else if ('correctIndex' in q) {
+                    const correctBtn = $$(".verb-card", els.optionsContainer)[q.correctIndex];
+                    if (correctBtn) correctBtn.classList.add('correct');
+                    toast(`❌ إجابة خاطئة!\n\n💡 الإجابة الصحيحة: ${q.options[q.correctIndex]}\n\n${q.explanation || ''}`, "إجابة خاطئة");
+                }
+            }
+            els.nextButton.style.display = 'inline-block';
+        }
+
+        function handleTimeout() {
+            const q = currentQuestionData;
+            $$(".verb-card", els.optionsContainer).forEach(btn => btn.disabled = true);
+            
+            if ('correctAnswer' in q) {
+                $$(".verb-card", els.optionsContainer).forEach(btn => {
+                    if (btn.textContent === q.correctAnswer) btn.classList.add('correct');
+                });
+                toast(`⏰ انتهى الوقت!\n\n💡 الإجابة الصحيحة: ${q.correctAnswer}\n\n${q.explanation || ''}`, "انتهى الوقت");
+            } else if ('correctIndex' in q) {
+                const correctBtn = $$(".verb-card", els.optionsContainer)[q.correctIndex];
+                if (correctBtn) correctBtn.classList.add('correct');
+                toast(`⏰ انتهى الوقت!\n\n💡 الإجابة الصحيحة: ${q.options[q.correctIndex]}\n\n${q.explanation || ''}`, "انتهى الوقت");
+            }
+            els.nextButton.style.display = 'inline-block';
+        }
+        
+        function showTreasureReveal() {
+            els.treasureReveal.style.display = 'block';
+            createConfetti(26, 3400);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function completeLevel() {
+            stopTimer();
+            const levelData = levels[currentLevel];
+            const percentage = Math.round((score / levelData.questionCount) * 100);
+            
+            completedLevels = Math.max(completedLevels, currentLevel);
+            updateBestScore(currentLevel, percentage);
+            saveProgress();
+            
+            let message = `🎉 تهانينا! لقد أكملت المرحلة ${currentLevel}\n\n🏆 النتيجة: ${score}/${levelData.questionCount} (${percentage}%)\n\n`;
+            if (percentage >= 80) message += "🌟 أداء ممتاز! أنت بطل التصريف!";
+            else if (percentage >= 60) message += "👍 أداء جيد! استمر في التدريب!";
+            else message += "💪 يمكنك تحسين أدائك! حاول مرة أخرى!";
+            
+            message += "\n\n🗺️ تم كشف جزء جديد من الخريطة!";
+            toast(message, "مرحلة مكتملة");
+            backToMap();
+
+            if (currentLevel === 6) {
+                createConfetti(90, 5200);
+                toast("🏆 مبروك! لقد حصلت على الكنز النهائي!\n\n👑 أنت الآن بطل التصريف الفرنسي!\n\n🎖️ شهادة الفاتح اللغوي في انتظارك!", "الكنز النهائي");
+            }
+        }
+        
+        /* =======================
+          Timer Management
+        ======================== */
+        function startTimer(onExpire) {
+            clearInterval(timerId);
+            timeLeft = QUESTION_TIME;
+            updateTimerUI();
+            timerId = setInterval(() => {
+                timeLeft--;
+                updateTimerUI();
+                if (timeLeft <= 0) {
+                    clearInterval(timerId);
+                    onExpire?.();
+                }
+            }, 1000);
+        }
+        function stopTimer() { clearInterval(timerId); }
+        function updateTimerUI() {
+            els.timerLabel.textContent = `⏳ الوقت: ${Math.max(0, timeLeft)} ث`;
+            const pct = Math.max(0, Math.min(100, (timeLeft / QUESTION_TIME) * 100));
+            els.timerFill.style.width = pct + '%';
+        }
+
+        /* =======================
+          Frenchapeau & Help
+        ======================== */
+        function toggleSpeech() {
+            speechVisible = !speechVisible;
+            if (speechVisible) {
+                const say = pick(speeches);
+                els.speechBubble.textContent = say;
+                els.speechBubble.style.display = 'block';
+                setTimeout(() => { els.speechBubble.style.display = 'none'; speechVisible = false; }, 4200);
+            } else {
+                els.speechBubble.style.display = 'none';
+            }
+        }
+
+        function showHowTo() {
+            toast(
+`🎯 أهلاً بك في كنز التصريف!
+Bienvenue dans le Trésor des Verbes!
+
+• لديك 6 مراحل من السهل إلى المتقدم.
+• في كل سؤال اختر التصريف الصحيح.
+• لديك ${QUESTION_TIME} ثانية لكل سؤال.
+• تحصل على نقاط لكل إجابة صحيحة.
+• أكمل المراحل لفتح الكنز النهائي.
+
+نصيحة: انتبه للتعاقد مع "je" → "j'..." قبل الحروف المتحركة!`,
+                "كيفية اللعب - Comment jouer"
+            );
+        }
+
+        /* =======================
+          UI Event Binding
+        ======================== */
+        function bindMapInteractions() {
+            $$(".map-piece").forEach(piece => {
+                piece.addEventListener('click', () => {
+                    const lv = parseInt(piece.dataset.level, 10);
+                    startLevel(lv);
+                });
+                piece.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        piece.click();
+                    }
+                });
+            });
+        }
+
+        function bindUI() {
+            els.startAdventureBtn.addEventListener('click', () => startLevel(1));
+            els.howToBtn.addEventListener('click', showHowTo);
+            els.resetBtn.addEventListener('click', resetProgress);
+            els.backBtn.addEventListener('click', backToMap);
+            els.nextButton.addEventListener('click', nextQuestion);
+            els.tipButton.addEventListener('click', () => {
+                const tips = [
+                    "انظر إلى نهاية الفعل: -er غالباً المجموعة الأولى.",
+                    "المجموعة الثانية عادةً أفعال -ir مع نهايات: -is, -is, -it, -issons, -issez, -issent.",
+                    "بعض الأفعال شاذة بالمجموعة الثالثة: être, avoir, aller, faire...",
+                    "مع je قبل حرف علّة أو h نكتب: j' + التصريف (مثلاً: j'ai)."
+                ];
+                toast(pick(tips), "تلميح");
+            });
+            els.helperBtn.addEventListener('click', toggleSpeech);
+            els.modalClose.addEventListener('click', closeToast);
+            els.modal.addEventListener('click', (e) => { if (e.target === els.modal) closeToast(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeToast();
+            });
+        }
+
+        /* =======================
+          Application Bootstrap
+        ======================== */
+        function init() {
+            loadProgress();
+            updateProgressUI();
+            bindMapInteractions();
+            bindUI();
+            setTimeout(() => toggleSpeech(), 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
