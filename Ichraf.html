@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>جدول الإشراف المدرسي</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet"/>
+
+    <!-- SheetJS for Excel parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <!-- FileSaver.js for saving files (e.g., Word export) -->
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f7fafc; /* فقط للعرض على الشاشة */
+        }
+        .editable-input {
+            border: 1px solid transparent;
+            border-radius: 4px;
+            padding: 4px 8px;
+            width: 100%;
+            background-color: transparent;
+            transition: all 0.2s ease-in-out;
+        }
+        .editable-input:focus {
+            border: 1px solid #cbd5e0;
+            background-color: #ffffff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(56, 161, 105, 0.2);
+        }
+
+        .print-section { display: none; }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        @media print {
+            html, body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            /* ازالة أي خلفيات رمادية وجعل الصفحة بيضاء بالكامل */
+            body { background: #fff !important; }
+            * { background: transparent !important; }
+            .print-section,
+            .print-section * { background: transparent !important; }
+            .print-wrapper { background: #fff !important; }
+
+            /* أخفِ كل شيء عدا منطقة الطباعة لمنع صفحات بيضاء إضافية */
+            body > * { display: none !important; }
+            .print-section { display: block !important; }
+
+            .print-wrapper { padding: 0; }
+
+            /* كل يوم في صفحة مستقلة ويملأ ارتفاع الصفحة */
+            .print-day {
+                break-before: page;
+                page-break-before: always;
+                min-height: calc(297mm - 24mm); /* ارتفاع A4 مطروح منه الهوامش */
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+            }
+            .print-day:first-child {
+                break-before: auto;
+                page-break-before: auto;
+            }
+
+            /* تنسيق الجدول للطباعة */
+            .print-table {
+                border-collapse: collapse;
+                width: 100%;
+                table-layout: fixed; /* عرض أعمدة ثابت لملء الصفحة عرضاً */
+                margin-top: 8px;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #000;
+                padding: 6px 8px;
+                text-align: right;
+                vertical-align: top;
+                word-wrap: break-word;
+                overflow-wrap: anywhere;
+            }
+
+            /* إزالة التظليل من رأس الجدول وأي عناصر ذات bg-gray-* */
+            .print-table th { background: transparent !important; }
+            .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300,
+            .bg-gray-400, .bg-gray-500 { background-color: transparent !important; }
+
+            /* تكرار الرأس ومنع تقطيع الصفوف (في حال زادت الصفوف) */
+            .print-table thead { display: table-header-group; }
+            .print-table tfoot { display: table-footer-group; }
+            .print-table tr { break-inside: avoid; page-break-inside: avoid; }
+
+            /* مساحة توقيع مناسبة */
+            .signature-cell { height: 10mm; }
+
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8 no-print">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-700">جدول الإشراف المدرسي الأسبوعي</h1>
+            <p class="text-gray-600 mt-2">قم بتعبئة البيانات مباشرة أو استيرادها من إكسل ثم اطبع أو صدّر التقرير</p>
+        </header>
+
+        <main>
+            <!-- Controls -->
+            <div class="bg-white p-4 rounded-lg shadow-md mb-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center no-print">
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="printOverallReport()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                        </svg>
+                        طباعة الجدول الأسبوعي
+                    </button>
+
+                    <!-- زر تصدير وورد الجديد -->
+                    <button onclick="exportToWord()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                        <svg class="w-5 h-5 ml-2" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14 2H6C4.897 2 4 2.897 4 4V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V8L14 2ZM18 20H6V4H13V9H18V20ZM10.513 15.311L8.311 17.5L6.11 15.311L5.402 16.019L7.604 18.209L5.402 20.398L6.11 21.107L8.311 18.917L10.513 21.107L11.22 20.398L9.018 18.209L11.22 16.019L10.513 15.311Z" />
+                        </svg>
+                        تصدير إلى وورد
+                    </button>
+
+                    <button onclick="downloadTemplate()" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        تنزيل قالب إكسل
+                    </button>
+
+                    <input type="file" id="excel-input" accept=".xlsx,.xls,.csv" class="hidden" />
+                    <button onclick="document.getElementById('excel-input').click()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                        استيراد من إكسل
+                    </button>
+                </div>
+                <p id="import-status" class="text-sm text-gray-500"></p>
+            </div>
+
+            <!-- Weekly Schedule Section -->
+            <div id="weekly-schedule" class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-gray-800 border-b-2 border-teal-500 pb-2 mb-6">تقرير الإشراف الأسبوعي</h2>
+                <div id="schedule-container" class="space-y-8">
+                    <!-- سيتم حقن بطاقات الأيام هنا -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Printable area -->
+    <div id="print-area" class="print-section">
+        <div class="print-wrapper" id="print-wrapper"></div>
+    </div>
+
+    <script>
+        // ثابتان لضمان 15 صفاً في الواجهة والطباعة
+        const UI_MIN_ROWS = 15;      // واجهة الإدخال
+        const PRINT_MIN_ROWS = 15;   // الطباعة
+
+        // --- هيكل الأيام ---
+        const scheduleStructure = [
+            { day: 'الأحد' },
+            { day: 'الإثنين' },
+            { day: 'الثلاثاء' },
+            { day: 'الأربعاء' },
+            { day: 'الخميس' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateWeeklySchedule();
+            document.getElementById('excel-input').addEventListener('change', onExcelFileSelected);
+        });
+
+        // --- بناء واجهة الجدول الأسبوعي بـ 15 صفاً دائماً ---
+        function populateWeeklySchedule() {
+            const container = document.getElementById('schedule-container');
+            container.innerHTML = scheduleStructure.map(dayInfo => {
+                let supervisorRows = '';
+                for (let i = 0; i < UI_MIN_ROWS; i++) {
+                    supervisorRows += `
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="اسم المعلم المشرف" /></td>
+                            <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="الموقع/الفصول" /></td>
+                            <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="المبنى" /></td>
+                            <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="الدور" /></td>
+                            <td class="py-3 px-4 border-b-2 border-dotted border-gray-300"></td>
+                        </tr>
+                    `;
+                }
+
+                return `
+                <div class="day-card border border-gray-200 rounded-lg overflow-hidden" id="day-card-${dayInfo.day}">
+                    <div class="day-header bg-gray-100 p-4 flex justify-between items-center border-b">
+                        <div>
+                            <h3 class="text-xl font-bold text-teal-700">${dayInfo.day}</h3>
+                            <div class="text-sm text-gray-600 flex items-center mt-2">
+                                <label for="gs-${dayInfo.day}" class="whitespace-nowrap">المشرف العام:</label>
+                                <input type="text" id="gs-${dayInfo.day}" class="editable-input font-semibold mx-2" placeholder="أدخل اسم المشرف العام" />
+                            </div>
+                        </div>
+                        <button onclick="printDay('${dayInfo.day}')" class="no-print p-2 rounded-full hover:bg-gray-200 transition" title="طباعة جدول يوم ${dayInfo.day}">
+                            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="py-3 px-4 text-right text-sm font-semibold text-gray-600 uppercase">المعلم المشرف</th>
+                                    <th class="py-3 px-4 text-right text-sm font-semibold text-gray-600 uppercase">الموقع/الفصول</th>
+                                    <th class="py-3 px-4 text-right text-sm font-semibold text-gray-600 uppercase">المبنى</th>
+                                    <th class="py-3 px-4 text-right text-sm font-semibold text-gray-600 uppercase">الدور</th>
+                                    <th class="py-3 px-4 text-right text-sm font-semibold text-gray-600 uppercase">التوقيع</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                ${supervisorRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- قراءة بيانات يوم من الواجهة ---
+        function getDayDataFromDOM(dayName) {
+            const dayCard = document.getElementById(`day-card-${dayName}`);
+            if (!dayCard) return null;
+
+            const generalSupervisor = dayCard.querySelector(`#gs-${dayName}`).value;
+            const supervisors = [];
+            dayCard.querySelectorAll('tbody tr').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                supervisors.push({
+                    name: inputs[0].value,
+                    classes: inputs[1].value,
+                    building: inputs[2].value,
+                    floor: inputs[3].value
+                });
+            });
+
+            return { day: dayName, generalSupervisor, supervisors };
+        }
+
+        // --- كتابة بيانات يوم إلى الواجهة ---
+        function setDayDataToDOM(dayData) {
+            const dayCard = document.getElementById(`day-card-${dayData.day}`);
+            if (!dayCard) return;
+
+            const gsInput = dayCard.querySelector(`#gs-${dayData.day}`);
+            if (gsInput) gsInput.value = dayData.generalSupervisor || '';
+
+            ensureSupervisorRows(dayCard, Math.max(UI_MIN_ROWS, dayData.supervisors.length));
+            const rows = Array.from(dayCard.querySelectorAll('tbody tr'));
+
+            rows.forEach((row, idx) => {
+                const inputs = row.querySelectorAll('input');
+                const s = dayData.supervisors[idx] || { name:'', classes:'', building:'', floor:'' };
+                inputs[0].value = s.name || '';
+                inputs[1].value = s.classes || '';
+                inputs[2].value = s.building || '';
+                inputs[3].value = s.floor || '';
+            });
+        }
+
+        // --- ضمان عدد صفوف كافٍ ---
+        function ensureSupervisorRows(dayCard, needed) {
+            const tbody = dayCard.querySelector('tbody');
+            const current = tbody.querySelectorAll('tr').length;
+            for (let i = current; i < needed; i++) {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50';
+                tr.innerHTML = `
+                    <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="اسم المعلم المشرف" /></td>
+                    <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="الموقع/الفصول" /></td>
+                    <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="المبنى" /></td>
+                    <td class="py-1 px-2"><input type="text" class="editable-input" placeholder="الدور" /></td>
+                    <td class="py-3 px-4 border-b-2 border-dotted border-gray-300"></td>
+                `;
+                tbody.appendChild(tr);
+            }
+        }
+
+        // --- أدوات مساعدة ---
+        function escapeHtml(text) {
+            if (text == null) return '';
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function normalizeKey(k) {
+            return (k || '').toString().trim().toLowerCase()
+                .replace(/[^\u0600-\u06FFa-z0-9]+/g, '');
+        }
+
+        const DAY_ALIASES = {
+            'الأحد':    ['الأحد','الاحد','ahad','sunday','sun'],
+            'الإثنين':   ['الإثنين','الاثنين','ithnayn','monday','mon'],
+            'الثلاثاء':  ['الثلاثاء','الثلاثا','thulatha','tuesday','tue','tues'],
+            'الأربعاء':  ['الأربعاء','الاربعاء','arbaa','wednesday','wed'],
+            'الخميس':    ['الخميس','khamees','thursday','thu','thur','thurs']
+        };
+        function normalizeDay(val) {
+            const raw = (val || '').toString().trim();
+            const v = raw.toLowerCase();
+            if (!v) return '';
+            for (const ar in DAY_ALIASES) {
+                if (DAY_ALIASES[ar].some(a => v === a || v.includes(a))) return ar;
+            }
+            for (const ar in DAY_ALIASES) {
+                if (ar === raw) return ar;
+            }
+            return '';
+        }
+
+        // --- استيراد من إكسل/CSV ---
+        async function onExcelFileSelected(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const status = document.getElementById('import-status');
+            status.textContent = 'جارٍ قراءة الملف...';
+
+            try {
+                const data = await file.arrayBuffer();
+                const wb = XLSX.read(data, { type: 'array' });
+                const sheet = wb.Sheets[wb.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(sheet, { defval: '', raw: false });
+
+                if (!rows.length) {
+                    status.textContent = 'الملف فارغ أو لا يحتوي بيانات.';
+                    return;
+                }
+
+                const headers = Object.keys(rows[0]);
+                const headerMap = buildHeaderMapping(headers);
+                if (!headerMap.day || !headerMap.role || !headerMap.name) {
+                    status.textContent = 'تعذر التعرف على الحقول الأساسية (اليوم، النوع، الاسم). استخدم القالب المرفق.';
+                    return;
+                }
+
+                const daysData = {
+                    'الأحد':     { day: 'الأحد',     generalSupervisor: '', supervisors: [] },
+                    'الإثنين':    { day: 'الإثنين',    generalSupervisor: '', supervisors: [] },
+                    'الثلاثاء':   { day: 'الثلاثاء',   generalSupervisor: '', supervisors: [] },
+                    'الأربعاء':   { day: 'الأربعاء',   generalSupervisor: '', supervisors: [] },
+                    'الخميس':    { day: 'الخميس',    generalSupervisor: '', supervisors: [] }
+                };
+
+                rows.forEach(r => {
+                    const day = normalizeDay(r[headerMap.day]);
+                    if (!day) return;
+
+                    const roleVal = (r[headerMap.role] || '').toString().toLowerCase();
+                    const name = (r[headerMap.name] || '').toString().trim();
+                    const site = headerMap.site ? (r[headerMap.site] || '').toString() : '';
+                    const building = headerMap.building ? (r[headerMap.building] || '').toString() : '';
+                    const floor = headerMap.floor ? (r[headerMap.floor] || '').toString() : '';
+
+                    if (!name) return;
+
+                    const isGeneral = /عام|general/.test(roleVal);
+                    if (isGeneral) {
+                        const current = daysData[day].generalSupervisor;
+                        daysData[day].generalSupervisor = current ? (current + '، ' + name) : name;
+                    } else {
+                        daysData[day].supervisors.push({ name, classes: site, building, floor });
+                    }
+                });
+
+                Object.values(daysData).forEach(d => setDayDataToDOM(d));
+                status.textContent = 'تم الاستيراد بنجاح.';
+            } catch (err) {
+                console.error(err);
+                status.textContent = 'حدث خطأ أثناء قراءة الملف.';
+            } finally {
+                e.target.value = '';
+                setTimeout(() => { document.getElementById('import-status').textContent = ''; }, 4000);
+            }
+        }
+
+        function buildHeaderMapping(headers) {
+            const candidates = {
+                day:      ['اليوم','day','jour'],
+                role:     ['النوع','المسؤولية','role','type','الصفة'],
+                name:     ['الاسم','اسم','name','nom'],
+                site:     ['الموقع/الفصول','الموقع','الفصول','site','classes','class','classe'],
+                building: ['المبنى','المبني','building','batiment'],
+                floor:    ['الدور','الطابق','floor','etage']
+            };
+            const mapping = {};
+            headers.forEach(h => {
+                const nk = normalizeKey(h);
+                for (const key in candidates) {
+                    if (mapping[key]) continue;
+                    if (candidates[key].some(c => nk === normalizeKey(c))) {
+                        mapping[key] = h;
+                    }
+                }
+            });
+            return mapping;
+        }
+
+        // --- الطباعة: حقن المحتوى في منطقة الطباعة ثم Print ---
+        async function openPrint(html) {
+            const printWrapper = document.getElementById('print-wrapper');
+            printWrapper.innerHTML = html;
+
+            if (document.fonts && document.fonts.ready) {
+                try { await document.fonts.ready; } catch(_) {}
+            }
+            await new Promise(r => requestAnimationFrame(() => r()));
+
+            const cleanup = () => {
+                printWrapper.innerHTML = '';
+                window.removeEventListener('afterprint', cleanup);
+            };
+            window.addEventListener('afterprint', cleanup);
+
+            window.print();
+        }
+
+        // فلترة الصفوف المعبأة فقط وحشو الصفوف الفارغة للوصول إلى الحد الأدنى
+        function getPaddedRows(supervisors, minRows) {
+            const filled = supervisors.filter(s => s.name.trim() || s.classes.trim() || s.building.trim() || s.floor.trim());
+            const padded = [...filled];
+            while (padded.length < minRows) {
+                padded.push({ name: '', classes: '', building: '', floor: '' });
+            }
+            return padded;
+        }
+
+
+        // --- طباعة يوم واحد ---
+        function printDay(dayName) {
+            const dayData = getDayDataFromDOM(dayName);
+            if (!dayData) return;
+
+            const padded = getPaddedRows(dayData.supervisors, PRINT_MIN_ROWS);
+
+            const dayHtml = `
+                <section class="print-day" style="direction: rtl;">
+                    <header style="text-align: center; margin-bottom: 8px;">
+                        <h2 style="font-size: 20px; margin: 0 0 6px;">مدرسة د/ محمد ربيع فلاح ث بنات</h2>
+                        <h3 style="font-size: 18px; margin: 0 0 4px;">تقرير الإشراف اليومي</h3>
+                        <div style="font-size: 16px; margin: 0;">يوم: ${escapeHtml(dayData.day)}</div>
+                    </header>
+                    <div style="font-size: 16px; margin: 4px 0 8px;">
+                        <strong>المشرف العام:</strong> ${escapeHtml(dayData.generalSupervisor) || 'لم يحدد'}
+                    </div>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th>المعلم المشرف</th>
+                                <th>الموقع/الفصول</th>
+                                <th>المبنى</th>
+                                <th>الدور</th>
+                                <th style="width: 25%;">التوقيع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${padded.map(s => `
+                                <tr>
+                                    <td>${escapeHtml(s.name) || '&nbsp;'}</td>
+                                    <td>${escapeHtml(s.classes) || '&nbsp;'}</td>
+                                    <td>${escapeHtml(s.building) || '&nbsp;'}</td>
+                                    <td>${escapeHtml(s.floor) || '&nbsp;'}</td>
+                                    <td class="signature-cell"></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    <footer style="margin-top: auto; text-align: left; font-size: 16px;">
+                        <strong>توقيع مديرة المدرسة</strong>
+                        <br/><br/>
+                        ..............................
+                    </footer>
+                </section>
+            `;
+
+            openPrint(`<div>${dayHtml}</div>`);
+        }
+
+        // --- طباعة التقرير الأسبوعي: كل يوم في صفحة مستقلة ---
+        function printOverallReport() {
+            let fullReportHtml = '';
+
+            scheduleStructure.forEach((dayInfo) => {
+                const dayData = getDayDataFromDOM(dayInfo.day);
+                if (!dayData) return;
+
+                const padded = getPaddedRows(dayData.supervisors, PRINT_MIN_ROWS);
+
+                fullReportHtml += `
+                    <section class="print-day" style="direction: rtl;">
+                        <header style="text-align: center; margin-bottom: 8px;">
+                            <h2 style="font-size: 20px; margin: 0 0 6px;">مدرسة د/ محمد ربيع فلاح ث بنات</h2>
+                            <h3 style="font-size: 18px; margin: 0 0 4px;">جدول يوم: ${escapeHtml(dayData.day)}</h3>
+                        </header>
+                        <div style="font-size: 16px; margin: 4px 0 8px;">
+                            <strong>المشرف العام:</strong> ${escapeHtml(dayData.generalSupervisor) || 'لم يحدد'}
+                        </div>
+                        <table class="print-table">
+                            <thead>
+                                <tr>
+                                    <th>المعلم المشرف</th>
+                                    <th>الموقع/الفصول</th>
+                                    <th>المبنى</th>
+                                    <th>الدور</th>
+                                    <th style="width: 25%;">التوقيع</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${padded.map(s => `
+                                    <tr>
+                                        <td>${escapeHtml(s.name) || '&nbsp;'}</td>
+                                        <td>${escapeHtml(s.classes) || '&nbsp;'}</td>
+                                        <td>${escapeHtml(s.building) || '&nbsp;'}</td>
+                                        <td>${escapeHtml(s.floor) || '&nbsp;'}</td>
+                                        <td class="signature-cell"></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <footer style="margin-top: auto; text-align: left; font-size: 16px;">
+                            <strong>توقيع مديرة المدرسة</strong>
+                            <br/><br/>
+                            ..............................
+                        </footer>
+                    </section>
+                `;
+            });
+
+            openPrint(`<div>${fullReportHtml}</div>`);
+        }
+
+        // --- دالة تصدير البيانات إلى ملف وورد ---
+        function exportToWord() {
+            let fullReportHtml = '';
+
+            scheduleStructure.forEach((dayInfo) => {
+                const dayData = getDayDataFromDOM(dayInfo.day);
+                if (!dayData) return;
+
+                const padded = getPaddedRows(dayData.supervisors, PRINT_MIN_ROWS);
+
+                fullReportHtml += `
+                    <div style="direction: rtl; font-family: Arial, sans-serif; page-break-after: always;">
+                        <header style="text-align: center; margin-bottom: 12px;">
+                            <h2 style="font-size: 20px; font-weight: bold; margin: 0 0 8px;">مدرسة د/ محمد ربيع فلاح ث بنات</h2>
+                            <h3 style="font-size: 18px; margin: 0 0 6px;">جدول يوم: ${escapeHtml(dayData.day)}</h3>
+                        </header>
+                        <div style="font-size: 16px; margin: 6px 0 12px;">
+                            <strong>المشرف العام:</strong> ${escapeHtml(dayData.generalSupervisor) || 'لم يحدد'}
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; table-layout: fixed;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #000; padding: 8px; background-color: #f2f2f2; font-weight: bold;">المعلم المشرف</th>
+                                    <th style="border: 1px solid #000; padding: 8px; background-color: #f2f2f2; font-weight: bold;">الموقع/الفصول</th>
+                                    <th style="border: 1px solid #000; padding: 8px; background-color: #f2f2f2; font-weight: bold;">المبنى</th>
+                                    <th style="border: 1px solid #000; padding: 8px; background-color: #f2f2f2; font-weight: bold;">الدور</th>
+                                    <th style="width: 25%; border: 1px solid #000; padding: 8px; background-color: #f2f2f2; font-weight: bold;">التوقيع</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${padded.map(s => `
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 6px; height: 30px; vertical-align: top;">${escapeHtml(s.name) || '&nbsp;'}</td>
+                                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">${escapeHtml(s.classes) || '&nbsp;'}</td>
+                                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">${escapeHtml(s.building) || '&nbsp;'}</td>
+                                        <td style="border: 1px solid #000; padding: 6px; vertical-align: top;">${escapeHtml(s.floor) || '&nbsp;'}</td>
+                                        <td style="border: 1px solid #000; padding: 6px;"></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <footer style="margin-top: 40px; padding-top: 20px; text-align: left; font-size: 16px;">
+                            <strong>توقيع مديرة المدرسة</strong>
+                            <br/><br/>
+                            ..............................
+                        </footer>
+                    </div>
+                `;
+            });
+
+            // إنشاء مستند HTML متكامل للتوافق مع وورد
+            const wordHtml = `
+                <!DOCTYPE html>
+                <html lang="ar" dir="rtl">
+                <head>
+                    <meta charset="UTF-8">
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                        <w:View>Print</w:View>
+                        <w:Zoom>90</w:Zoom>
+                        <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                </head>
+                <body>
+                    ${fullReportHtml}
+                </body>
+                </html>`;
+
+            // إنشاء Blob وحفظه باستخدام FileSaver.js
+            const blob = new Blob([wordHtml], { type: 'application/msword;charset=utf-8' });
+            saveAs(blob, 'جدول_الإشراف_الأسبوعي.doc');
+        }
+
+        // --- تنزيل قالب Excel ---
+        function downloadTemplate() {
+            const data = [
+                { 'اليوم': 'الأحد',   'النوع': 'مشرف عام', 'الاسم': 'اسم المشرف العام', 'الموقع/الفصول': '',     'المبنى': '', 'الدور': '' },
+                { 'اليوم': 'الأحد',   'النوع': 'مشرف',     'الاسم': 'اسم المعلم 1',     'الموقع/الفصول': 'فصل 1', 'المبنى': 'أ', 'الدور': 'الأول' },
+                { 'اليوم': 'الإثنين', 'النوع': 'مشرف',     'الاسم': 'اسم المعلم 2',     'الموقع/الفصول': 'فصل 3', 'المبنى': 'ب', 'الدور': 'الثاني' }
+            ];
+            const ws = XLSX.utils.json_to_sheet(data, { skipHeader: false });
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'البيانات');
+            XLSX.writeFile(wb, 'قالب_الإشراف.xlsx');
+        }
+    </script>
+</body>
+</html>
