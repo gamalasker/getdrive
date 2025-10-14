@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أتقن الفرنسية: حوارك الأول يبدأ هنا! | Maîtrisez le Français</title>
+    <meta name="description" content="درس تفاعلي لتعلم المحادثة الفرنسية للمبتدئين مع النطق الصوتي">
+    <meta name="keywords" content="تعلم اللغة الفرنسية للمبتدئين, درس محادثة فرنسي, كيف تقدم نفسك بالفرنسية, أساسيات اللغة الفرنسية, النطق الصحيح بالفرنسية, تعليم الفرنسية في مصر, French for beginners Arabic speakers">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-right: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .frenchapeau {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .frenchapeau h3 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .dialogue-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin: 20px 0;
+        }
+
+        .dialogue-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: right;
+            font-size: 1.1em;
+        }
+
+        .dialogue-table th:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .dialogue-table th:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .dialogue-table td {
+            background: white;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+
+        .dialogue-table tr td:first-child {
+            border-radius: 10px 0 0 10px;
+            background: #fff5f5;
+            font-weight: bold;
+            text-align: center;
+            width: 80px;
+        }
+
+        .dialogue-table tr td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .french-text {
+            font-size: 1.3em;
+            color: #2c3e50;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .speak-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .speak-btn:hover {
+            background: #5568d3;
+            transform: scale(1.1);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        .phonetic {
+            color: #e74c3c;
+            font-style: italic;
+            margin: 5px 0;
+        }
+
+        .translation {
+            color: #27ae60;
+            font-weight: 500;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tip-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-right: 4px solid #f093fb;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .tip-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tip-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .exercise-box {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .exercise-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .question {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .options {
+            margin: 15px 0;
+        }
+
+        .option {
+            display: block;
+            padding: 12px 20px;
+            margin: 10px 0;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-left: 10px;
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .word {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: move;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .word:hover {
+            background: #5568d3;
+            transform: scale(1.05);
+        }
+
+        .drop-zone {
+            min-height: 60px;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f8f9fa;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            margin: 10px 0;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+            display: block;
+        }
+
+        .pronunciation-practice {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .pronunciation-practice h3 {
+            margin-bottom: 20px;
+        }
+
+        .practice-words {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .practice-word {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .practice-word:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .golden-rule {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3em;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .dialogue-table {
+                font-size: 0.9em;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .note-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .note-box strong {
+            color: #856404;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎩 أتقن الفرنسية: حوارك الأول يبدأ هنا!</h1>
+            <p>Maîtrisez le Français : Votre Premier Dialogue !</p>
+        </header>
+
+        <div class="content">
+            <!-- المقدمة -->
+            <div class="section">
+                <h2>📚 مقدمة: دليلك الشامل لتعلم المحادثة الفرنسية من الصفر</h2>
+                <p>هل تحلم بالتحدث بالفرنسية بثقة؟ هل تبحث عن نقطة انطلاق سهلة وعملية لتعلم أساسيات المحادثة؟ هذا الدرس التفاعلي مصمم خصيصًا للمبتدئين في مصر والعالم العربي لمساعدتك على إتقان كيفية تقديم نفسك بالفرنسية بعبارات بسيطة وفعالة يمكنك استخدامها فورًا.</p>
+                <p>سنركز على <strong>النطق الصحيح</strong> والتراكيب اللغوية الأساسية التي ستمنحك دفعة قوية في رحلتك لتعلم اللغة الفرنسية.</p>
+            </div>
+
+            <!-- Frenchapeau -->
+            <div class="frenchapeau">
+                <h3>🎩 مرشدك Frenchapeau يقول:</h3>
+                <div class="french-text">
+                    <button class="speak-btn" onclick="speak('Salut, amis! Aujourd\'hui, on se présente. Répétez avec moi et gardez le sourire!', 'fr-FR')">🔊</button>
+                    <span>Salut, amis! Aujourd'hui, on se présente. Répétez avec moi et gardez le sourire!</span>
+                </div>
+                <p class="translation"><strong>الترجمة:</strong> "أهلاً أصدقائي! اليوم، سنتعلم كيف نقدم أنفسنا. كرروا معي وحافظوا على ابتسامتكم!"</p>
+            </div>
+
+            <!-- الحوار الأساسي -->
+            <div class="section">
+                <h2>💬 الحوار الأساسي</h2>
+                
+                <table class="dialogue-table">
+                    <thead>
+                        <tr>
+                            <th>المتحدث</th>
+                            <th>الجملة بالفرنسية</th>
+                            <th>النطق المبسّط</th>
+                            <th>المعنى بالعربية</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>أ<br>(المتعلم)</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Bonjour! Je m\'appelle Sami. Et toi?', 'fr-FR')">🔊</button>
+                                    <span>Bonjour! Je m'appelle Sami. Et toi?</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">بونجور! جُ مابيل سامي. إِت تُوا؟</td>
+                            <td class="translation">صباح الخير! اسمي سامي. وأنت؟</td>
+                        </tr>
+                        <tr>
+                            <td>ب</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Moi, c\'est Lina. Je viens du Maroc. Enchantée!', 'fr-FR')">🔊</button>
+                                    <span>Moi, c'est Lina. Je viens du Maroc. Enchantée!</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">موا، سِه لينا. جُ فيان دُ ماروك. أَنْشانتيه!</td>
+                            <td class="translation">أنا لينا. أنا من المغرب. تشرفت!</td>
+                        </tr>
+                        <tr>
+                            <td>أ<br>(المتعلم)</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Je suis égyptien. Je parle arabe et un peu français.', 'fr-FR')">🔊</button>
+                                    <span>Je suis égyptien. Je parle arabe et un peu français.</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">جُ سْوي إجيبسيان. جُ پارْل أراب إيه أَنْ پُ فغانسي.</td>
+                            <td class="translation">أنا مصري. أتحدث العربية وقليلاً من الفرنسية.</td>
+                        </tr>
+                        <tr>
+                            <td>ب</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Tu fais quoi dans la vie?', 'fr-FR')">🔊</button>
+                                    <span>Tu fais quoi dans la vie?</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">تُ فَي كْوا دان لا ڤي؟</td>
+                            <td class="translation">ماذا تعمل؟</td>
+                        </tr>
+                        <tr>
+                            <td>أ<br>(المتعلم)</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Je suis professeur. Et toi?', 'fr-FR')">🔊</button>
+                                    <span>Je suis professeur. Et toi?</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">جُ سْوي پروفِسير. إِت تُوا؟</td>
+                            <td class="translation">أنا مُعلّم. وأنتِ؟</td>
+                        </tr>
+                        <tr>
+                            <td>ب</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Je suis étudiante en informatique.', 'fr-FR')">🔊</button>
+                                    <span>Je suis étudiante en informatique.</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">جُ سْوي إيتودْيَنْت أَنْ إنفورماتيك.</td>
+                            <td class="translation">أنا طالبة في علوم الحاسوب.</td>
+                        </tr>
+                        <tr>
+                            <td>أ<br>(المتعلم)</td>
+                            <td>
+                                <div class="french-text">
+                                    <button class="speak-btn" onclick="speak('Ravi de te connaître. À bientôt!', 'fr-FR')">🔊</button>
+                                    <span>Ravi de te connaître. À bientôt!</span>
+                                </div>
+                            </td>
+                            <td class="phonetic">غاڤي دُ تُ كُنتر. آ بيان تُو!</td>
+                            <td class="translation">سعيد بالتعرّف عليكِ. أراكِ قريبًا!</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="note-box">
+                    <strong>ملاحظة هامة:</strong> عند مخاطبة شخص باحترام، استخدم "vous" بدلاً من "tu" (مثال: "Et vous?").
+                </div>
+            </div>
+
+            <!-- نصائح Frenchapeau -->
+            <div class="section">
+                <h2>🎩 نصائح Frenchapeau السريعة</h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h4>1️⃣ ابدأ باسمك</h4>
+                        <p><strong>Je m'appelle…</strong> ثم اسأل بلطف: <strong>Et toi/vous?</strong></p>
+                        <button class="speak-btn" onclick="speak('Je m\'appelle Ahmed. Et toi?', 'fr-FR')">🔊</button>
+                    </div>
+                    <div class="tip-card">
+                        <h4>2️⃣ حدد هويتك</h4>
+                        <p><strong>للبلد:</strong> Je viens de…</p>
+                        <p><strong>للغة:</strong> Je parle…</p>
+                        <button class="speak-btn" onclick="speak('Je viens d\'Égypte. Je parle arabe.', 'fr-FR')">🔊</button>
+                    </div>
+                    <div class="tip-card">
+                        <h4>3️⃣ اذكر مهنتك واختم بلباقة</h4>
+                        <p><strong>للمهنة:</strong> Je suis…</p>
+                        <p><strong>للخاتمة:</strong> Enchanté(e)</p>
+                        <button class="speak-btn" onclick="speak('Je suis ingénieur. Enchanté!', 'fr-FR')">🔊</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تمرين عملي -->
+            <div class="section">
+                <h2>✍️ تمرين عملي: كوّن تعريفك الخاص</h2>
+                <div class="exercise-box">
+                    <p>املأ الفراغات التالية بمعلوماتك الشخصية:</p>
+                    
+                    <div style="margin: 20px 0;">
+                        <label>اسمك:</label>
+                        <input type="text" id="name" class="input-field" placeholder="اكتب اسمك هنا">
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <label>بلدك:</label>
+                        <input type="text" id="country" class="input-field" placeholder="اكتب بلدك هنا">
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <label>مهنتك:</label>
+                        <input type="text" id="profession" class="input-field" placeholder="اكتب مهنتك هنا">
+                    </div>
+                    
+                    <div style="margin: 20px 0;">
+                        <label>اللغات التي تتحدثها:</label>
+                        <input type="text" id="languages" class="input-field" placeholder="مثال: arabe et anglais">
+                    </div>
+                    
+                    <button class="btn" onclick="generateIntroduction()">اعرض تعريفي 🎯</button>
+                    
+                    <div id="introduction-result" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+
+            <!-- تدريب النطق -->
+            <div class="section">
+                <h2>🎤 تدريب النطق مع Frenchapeau</h2>
+                
+                <div class="pronunciation-practice">
+                    <h3>التركيز على صوت "R"</h3>
+                    <p>كرر هذه الكلمات:</p>
+                    <div class="practice-words">
+                        <div class="practice-word" onclick="speak('français', 'fr-FR')">
+                            <div style="font-size: 1.5em; margin-bottom: 10px;">🔊</div>
+                            <strong>français</strong>
+                        </div>
+                        <div class="practice-word" onclick="speak('arabe', 'fr-FR')">
+                            <div style="font-size: 1.5em; margin-bottom: 10px;">🔊</div>
+                            <strong>arabe</strong>
+                        </div>
+                        <div class="practice-word" onclick="speak('professeur', 'fr-FR')">
+                            <div style="font-size: 1.5em; margin-bottom: 10px;">🔊</div>
+                            <strong>professeur</strong>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 20px;">جرب نطق الجملة:</p>
+                    <div class="practice-word" onclick="speak('Je parle français. Je parle arabe.', 'fr-FR')" style="margin: 15px auto; max-width: 400px;">
+                        <div style="font-size: 1.5em; margin-bottom: 10px;">🔊</div>
+                        <strong>Je parle français. Je parle arabe.</strong>
+                    </div>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">نغمة اللباقة</h3>
+                    <p>📈 ارفع نبرة صوتك قليلاً في نهاية السؤال:</p>
+                    <button class="speak-btn" onclick="speak('Et toi?', 'fr-FR')" style="margin: 10px 5px;">🔊</button>
+                    <strong>Et toi/vous ? ↗️</strong>
+                    
+                    <p style="margin-top: 15px;">📉 اخفض نبرة صوتك في نهاية الرد:</p>
+                    <button class="speak-btn" onclick="speak('Enchanté.', 'fr-FR')" style="margin: 10px 5px;">🔊</button>
+                    <strong>Enchanté(e). ↘️</strong>
+                </div>
+            </div>
+
+            <!-- تمرين الدقيقة الواحدة -->
+            <div class="section">
+                <h2>⏱️ تمرين الدقيقة الواحدة</h2>
+                
+                <!-- السؤال 1 -->
+                <div class="exercise-box">
+                    <div class="question">
+                        <h3>السؤال 1: أي جملة تقدّم بها اسمك؟</h3>
+                        <div class="options">
+                            <label class="option">
+                                <input type="radio" name="q1" value="a">
+                                أ) Je parle arabe.
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="b">
+                                ب) Je m'appelle Rami.
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="q1" value="c">
+                                ج) Je viens d'Égypte.
+                            </label>
+                        </div>
+                        <button class="btn" onclick="checkAnswer('q1', 'b', 'feedback1')">تحقق من الإجابة</button>
+                        <div id="feedback1" class="feedback"></div>
+                    </div>
+                </div>
+
+                <!-- السؤال 2 -->
+                <div class="exercise-box">
+                    <div class="question">
+                        <h3>السؤال 2: رتب الكلمات التالية</h3>
+                        <p><strong>الكلمات:</strong> m'appelle / Je / Lina</p>
+                        
+                        <div class="word-bank" id="word-bank">
+                            <div class="word" draggable="true" ondragstart="drag(event)" id="word1">m'appelle</div>
+                            <div class="word" draggable="true" ondragstart="drag(event)" id="word2">Je</div>
+                            <div class="word" draggable="true" ondragstart="drag(event)" id="word3">Lina</div>
+                        </div>
+                        
+                        <p><strong>رتب الكلمات هنا:</strong></p>
+                        <div class="drop-zone" id="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                            اسحب الكلمات هنا بالترتيب الصحيح
+                        </div>
+                        
+                        <button class="btn" onclick="checkWordOrder()">تحقق من الترتيب</button>
+                        <div id="feedback2" class="feedback"></div>
+                    </div>
+                </div>
+
+                <!-- السؤال 3 -->
+                <div class="exercise-box">
+                    <div class="question">
+                        <h3>السؤال 3: أكمل الفراغ بمهنة مناسبة</h3>
+                        <p>Je suis <input type="text" id="profession-answer" placeholder="اكتب المهنة هنا" style="display: inline-block; width: 200px; padding: 5px;">.</p>
+                        <p style="margin-top: 10px; color: #666;"><em>(مثال: étudiant(e), médecin, ingénieur)</em></p>
+                        
+                        <button class="btn" onclick="checkProfession()">تحقق من الإجابة</button>
+                        <div id="feedback3" class="feedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- القاعدة الذهبية -->
+            <div class="golden-rule">
+                <h2 style="margin-bottom: 20px;">🌟 القاعدة الذهبية</h2>
+                <p><strong>"اسم + أصل + مهنة/لغة = بطاقة تعريف كاملة"</strong></p>
+                <p style="margin-top: 15px;">لا تنسَ أن تبدل بين <strong>tu</strong> (غير رسمي) و <strong>vous</strong> (رسمي) حسب الموقف</p>
+                <p>واختم حوارك دائمًا بعبارة لبقة ✨</p>
+            </div>
+
+            <!-- التحدي النهائي -->
+            <div class="section" style="text-align: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                <h2 style="color: white;">🎯 تحدي اليوم</h2>
+                <p style="font-size: 1.3em; margin: 20px 0;">قدّم نفسك الآن بثقة باستخدام القوالب التي تعلمتها!</p>
+                <button class="btn" style="background: white; color: #f5576c; font-weight: bold;" onclick="scrollToExercise()">ابدأ التحدي</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 | دروس اللغة الفرنسية التفاعلية</p>
+            <p>صُمّم خصيصاً للمتعلمين العرب 🇪🇬 🇸🇦 🇦🇪 🇲🇦</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;">النطق الصوتي مدعوم بتقنية Web Speech API</p>
+        </footer>
+    </div>
+
+    <script>
+        // وظيفة النطق الصوتي
+        function speak(text, lang) {
+            if ('speechSynthesis' in window) {
+                // إيقاف أي نطق جاري
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.8; // سرعة أبطأ للمبتدئين
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('عذراً، متصفحك لا يدعم ميزة النطق الصوتي. جرب متصفح Chrome أو Firefox.');
+            }
+        }
+
+        // وظيفة إنشاء التعريف الشخصي
+        function generateIntroduction() {
+            const name = document.getElementById('name').value;
+            const country = document.getElementById('country').value;
+            const profession = document.getElementById('profession').value;
+            const languages = document.getElementById('languages').value;
+            
+            if (!name || !country || !profession || !languages) {
+                alert('يرجى ملء جميع الحقول!');
+                return;
+            }
+            
+            const intro = `Je m'appelle ${name}. Je viens de/d' ${country}. Je suis ${profession}. Je parle ${languages}. Enchanté(e)!`;
+            
+            const resultDiv = document.getElementById('introduction-result');
+            resultDiv.innerHTML = `
+                <div style="background: white; padding: 20px; border-radius: 10px; border: 2px solid #667eea;">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">✅ تعريفك الشخصي:</h3>
+                    <div class="french-text" style="font-size: 1.2em; margin-bottom: 15px;">
+                        <button class="speak-btn" onclick="speak('${intro}', 'fr-FR')">🔊</button>
+                        <span>${intro}</span>
+                    </div>
+                    <p style="color: #27ae60; font-weight: bold;">رائع! الآن جرّب أن تقول هذا بصوت عالٍ 🎉</p>
+                </div>
+            `;
+        }
+
+        // وظيفة التحقق من الإجابة
+        function checkAnswer(questionName, correctAnswer, feedbackId) {
+            const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+            const feedbackDiv = document.getElementById(feedbackId);
+            
+            if (!selected) {
+                alert('يرجى اختيار إجابة!');
+                return;
+            }
+            
+            if (selected.value === correctAnswer) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✅ إجابة صحيحة! أحسنت! 🎉';
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                feedbackDiv.innerHTML = '❌ إجابة خاطئة. حاول مرة أخرى! الإجابة الصحيحة هي: (ب) Je m\'appelle Rami.';
+            }
+        }
+
+        // وظائف السحب والإفلات
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const element = document.getElementById(data);
+            
+            // إنشاء نسخة من العنصر
+            const clone = element.cloneNode(true);
+            clone.draggable = false;
+            clone.style.cursor = 'default';
+            
+            ev.target.appendChild(clone);
+        }
+
+        // التحقق من ترتيب الكلمات
+        function checkWordOrder() {
+            const dropZone = document.getElementById('drop-zone');
+            const words = dropZone.querySelectorAll('.word');
+            const feedbackDiv = document.getElementById('feedback2');
+            
+            if (words.length !== 3) {
+                alert('يرجى ترتيب جميع الكلمات!');
+                return;
+            }
+            
+            const order = Array.from(words).map(word => word.textContent);
+            const correctOrder = ['Je', "m'appelle", 'Lina'];
+            
+            if (JSON.stringify(order) === JSON.stringify(correctOrder)) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✅ إجابة صحيحة! الترتيب: Je m\'appelle Lina. 🎉';
+                speak('Je m\'appelle Lina', 'fr-FR');
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                feedbackDiv.innerHTML = '❌ الترتيب غير صحيح. الترتيب الصحيح هو: Je m\'appelle Lina';
+            }
+        }
+
+        // التحقق من المهنة
+        function checkProfession() {
+            const answer = document.getElementById('profession-answer').value.trim().toLowerCase();
+            const feedbackDiv = document.getElementById('feedback3');
+            
+            if (!answer) {
+                alert('يرجى كتابة مهنة!');
+                return;
+            }
+            
+            const validProfessions = ['étudiant', 'étudiante', 'médecin', 'ingénieur', 'professeur', 
+                                     'avocat', 'infirmier', 'infirmière', 'comptable', 'artiste'];
+            
+            if (validProfessions.includes(answer)) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = `✅ إجابة صحيحة! "Je suis ${answer}." 🎉`;
+                speak(`Je suis ${answer}`, 'fr-FR');
+            } else {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = `✅ جيد! أي مهنة صحيحة مقبولة. "Je suis ${answer}." 👍`;
+            }
+        }
+
+        // التمرير إلى التمرين
+        function scrollToExercise() {
+            document.getElementById('name').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('name').focus();
+        }
+
+        // تحميل الأصوات عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            if ('speechSynthesis' in window) {
+                // تحميل الأصوات
+                speechSynthesis.getVoices();
+            }
+        });
+    </script>
+</body>
+</html>
