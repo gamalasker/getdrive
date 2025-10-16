@@ -19,7 +19,8 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #333;
             line-height: 1.8;
-            padding: 20px;
+            padding: 10px;
+            min-height: 100vh;
         }
 
         .container {
@@ -34,28 +35,29 @@
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 40px;
+            padding: 30px 20px;
             text-align: center;
         }
 
         header h1 {
-            font-size: 2.5em;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            word-wrap: break-word;
         }
 
         header p {
-            font-size: 1.2em;
+            font-size: clamp(1rem, 3vw, 1.2rem);
             opacity: 0.9;
         }
 
         .content {
-            padding: 40px;
+            padding: 20px;
         }
 
         .section {
-            margin-bottom: 40px;
-            padding: 30px;
+            margin-bottom: 30px;
+            padding: 20px;
             background: #f8f9fa;
             border-radius: 15px;
             border-right: 5px solid #667eea;
@@ -64,10 +66,11 @@
         .section h2 {
             color: #667eea;
             margin-bottom: 20px;
-            font-size: 2em;
+            font-size: clamp(1.3rem, 4vw, 2rem);
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .frenchapeau {
@@ -81,22 +84,32 @@
 
         .frenchapeau h3 {
             margin-bottom: 10px;
-            font-size: 1.5em;
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+        }
+
+        /* تحسين الجدول للشاشات الصغيرة */
+        .dialogue-table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            -webkit-overflow-scrolling: touch;
         }
 
         .dialogue-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0 10px;
-            margin: 20px 0;
+            min-width: 600px;
         }
 
         .dialogue-table th {
             background: #667eea;
             color: white;
-            padding: 15px;
+            padding: 12px 8px;
             text-align: right;
-            font-size: 1.1em;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .dialogue-table th:first-child {
@@ -109,9 +122,10 @@
 
         .dialogue-table td {
             background: white;
-            padding: 20px;
+            padding: 15px 10px;
             border: 2px solid #e9ecef;
             position: relative;
+            font-size: clamp(0.85rem, 2vw, 1rem);
         }
 
         .dialogue-table tr td:first-child {
@@ -119,7 +133,8 @@
             background: #fff5f5;
             font-weight: bold;
             text-align: center;
-            width: 80px;
+            width: 60px;
+            min-width: 60px;
         }
 
         .dialogue-table tr td:last-child {
@@ -127,13 +142,19 @@
         }
 
         .french-text {
-            font-size: 1.3em;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             color: #2c3e50;
             font-weight: bold;
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+
+        .french-text span {
+            flex: 1;
+            min-width: 200px;
         }
 
         .speak-btn {
@@ -143,9 +164,15 @@
             padding: 8px 12px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.2em;
+            font-size: clamp(1rem, 2vw, 1.2rem);
             transition: all 0.3s;
             box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            flex-shrink: 0;
+            min-width: 40px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .speak-btn:hover {
@@ -161,17 +188,19 @@
             color: #e74c3c;
             font-style: italic;
             margin: 5px 0;
+            font-size: clamp(0.85rem, 2vw, 1rem);
         }
 
         .translation {
             color: #27ae60;
             font-weight: 500;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .tips-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
             margin: 20px 0;
         }
 
@@ -191,12 +220,17 @@
         .tip-card h4 {
             color: #667eea;
             margin-bottom: 10px;
-            font-size: 1.2em;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .tip-card p {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            margin: 5px 0;
         }
 
         .exercise-box {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
             border: 2px solid #667eea;
@@ -205,11 +239,12 @@
         .exercise-box h3 {
             color: #667eea;
             margin-bottom: 15px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
         }
 
         .question {
             margin: 20px 0;
-            padding: 20px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
         }
@@ -220,13 +255,14 @@
 
         .option {
             display: block;
-            padding: 12px 20px;
+            padding: 12px 15px;
             margin: 10px 0;
             background: white;
             border: 2px solid #e9ecef;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .option:hover {
@@ -243,6 +279,7 @@
             flex-wrap: wrap;
             gap: 10px;
             margin: 15px 0;
+            justify-content: center;
         }
 
         .word {
@@ -253,6 +290,8 @@
             cursor: move;
             transition: all 0.3s;
             user-select: none;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            touch-action: none;
         }
 
         .word:hover {
@@ -261,7 +300,7 @@
         }
 
         .drop-zone {
-            min-height: 60px;
+            min-height: 80px;
             border: 2px dashed #667eea;
             border-radius: 10px;
             padding: 15px;
@@ -271,12 +310,15 @@
             flex-wrap: wrap;
             gap: 10px;
             align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .input-field {
             width: 100%;
-            padding: 15px;
-            font-size: 1.1em;
+            padding: 12px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             border: 2px solid #e9ecef;
             border-radius: 8px;
             margin: 10px 0;
@@ -292,12 +334,16 @@
             background: #667eea;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.1em;
+            padding: 12px 25px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin: 10px auto;
         }
 
         .btn:hover {
@@ -315,6 +361,7 @@
             border-radius: 8px;
             margin: 15px 0;
             display: none;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .feedback.correct {
@@ -334,18 +381,19 @@
         .pronunciation-practice {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 30px;
+            padding: 25px 20px;
             border-radius: 15px;
             margin: 20px 0;
         }
 
         .pronunciation-practice h3 {
             margin-bottom: 20px;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
         }
 
         .practice-words {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
@@ -358,6 +406,7 @@
             cursor: pointer;
             transition: all 0.3s;
             backdrop-filter: blur(10px);
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .practice-word:hover {
@@ -368,50 +417,40 @@
         .golden-rule {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 30px;
+            padding: 25px 20px;
             border-radius: 15px;
             text-align: center;
-            font-size: 1.3em;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
             margin: 30px 0;
             box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        .golden-rule h2 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
         }
 
         footer {
             background: #2c3e50;
             color: white;
             text-align: center;
-            padding: 30px;
+            padding: 25px 20px;
             margin-top: 40px;
+            font-size: clamp(0.85rem, 2vw, 1rem);
         }
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .section {
-                padding: 20px;
-            }
-
-            .dialogue-table {
-                font-size: 0.9em;
-            }
-
-            .tips-grid {
-                grid-template-columns: 1fr;
-            }
+        footer p {
+            margin: 8px 0;
         }
 
         .note-box {
             background: #fff3cd;
             border: 2px solid #ffc107;
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             margin: 20px 0;
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
 
         .note-box strong {
@@ -431,6 +470,106 @@
 
         .section {
             animation: fadeIn 0.6s ease-out;
+        }
+
+        /* تحسينات إضافية للشاشات الصغيرة جداً */
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                border-radius: 10px;
+            }
+
+            header {
+                padding: 20px 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .section {
+                padding: 15px;
+                margin-bottom: 20px;
+                border-right-width: 3px;
+            }
+
+            .dialogue-table {
+                min-width: 500px;
+            }
+
+            .dialogue-table th,
+            .dialogue-table td {
+                padding: 10px 6px;
+            }
+
+            .french-text {
+                gap: 5px;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .tip-card {
+                padding: 15px;
+            }
+
+            .exercise-box {
+                padding: 15px;
+            }
+
+            .practice-words {
+                grid-template-columns: 1fr;
+            }
+
+            .word-bank {
+                gap: 8px;
+            }
+
+            .word {
+                padding: 8px 15px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        /* تحسينات للشاشات الكبيرة */
+        @media (min-width: 1200px) {
+            .content {
+                padding: 40px;
+            }
+
+            .section {
+                padding: 30px;
+            }
+
+            .tips-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* تحسينات للطباعة */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .speak-btn {
+                display: none;
+            }
+
+            .btn {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -463,95 +602,97 @@
             <div class="section">
                 <h2>💬 الحوار الأساسي</h2>
                 
-                <table class="dialogue-table">
-                    <thead>
-                        <tr>
-                            <th>المتحدث</th>
-                            <th>الجملة بالفرنسية</th>
-                            <th>النطق المبسّط</th>
-                            <th>المعنى بالعربية</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>أ<br>(المتعلم)</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Bonjour! Je m\'appelle Sami. Et toi?', 'fr-FR')">🔊</button>
-                                    <span>Bonjour! Je m'appelle Sami. Et toi?</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">بونجور! جُ مابيل سامي. إِت تُوا؟</td>
-                            <td class="translation">صباح الخير! اسمي سامي. وأنت؟</td>
-                        </tr>
-                        <tr>
-                            <td>ب</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Moi, c\'est Lina. Je viens du Maroc. Enchantée!', 'fr-FR')">🔊</button>
-                                    <span>Moi, c'est Lina. Je viens du Maroc. Enchantée!</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">موا، سِه لينا. جُ فيان دُ ماروك. أَنْشانتيه!</td>
-                            <td class="translation">أنا لينا. أنا من المغرب. تشرفت!</td>
-                        </tr>
-                        <tr>
-                            <td>أ<br>(المتعلم)</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Je suis égyptien. Je parle arabe et un peu français.', 'fr-FR')">🔊</button>
-                                    <span>Je suis égyptien. Je parle arabe et un peu français.</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">جُ سْوي إجيبسيان. جُ پارْل أراب إيه أَنْ پُ فغانسي.</td>
-                            <td class="translation">أنا مصري. أتحدث العربية وقليلاً من الفرنسية.</td>
-                        </tr>
-                        <tr>
-                            <td>ب</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Tu fais quoi dans la vie?', 'fr-FR')">🔊</button>
-                                    <span>Tu fais quoi dans la vie?</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">تُ فَي كْوا دان لا ڤي؟</td>
-                            <td class="translation">ماذا تعمل؟</td>
-                        </tr>
-                        <tr>
-                            <td>أ<br>(المتعلم)</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Je suis professeur. Et toi?', 'fr-FR')">🔊</button>
-                                    <span>Je suis professeur. Et toi?</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">جُ سْوي پروفِسير. إِت تُوا؟</td>
-                            <td class="translation">أنا مُعلّم. وأنتِ؟</td>
-                        </tr>
-                        <tr>
-                            <td>ب</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Je suis étudiante en informatique.', 'fr-FR')">🔊</button>
-                                    <span>Je suis étudiante en informatique.</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">جُ سْوي إيتودْيَنْت أَنْ إنفورماتيك.</td>
-                            <td class="translation">أنا طالبة في علوم الحاسوب.</td>
-                        </tr>
-                        <tr>
-                            <td>أ<br>(المتعلم)</td>
-                            <td>
-                                <div class="french-text">
-                                    <button class="speak-btn" onclick="speak('Ravi de te connaître. À bientôt!', 'fr-FR')">🔊</button>
-                                    <span>Ravi de te connaître. À bientôt!</span>
-                                </div>
-                            </td>
-                            <td class="phonetic">غاڤي دُ تُ كُنتر. آ بيان تُو!</td>
-                            <td class="translation">سعيد بالتعرّف عليكِ. أراكِ قريبًا!</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="dialogue-table-wrapper">
+                    <table class="dialogue-table">
+                        <thead>
+                            <tr>
+                                <th>المتحدث</th>
+                                <th>الجملة بالفرنسية</th>
+                                <th>النطق المبسّط</th>
+                                <th>المعنى بالعربية</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>أ<br>(المتعلم)</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Bonjour! Je m\'appelle Sami. Et toi?', 'fr-FR')">🔊</button>
+                                        <span>Bonjour! Je m'appelle Sami. Et toi?</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">بونجور! جُ مابيل سامي. إِت تُوا؟</td>
+                                <td class="translation">صباح الخير! اسمي سامي. وأنت؟</td>
+                            </tr>
+                            <tr>
+                                <td>ب</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Moi, c\'est Lina. Je viens du Maroc. Enchantée!', 'fr-FR')">🔊</button>
+                                        <span>Moi, c'est Lina. Je viens du Maroc. Enchantée!</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">موا، سِه لينا. جُ فيان دُ ماروك. أَنْشانتيه!</td>
+                                <td class="translation">أنا لينا. أنا من المغرب. تشرفت!</td>
+                            </tr>
+                            <tr>
+                                <td>أ<br>(المتعلم)</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Je suis égyptien. Je parle arabe et un peu français.', 'fr-FR')">🔊</button>
+                                        <span>Je suis égyptien. Je parle arabe et un peu français.</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">جُ سْوي إجيبسيان. جُ پارْل أراب إيه أَنْ پُ فغانسي.</td>
+                                <td class="translation">أنا مصري. أتحدث العربية وقليلاً من الفرنسية.</td>
+                            </tr>
+                            <tr>
+                                <td>ب</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Tu fais quoi dans la vie?', 'fr-FR')">🔊</button>
+                                        <span>Tu fais quoi dans la vie?</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">تُ فَي كْوا دان لا ڤي؟</td>
+                                <td class="translation">ماذا تعمل؟</td>
+                            </tr>
+                            <tr>
+                                <td>أ<br>(المتعلم)</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Je suis professeur. Et toi?', 'fr-FR')">🔊</button>
+                                        <span>Je suis professeur. Et toi?</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">جُ سْوي پروفِسير. إِت تُوا؟</td>
+                                <td class="translation">أنا مُعلّم. وأنتِ؟</td>
+                            </tr>
+                            <tr>
+                                <td>ب</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Je suis étudiante en informatique.', 'fr-FR')">🔊</button>
+                                        <span>Je suis étudiante en informatique.</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">جُ سْوي إيتودْيَنْت أَنْ إنفورماتيك.</td>
+                                <td class="translation">أنا طالبة في علوم الحاسوب.</td>
+                            </tr>
+                            <tr>
+                                <td>أ<br>(المتعلم)</td>
+                                <td>
+                                    <div class="french-text">
+                                        <button class="speak-btn" onclick="speak('Ravi de te connaître. À bientôt!', 'fr-FR')">🔊</button>
+                                        <span>Ravi de te connaître. À bientôt!</span>
+                                    </div>
+                                </td>
+                                <td class="phonetic">غاڤي دُ تُ كُنتر. آ بيان تُو!</td>
+                                <td class="translation">سعيد بالتعرّف عليكِ. أراكِ قريبًا!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="note-box">
                     <strong>ملاحظة هامة:</strong> عند مخاطبة شخص باحترام، استخدم "vous" بدلاً من "tu" (مثال: "Et vous?").
@@ -637,7 +778,7 @@
                     </div>
                     
                     <p style="margin-top: 20px;">جرب نطق الجملة:</p>
-                    <div class="practice-word" onclick="speak('Je parle français. Je parle arabe.', 'fr-FR')" style="margin: 15px auto; max-width: 400px;">
+                    <div class="practice-word" onclick="speak('Je parle français. Je parle arabe.', 'fr-FR')" style="margin: 15px auto; max-width: 100%;">
                         <div style="font-size: 1.5em; margin-bottom: 10px;">🔊</div>
                         <strong>Je parle français. Je parle arabe.</strong>
                     </div>
@@ -708,7 +849,7 @@
                 <div class="exercise-box">
                     <div class="question">
                         <h3>السؤال 3: أكمل الفراغ بمهنة مناسبة</h3>
-                        <p>Je suis <input type="text" id="profession-answer" placeholder="اكتب المهنة هنا" style="display: inline-block; width: 200px; padding: 5px;">.</p>
+                        <p>Je suis <input type="text" id="profession-answer" placeholder="اكتب المهنة هنا" style="display: inline-block; width: 100%; max-width: 200px; padding: 8px; margin: 5px 0;">.</p>
                         <p style="margin-top: 10px; color: #666;"><em>(مثال: étudiant(e), médecin, ingénieur)</em></p>
                         
                         <button class="btn" onclick="checkProfession()">تحقق من الإجابة</button>
@@ -728,7 +869,7 @@
             <!-- التحدي النهائي -->
             <div class="section" style="text-align: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
                 <h2 style="color: white;">🎯 تحدي اليوم</h2>
-                <p style="font-size: 1.3em; margin: 20px 0;">قدّم نفسك الآن بثقة باستخدام القوالب التي تعلمتها!</p>
+                <p style="font-size: clamp(1rem, 3vw, 1.3rem); margin: 20px 0;">قدّم نفسك الآن بثقة باستخدام القوالب التي تعلمتها!</p>
                 <button class="btn" style="background: white; color: #f5576c; font-weight: bold;" onclick="scrollToExercise()">ابدأ التحدي</button>
             </div>
         </div>
@@ -777,7 +918,7 @@
             resultDiv.innerHTML = `
                 <div style="background: white; padding: 20px; border-radius: 10px; border: 2px solid #667eea;">
                     <h3 style="color: #667eea; margin-bottom: 15px;">✅ تعريفك الشخصي:</h3>
-                    <div class="french-text" style="font-size: 1.2em; margin-bottom: 15px;">
+                    <div class="french-text" style="font-size: clamp(1rem, 2.5vw, 1.2rem); margin-bottom: 15px;">
                         <button class="speak-btn" onclick="speak('${intro}', 'fr-FR')">🔊</button>
                         <span>${intro}</span>
                     </div>
@@ -876,8 +1017,10 @@
 
         // التمرير إلى التمرين
         function scrollToExercise() {
-            document.getElementById('name').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('name').focus();
+            document.getElementById('name').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+                document.getElementById('name').focus();
+            }, 500);
         }
 
         // تحميل الأصوات عند تحميل الصفحة
@@ -887,6 +1030,38 @@
                 speechSynthesis.getVoices();
             }
         });
+
+        // دعم اللمس للأجهزة المحمولة (السحب والإفلات)
+        let draggedElement = null;
+
+        document.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('word') && e.target.draggable) {
+                draggedElement = e.target;
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', function(e) {
+            if (draggedElement) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('touchend', function(e) {
+            if (draggedElement) {
+                const dropZone = document.getElementById('drop-zone');
+                const touch = e.changedTouches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                
+                if (target && (target.id === 'drop-zone' || target.closest('#drop-zone'))) {
+                    const clone = draggedElement.cloneNode(true);
+                    clone.draggable = false;
+                    clone.style.cursor = 'default';
+                    dropZone.appendChild(clone);
+                }
+                
+                draggedElement = null;
+            }
+        }, { passive: true });
     </script>
 </body>
 </html>
