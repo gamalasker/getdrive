@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أساسيات الفرنسية: التحيات - Salutations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        .french-term {
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .pronunciation {
+            color: #4b5563;
+            font-style: italic;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            border-bottom: 3px solid #60a5fa;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .frenchapeau-quote {
+            background-color: #eff6ff;
+            border-right: 5px solid #2563eb;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        th {
+            background-color: #dbeafe;
+        }
+        .quiz-btn {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.875rem;
+            border: none;
+        }
+        .quiz-btn:hover {
+            background-color: #2563eb;
+        }
+        .answer {
+            background-color: #f0fdf4;
+            color: #15803d;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-top: 0.75rem;
+            font-weight: 500;
+        }
+        
+        /* Speaker Button Styles */
+        .speaker-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0 0.25rem;
+            font-size: 1.125rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .speaker-btn:hover {
+            background-color: #059669;
+            transform: scale(1.1);
+        }
+        .speaker-btn:active {
+            transform: scale(0.95);
+        }
+        .speaker-btn.playing {
+            background-color: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .phrase-container {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        
+        .dialogue-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin: 0.75rem 0;
+            flex-wrap: wrap;
+        }
+        
+        /* Responsive text sizing */
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 1.75rem !important;
+            }
+            h2 {
+                font-size: 1.25rem;
+            }
+            h3 {
+                font-size: 1.125rem;
+            }
+            .card {
+                padding: 0.75rem;
+            }
+            table {
+                font-size: 0.75rem;
+            }
+            th, td {
+                padding: 0.375rem;
+            }
+            .speaker-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem !important;
+            }
+            h1 {
+                font-size: 1.5rem !important;
+            }
+            .phrase-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-2 sm:p-4 md:p-6 lg:p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-6 md:mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-900">أساسيات الفرنسية: التحيات (Salutations)</h1>
+            <p class="text-base sm:text-lg text-gray-600 mt-2">الأسبوع الأول من دورة تعليم اساسيات الفرنسية</p>
+        </header>
+
+        <!-- Objectives Card -->
+        <div class="card">
+            <h2 class="!mt-0 !mb-4">🎯 الأهداف اللغوية</h2>
+            <p class="text-sm sm:text-base">إتقان التحيات المناسبة حسب الوقت (صباح/مساء/ليل)، التحيات الرسمية وغير الرسمية، عبارات الوداع، وصيغ السؤال عن الحال بشكل مهذب ومختصر قابل للاستخدام الفوري.</p>
+            <div class="mt-4 p-3 bg-blue-100 rounded-lg">
+                <p class="font-semibold text-sm sm:text-base">التراكيب المستهدفة:</p>
+                <div class="phrase-container">
+                    <span class="text-blue-800 text-sm sm:text-base">Bonjour / Bonsoir / Bonne nuit / Salut / Ça va? / Comment allez-vous? / Au revoir / À bientôt / À plus tard</span>
+                    <button class="speaker-btn" onclick="speak('Bonjour. Bonsoir. Bonne nuit. Salut. Ça va? Comment allez-vous? Au revoir. À bientôt. À plus tard', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Frenchapeau Intro -->
+        <div class="frenchapeau-quote">
+            <p class="font-bold text-base sm:text-lg">🎩 تمهيد Frenchapeau</p>
+            <div class="phrase-container mt-2">
+                <p class="text-gray-700 text-sm sm:text-base">Salut, mes amis! اليوم نتعلم متى نقول ماذا! التحية الصحيحة في الوقت المناسب تفتح كل باب. Répétez avec moi!</p>
+                <button class="speaker-btn" onclick="speak('Salut, mes amis! Répétez avec moi!', 'fr-FR')" title="استمع للنطق">🔊</button>
+            </div>
+        </div>
+
+        <!-- Main Content Sections -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+
+            <!-- Greetings by Time -->
+            <div class="card">
+                <h2>🕒 التحيات حسب الوقت</h2>
+                <h3 class="text-base sm:text-xl">صباحًا ونهارًا (من الفجر حتى المساء)</h3>
+                <div class="phrase-container">
+                    <span class="french-term">Bonjour!</span>
+                    <span class="pronunciation text-sm sm:text-base">بونجور</span>
+                    <button class="speaker-btn" onclick="speak('Bonjour', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <ul class="list-disc list-inside mt-1 space-y-1 text-gray-700 text-sm sm:text-base">
+                    <li><b>المعنى:</b> صباح الخير / نهارك سعيد</li>
+                    <li><b>الاستخدام:</b> من الصباح حتى حوالي الساعة 6 مساءً، رسمي وغير رسمي.</li>
+                </ul>
+
+                <h3 class="text-base sm:text-xl">المساء والليل (من 6 مساءً فصاعدًا)</h3>
+                <div class="phrase-container">
+                    <span class="french-term">Bonsoir!</span>
+                    <span class="pronunciation text-sm sm:text-base">بونسْوار</span>
+                    <button class="speaker-btn" onclick="speak('Bonsoir', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <ul class="list-disc list-inside mt-1 space-y-1 text-gray-700 text-sm sm:text-base">
+                    <li><b>المعنى:</b> مساء الخير</li>
+                    <li><b>الاستخدام:</b> من المساء حتى موعد النوم، عند الوصول أو اللقاء.</li>
+                </ul>
+                <div class="phrase-container mt-4">
+                    <span class="french-term">Bonne nuit!</span>
+                    <span class="pronunciation text-sm sm:text-base">بون نْوي</span>
+                    <button class="speaker-btn" onclick="speak('Bonne nuit', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <ul class="list-disc list-inside mt-1 space-y-1 text-gray-700 text-sm sm:text-base">
+                    <li><b>المعنى:</b> تصبح على خير</li>
+                    <li><b>الاستخدام:</b> فقط عند المغادرة للنوم أو قبل النوم مباشرة، ليس للقاء.</li>
+                </ul>
+
+                <h3 class="text-base sm:text-xl">تحية غير رسمية (للأصدقاء والأقران)</h3>
+                <div class="phrase-container">
+                    <span class="french-term">Salut!</span>
+                    <span class="pronunciation text-sm sm:text-base">سالو</span>
+                    <button class="speaker-btn" onclick="speak('Salut', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <ul class="list-disc list-inside mt-1 space-y-1 text-gray-700 text-sm sm:text-base">
+                    <li><b>المعنى:</b> مرحبًا / هلا</li>
+                    <li><b>الاستخدام:</b> بين الأصدقاء وأفراد العائلة والأقران، أي وقت.</li>
+                </ul>
+            </div>
+
+            <!-- Asking How Are You & Farewells -->
+            <div class="card">
+                <h2>👋 السؤال عن الحال والوداع</h2>
+                <h3 class="text-base sm:text-xl">السؤال عن الحال</h3>
+                <p class="font-semibold text-sm sm:text-base">غير رسمي (مع الأصدقاء):</p>
+                <div class="phrase-container">
+                    <span class="french-term">Ça va?</span>
+                    <span class="pronunciation text-sm sm:text-base">سا ڤا؟</span>
+                    <button class="speaker-btn" onclick="speak('Ça va?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <div class="phrase-container">
+                    <p class="text-xs sm:text-sm text-gray-600"><b>الرد:</b> Ça va, merci. Et toi?</p>
+                    <button class="speaker-btn" onclick="speak('Ça va, merci. Et toi?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+
+                <div class="phrase-container mt-2">
+                    <span class="french-term">Comment ça va?</span>
+                    <span class="pronunciation text-sm sm:text-base">كومان سا ڤا؟</span>
+                    <button class="speaker-btn" onclick="speak('Comment ça va?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <div class="phrase-container">
+                    <p class="text-xs sm:text-sm text-gray-600"><b>الرد:</b> Très bien, et toi?</p>
+                    <button class="speaker-btn" onclick="speak('Très bien, et toi?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                
+                <p class="font-semibold mt-4 text-sm sm:text-base">رسمي (مع الغرباء أو كبار السن):</p>
+                <div class="phrase-container">
+                    <span class="french-term">Comment allez-vous?</span>
+                    <span class="pronunciation text-sm sm:text-base">كومان تاليه ڤو؟</span>
+                    <button class="speaker-btn" onclick="speak('Comment allez-vous?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+                <div class="phrase-container">
+                    <p class="text-xs sm:text-sm text-gray-600"><b>الرد:</b> Je vais bien, merci. Et vous?</p>
+                    <button class="speaker-btn" onclick="speak('Je vais bien, merci. Et vous?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                </div>
+
+                <h3 class="text-base sm:text-xl">عبارات الوداع</h3>
+                <ul class="list-none mt-1 space-y-2 text-sm sm:text-base">
+                    <li class="phrase-container">
+                        <span><span class="french-term">Au revoir!</span> <span class="pronunciation">أو غُڤوار</span> - إلى اللقاء / مع السلامة</span>
+                        <button class="speaker-btn" onclick="speak('Au revoir', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </li>
+                    <li class="phrase-container">
+                        <span><span class="french-term">À bientôt!</span> <span class="pronunciation">آ بيان تُو</span> - أراك قريبًا</span>
+                        <button class="speaker-btn" onclick="speak('À bientôt', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </li>
+                    <li class="phrase-container">
+                        <span><span class="french-term">À plus tard! / À plus!</span> <span class="pronunciation">آ پْلُ تار / آ پْلُ</span> - أراك لاحقًا</span>
+                        <button class="speaker-btn" onclick="speak('À plus tard', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </li>
+                    <li class="phrase-container">
+                        <span><span class="french-term">À demain!</span> <span class="pronunciation">آ دُمان</span> - أراك غدًا</span>
+                        <button class="speaker-btn" onclick="speak('À demain', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </li>
+                    <li class="phrase-container">
+                        <span><span class="french-term">Salut!</span> <span class="pronunciation">سالو</span> - باي (غير رسمي)</span>
+                        <button class="speaker-btn" onclick="speak('Salut', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </li>
+                    <li class="phrase-container">
+                        <span><span class="french-term">Ciao!</span> <span class="pronunciation">تشاو</span> - باي (غير رسمي جدًا)</span>
+                        <button class="speaker-btn" onclick="speak('Ciao', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dialogue Example -->
+        <div class="card">
+            <h2>💬 حوار نموذجي كامل مع Frenchapeau</h2>
+            <div class="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                <p class="font-semibold text-sm sm:text-base">المشهد: لقاء صباحي بين زميلين في العمل</p>
+                <div class="mt-4 space-y-3">
+                    <div class="dialogue-line">
+                        <span class="text-sm sm:text-base"><b class="text-blue-700">A:</b> <span class="french-term">Bonjour, Lina! Ça va?</span> <span class="pronunciation text-xs sm:text-sm">بونجور، لينا! سا ڤا؟</span></span>
+                        <button class="speaker-btn" onclick="speak('Bonjour, Lina! Ça va?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </div>
+                    <div class="dialogue-line">
+                        <span class="text-sm sm:text-base"><b class="text-green-700">B:</b> <span class="french-term">Bonjour! Ça va bien, merci. Et toi?</span> <span class="pronunciation text-xs sm:text-sm">بونجور! سا ڤا بيان، ميرسي. إِت تُوا؟</span></span>
+                        <button class="speaker-btn" onclick="speak('Bonjour! Ça va bien, merci. Et toi?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </div>
+                    <div class="dialogue-line">
+                        <span class="text-sm sm:text-base"><b class="text-blue-700">A:</b> <span class="french-term">Très bien, merci!</span> <span class="pronunciation text-xs sm:text-sm">تغيه بيان، ميرسي!</span></span>
+                        <button class="speaker-btn" onclick="speak('Très bien, merci!', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </div>
+                    <div class="mt-4">
+                        <button class="quiz-btn w-full sm:w-auto" onclick="speak('Bonjour, Lina! Ça va? Bonjour! Ça va bien, merci. Et toi? Très bien, merci!', 'fr-FR')">🔊 استمع للحوار كاملاً</button>
+                    </div>
+                </div>
+            </div>
+            <div class="frenchapeau-quote mt-4">
+                <p class="font-bold text-sm sm:text-base">🎩 تعليق Frenchapeau:</p>
+                <p class="text-xs sm:text-sm">لاحظوا: <span class="french-term">Bonjour</span> للصباح، <span class="french-term">Ça va</span> للسؤال السريع، ونردّ دائمًا ونسأل بالمقابل <span class="french-term">Et toi/vous?</span></p>
+            </div>
+            <div class="bg-gray-50 p-3 sm:p-4 rounded-lg mt-4">
+                <p class="font-semibold text-sm sm:text-base">نهاية اليوم — وداع:</p>
+                <div class="mt-4 space-y-3">
+                    <div class="dialogue-line">
+                        <span class="text-sm sm:text-base"><b class="text-blue-700">A:</b> <span class="french-term">Bon, je dois y aller. À demain!</span> <span class="pronunciation text-xs sm:text-sm">بون، جُ دْوا إي اليه. آ دُمان!</span></span>
+                        <button class="speaker-btn" onclick="speak('Bon, je dois y aller. À demain!', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </div>
+                    <div class="dialogue-line">
+                        <span class="text-sm sm:text-base"><b class="text-green-700">B:</b> <span class="french-term">D\'accord! Bonne soirée!</span> <span class="pronunciation text-xs sm:text-sm">داكور! بون سْواغيه!</span></span>
+                        <button class="speaker-btn" onclick="speak('D\'accord! Bonne soirée!', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </div>
+                    <div class="dialogue-line">
+                        <span class="text-sm sm:text-base"><b class="text-blue-700">A:</b> <span class="french-term">Merci, toi aussi! Au revoir!</span> <span class="pronunciation text-xs sm:text-sm">ميرسي، تْوا أوسي! أو غُڤوار!</span></span>
+                        <button class="speaker-btn" onclick="speak('Merci, toi aussi! Au revoir!', 'fr-FR')" title="استمع للنطق">🔊</button>
+                    </div>
+                    <div class="mt-4">
+                        <button class="quiz-btn w-full sm:w-auto" onclick="speak('Bon, je dois y aller. À demain! D\'accord! Bonne soirée! Merci, toi aussi! Au revoir!', 'fr-FR')">🔊 استمع للحوار كاملاً</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Golden Rules -->
+        <div class="card bg-yellow-50 border-r-4 border-yellow-400">
+            <h2 class="!border-yellow-400">📜 لافتات Frenchapeau الذهبية</h2>
+            <ul class="space-y-3 text-sm sm:text-base">
+                <li><b class="text-yellow-800">تذكير 1:</b> <span class="french-term">Bonjour</span> طوال النهار، <span class="french-term">Bonsoir</span> من المساء، <span class="french-term">Bonne nuit</span> فقط قبل النوم مباشرة.</li>
+                <li><b class="text-yellow-800">تذكير 2:</b> استخدم <span class="french-term">tu/toi</span> مع الأصدقاء، و <span class="french-term">vous</span> مع الغرباء وكبار السن والمواقف الرسمية.</li>
+                <li><b class="text-yellow-800">تذكير 3:</b> ردّ التحية دائمًا واسأل بالمقابل <span class="french-term">Et toi? / Et vous?</span> لإظهار الاهتمام والاحترام.</li>
+            </ul>
+        </div>
+
+        <!-- Quick Tables -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+            <div class="card overflow-x-auto">
+                <h2>🗓️ جدول التحيات السريع</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الموقف</th>
+                            <th>التحية</th>
+                            <th>الوداع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>صباح رسمي</td>
+                            <td class="french-term">Bonjour</td>
+                            <td class="french-term">Au revoir / Bonne journée</td>
+                        </tr>
+                        <tr>
+                            <td>مساء رسمي</td>
+                            <td class="french-term">Bonsoir</td>
+                            <td class="french-term">Bonne soirée / Au revoir</td>
+                        </tr>
+                        <tr>
+                            <td>بين أصدقاء</td>
+                            <td class="french-term">Salut</td>
+                            <td class="french-term">Salut / À plus / Ciao</td>
+                        </tr>
+                        <tr>
+                            <td>قبل النوم</td>
+                            <td>لا يوجد</td>
+                            <td class="french-term">Bonne nuit</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Ready templates -->
+            <div class="card">
+                <h2>✍️ استخدمها الآن (قوالب جاهزة)</h2>
+                <div class="space-y-4 text-sm sm:text-base">
+                    <div>
+                        <p class="font-semibold">صباحًا في العمل:</p>
+                        <div class="phrase-container">
+                            <p class="p-2 bg-gray-100 rounded text-right flex-1"><span class="french-term">Bonjour</span> + [اسم] + <span class="french-term">Comment allez-vous?</span></p>
+                            <button class="speaker-btn" onclick="speak('Bonjour Madame Dubois, comment allez-vous?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1">مثال: Bonjour Madame Dubois, comment allez-vous?</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold">بعد الظهر مع صديق:</p>
+                        <div class="phrase-container">
+                            <p class="p-2 bg-gray-100 rounded text-right flex-1"><span class="french-term">Salut</span> + [اسم] + <span class="french-term">Ça va?</span></p>
+                            <button class="speaker-btn" onclick="speak('Salut Omar, ça va?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1">مثال: Salut Omar, ça va?</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold">المساء عند المغادرة:</p>
+                        <div class="phrase-container">
+                            <p class="p-2 bg-gray-100 rounded text-right flex-1"><span class="french-term">Au revoir</span> + <span class="french-term">Bonne soirée!</span></p>
+                            <button class="speaker-btn" onclick="speak('Au revoir, bonne soirée!', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </div>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1">مثال: Au revoir, bonne soirée!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pronunciation Drills -->
+        <div class="card">
+            <h2>🎤 تدريب نطق بقيادة Frenchapeau</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="!mt-0 text-base sm:text-xl">تمرين 1: التحيات الثلاث الأساسية</h3>
+                    <p class="text-sm sm:text-base">Frenchapeau يقرأ ببطء، كرّر 3 مرات:</p>
+                    <ul class="list-disc list-inside mt-2 space-y-2 text-sm sm:text-base">
+                        <li class="phrase-container">
+                            <span><span class="french-term">Bonjour</span> <span class="pronunciation">بونجور</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonjour', 'fr-FR', 0.8)" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span><span class="french-term">Bonsoir</span> <span class="pronunciation">بونسْوار</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonsoir', 'fr-FR', 0.8)" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span><span class="french-term">Bonne nuit</span> <span class="pronunciation">بون نْوي</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonne nuit', 'fr-FR', 0.8)" title="استمع للنطق">🔊</button>
+                        </li>
+                    </ul>
+                    <button class="quiz-btn mt-3 w-full sm:w-auto" onclick="speak('Bonjour. Bonsoir. Bonne nuit', 'fr-FR', 0.8)">🔊 استمع للتمرين كاملاً</button>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-xl">تمرين 2: السؤال والرد</h3>
+                    <div class="phrase-container">
+                        <p class="text-sm sm:text-base">A: <span class="french-term">Ça va?</span> | B: <span class="french-term">Ça va, merci. Et toi?</span> (كرّر الحوار 3 مرات بسرعة متزايدة)</p>
+                        <button class="speaker-btn" onclick="speak('Ça va? Ça va, merci. Et toi?', 'fr-FR', 0.8)" title="استمع للنطق">🔊</button>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="text-base sm:text-xl">تمرين 3: نطق الأصوات الأنفية</h3>
+                    <div class="phrase-container">
+                        <p class="text-sm sm:text-base">ركّز على "on" في <span class="french-term">Bonjour</span> / <span class="french-term">Bonsoir</span>: (أخرج الصوت من الأنف قليلاً)</p>
+                        <button class="speaker-btn" onclick="speak('Bonjour. Bonsoir', 'fr-FR', 0.7)" title="استمع للنطق">🔊</button>
+                    </div>
+                </div>
+                 <div>
+                    <h3 class="text-base sm:text-xl">تمرين 4: سلسلة الوداع</h3>
+                    <div class="phrase-container">
+                        <p class="text-sm sm:text-base"><span class="french-term">Au revoir — À bientôt — À plus tard — À demain</span> (كرّر السلسلة دفعة واحدة 5 مرات)</p>
+                        <button class="speaker-btn" onclick="speak('Au revoir. À bientôt. À plus tard. À demain', 'fr-FR', 0.8)" title="استمع للنطق">🔊</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Quiz -->
+        <div class="card">
+            <h2>⏱️ تمرين الدقيقة الواحدة</h2>
+            <div class="space-y-4">
+                <!-- Question 1 -->
+                <div class="p-2 sm:p-3 border rounded-lg">
+                    <p class="font-semibold text-sm sm:text-base">سؤال 1: ماذا تقول في الساعة 9 صباحًا؟</p>
+                    <p class="text-gray-600 text-xs sm:text-sm mt-1">أ) Bonsoir | ب) Bonjour | ج) Bonne nuit</p>
+                    <div class="mt-2">
+                        <button class="quiz-btn" data-answer-id="ans1">أظهر الإجابة</button>
+                        <p id="ans1" class="answer hidden text-sm sm:text-base"><b>الإجابة:</b> ب) Bonjour</p>
+                    </div>
+                </div>
+                 <!-- Question 2 -->
+                <div class="p-2 sm:p-3 border rounded-lg">
+                    <p class="font-semibold text-sm sm:text-base">سؤال 2: أي عبارة تستخدمها قبل النوم مباشرة؟</p>
+                    <p class="text-gray-600 text-xs sm:text-sm mt-1">أ) Bonjour | ب) Au revoir | ج) Bonne nuit</p>
+                    <div class="mt-2">
+                        <button class="quiz-btn" data-answer-id="ans2">أظهر الإجابة</button>
+                        <p id="ans2" class="answer hidden text-sm sm:text-base"><b>الإجابة:</b> ج) Bonne nuit</p>
+                    </div>
+                </div>
+                 <!-- Question 3 -->
+                <div class="p-2 sm:p-3 border rounded-lg">
+                    <p class="font-semibold text-sm sm:text-base">سؤال 3: كيف تسأل صديقًا عن حاله بشكل غير رسمي؟</p>
+                    <p class="text-gray-600 text-xs sm:text-sm mt-1">أ) Comment allez-vous? | ب) Ça va? | ج) Bonne nuit</p>
+                    <div class="mt-2">
+                        <button class="quiz-btn" data-answer-id="ans3">أظهر الإجابة</button>
+                        <p id="ans3" class="answer hidden text-sm sm:text-base"><b>الإجابة:</b> ب) Ça va?</p>
+                    </div>
+                </div>
+                 <!-- Question 4 -->
+                <div class="p-2 sm:p-3 border rounded-lg">
+                    <p class="font-semibold text-sm sm:text-base">سؤال 4 (ترتيب): رتّب الكلمات: toi / Et / va / Ça / ?</p>
+                    <div class="mt-2">
+                        <button class="quiz-btn" data-answer-id="ans4">أظهر الإجابة</button>
+                        <p id="ans4" class="answer hidden text-sm sm:text-base"><b>الإجابة:</b> Ça va? Et toi?</p>
+                    </div>
+                </div>
+                 <!-- Question 5 -->
+                <div class="p-2 sm:p-3 border rounded-lg">
+                    <p class="font-semibold text-sm sm:text-base">سؤال 5 (مطابقة): اختر الرد المناسب لـ <span class="french-term">Comment allez-vous?</span></p>
+                    <p class="text-gray-600 text-xs sm:text-sm mt-1">أ) Salut! | ب) Je vais bien, merci. | ج) À bientôt!</p>
+                    <div class="mt-2">
+                        <button class="quiz-btn" data-answer-id="ans5">أظهر الإجابة</button>
+                        <p id="ans5" class="answer hidden text-sm sm:text-base"><b>الإجابة:</b> ب) Je vais bien, merci.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tasks and Challenges -->
+        <div class="card">
+            <h2>🚀 مهام تطبيق فورية</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="!mt-0 text-base sm:text-xl">تحدي اليوم:</h3>
+                    <p class="text-sm sm:text-base">سجّل 6 تحيات في 6 أوقات مختلفة خلال اليوم، واستخدم التحية الصحيحة لكل موقف:</p>
+                    <ul class="list-disc list-inside mt-2 text-xs sm:text-sm text-gray-700 space-y-1">
+                        <li class="phrase-container">
+                            <span>الصباح: <span class="french-term">Bonjour</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonjour', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span>الظهيرة مع صديق: <span class="french-term">Salut, ça va?</span></span>
+                            <button class="speaker-btn" onclick="speak('Salut, ça va?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span>العصر رسمي: <span class="french-term">Bonjour, comment allez-vous?</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonjour, comment allez-vous?', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span>المساء: <span class="french-term">Bonsoir</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonsoir', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span>قبل المغادرة: <span class="french-term">Au revoir, à demain</span></span>
+                            <button class="speaker-btn" onclick="speak('Au revoir, à demain', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </li>
+                        <li class="phrase-container">
+                            <span>قبل النوم: <span class="french-term">Bonne nuit</span></span>
+                            <button class="speaker-btn" onclick="speak('Bonne nuit', 'fr-FR')" title="استمع للنطق">🔊</button>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-base sm:text-xl">تدريب الأسبوع:</h3>
+                    <p class="text-sm sm:text-base">شاهد مقطع فيديو قصير بالفرنسية وعدّ كم مرة سمعت <span class="french-term">Bonjour / Bonsoir / Salut</span>. شارك النتيجة في مجتمع الدرس واحصل على شارة "Frenchapeau Listener".</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 p-4 bg-blue-100 rounded-lg">
+            <p class="text-sm sm:text-base font-semibold text-blue-900">💡 نصيحة: استخدم أزرار النطق 🔊 لسماع النطق الصحيح لكل عبارة!</p>
+            <p class="text-xs sm:text-sm text-gray-600 mt-2">تأكد من تفعيل الصوت في متصفحك للاستفادة الكاملة من الدرس</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Text-to-Speech Function
+        function speak(text, lang = 'fr-FR', rate = 1.0) {
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = rate;
+            utterance.pitch = 1.0;
+            utterance.volume = 1.0;
+            
+            // Get the button that was clicked
+            const clickedButton = event.target.closest('.speaker-btn');
+            if (clickedButton) {
+                clickedButton.classList.add('playing');
+            }
+            
+            // Remove 'playing' class when speech ends
+            utterance.onend = () => {
+                if (clickedButton) {
+                    clickedButton.classList.remove('playing');
+                }
+            };
+            
+            utterance.onerror = (event) => {
+                console.error('Speech synthesis error:', event);
+                if (clickedButton) {
+                    clickedButton.classList.remove('playing');
+                }
+                alert('عذراً، حدث خطأ في النطق. تأكد من أن متصفحك يدعم النطق الفرنسي.');
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Interactive Quiz Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const quizButtons = document.querySelectorAll('.quiz-btn[data-answer-id]');
+            
+            quizButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const answerId = button.getAttribute('data-answer-id');
+                    const answerElement = document.getElementById(answerId);
+                    if (answerElement) {
+                        answerElement.classList.toggle('hidden');
+                        if (answerElement.classList.contains('hidden')) {
+                            button.textContent = 'أظهر الإجابة';
+                        } else {
+                            button.textContent = 'أخفِ الإجابة';
+                        }
+                    }
+                });
+            });
+            
+            // Check if browser supports speech synthesis
+            if (!('speechSynthesis' in window)) {
+                console.warn('Speech synthesis not supported in this browser');
+                alert('متصفحك لا يدعم خاصية النطق. جرب استخدام Chrome أو Firefox أو Edge للحصول على تجربة كاملة.');
+            }
+        });
+        
+        // Stop speech when page is unloaded
+        window.addEventListener('beforeunload', () => {
+            window.speechSynthesis.cancel();
+        });
+    </script>
+
+</body>
+</html>
