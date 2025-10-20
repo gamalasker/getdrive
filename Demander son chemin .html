@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس 4: سؤال الطريق - Demander son chemin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+        }
+        .french-text {
+            font-family: 'Inter', sans-serif;
+            direction: ltr;
+            text-align: right;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .speak-btn {
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+        .speak-btn:hover {
+            background-color: #4338ca;
+        }
+        .quiz-option {
+            cursor: pointer;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .quiz-option:hover {
+            background-color: #f3f4f6;
+            border-color: #4f46e5;
+        }
+        .correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+        }
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-5xl font-bold text-indigo-700">الأسبوع 2 — الدرس 1 (الدرس 4 إجمالاً)</h1>
+            <h2 class="text-2xl md:text-4xl font-semibold mt-2 french-text" dir="ltr">Demander son chemin — سؤال الطريق</h2>
+        </header>
+
+        <!-- Lesson Goal & Mascot -->
+        <div class="card flex flex-col md:flex-row items-center bg-indigo-50 border-2 border-indigo-200">
+            <div class="text-6xl mb-4 md:mb-0 md:mr-6">🎩</div>
+            <div>
+                <h3 class="text-xl font-bold text-indigo-800">هدف الدرس وشخصية المرافق (Frenchapeau)</h3>
+                <p class="mt-2">أن تسأل بأدب عن الاتجاه وتفهم إجابات بسيطة. سيساعدك <span class="font-bold">Frenchapeau</span>، مدربك اللطيف، على تذكر صيغ اللباقة وخطوات فهم الاتجاهات (اسمع — كرّر — أكّد).</p>
+            </div>
+        </div>
+
+        <!-- Main Dialogue -->
+        <div class="card" id="dialogue-section">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">الحوار الأساسي</h3>
+            <div class="space-y-4">
+                <!-- Line 1 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="Bonjour, excusez-moi, où est la station de métro, s’il vous plaît?"><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">A: Bonjour, excusez-moi, où est la station de métro, s’il vous plaît?</p>
+                        <p class="text-gray-600">المعنى: صباح الخير، عذرًا أين محطة المترو من فضلك؟</p>
+                    </div>
+                </div>
+                <!-- Line 2 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="C’est tout droit, puis à gauche à la deuxième rue."><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">B: C’est tout droit, puis à gauche à la deuxième rue.</p>
+                        <p class="text-gray-600">المعنى: إنها إلى الأمام مباشرة، ثم يسارًا عند الشارع الثاني.</p>
+                    </div>
+                </div>
+                 <!-- Line 3 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="Et la place centrale, c’est loin?"><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">A: Et la place centrale, c’est loin?</p>
+                        <p class="text-gray-600">المعنى: والميدان الرئيسي، هل هو بعيد؟</p>
+                    </div>
+                </div>
+                 <!-- Line 4 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="Non, c’est près. Trois minutes à pied."><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">B: Non, c’est près. Trois minutes à pied.</p>
+                        <p class="text-gray-600">المعنى: لا، قريب. ثلاث دقائق مشيًا.</p>
+                    </div>
+                </div>
+                 <!-- Line 5 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="Merci! Et le musée?"><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">A: Merci! Et le musée?</p>
+                        <p class="text-gray-600">المعنى: شكرًا! وماذا عن المتحف؟</p>
+                    </div>
+                </div>
+                <!-- Line 6 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="À droite après le café, en face de la banque."><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">B: À droite après le café, en face de la banque.</p>
+                        <p class="text-gray-600">المعنى: إلى اليمين بعد المقهى، مقابل البنك.</p>
+                    </div>
+                </div>
+                 <!-- Line 7 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="D’accord, je répète: tout droit, puis à gauche, et le musée à droite après le café."><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">A: D’accord, je répète: tout droit, puis à gauche, et le musée à droite après le café.</p>
+                        <p class="text-gray-600">المعنى: حسنًا، سأعيد: إلى الأمام، ثم يسارًا، والمتحف يمينًا بعد المقهى.</p>
+                    </div>
+                </div>
+                 <!-- Line 8 -->
+                <div class="flex items-start">
+                    <button class="speak-btn flex-shrink-0" data-text="Parfait! Bonne journée!"><i class="fas fa-volume-up"></i></button>
+                    <div>
+                        <p class="french-text font-semibold">B: Parfait! Bonne journée!</p>
+                        <p class="text-gray-600">المعنى: ممتاز! نهارك سعيد!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vocabulary and Tips -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="card">
+                <h3 class="text-2xl font-bold mb-4 text-indigo-700">مفردات سريعة</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-center justify-between">
+                        <div><span class="font-bold french-text" dir="ltr">tout droit</span>: إلى الأمام مباشرة</div>
+                        <button class="speak-btn flex-shrink-0" data-text="tout droit"><i class="fas fa-volume-up"></i></button>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <div><span class="font-bold french-text" dir="ltr">à gauche / à droite</span>: يسار / يمين</div>
+                        <button class="speak-btn flex-shrink-0" data-text="à gauche, à droite"><i class="fas fa-volume-up"></i></button>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <div><span class="font-bold french-text" dir="ltr">près / loin</span>: قريب / بعيد</div>
+                        <button class="speak-btn flex-shrink-0" data-text="près, loin"><i class="fas fa-volume-up"></i></button>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <div><span class="font-bold french-text" dir="ltr">en face de / à côté de</span>: مقابل / بجوار</div>
+                        <button class="speak-btn flex-shrink-0" data-text="en face de, à côté de"><i class="fas fa-volume-up"></i></button>
+                    </li>
+                     <li class="flex items-center justify-between">
+                        <div><span class="font-bold french-text" dir="ltr">après / avant</span>: بعد / قبل</div>
+                        <button class="speak-btn flex-shrink-0" data-text="après, avant"><i class="fas fa-volume-up"></i></button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card bg-yellow-50 border-2 border-yellow-200">
+                <h3 class="text-2xl font-bold mb-4 text-yellow-800">لافتات Frenchapeau 🎩 (نصائح سريعة)</h3>
+                <ul class="list-disc pr-5 space-y-2">
+                    <li><b>ابدأ بلُطف:</b> <span class="french-text" dir="ltr">Bonjour + excusez-moi + السؤال: Où est… ? / Comment aller à… ?</span></li>
+                    <li><b>اطلب تكرار/تأكيد:</b> <span class="french-text" dir="ltr">Vous pouvez répéter, s’il vous plaît ?</span></li>
+                    <li><b>لخّص ما سمعت:</b> <span class="french-text" dir="ltr">Donc… tout droit, puis à gauche… C’est bien ça?</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Interactive Exercises -->
+        <div class="card">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">تمرين الدقيقة الواحدة</h3>
+            <div class="space-y-6">
+                
+                <!-- Question 1 -->
+                <div>
+                    <p class="font-semibold mb-2">1. اختر الإجابة الصحيحة لمعنى «à gauche»:</p>
+                    <div class="quiz-container" data-correct="ب">
+                        <div class="quiz-option" data-answer="أ">أ) يمين</div>
+                        <div class="quiz-option" data-answer="ب">ب) يسار</div>
+                        <div class="quiz-option" data-answer="ج">ج) للأمام</div>
+                    </div>
+                    <p class="feedback hidden mt-2 text-sm"></p>
+                </div>
+                
+                <!-- Question 2 -->
+                <div>
+                    <p class="font-semibold mb-2">2. رتب لتصنع جملة مفيدة: "puis / à droite / tout droit"</p>
+                    <div class="flex items-center gap-2">
+                         <input type="text" id="q2-input" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-right" dir="ltr">
+                         <button id="q2-check" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">تحقق</button>
+                    </div>
+                    <p class="feedback hidden mt-2 text-sm"></p>
+                </div>
+
+                <!-- Question 3 -->
+                 <div>
+                    <p class="font-semibold mb-2">3. أكمل الفراغ: <span class="french-text" dir="ltr">«C’est _____ de la banque.»</span></p>
+                    <div class="quiz-container" data-correct="أ">
+                        <div class="quiz-option" data-answer="أ">en face</div>
+                        <div class="quiz-option" data-answer="ب">près</div>
+                        <div class="quiz-option" data-answer="ج">avant</div>
+                    </div>
+                    <p class="feedback hidden mt-2 text-sm"></p>
+                </div>
+
+                <!-- Question 4 -->
+                <div>
+                    <p class="font-semibold mb-2">4. صح/خطأ: «près» تعني «بعيد».</p>
+                    <div class="quiz-container" data-correct="خطأ">
+                        <div class="quiz-option" data-answer="صح">صح</div>
+                        <div class="quiz-option" data-answer="خطأ">خطأ</div>
+                    </div>
+                    <p class="feedback hidden mt-2 text-sm"></p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mini-Map Activity -->
+        <div class="card">
+            <h3 class="text-2xl font-bold mb-4 text-indigo-700">نشاط مصغّر بالخريطة (تخيلي)</h3>
+            <p class="mb-2">تخيّل أنك تقف أمام «le café Soleil». اسأل عن «le musée». سيجيب صديقك:</p>
+            <div class="bg-gray-100 p-4 rounded-md italic mb-4">
+                 <button class="speak-btn float-left" data-text="Tout droit, puis à gauche à la première rue. Le musée est à côté de la banque."><i class="fas fa-volume-up"></i></button>
+                <p class="french-text" dir="ltr">"Tout droit, puis à gauche à la première rue. Le musée est à côté de la banque."</p>
+            </div>
+            <p><strong>سؤالك يجب أن يكون:</strong></p>
+            <p class="french-text text-gray-700" dir="ltr">«Excusez-moi, où est le musée, s’il vous plaît?»</p>
+            <p class="mt-2"><strong>إعادة تأكيدك للمعلومة:</strong></p>
+            <p class="french-text text-gray-700" dir="ltr">«Je répète: tout droit, puis à gauche à la première rue, à côté de la banque. C’est bien ça?»</p>
+        </div>
+
+        <!-- Final Recap -->
+        <div class="card text-center bg-indigo-700 text-white">
+            <h3 class="text-2xl font-bold mb-2">تذكير ختامي وتحقق سريع</h3>
+            <p>التحية + الاعتذار اللطيف + سؤال واضح + تأكيد المسار = تواصل فعّال.</p>
+            <p class="mt-4 font-semibold">هل تستطيع أن تقول الآن؟</p>
+            <div class="mt-2 bg-white text-indigo-700 p-3 rounded-md flex items-center justify-center">
+                 <button class="speak-btn flex-shrink-0" data-text="Excusez-moi, comment aller à la gare, s’il vous plaît?"><i class="fas fa-volume-up"></i></button>
+                <p class="french-text font-bold text-lg" dir="ltr">Excusez-moi, comment aller à la gare, s’il vous plaît?</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Text-to-Speech functionality ---
+        let frenchVoice;
+
+        // Load voices and find a French one
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            frenchVoice = voices.find(voice => voice.lang === 'fr-FR');
+            // Fallback if no French voice is found
+            if (!frenchVoice) {
+                frenchVoice = voices.find(voice => voice.lang.startsWith('fr'));
+            }
+        }
+        
+        // The 'voiceschanged' event is fired when the list of voices has been loaded.
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        // Also call it once in case voices are already loaded
+        loadVoices();
+
+        function speak(text) {
+            if (!window.speechSynthesis) {
+                alert("عذرًا، متصفحك لا يدعم ميزة النطق.");
+                return;
+            }
+            // Ensure voices are loaded
+            if (!frenchVoice) {
+                 setTimeout(() => speak(text), 100); // Retry after a short delay
+                 return;
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR';
+            utterance.voice = frenchVoice;
+            utterance.rate = 0.9;
+            window.speechSynthesis.cancel(); // Cancel any previous speech
+            window.speechSynthesis.speak(utterance);
+        }
+
+        document.querySelectorAll('.speak-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const textToSpeak = button.dataset.text;
+                speak(textToSpeak);
+            });
+        });
+
+        // --- Interactive Quiz functionality ---
+        document.querySelectorAll('.quiz-container').forEach(container => {
+            const correctAnswer = container.dataset.correct;
+            const feedbackEl = container.nextElementSibling;
+            
+            container.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remove previous feedback from all options in this container
+                    container.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('correct', 'incorrect');
+                    });
+
+                    const userAnswer = option.dataset.answer;
+                    if (userAnswer === correctAnswer) {
+                        option.classList.add('correct');
+                        feedbackEl.textContent = 'ممتاز! إجابة صحيحة.';
+                        feedbackEl.className = 'feedback mt-2 text-sm text-green-600';
+                    } else {
+                        option.classList.add('incorrect');
+                        feedbackEl.textContent = `للأسف، إجابة خاطئة. الإجابة الصحيحة هي: ${correctAnswer}`;
+                        feedbackEl.className = 'feedback mt-2 text-sm text-red-600';
+                        // Also highlight the correct one
+                        const correctOption = container.querySelector(`[data-answer="${correctAnswer}"]`);
+                        if (correctOption) {
+                           correctOption.classList.add('correct');
+                        }
+                    }
+                    feedbackEl.classList.remove('hidden');
+                });
+            });
+        });
+        
+        // --- Sentence Order Quiz (Question 2) ---
+        const q2Input = document.getElementById('q2-input');
+        const q2CheckBtn = document.getElementById('q2-check');
+        const q2Feedback = q2CheckBtn.parentElement.nextElementSibling;
+        const correctSentence = "Tout droit, puis à droite.";
+
+        q2CheckBtn.addEventListener('click', () => {
+            const userAnswer = q2Input.value.trim().replace(/\.$/, ''); // Remove trailing period for easier check
+            if (userAnswer.toLowerCase() === correctSentence.toLowerCase().replace(/\.$/, '')) {
+                q2Input.classList.remove('border-red-500');
+                q2Input.classList.add('border-green-500');
+                q2Feedback.textContent = 'أحسنت! ترتيب صحيح.';
+                q2Feedback.className = 'feedback mt-2 text-sm text-green-600';
+            } else {
+                q2Input.classList.remove('border-green-500');
+                q2Input.classList.add('border-red-500');
+                q2Feedback.textContent = `حاول مرة أخرى. الترتيب الصحيح هو: "${correctSentence}"`;
+                q2Feedback.className = 'feedback mt-2 text-sm text-red-600';
+            }
+            q2Feedback.classList.remove('hidden');
+        });
+
+    </script>
+</body>
+</html>
