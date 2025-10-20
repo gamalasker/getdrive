@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم اللغة الفرنسية - الصف الأول الثانوي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .certificate {
+            border: 10px solid transparent;
+            border-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3Epath%7Bfill:none;stroke:%23D4AF37;stroke-width:2%7D%3C/style%3E%3Cpath d='M0 50 L50 0 L100 50 L50 100 Z'/%3E%3C/svg%3E") 20 round;
+            background: linear-gradient(to bottom right, #fffff3, #f5f5dc);
+        }
+        .ltr-text {
+            direction: ltr;
+            text-align: left;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .question-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            background-color: #f8fafc;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            overflow: hidden;
+        }
+        .question-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #cbd5e1;
+            padding: 1rem 1.5rem;
+            background-color: #e0f2fe;
+            border-left: 6px solid #3b82f6;
+        }
+        .question-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+        .question-item {
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            margin-top: 1rem;
+        }
+        .question-text {
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .correct-answer {
+             color: #16a34a;
+             font-weight: bold;
+        }
+        .incorrect-answer {
+            color: #dc2626;
+            font-weight: bold;
+        }
+        label {
+            cursor: pointer;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        label:hover {
+            background-color: #f0f9ff;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-6">
+    <div class="container mx-auto max-w-4xl">
+
+        <!-- Quiz Container -->
+        <div id="quiz-container" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg transition-opacity duration-500">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl sm:text-4xl font-bold text-blue-800">تقييم اللغة الفرنسية - الصف الأول الثانوي</h1>
+                <p class="text-gray-600 mt-2">أجب عن الأسئلة التالية للحصول على تقييمك وشهادة تقدير.</p>
+            </div>
+
+            <form id="quiz-form" class="space-y-6">
+                <!-- Name Input -->
+                <div class="bg-white border border-gray-200 rounded-lg p-6">
+                    <label for="studentName" class="block text-lg font-semibold text-gray-700 mb-2">الاسم بالكامل:</label>
+                    <input type="text" id="studentName" placeholder="اكتب اسمك هنا للحصول على الشهادة" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p id="name-error" class="text-red-500 text-sm mt-1 hidden">الرجاء إدخال اسمك.</p>
+                </div>
+
+                <!-- Compréhension Section -->
+                <div class="question-section ltr-text">
+                    <h2 class="question-title">I. Compréhension (الفهم)</h2>
+                    <div class="question-content">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="font-semibold">Lis le document suivant, puis réponds aux questions :</p>
+                            <p class="mt-2 text-gray-800">
+                                Je m'appelle Alex, et j'ai 15 ans. J'aime le rouge, les maths et le football, Je n'aime pas la musique et le vert, je vis en France.
+                            </p>
+                        </div>
+                        <div id="comprehension-questions" class="mt-4 space-y-2">
+                            <div class="question-item"><p class="question-text">1) Alex a _______ ans.</p><div><input type="radio" id="c1a" name="c-q1" value="a"><label for="c1a"> 14</label> <input type="radio" id="c1b" name="c-q1" value="b"><label for="c1b"> 12</label> <input type="radio" id="c1c" name="c-q1" value="c"><label for="c1c"> 15</label> <input type="radio" id="c1d" name="c-q1" value="d"><label for="c1d"> 10</label></div></div>
+                            <div class="question-item"><p class="question-text">2) Alex aime _______ .</p><div><input type="radio" id="c2a" name="c-q2" value="a"><label for="c2a"> le vert</label> <input type="radio" id="c2b" name="c-q2" value="b"><label for="c2b"> le rouge</label> <input type="radio" id="c2c" name="c-q2" value="c"><label for="c2c"> l'orange</label> <input type="radio" id="c2d" name="c-q2" value="d"><label for="c2d"> le bleu</label></div></div>
+                            <div class="question-item"><p class="question-text">3) Il vit en _______ .</p><div><input type="radio" id="c3a" name="c-q3" value="a"><label for="c3a"> Egypte</label> <input type="radio" id="c3b" name="c-q3" value="b"><label for="c3b"> France</label> <input type="radio" id="c3c" name="c-q3" value="c"><label for="c3c"> Italie</label> <input type="radio" id="c3d" name="c-q3" value="d"><label for="c3d"> Canada</label></div></div>
+                            <div class="question-item"><p class="question-text">4) Alex n'aime pas _______ .</p><div><input type="radio" id="c4a" name="c-q4" value="a"><label for="c4a"> la dance</label> <input type="radio" id="c4b" name="c-q4" value="b"><label for="c4b"> la musique</label> <input type="radio" id="c4c" name="c-q4" value="c"><label for="c4c"> le football</label> <input type="radio" id="c4d" name="c-q4" value="d"><label for="c4d"> le tennis</label></div></div>
+                            <div class="question-item"><p class="question-text">5) Alex aime _______ .</p><div><input type="radio" id="c5a" name="c-q5" value="a"><label for="c5a"> le handball</label> <input type="radio" id="c5b" name="c-q5" value="b"><label for="c5b"> le tennis</label> <input type="radio" id="c5c" name="c-q5" value="c"><label for="c5c"> le vert</label> <input type="radio" id="c5d" name="c-q5" value="d"><label for="c5d"> les maths</label></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Situations Section -->
+                <div class="question-section ltr-text">
+                    <h2 class="question-title">II. Situations (المواقف)</h2>
+                    <div class="question-content">
+                         <div class="question-item">
+                            <p class="question-text">A) Mets (vrai) ou (faux) :</p>
+                            <div class="space-y-3">
+                               <div><p>1- Pour saluer, je dis: {au revoir}</p> <input type="radio" name="vf1" id="vf1t" value="vrai"><label for="vf1t"> Vrai</label> <input type="radio" name="vf1" id="vf1f" value="faux"><label for="vf1f"> Faux</label></div>
+                               <div><p>2- Pour me présenter, je dis: {je m'appelle ...}</p> <input type="radio" name="vf2" id="vf2t" value="vrai"><label for="vf2t"> Vrai</label> <input type="radio" name="vf2" id="vf2f" value="faux"><label for="vf2f"> Faux</label></div>
+                               <div><p>3- Pour prendre congé, je dis: {ciao}</p> <input type="radio" name="vf3" id="vf3t" value="vrai"><label for="vf3t"> Vrai</label> <input type="radio" name="vf3" id="vf3f" value="faux"><label for="vf3f"> Faux</label></div>
+                            </div>
+                         </div>
+                        <p class="font-semibold mb-3 mt-4">B) Choisis les 2 bonnes réponses :</p>
+                        <div id="situations-questions" class="space-y-2">
+                            <div class="question-item"><p class="question-text">1) Pour saluer le professeur, tu dis :</p><div><input type="checkbox" id="s1a" name="s-q1" value="a"><label for="s1a"> Bonjour</label> <input type="checkbox" id="s1b" name="s-q1" value="b"><label for="s1b"> À plus</label> <input type="checkbox" id="s1c" name="s-q1" value="c"><label for="s1c"> Au revoir</label> <input type="checkbox" id="s1d" name="s-q1" value="d"><label for="s1d"> Bonsoir</label> <input type="checkbox" id="s1e" name="s-q1" value="e"><label for="s1e"> Ciao</label></div></div>
+                            <div class="question-item"><p class="question-text">2) Pour identifier une personne, tu dis :</p><div><input type="checkbox" id="s2a" name="s-q2" value="a"><label for="s2a"> Qui c'est ?</label> <input type="checkbox" id="s2b" name="s-q2" value="b"><label for="s2b"> C'est Theo.</label> <input type="checkbox" id="s2c" name="s-q2" value="c"><label for="s2c"> Il s'appelle Hugo.</label> <input type="checkbox" id="s2d" name="s-q2" value="d"><label for="s2d"> Qui est-ce ?</label> <input type="checkbox" id="s2e" name="s-q2" value="e"><label for="s2e"> Ça va ?</label></div></div>
+                            <div class="question-item"><p class="question-text">3) Pour prendre congé, tu dis:</p><div><input type="checkbox" id="s3a" name="s-q3" value="a"><label for="s3a"> Au revoir</label> <input type="checkbox" id="s3b" name="s-q3" value="b"><label for="s3b"> Bonsoir</label> <input type="checkbox" id="s3c" name="s-q3" value="c"><label for="s3c"> Bonjour</label> <input type="checkbox" id="s3d" name="s-q3" value="d"><label for="s3d"> Ciao</label> <input type="checkbox" id="s3e" name="s-q3" value="e"><label for="s3e"> Bonne journée.</label></div></div>
+                            <div class="question-item"><p class="question-text">4) Pour présenter une personne, tu dis :</p><div><input type="checkbox" id="s4a" name="s-q4" value="a"><label for="s4a"> Je m'appelle Nicolas.</label> <input type="checkbox" id="s4b" name="s-q4" value="b"><label for="s4b"> C'est Nicolas, un copain.</label> <input type="checkbox" id="s4c" name="s-q4" value="c"><label for="s4c"> J'aime Mathilde, une voisine.</label> <input type="checkbox" id="s4d" name="s-q4" value="d"><label for="s4d"> Voici Camille, une amie du lycée.</label> <input type="checkbox" id="s4e" name="s-q4" value="e"><label for="s4e"> Je suis Alex, un ami du lycée.</label></div></div>
+                            <div class="question-item"><p class="question-text">5) Pour demander l'état ; tu dis:</p><div><input type="checkbox" id="s5a" name="s-q5" value="a"><label for="s5a"> Qui c'est ?</label> <input type="checkbox" id="s5b" name="s-q5" value="b"><label for="s5b"> Ça va?</label> <input type="checkbox" id="s5c" name="s-q5" value="c"><label for="s5c"> C'est Nicolas ?</label> <input type="checkbox" id="s5d" name="s-q5" value="d"><label for="s5d"> Comment ça va ?</label> <input type="checkbox" id="s5e" name="s-q5" value="e"><label for="s5e"> Comment tu t'appelles ?</label></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grammaire Section -->
+                <div class="question-section ltr-text">
+                    <h2 class="question-title">III. Grammaire (القواعد)</h2>
+                    <div class="question-content space-y-4">
+                        <div class="question-item">
+                            <p class="question-text">A) Complète la présentation avec le mot convenable, puis présente-toi:</p>
+                            <p>Je <input type="text" id="g1-1" class="w-20 border-b-2 focus:outline-none focus:border-blue-500"> Mathilde, j' <input type="text" id="g1-2" class="w-16 border-b-2 focus:outline-none focus:border-blue-500"> 15 ans, j'aime le <input type="text" id="g1-3" class="w-20 border-b-2 focus:outline-none focus:border-blue-500"> et la <input type="text" id="g1-4" class="w-20 border-b-2 focus:outline-none focus:border-blue-500">, je <input type="text" id="g1-5" class="w-16 border-b-2 focus:outline-none focus:border-blue-500"> pas <input type="text" id="g1-6" class="w-16 border-b-2 focus:outline-none focus:border-blue-500"> maths.</p>
+                            <p class="mt-2">Moi, je m'appelle <input type="text" id="g1-7" class="w-32 border-b-2 focus:outline-none focus:border-blue-500"></p>
+                        </div>
+                        <div class="question-item">
+                           <p class="question-text">B) Complète par le mot convenable :</p>
+                           <div class="space-y-2 bg-gray-50 p-3 rounded">
+                               <p><b>Alex:</b> Salut, je <input type="text" id="g2-1" class="w-24 border-b-2 focus:outline-none focus:border-blue-500"> Alex, j' <input type="text" id="g2-2" class="w-16 border-b-2 focus:outline-none focus:border-blue-500"> 15 ans.</p>
+                               <p><b>Ali :</b> Salut, <input type="text" id="g2-3" class="w-20 border-b-2 focus:outline-none focus:border-blue-500"> m'appelle Ali, moi, j'ai <input type="text" id="g2-4" class="w-16 border-b-2 focus:outline-none focus:border-blue-500"> ans.</p>
+                               <p><b>Alex:</b> J' <input type="text" id="g2-5" class="w-20 border-b-2 focus:outline-none focus:border-blue-500"> à paris, et toi Ali ?</p>
+                               <p><b>Ali :</b> Moi, j'habite <input type="text" id="g2-6" class="w-16 border-b-2 focus:outline-none focus:border-blue-500"> Caire.</p>
+                               <p><b>Alex:</b> Enchanté</p>
+                               <p><b>Ali :</b> Enchanté</p>
+                           </div>
+                        </div>
+                        <div class="question-item">
+                            <p class="question-text">C) Choisis la bonne réponse :</p>
+                            <div class="space-y-4">
+                                <div><p class="font-semibold text-gray-700">1) J'aime la couleur _______ .</p><div><input type="radio" id="g3-1a" name="g3-q1" value="a"><label for="g3-1a"> vert</label> <input type="radio" id="g3-1b" name="g3-q1" value="b"><label for="g3-1b"> rouge</label> <input type="radio" id="g3-1c" name="g3-q1" value="c"><label for="g3-1c"> bleu</label> <input type="radio" id="g3-1d" name="g3-q1" value="d"><label for="g3-1d"> gris</label></div></div>
+                                <div><p class="font-semibold text-gray-700">2) Elle _______ Sandra.</p><div><input type="radio" id="g3-2a" name="g3-q2" value="a"><label for="g3-2a"> s'appellent</label> <input type="radio" id="g3-2b" name="g3-q2" value="b"><label for="g3-2b"> m'appelle</label> <input type="radio" id="g3-2c" name="g3-q2" value="c"><label for="g3-2c"> s'appelle</label> <input type="radio" id="g3-2d" name="g3-q2" value="d"><label for="g3-2d"> t'appelle</label></div></div>
+                                <div><p class="font-semibold text-gray-700">3) 20 + 30 = _______ .</p><div><input type="radio" id="g3-3a" name="g3-q3" value="a"><label for="g3-3a"> trente</label> <input type="radio" id="g3-3b" name="g3-q3" value="b"><label for="g3-3b"> douze</label> <input type="radio" id="g3-3c" name="g3-q3" value="c"><label for="g3-3c"> vingt</label> <input type="radio" id="g3-3d" name="g3-q3" value="d"><label for="g3-3d"> cinquante</label></div></div>
+                                <div><p class="font-semibold text-gray-700">4) 10 + 20 = _______ .</p><div><input type="radio" id="g3-4a" name="g3-q4" value="a"><label for="g3-4a"> treize</label> <input type="radio" id="g3-4b" name="g3-q4" value="b"><label for="g3-4b"> trente</label> <input type="radio" id="g3-4c" name="g3-q4" value="c"><label for="g3-4c"> dix</label> <input type="radio" id="g3-4d" name="g3-q4" value="d"><label for="g3-4d"> vingt</label></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Production Section -->
+                <div class="question-section ltr-text">
+                    <h2 class="question-title">IV. Production (الإنتاج)</h2>
+                    <div class="question-content space-y-4">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-semibold">Sujet 1: Ecris de 15 à 20 mots dans ce sujet :</p>
+                            <p class="text-gray-600">Présente 3 copains du lycée (nom - âge - couleur)</p>
+                            <textarea id="prod1" rows="5" class="w-full mt-3 p-3 border border-gray-300 rounded-lg" placeholder="Écris ta réponse ici..."></textarea>
+                            <p id="word-count1" class="text-sm text-gray-500 mt-1 text-right">Mots : 0</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="font-semibold">Sujet 2: Réponds à ce mel :</p>
+                            <div class="border p-3 my-2 rounded bg-white">
+                                <p><b>Salut</b></p>
+                                <p>Je m'appelle Hugo, et toi? j'ai 15 ans, et toi ?</p>
+                                <p><b>Au revoir</b></p>
+                            </div>
+                            <textarea id="prod2" rows="5" class="w-full mt-3 p-3 border border-gray-300 rounded-lg" placeholder="Écris ta réponse ici..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center pt-4">
+                    <button id="submitBtn" type="button" class="bg-blue-700 text-white font-bold py-3 px-10 rounded-lg hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform transform hover:scale-105">
+                        إنهاء وعرض النتيجة
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Results Container -->
+        <div id="results-container" class="hidden transition-opacity duration-500 bg-white p-6 sm:p-8 rounded-2xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center text-blue-800 mb-6">النتائج والتقييم</h2>
+            <div id="feedback" class="text-center p-4 rounded-lg mb-6"><p id="feedback-text" class="text-xl font-bold"></p><p id="final-score" class="text-2xl mt-2"></p></div>
+            <div id="results-details" class="space-y-4"></div>
+        </div>
+        
+        <!-- Certificate Container -->
+        <div id="certificate-container" class="hidden mt-8">
+             <div class="certificate p-6 sm:p-10 text-center">
+                 <h2 class="text-3xl sm:text-4xl font-bold" style="color: #8B4513;">شهادة تقدير</h2>
+                 <p class="mt-6 text-lg text-gray-700">تُمنح هذه الشهادة إلى</p>
+                 <p id="studentNameOnCert" class="text-3xl font-bold my-4" style="color: #000080;"></p>
+                 <p class="text-lg text-gray-700">لأدائه/لأدائها المتميز في تقييم اللغة الفرنسية</p>
+                 <div class="mt-8 flex justify-between items-center"><p class="text-gray-600">التاريخ</p><p id="certDate" class="font-semibold text-gray-800"></p></div><div><p class="text-gray-600">التوقيع</p><p class="font-bold text-2xl italic" style="font-family: 'Brush Script MT', cursive; color: #00008B;">Gemini</p></div></div>
+            <div class="text-center mt-4"><button onclick="window.print()" class="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700">طباعة الشهادة</button></div>
+        </div>
+
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const studentNameInput = document.getElementById('studentName');
+        
+        const countWords = (str) => str.trim() === '' ? 0 : str.trim().split(/\s+/).length;
+        
+        document.getElementById('prod1').addEventListener('input', () => {
+            document.getElementById('word-count1').textContent = `Mots : ${countWords(document.getElementById('prod1').value)}`;
+        });
+
+        const correctAnswers = {
+            mcq: { 'c-q1': 'c', 'c-q2': 'b', 'c-q3': 'b', 'c-q4': 'b', 'c-q5': 'd', 'g3-q1': 'b', 'g3-q2': 'c', 'g3-q3': 'd', 'g3-q4': 'b' },
+            checkbox: { 's-q1': ['a', 'd'], 's-q2': ['a', 'd'], 's-q3': ['a', 'd'], 's-q4': ['b', 'd'], 's-q5': ['b', 'd'] },
+            fill: { 
+                'g1-1': "m'appelle", 'g1-2': 'ai', 'g1-3': 'rouge', 'g1-4': 'musique', 'g1-5': "n'aime", 'g1-6': 'les',
+                'g2-1': "m'appelle", 'g2-2': 'ai', 'g2-3': 'je', 'g2-4': '15', 'g2-5': "j'habite", 'g2-6': 'au'
+             },
+            vrai_faux: { 'vf1': 'faux', 'vf2': 'vrai', 'vf3': 'vrai' }
+        };
+
+        submitBtn.addEventListener('click', () => {
+            if (!studentNameInput.value.trim()) {
+                document.getElementById('name-error').classList.remove('hidden');
+                studentNameInput.focus();
+                return;
+            }
+            document.getElementById('name-error').classList.add('hidden');
+
+            let totalScore = 0;
+            let maxScore = 0;
+            const resultsDetails = document.getElementById('results-details');
+            resultsDetails.innerHTML = '';
+
+            // Grade Compréhension
+            let compScore = 0;
+            let compHTML = `<div class="border-b pb-4 ltr-text"><h3 class="text-xl font-semibold text-gray-800 mb-2">I. Compréhension</h3>`;
+            for (let i = 1; i <= 5; i++) {
+                const qName = `c-q${i}`;
+                const userAnswer = document.querySelector(`input[name="${qName}"]:checked`)?.value;
+                const correctAnswer = correctAnswers.mcq[qName];
+                const qText = document.querySelector(`input[name="${qName}"]`).closest('.question-item').querySelector('.question-text').textContent;
+                compHTML += `<p class="font-semibold">${qText}</p>`;
+                if (userAnswer === correctAnswer) {
+                    compScore++;
+                    compHTML += `<p class="text-green-600">✔ Votre réponse est correcte.</p>`;
+                } else {
+                    const correctLabel = document.querySelector(`label[for="c${i}${correctAnswer}"]`).textContent.trim();
+                    compHTML += `<p class="incorrect-answer">✘ Votre réponse était incorrecte.</p><p>La bonne réponse: <span class="correct-answer">${correctLabel}</span></p>`;
+                }
+            }
+            totalScore += compScore;
+            maxScore += 5;
+            compHTML += `<p class="text-right font-bold text-blue-600 mt-2">Score: ${compScore} / 5</p></div>`;
+            resultsDetails.innerHTML += compHTML;
+
+            // Grade Situations
+            let sitScore = 0;
+            let sitHTML = `<div class="border-b pb-4 ltr-text"><h3 class="text-xl font-semibold text-gray-800 mb-2">II. Situations</h3>`;
+            // Vrai/Faux
+            for(let i=1; i<=3; i++){
+                const qName = `vf${i}`;
+                const userAnswer = document.querySelector(`input[name="${qName}"]:checked`)?.value;
+                if(userAnswer === correctAnswers.vrai_faux[qName]) sitScore++;
+            }
+            maxScore += 3;
+            // Checkbox
+            for (let i = 1; i <= 5; i++) {
+                const qName = `s-q${i}`;
+                const userAnswers = Array.from(document.querySelectorAll(`input[name="${qName}"]:checked`)).map(cb => cb.value);
+                const correctAnswersArr = correctAnswers.checkbox[qName];
+                const correctSelectionsCount = userAnswers.filter(answer => correctAnswersArr.includes(answer)).length;
+                sitScore += correctSelectionsCount;
+            }
+            maxScore += 10;
+            sitHTML += `<p class="text-gray-700">Le détail des réponses n'est pas affiché pour cette section.</p><p class="text-right font-bold text-blue-600 mt-2">Score: ${sitScore} / 13</p></div>`;
+            totalScore += sitScore;
+            resultsDetails.innerHTML += sitHTML;
+            
+            // Grade Grammaire
+            let gramScore = 0;
+            Object.keys(correctAnswers.fill).forEach(id => {
+                 const userAnswer = document.getElementById(id).value.trim().toLowerCase();
+                 if(userAnswer === correctAnswers.fill[id]) gramScore++;
+            });
+            maxScore += Object.keys(correctAnswers.fill).length;
+
+            for (let i = 1; i <= 4; i++) {
+                if (document.querySelector(`input[name="g3-q${i}"]:checked`)?.value === correctAnswers.mcq[`g3-q${i}`]) gramScore++;
+            }
+            maxScore += 4;
+            totalScore += gramScore;
+
+            let gramHTML = `<div class="border-b pb-4 ltr-text"><h3 class="text-xl font-semibold text-gray-800 mb-2">III. Grammaire</h3>`;
+            gramHTML += `<p class="text-gray-700">Le détail des réponses n'est pas affiché pour cette section.</p><p class="text-right font-bold text-blue-600 mt-2">Score: ${gramScore} / ${Object.keys(correctAnswers.fill).length + 4}</p></div>`;
+            resultsDetails.innerHTML += gramHTML;
+            
+            // Grade Production
+            let prodScore = 0;
+            prodScore += countWords(document.getElementById('prod1').value) >= 15 ? 3 : 0;
+            prodScore += countWords(document.getElementById('prod2').value) > 5 ? 3 : 0; // Simple check for mail response
+            totalScore += prodScore;
+            maxScore += 6;
+            resultsDetails.innerHTML += `<div class="border-b pb-4 ltr-text"><h3 class="text-xl font-semibold text-gray-800 mb-2">IV. Production</h3><p class="text-gray-700">Évaluation basée sur la longueur de la réponse.</p><p class="text-right font-bold text-blue-600 mt-2">Score: ${prodScore} / 6</p></div>`;
+
+
+            // Final feedback
+            const percentage = (totalScore / maxScore) * 100;
+            const feedbackTextEl = document.getElementById('feedback-text');
+            const feedbackContainer = document.getElementById('feedback');
+            
+            feedbackContainer.classList.remove('bg-green-100', 'text-green-800', 'bg-yellow-100', 'text-yellow-800', 'bg-red-100', 'text-red-800');
+
+            if (percentage >= 85) {
+                feedbackTextEl.textContent = 'Excellent travail!';
+                feedbackContainer.classList.add('bg-green-100', 'text-green-800');
+            } else if (percentage >= 65) {
+                feedbackTextEl.textContent = 'Bon travail! Continuez comme ça.';
+                feedbackContainer.classList.add('bg-yellow-100', 'text-yellow-800');
+            } else {
+                feedbackTextEl.textContent = 'Il faut pratiquer davantage. Ne baissez pas les bras!';
+                feedbackContainer.classList.add('bg-red-100', 'text-red-800');
+            }
+            document.getElementById('final-score').textContent = `Score final: ${totalScore} / ${maxScore}`;
+            
+            document.getElementById('studentNameOnCert').textContent = studentNameInput.value.trim();
+            document.getElementById('certDate').textContent = new Date().toLocaleDateString('fr-FR');
+            
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('results-container').classList.remove('hidden');
+            document.getElementById('certificate-container').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
