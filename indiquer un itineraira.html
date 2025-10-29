@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leçon 2: Indiquer un itinéraire - عرض تقديمي محسن</title>
+    <!-- تحميل Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- خطوط Google Fonts: Cairo للعربية، Inter للفرنسية --><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome لإضافة الأيقونات --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f4f8; /* خلفية رمادية فاتحة */
+            color: #333;
+        }
+        [lang="fr"] {
+            font-family: 'Inter', sans-serif;
+            direction: ltr;
+        }
+        .slide {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            display: block;
+            opacity: 1;
+        }
+        .presentation-container {
+            aspect-ratio: 16 / 9;
+            width: 100%;
+            max-width: 1200px; /* زيادة أقصى عرض */
+            margin: 1rem auto;
+            overflow: hidden;
+            position: relative;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 3rem; /* زيادة المسافة البادئة */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            /* justify-content: center;  <-- تم إزالة هذا السطر */
+        }
+        .pronounce-btn {
+            background: none;
+            border: none;
+            color: #4f46e5; /* لون أرجواني */
+            cursor: pointer;
+            font-size: 1.25rem; /* حجم أكبر للأيقونة */
+            margin-inline-start: 0.5rem; /* مسافة بين النص والزر */
+            padding: 0;
+            vertical-align: middle;
+            transition: color 0.2s;
+        }
+        .pronounce-btn:hover {
+            color: #6d28d9; /* لون أرجواني أغمق عند التحويم */
+        }
+        /* لتصحيح النصوص الرأسية في الخريطة */
+        .writing-vertical {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            white-space: nowrap; /* منع التفاف النص */
+            display: flex;
+            align-items: center; /* توسيط النص عموديا */
+            justify-content: center; /* توسيط النص أفقيا */
+            height: 100%; /* لملء المساحة الرأسية */
+            padding: 0.5rem;
+            box-sizing: border-box;
+        }
+
+        /* تعديلات على الخريطة لتوضيح الحدود والنصوص */
+        .map-grid > div {
+            border: 1px solid rgba(0,0,0,0.1); /* حدود خفيفة */
+            background-color: #e0e7ff; /* خلفية فاتحة للأماكن */
+            color: #312e81; /* لون نص غامق للأماكن */
+            font-size: 0.9rem; /* خط أصغر للأماكن */
+            font-weight: 600;
+        }
+        .map-grid .bg-gray-400 {
+            background-color: #9ca3af; /* لون الشارع */
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* فئة جديدة لتوسيط محتوى الشريحة عمودياً وأفقياً */
+        .slide-center {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <h1 class="text-3xl md:text-4xl font-extrabold text-center text-indigo-800 mb-4">الدرس الثاني: توضيح خط السير 📍</h1>
+    <p class="text-center text-gray-600 mb-6 text-lg md:text-xl">عرض تقديمي تفاعلي لدرس <span lang="fr" class="font-semibold text-indigo-600">"Indiquer un itinéraire"</span></p>
+
+    <!-- حاوية العرض التقديمي --><div class="presentation-container bg-white rounded-lg shadow-2xl border border-gray-100 relative">
+        <!-- شريحة 1: العنوان --><div class="slide active">
+            <div class="slide-content slide-center bg-gradient-to-br from-indigo-700 to-purple-800 text-white flex flex-col items-center justify-center text-center">
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-4" lang="fr">Leçon 2:</h1>
+                <h2 class="text-6xl md:text-7xl font-extrabold mb-6" lang="fr">Indiquer un itinéraire <i class="fas fa-map-marker-alt"></i></h2>
+                <p class="text-3xl md:text-4xl mt-4">الدرس الثاني: توضيح خط السير</p>
+                <p class="mt-10 text-xl opacity-80" lang="fr">Club @dos plus 2 - Unité 1</p>
+            </div>
+        </div>
+
+        <!-- شريحة 2: الأهداف --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-10 text-center"><i class="fas fa-bullseye text-green-500 ml-3"></i> أهداف الدرس (Les Objectifs)</h2>
+                <ul class="space-y-6 text-2xl md:text-3xl text-gray-700">
+                    <li class="flex items-start">
+                        <span class="text-green-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">✓</span>
+                        <span class="flex-1">استخدام مفردات أماكن المدينة <span lang="fr" class="font-semibold text-indigo-600"> (Les lieux de la ville) </span>
+                            <button class="pronounce-btn" onclick="pronounceText('Les lieux de la ville')"><i class="fas fa-volume-up"></i></button>
+                        </span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">✓</span>
+                        <span class="flex-1">إعطاء الأوامر باستخدام صيغة الأمر <span lang="fr" class="font-semibold text-indigo-600"> (L'Impératif) </span>
+                            <button class="pronounce-btn" onclick="pronounceText('L\'Impératif')"><i class="fas fa-volume-up"></i></button>
+                        </span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">✓</span>
+                        <span class="flex-1">تحديد الاتجاهات باستخدام الأعداد الترتيبية <span lang="fr" class="font-semibold text-indigo-600"> (Les Ordinaux) </span>
+                            <button class="pronounce-btn" onclick="pronounceText('Les Ordinaux')"><i class="fas fa-volume-up"></i></button>
+                        </span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">✓</span>
+                        <span class="flex-1">سؤال وإعطاء إرشادات خط السير.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- شريحة 3: مفردات الأماكن --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center">1. مفردات أماكن المدينة <span lang="fr">(Les lieux de la ville)</span> <i class="fas fa-city text-indigo-500 ml-3"></i></h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-xl md:text-2xl" lang="fr">
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🏦 La banque <button class="pronounce-btn" onclick="pronounceText('La banque')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🏥 L'hôpital <button class="pronounce-btn" onclick="pronounceText('L\'hôpital')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🏊 La piscine <button class="pronounce-btn" onclick="pronounceText('La piscine')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🎬 Le cinéma <button class="pronounce-btn" onclick="pronounceText('Le cinéma')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🏛️ Le musée <button class="pronounce-btn" onclick="pronounceText('Le musée')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🚉 La gare <button class="pronounce-btn" onclick="pronounceText('La gare')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🌳 Le parc <button class="pronounce-btn" onclick="pronounceText('Le parc')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        🏤 La poste <button class="pronounce-btn" onclick="pronounceText('La poste')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                    <div class="p-4 bg-purple-100 rounded-xl shadow-md text-center flex items-center justify-center">
+                        📚 La bibliothèque <button class="pronounce-btn" onclick="pronounceText('La bibliothèque')"><i class="fas fa-volume-up"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريحة 4: مفردات الإرشادات --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center">2. مفردات الإرشادات <span lang="fr">(Verbes et Prépositions)</span> <i class="fas fa-directions text-blue-500 ml-3"></i></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" lang="fr">
+                    <div class="bg-blue-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-3xl font-semibold text-blue-800 mb-4 text-center">الأفعال <span lang="fr">(Les Verbes)</span> <i class="fas fa-running ml-2"></i></h3>
+                        <ul class="space-y-3 text-xl md:text-2xl list-disc list-inside">
+                            <li>Aller (يذهب) <button class="pronounce-btn" onclick="pronounceText('Aller')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Tourner (يلف / ينعطف) <button class="pronounce-btn" onclick="pronounceText('Tourner')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Prendre (يأخذ) <button class="pronounce-btn" onclick="pronounceText('Prendre')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Traverser (يعبر) <button class="pronounce-btn" onclick="pronounceText('Traverser')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Continuer (يكمل / يستمر) <button class="pronounce-btn" onclick="pronounceText('Continuer')"><i class="fas fa-volume-up"></i></button></li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                        <h3 class="text-3xl font-semibold text-green-800 mb-4 text-center">حروف الجر والاتجاهات <i class="fas fa-compass ml-2"></i></h3>
+                        <ul class="space-y-3 text-xl md:text-2xl list-disc list-inside">
+                            <li>À droite de (على يمين) <button class="pronounce-btn" onclick="pronounceText('À droite de')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>À gauche de (على يسار) <button class="pronounce-btn" onclick="pronounceText('À gauche de')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Tout droit (بشكل مستقيم / طوالي) <button class="pronounce-btn" onclick="pronounceText('Tout droit')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Devant (أمام) <button class="pronounce-btn" onclick="pronounceText('Devant')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Derrière (خلف) <button class="pronounce-btn" onclick="pronounceText('Derrière')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>À côté de (بجانب) <button class="pronounce-btn" onclick="pronounceText('À côté de')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Jusqu'à (حتى) <button class="pronounce-btn" onclick="pronounceText('Jusqu\'à')"><i class="fas fa-volume-up"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- شريحة 5: القاعدة 1: الأمر --><div class="slide">
+            <div class="slide-content" lang="fr">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center" dir="rtl">3. القاعدة: صيغة الأمر <span lang="fr">(L'Impératif)</span> <i class="fas fa-exclamation-triangle text-yellow-500 ml-3"></i></h2>
+                <p class="text-xl md:text-2xl mb-4 text-center" dir="rtl">نستخدم صيغة الأمر لإعطاء تعليمات. نصرف الفعل مع الضمائر <span class="font-bold text-indigo-600">(Tu, Nous, Vous)</span> ثم نحذف الضمير.</p>
+                <p class="text-xl md:text-2xl mb-6 text-center" dir="rtl">لإعطاء الإرشادات، نستخدم <span class="font-bold text-indigo-600">(Tu)</span> للمخاطب المفرد (صديق) أو <span class="font-bold text-indigo-600">(Vous)</span> للاحترام (شخص لا نعرفه).</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-100 p-5 rounded-xl shadow-md text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-indigo-700">Verbe: Tourner <button class="pronounce-btn" onclick="pronounceText('Tourner')"><i class="fas fa-volume-up"></i></button></h3>
+                        <p class="text-xl"><span class="font-mono bg-yellow-200 px-3 py-1 rounded">Tu tournes</span> ➡️ <strong class="text-red-600">Tourne !</strong> <button class="pronounce-btn" onclick="pronounceText('Tourne')"><i class="fas fa-volume-up"></i></button></p>
+                        <p class="text-xl"><span class="font-mono bg-yellow-200 px-3 py-1 rounded">Vous tournez</span> ➡️ <strong class="text-red-600">Tournez !</strong> <button class="pronounce-btn" onclick="pronounceText('Tournez')"><i class="fas fa-volume-up"></i></button></p>
+                    </div>
+                    <div class="bg-gray-100 p-5 rounded-xl shadow-md text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-indigo-700">Verbe: Prendre <button class="pronounce-btn" onclick="pronounceText('Prendre')"><i class="fas fa-volume-up"></i></button></h3>
+                        <p class="text-xl"><span class="font-mono bg-yellow-200 px-3 py-1 rounded">Tu prends</span> ➡️ <strong class="text-red-600">Prends !</strong> <button class="pronounce-btn" onclick="pronounceText('Prends')"><i class="fas fa-volume-up"></i></button></p>
+                        <p class="text-xl"><span class="font-mono bg-yellow-200 px-3 py-1 rounded">Vous prenez</span> ➡️ <strong class="text-red-600">Prenez !</strong> <button class="pronounce-btn" onclick="pronounceText('Prenez')"><i class="fas fa-volume-up"></i></button></p>
+                    </div>
+                    <div class="bg-gray-100 p-5 rounded-xl shadow-md text-center">
+                        <h3 class="text-2xl font-bold mb-3 text-indigo-700">Verbe: Aller <button class="pronounce-btn" onclick="pronounceText('Aller')"><i class="fas fa-volume-up"></i></button> - شاذ</h3>
+                        <p class="text-xl"><span class="font-mono bg-yellow-200 px-3 py-1 rounded">Tu vas</span> ➡️ <strong class="text-red-600">Va !</strong> <button class="pronounce-btn" onclick="pronounceText('Va')"><i class="fas fa-volume-up"></i></button></p>
+                        <p class="text-xl"><span class="font-mono bg-yellow-200 px-3 py-1 rounded">Vous allez</span> ➡️ <strong class="text-red-600">Allez !</strong> <button class="pronounce-btn" onclick="pronounceText('Allez')"><i class="fas fa-volume-up"></i></button></p>
+                    </div>
+                </div>
+                <p class="mt-8 text-xl text-red-700 font-bold text-center" dir="rtl">🔔 ملحوظة هامة: في أفعال المجموعة الأولى (مثل Tourner)، نحذف حرف (s) من تصريف <span class="font-bold text-red-800">(Tu)</span> في الأمر.</p>
+            </div>
+        </div>
+
+        <!-- شريحة 6: القاعدة 2: الأعداد الترتيبية --><div class="slide">
+            <div class="slide-content" lang="fr">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center" dir="rtl">4. القاعدة: الأعداد الترتيبية <span lang="fr">(Les Ordinaux)</span> <i class="fas fa-list-ol text-orange-500 ml-3"></i></h2>
+                <p class="text-xl md:text-2xl mb-6 text-center" dir="rtl">نستخدمها لتحديد ترتيب الشوارع أو التقاطعات (الشارع الأول، التقاطع الثاني...).</p>
+                <div class="space-y-4 text-2xl md:text-3xl p-6 bg-yellow-50 rounded-xl shadow-md">
+                    <p><span class="font-bold w-40 inline-block text-purple-700">1er (premier)</span> <button class="pronounce-btn" onclick="pronounceText('premier')"><i class="fas fa-volume-up"></i></button> / <span class="font-bold text-purple-700">1ère (première)</span> <button class="pronounce-btn" onclick="pronounceText('première')"><i class="fas fa-volume-up"></i></button> (الأول / الأولى)</p>
+                    <p><span class="font-bold w-40 inline-block text-purple-700">2ème (deuxième)</span> <button class="pronounce-btn" onclick="pronounceText('deuxième')"><i class="fas fa-volume-up"></i></button> (الثاني / الثانية)</p>
+                    <p><span class="font-bold w-40 inline-block text-purple-700">3ème (troisième)</span> <button class="pronounce-btn" onclick="pronounceText('troisième')"><i class="fas fa-volume-up"></i></button> (الثالث / الثالثة)</p>
+                    <p><span class="font-bold w-40 inline-block text-purple-700">4ème (quatrième)</span> <button class="pronounce-btn" onclick="pronounceText('quatrième')"><i class="fas fa-volume-up"></i></button> (الرابع / الرابعة)</p>
+                </div>
+                <h3 class="text-3xl font-bold mt-10 mb-5 text-center text-indigo-700" dir="rtl">أمثلة:</h3>
+                <ul class="space-y-3 text-xl md:text-2xl list-disc list-inside bg-blue-50 p-6 rounded-xl shadow-md">
+                    <li>Prends <strong class="text-blue-700">la première (1ère)</strong> rue à droite. <button class="pronounce-btn" onclick="pronounceText('Prends la première rue à droite')"><i class="fas fa-volume-up"></i></button> (خذ الشارع الأول يميناً)</li>
+                    <li>C'est <strong class="text-blue-700">le deuxième (2ème)</strong> feu rouge. <button class="pronounce-btn" onclick="pronounceText('C\'est le deuxième feu rouge')"><i class="fas fa-volume-up"></i></button> (إنها إشارة المرور الثانية)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- شريحة 7: تجميع المهارات --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center">تجميع المهارات: السؤال والإجابة <i class="fas fa-comments text-purple-500 ml-3"></i></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8" lang="fr">
+                    <div class="bg-blue-100 p-6 rounded-xl shadow-lg">
+                        <h3 class="text-3xl font-semibold text-blue-800 mb-4 text-center" dir="rtl">للسؤال عن الطريق <span lang="fr">(Pour demander)</span> <i class="fas fa-question-circle ml-2"></i></h3>
+                        <ul class="space-y-3 text-xl md:text-2xl list-disc list-inside">
+                            <li>Pardon, pour aller à la gare ? <button class="pronounce-btn" onclick="pronounceText('Pardon, pour aller à la gare ?')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Excusez-moi, où est la piscine, s'il vous plaît ? <button class="pronounce-btn" onclick="pronounceText('Excusez-moi, où est la piscine, s\'il vous plaît ?')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Je cherche le musée, s'il te plaît. <button class="pronounce-btn" onclick="pronounceText('Je cherche le musée, s\'il te plaît.')"><i class="fas fa-volume-up"></i></button></li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-100 p-6 rounded-xl shadow-lg">
+                        <h3 class="text-3xl font-semibold text-green-800 mb-4 text-center" dir="rtl">لإعطاء الإرشادات <span lang="fr">(Pour indiquer)</span> <i class="fas fa-share-square ml-2"></i></h3>
+                        <ul class="space-y-3 text-xl md:text-2xl list-disc list-inside">
+                            <li>Va tout droit. <button class="pronounce-btn" onclick="pronounceText('Va tout droit.')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Tournez à gauche. <button class="pronounce-btn" onclick="pronounceText('Tournez à gauche.')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Prends la deuxième rue à droite. <button class="pronounce-btn" onclick="pronounceText('Prends la deuxième rue à droite.')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>Traversez le pont. <button class="pronounce-btn" onclick="pronounceText('Traversez le pont.')"><i class="fas fa-volume-up"></i></button></li>
+                            <li>C'est à côté de la banque. <button class="pronounce-btn" onclick="pronounceText('C\'est à côté de la banque.')"><i class="fas fa-volume-up"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريحة 8: نشاط 1 --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center">النشاط الأول: إكمال الإرشادات <i class="fas fa-edit text-orange-500 ml-3"></i></h2>
+                <p class="text-xl md:text-2xl mb-6 text-center">أكمل الجمل التالية باستخدام صيغة الأمر المناسبة أو العدد الترتيبي الصحيح.</p>
+                <div class="space-y-8 text-xl md:text-2xl p-6 bg-yellow-50 rounded-xl shadow-md" lang="fr">
+                    <p>1. S’il vous plaît Monsieur, pour aller à la bibliothèque ?<br>
+                    (<span class="text-blue-600 font-bold">prendre / Vous</span>) ......... la (<span class="text-blue-600 font-bold">1</span>) ......... rue à gauche.</p>
+                    
+                    <p>2. Pour aller au cinéma, c’est facile.<br>
+                    (<span class="text-blue-600 font-bold">aller / Tu</span>) ......... tout droit, (<span class="text-blue-600 font-bold">tourner / Tu</span>) ......... à gauche, puis (<span class="text-blue-600 font-bold">prendre / Tu</span>) ......... la (<span class="text-blue-600 font-bold">2</span>) ......... rue à droite.</p>
+                    
+                    <p>3. Madame, je cherche l'hôpital.<br>
+                    (<span class="text-blue-600 font-bold">continuer / Vous</span>) ......... tout droit et (<span class="text-blue-600 font-bold">traverser / Vous</span>) ......... le parc.</p>
+                </div>
+                <button onclick="toggleSolution('solution-1')" class="mt-10 bg-green-600 text-white px-8 py-3 rounded-lg font-semibold text-xl hover:bg-green-700 transition shadow-lg mx-auto block">أظهر الحل <i class="fas fa-lightbulb mr-2"></i></button>
+                <div id="solution-1" class="hidden mt-8 p-6 bg-green-100 border-r-4 border-green-500 rounded-xl shadow-md text-xl md:text-2xl" lang="fr">
+                    <p>1. <strong class="text-green-700">Prenez</strong> <button class="pronounce-btn" onclick="pronounceText('Prenez')"><i class="fas fa-volume-up"></i></button> la <strong class="text-green-700">première</strong> <button class="pronounce-btn" onclick="pronounceText('première')"><i class="fas fa-volume-up"></i></button> rue à gauche.</p>
+                    <p>2. <strong class="text-green-700">Va</strong> <button class="pronounce-btn" onclick="pronounceText('Va')"><i class="fas fa-volume-up"></i></button> tout droit, <strong class="text-green-700">tourne</strong> <button class="pronounce-btn" onclick="pronounceText('tourne')"><i class="fas fa-volume-up"></i></button> à gauche, puis <strong class="text-green-700">prends</strong> <button class="pronounce-btn" onclick="pronounceText('prends')"><i class="fas fa-volume-up"></i></button> la <strong class="text-green-700">deuxième</strong> <button class="pronounce-btn" onclick="pronounceText('deuxième')"><i class="fas fa-volume-up"></i></button> rue à droite.</p>
+                    <p>3. <strong class="text-green-700">Continuez</strong> <button class="pronounce-btn" onclick="pronounceText('Continuez')"><i class="fas fa-volume-up"></i></button> tout droit et <strong class="text-green-700">traversez</strong> <button class="pronounce-btn" onclick="pronounceText('traversez')"><i class="fas fa-volume-up"></i></button> le parc.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- شريحة 9: نشاط 2 (خريطة) --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-6 text-center">النشاط الثاني: وصف مسار <i class="fas fa-map-marked-alt text-purple-500 ml-3"></i></h2>
+                <p class="text-xl md:text-2xl mb-4" lang="fr">"Valentine est perdue ! Explique par écrit, comment aller de la <strong>Bibliothèque (B)</strong> à la <strong>Piscine (P)</strong>."</p>
+                <p class="text-lg md:text-xl mb-6 text-center">فالنتين ضائعة! اشرح لها كتابةً، كيف تذهب من <strong class="text-red-600">المكتبة (B)</strong> إلى <strong class="text-blue-600">حمام السباحة (P)</strong>.</p>
+                
+                <!-- خريطة مبسطة باستخدام HTML/CSS --><div class="w-full h-72 md:h-96 bg-gray-50 border-2 border-gray-300 rounded-xl p-3 grid grid-cols-5 grid-rows-5 gap-1 map-grid mx-auto">
+                    <!-- شوارع أفقية --><div class="bg-gray-400 col-span-5 row-start-1 text-white text-sm p-1">Rue Victor Hugo</div>
+                    <div class="bg-gray-400 col-span-5 row-start-3 text-white text-sm p-1">Rue de la République</div>
+                    <div class="bg-gray-400 col-span-5 row-start-5 text-white text-sm p-1">Rue de la Gare</div>
+                    
+                    <!-- شوارع رأسية --><div class="bg-gray-400 col-start-1 row-span-5 text-white text-sm p-1 writing-vertical">Avenue Pasteur</div>
+                    <div class="bg-gray-400 col-start-3 row-span-5 text-white text-sm p-1 writing-vertical">Rue Centrale</div>
+                    <div class="bg-gray-400 col-start-5 row-span-5 text-white text-sm p-1 writing-vertical">Rue de la Paix</div>
+                    
+                    <!-- الأماكن --><div class="flex items-center justify-center col-start-1 row-start-2 bg-yellow-100 rounded-lg shadow-sm">🏛️ Musée</div>
+                    <div class="flex items-center justify-center col-start-1 row-start-4 bg-red-100 rounded-lg shadow-sm text-center font-bold">B 📚<br>Bibliothèque</div>
+                    
+                    <div class="flex items-center justify-center col-start-3 row-start-2 bg-green-100 rounded-lg shadow-sm">🌳 Parc</div>
+                    <div class="flex items-center justify-center col-start-3 row-start-4 bg-orange-100 rounded-lg shadow-sm">🎬 Cinéma</div>
+
+                    <div class="flex items-center justify-center col-start-5 row-start-2 bg-blue-100 rounded-lg shadow-sm text-center font-bold">P 🏊<br>Piscine</div>
+                    <div class="flex items-center justify-center col-start-5 row-start-4 bg-gray-200 rounded-lg shadow-sm">🏥 Hôpital</div>
+                </div>
+                 <button onclick="toggleSolution('solution-2')" class="mt-8 bg-green-600 text-white px-8 py-3 rounded-lg font-semibold text-xl hover:bg-green-700 transition shadow-lg mx-auto block">أظهر الحل المقترح <i class="fas fa-lightbulb mr-2"></i></button>
+            </div>
+        </div>
+
+        <!-- شريحة 10: حل نشاط 2 --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center">حل النشاط الثاني: وصف مسار <i class="fas fa-check-circle text-green-500 ml-3"></i></h2>
+                <p class="text-xl md:text-2xl mb-6 text-center" dir="rtl">هذا حل مقترح. يمكن أن تختلف الإجابات قليلاً.</p>
+                <div class="p-6 bg-green-100 border-r-4 border-green-500 rounded-xl shadow-md text-xl md:text-2xl" lang="fr">
+                    <h3 class="text-3xl font-bold text-green-800 mb-4 text-center">Modèle de réponse:</h3>
+                    <p class="text-xl leading-relaxed">"Salut Valentine ! C'est facile.</p>
+                    <p class="text-xl leading-relaxed">Tu es à la bibliothèque (B). <strong class="text-gray-900">Va</strong> <button class="pronounce-btn" onclick="pronounceText('Va')"><i class="fas fa-volume-up"></i></button> tout droit sur la <span class="text-blue-600">Rue de la Gare</span>.</p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-900">Tourne</strong> <button class="pronounce-btn" onclick="pronounceText('Tourne')"><i class="fas fa-volume-up"></i></button> à gauche dans l'<span class="text-blue-600">Avenue Pasteur</span>. C'est la <strong class="text-purple-700">première</strong> <button class="pronounce-btn" onclick="pronounceText('première')"><i class="fas fa-volume-up"></i></button> rue à gauche.</p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-900">Continue</strong> <button class="pronounce-btn" onclick="pronounceText('Continue')"><i class="fas fa-volume-up"></i></button> tout droit jusqu'à la <span class="text-blue-600">Rue Victor Hugo</span>.</p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-900">Tourne</strong> <button class="pronounce-btn" onclick="pronounceText('Tourne')"><i class="fas fa-volume-up"></i></button> à droite. <strong class="text-gray-900">Prends</strong> <button class="pronounce-btn" onclick="pronounceText('Prends')"><i class="fas fa-volume-up"></i></button> la <strong class="text-purple-700">première</strong> <button class="pronounce-btn" onclick="pronounceText('première')"><i class="fas fa-volume-up"></i></button> rue à droite, c'est la <span class="text-blue-600">Rue de la Paix</span>.</p>
+                    <p class="text-xl leading-relaxed">La piscine (P) est sur ta droite, à côté du parc."</p>
+                </div>
+                 <p class="text-lg mt-6 text-center" dir="rtl"><strong>حل صحيح آخر (أكثر مباشرة):</strong></p>
+                 <div class="p-4 bg-blue-50 border-r-4 border-blue-500 rounded-xl shadow-md text-xl md:text-2xl mt-4" lang="fr">
+                    <p>"Valentine, depuis la Bibliothèque (B), <strong class="text-gray-900">va</strong> <button class="pronounce-btn" onclick="pronounceText('va')"><i class="fas fa-volume-up"></i></button> tout droit sur la <span class="text-blue-600">Rue de la Gare</span>.</p>
+                    <p><strong class="text-gray-900">Tourne</strong> <button class="pronounce-btn" onclick="pronounceText('tourne')"><i class="fas fa-volume-up"></i></button> à droite dans la <span class="text-blue-600">Rue Centrale</span>. <strong class="text-gray-900">Continue</strong> <button class="pronounce-btn" onclick="pronounceText('Continue')"><i class="fas fa-volume-up"></i></button> tout droit et la piscine (P) est à ta gauche."</p>
+                 </div>
+            </div>
+        </div>
+        
+        <!-- شريحة 11: نشاط 3 --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-8 text-center">النشاط الثالث: إنتاج حوار <i class="fas fa-user-friends text-green-500 ml-3"></i></h2>
+                <p class="text-xl md:text-2xl mb-6 text-center">اكتب حواراً قصيراً <span lang="fr">(Dialogue)</span> <button class="pronounce-btn" onclick="pronounceText('Dialogue')"><i class="fas fa-volume-up"></i></button> بين سائح <span lang="fr">(Touriste)</span> <button class="pronounce-btn" onclick="pronounceText('Touriste')"><i class="fas fa-volume-up"></i></button> وأحد المارة <span lang="fr">(Passant)</span> <button class="pronounce-btn" onclick="pronounceText('Passant')"><i class="fas fa-volume-up"></i></button>. السائح يسأل عن الطريق إلى المتحف <span lang="fr">(le musée)</span> <button class="pronounce-btn" onclick="pronounceText('le musée')"><i class="fas fa-volume-up"></i></button>، والمار يقوم بوصف الطريق له.</p>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 text-center">استخدم: صيغة الأمر (<span class="font-bold text-indigo-600">Vous</span> للاحترام)، الأعداد الترتيبية، ومفردات الأماكن.</p>
+                
+                <div class="w-full">
+                    <textarea class="w-full h-48 md:h-64 p-4 border-2 border-gray-300 rounded-xl text-lg md:text-xl shadow-inner focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition" placeholder="اكتب الحوار هنا..." lang="fr"></textarea>
+                </div>
+                
+                <button onclick="toggleSolution('solution-3')" class="mt-8 bg-green-600 text-white px-8 py-3 rounded-lg font-semibold text-xl hover:bg-green-700 transition shadow-lg mx-auto block">أظهر الحل المقترح <i class="fas fa-lightbulb mr-2"></i></button>
+                
+                <div id="solution-3" class="hidden mt-8 p-6 bg-green-100 border-r-4 border-green-500 rounded-xl shadow-md text-xl md:text-2xl" lang="fr">
+                    <h3 class="text-3xl font-bold text-green-800 mb-4 text-center">Modèle de réponse:</h3>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-800">Le Touriste:</strong> Pardon Monsieur, pour aller au musée, s'il vous plaît ? <button class="pronounce-btn" onclick="pronounceText('Pardon Monsieur, pour aller au musée, s\'il vous plaît ?')"><i class="fas fa-volume-up"></i></button></p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-800">Le Passant:</strong> Oui, bien sûr. C'est très simple. <button class="pronounce-btn" onclick="pronounceText('Oui, bien sûr. C\'est très simple.')"><i class="fas fa-volume-up"></i></button></p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-800">Le Passant:</strong> <strong class="text-blue-600">Allez</strong> <button class="pronounce-btn" onclick="pronounceText('Allez')"><i class="fas fa-volume-up"></i></button> tout droit jusqu'au feu rouge. <strong class="text-blue-600">Prenez</strong> <button class="pronounce-btn" onclick="pronounceText('Prenez')"><i class="fas fa-volume-up"></i></button> la <strong class="text-red-600">deuxième</strong> <button class="pronounce-btn" onclick="pronounceText('deuxième')"><i class="fas fa-volume-up"></i></button> rue à gauche. <strong class="text-blue-600">Continuez</strong> <button class="pronounce-btn" onclick="pronounceText('Continuez')"><i class="fas fa-volume-up"></i></button> 100 mètres. Le musée est sur votre droite, devant le grand parc.</p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-800">Le Touriste:</strong> Merci beaucoup, Monsieur ! <button class="pronounce-btn" onclick="pronounceText('Merci beaucoup, Monsieur !')"><i class="fas fa-volume-up"></i></button></p>
+                    <p class="text-xl leading-relaxed"><strong class="text-gray-800">Le Passant:</strong> Je vous en prie. Bonne journée ! <button class="pronounce-btn" onclick="pronounceText('Je vous en prie. Bonne journée !')"><i class="fas fa-volume-up"></i></button></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريحة 12: ملخص --><div class="slide">
+            <div class="slide-content">
+                <h2 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-10 text-center">ملخص الدرس (Résumé) <i class="fas fa-book text-blue-500 ml-3"></i></h2>
+                <p class="text-2xl md:text-3xl mb-6 text-center">لتوضيح خط السير، نحن نحتاج إلى:</p>
+                <div class="space-y-6">
+                    <div class="flex items-center p-5 bg-purple-100 rounded-xl shadow-md hover:shadow-lg transition">
+                        <span class="text-indigo-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">1️⃣</span>
+                        <span class="flex-1 text-2xl md:text-3xl">صيغة الأمر <span lang="fr" class="font-semibold text-indigo-700">(Va, Prenez, Tourne, Traversez)</span> <button class="pronounce-btn" onclick="pronounceText('Va, Prenez, Tourne, Traversez')"><i class="fas fa-volume-up"></i></button></span>
+                    </div>
+                    <div class="flex items-center p-5 bg-purple-100 rounded-xl shadow-md hover:shadow-lg transition">
+                        <span class="text-indigo-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">2️⃣</span>
+                        <span class="flex-1 text-2xl md:text-3xl">الأعداد الترتيبية <span lang="fr" class="font-semibold text-indigo-700">(la première, la deuxième...)</span> <button class="pronounce-btn" onclick="pronounceText('la première, la deuxième')"><i class="fas fa-volume-up"></i></button></span>
+                    </div>
+                    <div class="flex items-center p-5 bg-purple-100 rounded-xl shadow-md hover:shadow-lg transition">
+                        <span class="text-indigo-600 text-4xl ml-4 rtl:mr-4 flex-shrink-0">3️⃣</span>
+                        <span class="flex-1 text-2xl md:text-3xl">الاتجاهات وحروف الجر <span lang="fr" class="font-semibold text-indigo-700">(à droite, à gauche, tout droit)</span> <button class="pronounce-btn" onclick="pronounceText('à droite, à gauche, tout droit')"><i class="fas fa-volume-up"></i></button></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريحة 13: النهاية --><div class="slide">
+            <div class="slide-content slide-center bg-gradient-to-br from-indigo-700 to-purple-800 text-white flex flex-col items-center justify-center text-center">
+                <h1 class="text-6xl md:text-7xl font-extrabold mb-6" lang="fr">Merci! <i class="fas fa-heart ml-4"></i></h1>
+                <h2 class="text-4xl md:text-5xl mb-8">شكراً لانتباهكم</h2>
+                <p class="text-3xl">هل لديكم أي أسئلة؟ <span lang="fr" class="font-semibold">(Des questions ?)</span> <button class="pronounce-btn text-white opacity-90 hover:opacity-100" onclick="pronounceText('Des questions ?')"><i class="fas fa-volume-up"></i></button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- أزرار التنقل --><div class="flex justify-center items-center space-x-6 rtl:space-x-reverse mt-8 max-w-4xl mx-auto">
+        <button id="prevBtn" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold text-xl md:text-2xl hover:bg-indigo-700 transition shadow-lg disabled:opacity-40 disabled:cursor-not-allowed flex items-center">
+            <i class="fas fa-arrow-right ml-3 rtl:mr-3"></i> السابق
+        </button>
+        <span id="slideCounter" class="text-2xl font-semibold text-gray-700">الشريحة 1 / 13</span>
+        <button id="nextBtn" class="bg-indigo-600 text-white px-10 py-4 rounded-full font-bold text-xl md:text-2xl hover:bg-indigo-700 transition shadow-lg disabled:opacity-40 disabled:cursor-not-allowed flex items-center">
+            التالي <i class="fas fa-arrow-left mr-3 rtl:ml-3"></i>
+        </button>
+    </div>
+
+    <script>
+        // جافاسكريبت للتحكم في العرض التقديمي
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const slideCounter = document.getElementById('slideCounter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            // إخفاء جميع الشرائح
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            // إظهار الشريحة المحددة
+            slides[n].classList.add('active');
+            
+            // تحديث عداد الشرائح
+            slideCounter.textContent = `الشريحة ${n + 1} / ${totalSlides}`;
+            
+            // تعطيل/تمكين الأزرار
+            prevBtn.disabled = (n === 0);
+            nextBtn.disabled = (n === totalSlides - 1);
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        // إضافة مستمعي الأحداث للأزرار
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // وظيفة إظهار/إخفاء الحلول
+        function toggleSolution(id) {
+            const solutionElement = document.getElementById(id);
+            if (solutionElement) {
+                solutionElement.classList.toggle('hidden');
+                //scroll to the solution if it's revealed
+                if (!solutionElement.classList.contains('hidden')) {
+                    solutionElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }
+        }
+
+        // وظيفة النطق الصوتي
+        function pronounceText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR'; // تحديد اللغة الفرنسية
+                speechSynthesis.speak(utterance);
+            } else {
+                alert('عذراً، متصفحك لا يدعم النطق الصوتي.');
+            }
+        }
+        
+        // ربط وظيفة pronounceText بالنافذة لتكون متاحة من HTML
+        window.pronounceText = pronounceText;
+
+        // إظهار الشريحة الأولى عند التحميل
+        showSlide(currentSlide);
+
+        // إضافة دعم التنقل بالأسهم (اختياري)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                nextSlide(); // ليتوافق مع RTL (السهم الأيسر ينقل للأمام)
+            } else if (e.key === 'ArrowRight') {
+                prevSlide(); // ليتوافق مع RTL (السهم الأيمن ينقل للخلف)
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
