@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>درس اللغة الفرنسية B1</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #718096;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-tab {
+            background: #e2e8f0;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #4a5568;
+        }
+
+        .nav-tab:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: #4299e1;
+            color: white;
+            box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .french-text {
+            background: #f7fafc;
+            border-right: 4px solid #4299e1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .arabic-text {
+            background: #fff5f5;
+            border-right: 4px solid #e53e3e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .vocab-item {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .vocab-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .vocab-french {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 5px;
+        }
+
+        .vocab-arabic {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .vocab-example {
+            font-style: italic;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .speak-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            vertical-align: middle;
+        }
+
+        .speak-btn:hover {
+            background: #3182ce;
+            transform: scale(1.1);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        .vocab-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .french-text p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .french-text .text-content {
+            flex: 1;
+            line-height: 1.8;
+        }
+
+        .speak-btn-text {
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .speak-btn-text:hover {
+            background: #38a169;
+            transform: translateY(-1px);
+        }
+
+        .question-card {
+            background: #fffaf0;
+            border: 1px solid #fbd38d;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .show-answer-btn {
+            background: #ed8936;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .show-answer-btn:hover {
+            background: #dd6b20;
+            transform: translateY(-2px);
+        }
+
+        .answer-content {
+            background: #e6fffa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .quiz-container {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .quiz-option.selected {
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .quiz-option.correct {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .quiz-option.incorrect {
+            border-color: #f56565;
+            background: #fed7d7;
+        }
+
+        .submit-quiz-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .submit-quiz-btn:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+        }
+
+        .submit-quiz-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quiz-result {
+            background: #e6fffa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .activity-card {
+            background: #fef5e7;
+            border: 1px solid #f6ad55;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .connectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .connector-card {
+            background: #e6fffa;
+            border: 1px solid #4fd1c7;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .connector-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .connector-french {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 10px;
+        }
+
+        .connector-arabic {
+            font-size: 1rem;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .connector-example {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: #718096;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-tab {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .connectors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <main class="container">
+   <header class="header">
+    <h1 class="main-title" id="lesson-title">درس لغة فرنسية (B1): تعلم التفكير النقدي</h1>
+    <p class="subtitle" id="lesson-subtitle">مواجهة المعلومات المضللة (La désinformation) – مجاناً للطلاب العرب</p>
+    <p class="description">هذا الدرس التفاعلي مصمم لمساعدتك على تطوير مهاراتك اللغوية (مفردات، روابط منطقية، Subjonctif) وتدريبك على التفكير النقدي باللغة الفرنسية.</p>
+   </header>
+   <nav class="nav-tabs"><button class="nav-tab active" onclick="showSection('text')">📖 النص والترجمة</button> <button class="nav-tab" onclick="showSection('vocab')">📚 المفردات</button> <button class="nav-tab" onclick="showSection('comprehension')">🔍 أسئلة الفهم</button> <button class="nav-tab" onclick="showSection('activities')">🗣️✍️ أنشطة</button> <button class="nav-tab" onclick="showSection('connectors')">🧩 بطاقات الروابط</button> <button class="nav-tab" onclick="showSection('quiz')">🏁 اختبار إلكتروني</button>
+   </nav><!-- النص والترجمة -->
+   <section id="text" class="content-section active">
+    <h2 class="section-title">📖 النص الأصلي (بالفرنسية)</h2>
+    <div class="french-text">
+     <p><button class="speak-btn" onclick="speakText('Beaucoup d\'internautes lisent seulement le titre d\'un article. Cependant, ils le partagent immédiatement avec leurs amis. Donc, la rumeur se propage très vite sur les réseaux sociaux.')" title="استمع للنطق">🔊</button> <span class="text-content">Beaucoup d'internautes lisent seulement le titre d'un article. Cependant, ils le partagent immédiatement avec leurs amis. Donc, la rumeur se propage très vite sur les réseaux sociaux.</span></p>
+     <p><button class="speak-btn" onclick="speakText('De plus, certains créateurs utilisent des images spectaculaires pour attirer l\'attention. En effet, un visuel choquant augmente le nombre de clics, même si le contenu est simplifié ou incomplet.')" title="استمع للنطق">🔊</button> <span class="text-content">De plus, certains créateurs utilisent des images spectaculaires pour attirer l'attention. En effet, un visuel choquant augmente le nombre de clics, même si le contenu est simplifié ou incomplet.</span></p>
+     <p><button class="speak-btn" onclick="speakText('En revanche, les médias fiables expliquent leur méthode et citent leurs sources. Cela aide le public à comprendre le contexte et à éviter les interprétations rapides.')" title="استمع للنطق">🔊</button> <span class="text-content">En revanche, les médias fiables expliquent leur méthode et citent leurs sources. Cela aide le public à comprendre le contexte et à éviter les interprétations rapides.</span></p>
+     <p><button class="speak-btn" onclick="speakText('À cause des titres trompeurs, plusieurs personnes croient à des informations anciennes ou sorties de leur contexte. Pourtant, il suffit souvent de vérifier la date et l\'origine du site.')" title="استمع للنطق">🔊</button> <span class="text-content">À cause des titres trompeurs, plusieurs personnes croient à des informations anciennes ou sorties de leur contexte. Pourtant, il suffit souvent de vérifier la date et l'origine du site.</span></p>
+     <p><button class="speak-btn" onclick="speakText('D\'une part, les plateformes veulent encourager l\'engagement. D\'autre part, elles doivent limiter la désinformation pour protéger le débat public.')" title="استمع للنطق">🔊</button> <span class="text-content">D'une part, les plateformes veulent encourager l'engagement. D'autre part, elles doivent limiter la désinformation pour protéger le débat public.</span></p>
+     <p><button class="speak-btn" onclick="speakText('En conclusion, il est conseillé de croiser les informations avant de partager, afin que chacun prenne une décision éclairée.')" title="استمع للنطق">🔊</button> <span class="text-content">En conclusion, il est conseillé de croiser les informations avant de partager, afin que chacun prenne une décision éclairée.</span></p>
+    </div>
+    <h2 class="section-title">📜 الترجمة العربية للنص</h2>
+    <div class="arabic-text">
+     <p>الكثير من مستخدمي الإنترنت يقرؤون عنوان المقال فقط. ومع ذلك، يشاركونه فوراً مع أصدقائهم. لذلك، تنتشر الإشاعة بسرعة كبيرة على الشبكات الاجتماعية.</p>
+     <p>بالإضافة إلى ذلك، يستخدم بعض منشئي المحتوى صوراً مثيرة لجذب الانتباه. في الواقع، الصورة الصادمة تزيد من عدد النقرات، حتى لو كان المحتوى مبسطاً أو ناقصاً.</p>
+     <p>في المقابل، تشرح وسائل الإعلام الموثوقة منهجيتها وتذكر مصادرها. هذا يساعد الجمهور على فهم السياق وتجنب التفسيرات المتسرعة.</p>
+     <p>بسبب العناوين المضللة، يصدق عدة أشخاص معلومات قديمة أو خارجة عن سياقها. ولكن، غالباً ما يكفي التحقق من التاريخ ومصدر الموقع.</p>
+     <p>من ناحية، تريد المنصات تشجيع التفاعل. ومن ناحية أخرى، يجب عليها الحد من المعلومات المضللة لحماية النقاش العام.</p>
+     <p>في الختام، يُنصح بمقاطعة (التحقق من) المعلومات قبل المشاركة، حتى يتمكن كل فرد من اتخاذ قرار مستنير.</p>
+    </div>
+   </section><!-- المفردات -->
+   <section id="vocab" class="content-section">
+    <h2 class="section-title">📚 المفردات الأساسية (Vocabulaire utile)</h2>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('une rumeur')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 une rumeur
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      إشاعة
+     </div>
+     <div class="vocab-example">
+      Cette rumeur circule depuis hier. <button class="speak-btn-text" onclick="speakText('Cette rumeur circule depuis hier.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('se propager')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 se propager
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      تنتشر
+     </div>
+     <div class="vocab-example">
+      Les fausses infos se propagent vite. <button class="speak-btn-text" onclick="speakText('Les fausses infos se propagent vite.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('un visuel choquant')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 un visuel choquant
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      صورة صادمة
+     </div>
+     <div class="vocab-example">
+      Ce visuel choquant attire trop de clics. <button class="speak-btn-text" onclick="speakText('Ce visuel choquant attire trop de clics.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('médias fiables')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 médias fiables
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      وسائل إعلام موثوقة
+     </div>
+     <div class="vocab-example">
+      Je préfère les médias fiables. <button class="speak-btn-text" onclick="speakText('Je préfère les médias fiables.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('citer ses sources')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 citer ses sources
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      يَذكر مصادره
+     </div>
+     <div class="vocab-example">
+      Un bon journaliste cite toujours ses sources. <button class="speak-btn-text" onclick="speakText('Un bon journaliste cite toujours ses sources.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('titres trompeurs')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 titres trompeurs
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      عناوين مضلّلة
+     </div>
+     <div class="vocab-example">
+      Ces titres trompeurs cachent la vérité. <button class="speak-btn-text" onclick="speakText('Ces titres trompeurs cachent la vérité.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('croiser les informations')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 croiser les informations
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      تثبيت/تقاطع المعلومات
+     </div>
+     <div class="vocab-example">
+      Croise les infos avec 2 ou 3 sources. <button class="speak-btn-text" onclick="speakText('Croise les infos avec 2 ou 3 sources.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+    <div class="vocab-item">
+     <div class="vocab-header"><button class="speak-btn" onclick="speakText('une décision éclairée')" title="استمع للنطق">🔊</button>
+      <div class="vocab-french">
+       👉 une décision éclairée
+      </div>
+     </div>
+     <div class="vocab-arabic">
+      قرار مستنير
+     </div>
+     <div class="vocab-example">
+      Partage seulement après une décision éclairée. <button class="speak-btn-text" onclick="speakText('Partage seulement après une décision éclairée.')" title="استمع للمثال">🔊</button>
+     </div>
+    </div>
+   </section><!-- أسئلة الفهم -->
+   <section id="comprehension" class="content-section">
+    <h2 class="section-title">🔍 أسئلة فهم (Compréhension)</h2>
+    <div class="question-card">
+     <div class="question-text">
+      Pourquoi les images choquantes attirent-elles plus de clics ?<br><small>(لماذا تجذب الصور الصادمة المزيد من النقرات؟)</small>
+     </div><button class="show-answer-btn" onclick="toggleAnswer('answer1')">أظهر الإجابة</button>
+     <div id="answer1" class="answer-content"><strong>→ Réponse attendue (B1):</strong><br>
+       De plus, les images choquantes attirent l'attention. Cependant, elles peuvent cacher un contenu faux ou incomplet.<br><br><em>(بالإضافة إلى ذلك، الصور الصادمة تجذب الانتباه. لكن، يمكن أن تخفي محتوى خاطئاً أو ناقصاً.)</em>
+     </div>
+    </div>
+    <div class="question-card">
+     <div class="question-text">
+      Quelles sont deux étapes pour vérifier une information ?<br><small>(ما هما الخطوتان للتحقق من معلومة؟)</small>
+     </div><button class="show-answer-btn" onclick="toggleAnswer('answer2')">أظهر الإجابة</button>
+     <div id="answer2" class="answer-content"><strong>→ Exemple:</strong><br>
+       Vérifie la date de l'article et l'origine du site. Donc, tu évites de partager une vieille rumeur.<br><br><em>(تحقق من تاريخ المقال ومصدر الموقع. لذلك، تتجنب مشاركة إشاعة قديمة.)</em>
+     </div>
+    </div>
+    <div class="question-card">
+     <div class="question-text">
+      Écris une phrase avec « afin que » + subjonctif.<br><small>(اكتب جملة باستخدام « afin que » + صيغة الشك Subjonctif)</small>
+     </div><button class="show-answer-btn" onclick="toggleAnswer('answer3')">أظهر الإجابة</button>
+     <div id="answer3" class="answer-content"><strong>→ Exemple correct:</strong><br>
+       Je vérifie la source afin que mes amis ne soient pas trompés.<br><br><em>(أنا أتحقق من المصدر كي لا يتم خداع أصدقائي.)</em>
+     </div>
+    </div>
+   </section><!-- الأنشطة -->
+   <section id="activities" class="content-section">
+    <h2 class="section-title">🗣️ نشاط تحدث (Production orale)</h2>
+    <div class="activity-card">
+     <h3>نقاش موجه:</h3>
+     <p><strong>« Faut-il interdire le partage d'articles sans les lire ? »</strong></p>
+     <p><em>(هل يجب مَنْع مشاركة المقالات دون قراءتها؟)</em></p>
+     <p>استخدموا 3 روابط منطقية (connecteurs) على الأقل (ex: cependant, de plus, en revanche)</p>
+    </div>
+    <div class="activity-card">
+     <h3>✍️ نشاط كتابة (Production écrite)</h3>
+     <p><strong>اكتب فقرة (80-100 كلمة) حول:</strong></p>
+     <p>« Comment vérifiez-vous une information avant de la partager ? »</p>
+     <p><em>(كيف تتحقق من معلومة قبل مشاركتها؟)</em></p>
+     <p><strong>استخدم:</strong> 2 روابط منطقية + مفردات الدرس + جملة واحدة بـ Subjonctif</p>
+    </div>
+   </section><!-- بطاقات الروابط -->
+   <section id="connectors" class="content-section">
+    <h2 class="section-title">🧩 بطاقات الروابط المنطقية (Connecteurs logiques)</h2>
+    <div class="connectors-grid">
+     <div class="connector-card">
+      <div class="connector-french">
+       Cependant
+      </div>
+      <div class="connector-arabic">
+       ومع ذلك / لكن
+      </div>
+      <div class="connector-example">
+       Il lit le titre, cependant il ne partage pas.
+      </div>
+     </div>
+     <div class="connector-card">
+      <div class="connector-french">
+       De plus
+      </div>
+      <div class="connector-arabic">
+       بالإضافة إلى ذلك
+      </div>
+      <div class="connector-example">
+       De plus, il vérifie toujours ses sources.
+      </div>
+     </div>
+     <div class="connector-card">
+      <div class="connector-french">
+       En revanche
+      </div>
+      <div class="connector-arabic">
+       في المقابل
+      </div>
+      <div class="connector-example">
+       En revanche, les médias fiables citent leurs sources.
+      </div>
+     </div>
+     <div class="connector-card">
+      <div class="connector-french">
+       Donc
+      </div>
+      <div class="connector-arabic">
+       لذلك / إذن
+      </div>
+      <div class="connector-example">
+       Il vérifie la date, donc il évite les rumeurs.
+      </div>
+     </div>
+     <div class="connector-card">
+      <div class="connector-french">
+       Pourtant
+      </div>
+      <div class="connector-arabic">
+       ولكن / مع ذلك
+      </div>
+      <div class="connector-example">
+       C'est faux, pourtant beaucoup y croient.
+      </div>
+     </div>
+     <div class="connector-card">
+      <div class="connector-french">
+       Afin que
+      </div>
+      <div class="connector-arabic">
+       كي / حتى
+      </div>
+      <div class="connector-example">
+       Je vérifie afin que tu ne sois pas trompé.
+      </div>
+     </div>
+    </div>
+   </section><!-- الاختبار -->
+   <section id="quiz" class="content-section">
+    <h2 class="section-title" id="quiz-title">🏁 اختبار إلكتروني</h2>
+    <div class="quiz-container">
+     <div class="quiz-question">
+      1. Quel connecteur exprime l'opposition ?
+     </div>
+     <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       De plus
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, true)">
+       Cependant
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Donc
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Afin que
+      </div>
+     </div>
+    </div>
+    <div class="quiz-container">
+     <div class="quiz-question">
+      2. Comment dit-on "إشاعة" en français ?
+     </div>
+     <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Une nouvelle
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, true)">
+       Une rumeur
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Une information
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Un article
+      </div>
+     </div>
+    </div>
+    <div class="quiz-container">
+     <div class="quiz-question">
+      3. Complétez : "Je vérifie la source afin que mes amis ne _____ pas trompés."
+     </div>
+     <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       sont
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, true)">
+       soient
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       seront
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       étaient
+      </div>
+     </div>
+    </div>
+    <div class="quiz-container">
+     <div class="quiz-question">
+      4. Que signifie "croiser les informations" ?
+     </div>
+     <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Partager rapidement
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, true)">
+       Vérifier avec plusieurs sources
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Lire seulement le titre
+      </div>
+      <div class="quiz-option" onclick="selectOption(this, false)">
+       Ignorer les sources
+      </div>
+     </div>
+    </div><button class="submit-quiz-btn" onclick="submitQuiz()" disabled>تقديم الاختبار</button>
+    <div id="quiz-result" class="quiz-result">
+     <h3>نتيجة الاختبار</h3>
+     <p id="score-text"></p>
+     <p id="feedback-text"></p>
+    </div>
+   </section>
+  </main>
+  <script>
+        // Configuration for Element SDK
+        const defaultConfig = {
+            lesson_title: "درس لغة فرنسية (B1): تعلم التفكير النقدي",
+            lesson_subtitle: "مواجهة المعلومات المضللة (La désinformation) – مجاناً للطلاب العرب",
+            quiz_title: "🏁 اختبار إلكتروني"
+        };
+
+        let selectedAnswers = [];
+        let quizSubmitted = false;
+
+        // Element SDK initialization
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig: defaultConfig,
+                onConfigChange: async (config) => {
+                    document.getElementById('lesson-title').textContent = config.lesson_title || defaultConfig.lesson_title;
+                    document.getElementById('lesson-subtitle').textContent = config.lesson_subtitle || defaultConfig.lesson_subtitle;
+                    document.getElementById('quiz-title').textContent = config.quiz_title || defaultConfig.quiz_title;
+                },
+                mapToCapabilities: (config) => ({
+                    recolorables: [],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: (config) => new Map([
+                    ["lesson_title", config.lesson_title || defaultConfig.lesson_title],
+                    ["lesson_subtitle", config.lesson_subtitle || defaultConfig.lesson_subtitle],
+                    ["quiz_title", config.quiz_title || defaultConfig.quiz_title]
+                ])
+            });
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function toggleAnswer(answerId) {
+            const answer = document.getElementById(answerId);
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block';
+            } else {
+                answer.style.display = 'none';
+            }
+        }
+
+        function selectOption(element, isCorrect) {
+            if (quizSubmitted) return;
+            
+            // Find the quiz container
+            const quizContainer = element.closest('.quiz-container');
+            const options = quizContainer.querySelectorAll('.quiz-option');
+            
+            // Remove selection from all options in this question
+            options.forEach(option => option.classList.remove('selected'));
+            
+            // Add selection to clicked option
+            element.classList.add('selected');
+            
+            // Store the answer
+            const questionIndex = Array.from(document.querySelectorAll('.quiz-container')).indexOf(quizContainer);
+            selectedAnswers[questionIndex] = isCorrect;
+            
+            // Check if all questions are answered
+            checkQuizCompletion();
+        }
+
+        function checkQuizCompletion() {
+            const totalQuestions = document.querySelectorAll('.quiz-container').length;
+            const submitBtn = document.querySelector('.submit-quiz-btn');
+            
+            if (selectedAnswers.filter(answer => answer !== undefined).length === totalQuestions) {
+                submitBtn.disabled = false;
+            }
+        }
+
+        function submitQuiz() {
+            if (quizSubmitted) return;
+            
+            quizSubmitted = true;
+            const submitBtn = document.querySelector('.submit-quiz-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'تم التقديم';
+            
+            // Show correct/incorrect answers
+            const quizContainers = document.querySelectorAll('.quiz-container');
+            let correctCount = 0;
+            
+            quizContainers.forEach((container, index) => {
+                const options = container.querySelectorAll('.quiz-option');
+                const selectedOption = container.querySelector('.quiz-option.selected');
+                
+                options.forEach(option => {
+                    const isCorrect = option.onclick.toString().includes('true');
+                    if (isCorrect) {
+                        option.classList.add('correct');
+                    } else if (option.classList.contains('selected') && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+                
+                if (selectedAnswers[index] === true) {
+                    correctCount++;
+                }
+            });
+            
+            // Show results
+            const resultDiv = document.getElementById('quiz-result');
+            const scoreText = document.getElementById('score-text');
+            const feedbackText = document.getElementById('feedback-text');
+            
+            const percentage = Math.round((correctCount / selectedAnswers.length) * 100);
+            scoreText.textContent = `النتيجة: ${correctCount}/${selectedAnswers.length} (${percentage}%)`;
+            
+            if (percentage >= 80) {
+                feedbackText.textContent = 'ممتاز! لديك فهم جيد للدرس. 🎉';
+                feedbackText.style.color = '#48bb78';
+            } else if (percentage >= 60) {
+                feedbackText.textContent = 'جيد! راجع بعض النقاط وحاول مرة أخرى. 👍';
+                feedbackText.style.color = '#ed8936';
+            } else {
+                feedbackText.textContent = 'تحتاج لمراجعة الدرس مرة أخرى. لا تستسلم! 💪';
+                feedbackText.style.color = '#f56565';
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+
+        // Text-to-Speech function
+        function speakText(text) {
+            // Check if speech synthesis is supported
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                
+                // Create a new speech synthesis utterance
+                const utterance = new SpeechSynthesisUtterance(text);
+                
+                // Set language to French
+                utterance.lang = 'fr-FR';
+                
+                // Set speech rate and pitch
+                utterance.rate = 0.8; // Slightly slower for learning
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                // Try to find a French voice
+                const voices = window.speechSynthesis.getVoices();
+                const frenchVoice = voices.find(voice => 
+                    voice.lang.startsWith('fr') || 
+                    voice.name.toLowerCase().includes('french') ||
+                    voice.name.toLowerCase().includes('français')
+                );
+                
+                if (frenchVoice) {
+                    utterance.voice = frenchVoice;
+                }
+                
+                // Speak the text
+                window.speechSynthesis.speak(utterance);
+            } else {
+                // Fallback message if speech synthesis is not supported
+                const message = document.createElement('div');
+                message.textContent = 'عذراً، النطق غير مدعوم في متصفحك الحالي';
+                message.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: #f56565;
+                    color: white;
+                    padding: 10px 20px;
+                    border-radius: 10px;
+                    z-index: 1000;
+                    font-size: 14px;
+                `;
+                document.body.appendChild(message);
+                
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 3000);
+            }
+        }
+
+        // Load voices when they become available
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = function() {
+                // Voices are now loaded
+            };
+        }
+    </script>
+</html>
