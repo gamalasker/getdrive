@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درس الاستفهام في اللغة الفرنسية - L'interrogation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        body {
+            font-family: 'Cairo', 'Roboto', sans-serif;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-white);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px 30px;
+            background: var(--bg-light);
+            border-bottom: 2px solid var(--border-color);
+            justify-content: center;
+        }
+
+        .nav-pill {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .nav-pill:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            border-right: 5px solid var(--primary-color);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        .section h3 {
+            color: var(--secondary-color);
+            font-size: 1.4em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .example-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-right: 4px solid var(--accent-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .french-text {
+            font-family: 'Roboto', sans-serif;
+            direction: ltr;
+            text-align: left;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .arabic-text {
+            color: var(--text-light);
+            font-size: 1em;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .highlight-red {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .highlight-blue {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .highlight-green {
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        /* Quiz Styles */
+        .quiz-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            margin-top: 50px;
+            border-radius: 15px;
+            color: white;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h2 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            color: white;
+            border: none;
+        }
+
+        .question-card {
+            background: white;
+            color: var(--text-dark);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            background: var(--bg-light);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .option:hover {
+            background: #e0e7ff;
+            border-color: var(--primary-color);
+            transform: translateX(-5px);
+        }
+
+        .option.selected {
+            background: #dbeafe;
+            border-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .option.correct {
+            background: #d1fae5;
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .option.incorrect {
+            background: #fee2e2;
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .quiz-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .result-container {
+            display: none;
+            background: white;
+            color: var(--text-dark);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .result-container.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .score-display {
+            font-size: 4em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .result-item {
+            padding: 20px 30px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            min-width: 150px;
+        }
+
+        .result-item-label {
+            font-size: 0.9em;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .result-item-value {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .result-item-value.correct {
+            color: var(--success);
+        }
+
+        .result-item-value.incorrect {
+            color: var(--error);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--secondary-color);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .back-to-top:hover {
+            background: #1e40af;
+            transform: translateY(-3px);
+        }
+
+        .back-to-top.show {
+            display: flex;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .nav-pills {
+                padding: 15px;
+            }
+
+            .quiz-container {
+                padding: 25px 15px;
+            }
+
+            .result-details {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border-right: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-right: 4px solid var(--accent-color);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .note {
+            font-size: 0.95em;
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎓 درس الاستفهام في اللغة الفرنسية</h1>
+            <p>L'interrogation en français</p>
+        </div>
+
+        <div class="nav-pills">
+            <a href="#total-interrogation" class="nav-pill">الاستفهام الكلى</a>
+            <a href="#qui" class="nav-pill">Qui</a>
+            <a href="#que-quoi" class="nav-pill">Que / Quoi</a>
+            <a href="#quel" class="nav-pill">Quel</a>
+            <a href="#comment" class="nav-pill">Comment</a>
+            <a href="#pourquoi" class="nav-pill">Pourquoi</a>
+            <a href="#combien" class="nav-pill">Combien</a>
+            <a href="#ou" class="nav-pill">Où</a>
+            <a href="#quiz" class="nav-pill">📝 الاختبار</a>
+        </div>
+
+        <div class="content">
+            <!-- الاستفهام الكلى -->
+            <div class="section" id="total-interrogation">
+                <h2>📌 الاستفهام عن الجملة كلها (Interrogation totale)</h2>
+
+                <h3>1️⃣ الاستفهام بالتنغيم (بدون كلمة استفهام)</h3>
+                <div class="info-box">
+                    <strong>الطريقة:</strong> نبدأ بالفاعل ثم الفعل ثم المفعول ونختم بعلامة الاستفهام
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-blue">Tu</span> <span class="highlight-red">vas</span> au cinéma ?</div>
+                    <div class="arabic-text">هل أنت ذاهب إلى السينما؟</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>الإجابة:</strong> نبدأ بنعم (Oui) أو لا (Non) أو أي كلمة تدل على الموافقة أو الرفض
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Oui, je vais au cinéma.</div>
+                    <div class="arabic-text">نعم، أنا ذاهب إلى السينما</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Non, je ne vais pas au cinéma.</div>
+                    <div class="arabic-text">لا، أنا لن أذهب إلى السينما</div>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 إذا كان السؤال منفيًا:</strong> نستخدم <span class="highlight-red">Si</span> للإجابة بالإيجاب
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Tu <span class="highlight-red">ne</span> vas <span class="highlight-red">pas</span> au lycée ?</div>
+                    <div class="arabic-text">ألن تذهب إلى المدرسة؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Si</span>, je vais au lycée.</div>
+                    <div class="arabic-text">بلى، أنا ذاهب إلى المدرسة</div>
+                </div>
+
+                <h3>2️⃣ تقديم الفعل على الفاعل (Inversion)</h3>
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-green">Vas</span>-<span class="highlight-red">tu</span> au lycée ?</div>
+                    <div class="arabic-text">هل أنت ذاهب إلى المدرسة؟</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ ملاحظة هامة:</strong> نضع <span class="highlight-red">-t-</span> إذا انتهى الفعل بحرف متحرك وبدأ الضمير بحرف متحرك
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Aime<span class="highlight-red">-t-</span>il sortir ?</div>
+                    <div class="arabic-text">هل يحب الخروج؟</div>
+                </div>
+
+                <h3>3️⃣ الاستفهام بـ Est-ce que</h3>
+                <div class="info-box">
+                    نبدأ الجملة بـ <span class="highlight-blue">Est-ce que</span> ثم نكمل الجملة بترتيبها الطبيعي
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-blue">Est-ce que</span> tu es libre ce soir ?</div>
+                    <div class="arabic-text">هل أنت حر هذا المساء؟</div>
+                </div>
+            </div>
+
+            <!-- من (Qui) -->
+            <div class="section" id="qui">
+                <h2>👤 من (Qui) - للسؤال عن الفاعل أو المفعول العاقل</h2>
+
+                <div class="info-box">
+                    نستخدم <span class="highlight-blue">Qui</span> للسؤال عن الإنسان (العاقل)
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Ali</span> est malade.</div>
+                    <div class="arabic-text">علي مريض</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Qui</span> est malade ?</div>
+                    <div class="arabic-text">من المريض؟</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ مهم:</strong> نصرف الفعل مع <span class="highlight-red">qui</span> كأنه الضمير <span class="highlight-red">il</span>
+                </div>
+
+                <h3>المفعول العاقل المسبوق بحرف جر</h3>
+
+                <div class="info-box">
+                    <strong>À qui</strong> إلى من | <strong>Chez qui</strong> عند من | <strong>De qui</strong> عن من | <strong>Avec qui</strong> مع من
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Je vais <span class="highlight-red">avec Gamal</span>.</div>
+                    <div class="arabic-text">أنا ذاهب مع جمال</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Avec qui</span> tu vas ?</div>
+                    <div class="arabic-text">مع من أنت ذاهب؟</div>
+                </div>
+            </div>
+
+            <!-- Que / Quoi -->
+            <div class="section" id="que-quoi">
+                <h2>❓ ماذا (Que / Quoi) - للسؤال عن غير العاقل</h2>
+
+                <h3>🔹 Qu'est-ce qui - الفاعل غير العاقل</h3>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Le chien</span> garde la maison.</div>
+                    <div class="arabic-text">الكلب يحرس المنزل</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Qu'est-ce qui</span> garde la maison ?</div>
+                    <div class="arabic-text">ما الذي يحرس المنزل؟</div>
+                </div>
+
+                <h3>🔹 Que - المفعول غير العاقل المباشر</h3>
+
+                <div class="example-box">
+                    <div class="french-text">J'écris <span class="highlight-red">une lettre</span>.</div>
+                    <div class="arabic-text">أنا أكتب رسالة</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Qu'</span>écris-tu ?</div>
+                    <div class="arabic-text">ماذا تكتب؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Qu'</span><span class="highlight-green">est-ce que</span> tu écris ?</div>
+                    <div class="arabic-text">ماذا تكتب؟</div>
+                </div>
+
+                <h3>🔹 Quoi - في آخر السؤال</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Tu écris <span class="highlight-red">quoi</span> ?</div>
+                    <div class="arabic-text">أنت تكتب ماذا؟</div>
+                </div>
+
+                <h3>🔹 المفعول غير العاقل المسبوق بحرف جر</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Je pense <span class="highlight-red">à l'examen</span>.</div>
+                    <div class="arabic-text">أنا أفكر في الامتحان</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">À quoi</span> tu penses ?</div>
+                    <div class="arabic-text">في ماذا أنت تفكر؟</div>
+                </div>
+            </div>
+
+            <!-- Quel -->
+            <div class="section" id="quel">
+                <h2>🔢 أي / ما (Quel) - للسؤال عن الاختيارات</h2>
+
+                <div class="info-box">
+                    <strong>Quel</strong> للمفرد المذكر | <strong>Quelle</strong> للمفرد المؤنث<br>
+                    <strong>Quels</strong> للجمع المذكر | <strong>Quelles</strong> للجمع المؤنث
+                </div>
+
+                <div class="warning-box">
+                    <strong>التركيب:</strong> Quel + اسم + فعل + فاعل
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Quel <span class="highlight-red">sport</span> tu fais ?</div>
+                    <div class="arabic-text">أي رياضة تمارس؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Quelle <span class="highlight-red">matière</span> tu préfères ?</div>
+                    <div class="arabic-text">أي مادة تفضل؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Quels <span class="highlight-red">devoirs</span> tu fais ?</div>
+                    <div class="arabic-text">أي واجبات تقوم بها؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Quelles <span class="highlight-red">langues</span> tu parles ?</div>
+                    <div class="arabic-text">أي لغات تتحدث؟</div>
+                </div>
+
+                <h3>🔹 Quel + être</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Quel est ton sport préféré ?</div>
+                    <div class="arabic-text">ما هي رياضتك المفضلة؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Quelle est ta passion ?</div>
+                    <div class="arabic-text">ما هي هوايتك؟</div>
+                </div>
+            </div>
+
+            <!-- Comment -->
+            <div class="section" id="comment">
+                <h2>🚗 كيف (Comment)</h2>
+
+                <h3>1️⃣ للسؤال عن وسيلة المواصلات</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Comment il va au centre-ville ?</div>
+                    <div class="arabic-text">كيف يذهب إلى وسط المدينة؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Il va à l'école en métro.</div>
+                    <div class="arabic-text">يذهب إلى المدرسة بالمترو</div>
+                </div>
+
+                <h3>2️⃣ للسؤال عن الحال</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Comment vas-tu ?</div>
+                    <div class="arabic-text">كيف حالك؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Je vais bien.</div>
+                    <div class="arabic-text">أنا بخير</div>
+                </div>
+
+                <h3>3️⃣ للسؤال عن الطباع الشخصية</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Marion est <span class="highlight-red">timide</span>.</div>
+                    <div class="arabic-text">ماريون خجولة</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text"><span class="highlight-red">Comment</span> est Marion ?</div>
+                    <div class="arabic-text">كيف تكون ماريون؟ (ما طباعها؟)</div>
+                </div>
+            </div>
+
+            <!-- Pourquoi -->
+            <div class="section" id="pourquoi">
+                <h2>🤔 لماذا (Pourquoi)</h2>
+
+                <div class="example-box">
+                    <div class="french-text">Pourquoi tu étudies ?</div>
+                    <div class="arabic-text">لماذا تذاكر؟</div>
+                </div>
+
+                <div class="info-box">
+                    <strong>كلمات الإجابة:</strong><br>
+                    <strong>Pour</strong> + مصدر = لكي<br>
+                    <strong>Parce que</strong> + جملة = لأن<br>
+                    <strong>Car</strong> + جملة = لأن<br>
+                    <strong>À cause de</strong> + اسم سلبي = بسبب<br>
+                    <strong>Grâce à</strong> + اسم إيجابي = بفضل
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">J'étudie <span class="highlight-green">pour</span> réussir.</div>
+                    <div class="arabic-text">أذاكر لكي أنجح</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">J'étudie <span class="highlight-green">parce que</span> je veux réussir.</div>
+                    <div class="arabic-text">أذاكر لأنني أريد أن أنجح</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Je suis absent <span class="highlight-red">à cause de</span> ma maladie.</div>
+                    <div class="arabic-text">أنا غائب بسبب مرضي</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">J'ai réussi <span class="highlight-green">grâce à</span> mes efforts.</div>
+                    <div class="arabic-text">نجحت بفضل جهودي</div>
+                </div>
+            </div>
+
+            <!-- Combien -->
+            <div class="section" id="combien">
+                <h2>🔢 كم (Combien)</h2>
+
+                <h3>1️⃣ للسؤال عن العدد</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Combien de robes elle a ?</div>
+                    <div class="arabic-text">كم فستانًا لديها؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Elle a trois robes.</div>
+                    <div class="arabic-text">لديها ثلاثة فساتين</div>
+                </div>
+
+                <h3>2️⃣ للسؤال عن السعر</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Combien coûte la robe ?</div>
+                    <div class="arabic-text">بكم الفستان؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">La robe coûte 150 L.E.</div>
+                    <div class="arabic-text">الفستان بـ 150 جنيهًا</div>
+                </div>
+
+                <div class="warning-box">
+                    <strong>⚠️ ملاحظة:</strong> حرف الجر <strong>de</strong> لا يتغير بعد combien
+                </div>
+            </div>
+
+            <!-- Où -->
+            <div class="section" id="ou">
+                <h2>📍 أين (Où)</h2>
+
+                <div class="example-box">
+                    <div class="french-text">Où vous allez ?</div>
+                    <div class="arabic-text">إلى أين أنتم ذاهبون؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Nous allons à la ferme.</div>
+                    <div class="arabic-text">نحن ذاهبون إلى المزرعة</div>
+                </div>
+
+                <h3>🔹 مع حروف الجر</h3>
+
+                <div class="info-box">
+                    <strong>Par où</strong> بأي مكان | <strong>D'où</strong> من أين
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">Par où tu passes ?</div>
+                    <div class="arabic-text">من أي مكان تمر؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">D'où tu viens ?</div>
+                    <div class="arabic-text">من أين أنت قادم؟</div>
+                </div>
+
+                <h3>🔹 للسؤال عن الوقت</h3>
+
+                <div class="example-box">
+                    <div class="french-text">Quand tu te lèves ?</div>
+                    <div class="arabic-text">متى تستيقظ؟</div>
+                </div>
+
+                <div class="example-box">
+                    <div class="french-text">À quelle heure tu te couches ?</div>
+                    <div class="arabic-text">في أي ساعة تنام؟</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-container" id="quiz">
+            <div class="quiz-header">
+                <h2>📝 اختبار الاستفهام</h2>
+                <p>اختبر معلوماتك في درس الاستفهام - 15 سؤالاً</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div id="quizQuestions"></div>
+
+            <div class="quiz-buttons">
+                <button class="btn btn-primary" onclick="checkAnswers()">✓ تحقق من الإجابات</button>
+                <button class="btn btn-secondary" onclick="resetQuiz()">↻ إعادة الاختبار</button>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <h2>🎉 نتيجة الاختبار</h2>
+                <div class="score-display" id="scoreDisplay">0%</div>
+                <div class="result-message" id="resultMessage"></div>
+                <div class="result-details">
+                    <div class="result-item">
+                        <div class="result-item-label">إجابات صحيحة</div>
+                        <div class="result-item-value correct" id="correctCount">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-item-label">إجابات خاطئة</div>
+                        <div class="result-item-value incorrect" id="incorrectCount">0</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-item-label">إجمالي الأسئلة</div>
+                        <div class="result-item-value" id="totalCount">15</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "Tu vas au cinéma ce soir ?",
+                translation: "اختر الإجابة الصحيحة:",
+                options: [
+                    "Oui, je vais au cinéma",
+                    "Oui, tu vas au cinéma",
+                    "Non, je vais au cinéma",
+                    "Si, je ne vais pas"
+                ],
+                correct: 0
+            },
+            {
+                question: "Tu ne viens pas avec nous ?",
+                translation: "للإجابة بالإيجاب على سؤال منفي:",
+                options: [
+                    "Oui, je viens",
+                    "Si, je viens",
+                    "Non, je viens",
+                    "Oui, je ne viens pas"
+                ],
+                correct: 1
+            },
+            {
+                question: "اختر السؤال الصحيح: (هل تحب القراءة؟)",
+                options: [
+                    "Aime tu lire ?",
+                    "Aimes-tu lire ?",
+                    "Tu aime lire ?",
+                    "Aimes tu-lire ?"
+                ],
+                correct: 1
+            },
+            {
+                question: "_______ est malade ? - Ali est malade.",
+                translation: "للسؤال عن الفاعل العاقل:",
+                options: [
+                    "Que",
+                    "Quoi",
+                    "Qui",
+                    "Quel"
+                ],
+                correct: 2
+            },
+            {
+                question: "_______ garde la maison ? - Le chien.",
+                translation: "للسؤال عن الفاعل غير العاقل:",
+                options: [
+                    "Qui",
+                    "Qu'est-ce qui",
+                    "Que",
+                    "Quel"
+                ],
+                correct: 1
+            },
+            {
+                question: "_______ tu fais ? - Je fais mes devoirs.",
+                translation: "للسؤال عن المفعول غير العاقل:",
+                options: [
+                    "Qui",
+                    "Qu'est-ce qui",
+                    "Que",
+                    "Quel"
+                ],
+                correct: 2
+            },
+            {
+                question: "_______ tu penses ? - Je pense à l'examen.",
+                translation: "للسؤال عن مفعول غير عاقل مسبوق بحرف جر:",
+                options: [
+                    "À que",
+                    "À qui",
+                    "À quoi",
+                    "Que"
+                ],
+                correct: 2
+            },
+            {
+                question: "_______ sport tu fais ?",
+                translation: "اختر الكلمة الصحيحة (sport مذكر):",
+                options: [
+                    "Quel",
+                    "Quelle",
+                    "Quels",
+                    "Quelles"
+                ],
+                correct: 0
+            },
+            {
+                question: "_______ langues tu parles ?",
+                translation: "اختر الكلمة الصحيحة (langues جمع مؤنث):",
+                options: [
+                    "Quel",
+                    "Quelle",
+                    "Quels",
+                    "Quelles"
+                ],
+                correct: 3
+            },
+            {
+                question: "_______ tu vas au lycée ? - En bus.",
+                translation: "للسؤال عن وسيلة المواصلات:",
+                options: [
+                    "Où",
+                    "Quand",
+                    "Comment",
+                    "Pourquoi"
+                ],
+                correct: 2
+            },
+            {
+                question: "_______ tu étudies ?",
+                translation: "للسؤال عن السبب:",
+                options: [
+                    "Comment",
+                    "Pourquoi",
+                    "Quand",
+                    "Combien"
+                ],
+                correct: 1
+            },
+            {
+                question: "J'étudie _______ réussir.",
+                translation: "للإجابة عن السبب (يليها مصدر):",
+                options: [
+                    "parce que",
+                    "car",
+                    "pour",
+                    "à cause de"
+                ],
+                correct: 2
+            },
+            {
+                question: "_______ de livres tu as ?",
+                translation: "للسؤال عن العدد:",
+                options: [
+                    "Combien",
+                    "Comment",
+                    "Quel",
+                    "Quand"
+                ],
+                correct: 0
+            },
+            {
+                question: "_______ vous allez ?",
+                translation: "للسؤال عن المكان:",
+                options: [
+                    "Quand",
+                    "Où",
+                    "Comment",
+                    "Pourquoi"
+                ],
+                correct: 1
+            },
+            {
+                question: "_______ tu viens ? - Du Caire.",
+                translation: "للسؤال (من أين؟):",
+                options: [
+                    "Où",
+                    "Par où",
+                    "D'où",
+                    "À où"
+                ],
+                correct: 2
+            }
+        ];
+
+        let userAnswers = new Array(quizData.length).fill(null);
+        let quizChecked = false;
+
+        function renderQuiz() {
+            const container = document.getElementById('quizQuestions');
+            container.innerHTML = '';
+
+            quizData.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <div>
+                        <span class="question-number">${index + 1}</span>
+                        <span class="question-text">${q.question}</span>
+                    </div>
+                    ${q.translation ? `<div class="arabic-text" style="margin-top: 10px;">${q.translation}</div>` : ''}
+                    <div class="options">
+                        ${q.options.map((option, optIndex) => `
+                            <div class="option" onclick="selectOption(${index}, ${optIndex})" id="option-${index}-${optIndex}">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionCard);
+            });
+
+            updateProgress();
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            if (quizChecked) return;
+
+            userAnswers[questionIndex] = optionIndex;
+
+            // Clear previous selections
+            document.querySelectorAll(`[id^="option-${questionIndex}-"]`).forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            // Mark selected option
+            document.getElementById(`option-${questionIndex}-${optionIndex}`).classList.add('selected');
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const percentage = (answered / quizData.length) * 100;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function checkAnswers() {
+            if (userAnswers.filter(a => a !== null).length < quizData.length) {
+                alert('⚠️ يرجى الإجابة على جميع الأسئلة قبل التحقق!');
+                return;
+            }
+
+            quizChecked = true;
+            let correctCount = 0;
+
+            quizData.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === q.correct;
+
+                if (isCorrect) correctCount++;
+
+                // Mark all options
+                q.options.forEach((_, optIndex) => {
+                    const optElement = document.getElementById(`option-${index}-${optIndex}`);
+                    optElement.classList.remove('selected');
+
+                    if (optIndex === q.correct) {
+                        optElement.classList.add('correct');
+                    } else if (optIndex === userAnswer && !isCorrect) {
+                        optElement.classList.add('incorrect');
+                    }
+                });
+            });
+
+            const incorrectCount = quizData.length - correctCount;
+            const percentage = Math.round((correctCount / quizData.length) * 100);
+
+            // Display results
+            document.getElementById('scoreDisplay').textContent = percentage + '%';
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('incorrectCount').textContent = incorrectCount;
+            document.getElementById('totalCount').textContent = quizData.length;
+
+            let message = '';
+            if (percentage >= 90) {
+                message = '🌟 ممتاز جدًا! أداء رائع!';
+            } else if (percentage >= 70) {
+                message = '👍 جيد جدًا! استمر في التقدم!';
+            } else if (percentage >= 50) {
+                message = '😊 جيد! لكن يمكنك تحسين أدائك!';
+            } else {
+                message = '💪 حاول مرة أخرى! المزيد من المراجعة سيساعدك!';
+            }
+
+            document.getElementById('resultMessage').textContent = message;
+            document.getElementById('resultContainer').classList.add('show');
+
+            // Scroll to results
+            document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            quizChecked = false;
+            userAnswers = new Array(quizData.length).fill(null);
+            document.getElementById('resultContainer').classList.remove('show');
+            renderQuiz();
+            document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Back to top button
+        window.onscroll = function() {
+            const btn = document.getElementById('backToTop');
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btn.classList.add('show');
+            } else {
+                btn.classList.remove('show');
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-pill').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Initialize quiz on page load
+        renderQuiz();
+    </script>
+</body>
+</html>
