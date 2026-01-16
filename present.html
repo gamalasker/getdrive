@@ -1,0 +1,655 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Présent - تعلم المضارع في الفرنسية</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&family=Fredoka:wght@300;500;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Confetti for rewards -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3f4f6;
+            scroll-behavior: smooth;
+        }
+        .fr-text {
+            font-family: 'Nunito', sans-serif;
+        }
+        .french-title {
+            font-family: 'Fredoka', sans-serif;
+        }
+        .highlight-red {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #002395 0%, #ed2939 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar / Header -->
+    <header class="gradient-header text-white sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-800 font-bold text-xl shadow">FR</div>
+                <h1 class="text-xl md:text-2xl font-bold french-title">Le Présent <span class="text-sm opacity-90 font-normal font-sans mx-2">| زمن المضارع</span></h1>
+            </div>
+            <button onclick="window.scrollTo(0,0)" class="bg-white/20 hover:bg-white/30 p-2 rounded-full transition">
+                <i data-lucide="arrow-up" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 space-y-12 max-w-4xl">
+
+        <!-- Intro Section -->
+        <section class="bg-white rounded-2xl shadow-md p-6 card-hover border-r-4 border-blue-600">
+            <h2 class="text-2xl font-bold text-blue-800 mb-4 flex items-center gap-2">
+                <i data-lucide="book-open" class="w-6 h-6"></i>
+                مجموعات الأفعال في الفرنسية
+            </h2>
+            <p class="text-lg leading-relaxed mb-4">
+                تنقسم أفعال اللغة الفرنسية إلى ثلاث مجموعات رئيسية حسب نهاية الفعل في المصدر (L'infinitif):
+            </p>
+            <div class="grid md:grid-cols-3 gap-4 text-center">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <h3 class="font-bold text-blue-700 mb-2">المجموعة الأولى</h3>
+                    <p class="fr-text text-xl font-bold"> -er </p>
+                    <p class="text-sm text-gray-500 mt-1">مثل: Parler</p>
+                </div>
+                <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+                    <h3 class="font-bold text-red-700 mb-2">المجموعة الثانية</h3>
+                    <p class="fr-text text-xl font-bold"> -ir </p>
+                    <p class="text-sm text-gray-500 mt-1">مثل: Finir</p>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                    <h3 class="font-bold text-gray-700 mb-2">المجموعة الثالثة</h3>
+                    <p class="fr-text text-lg font-bold"> -ir, -re, -oir </p>
+                    <p class="text-sm text-gray-500 mt-1">شواذ</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz 1 -->
+        <div class="quiz-container bg-indigo-900 text-white rounded-xl p-6 shadow-xl relative overflow-hidden" id="quiz1">
+            <div class="absolute top-0 left-0 w-2 h-full bg-yellow-400"></div>
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="help-circle"></i> اختبار سريع 1</h3>
+            <p class="mb-4 text-lg">إلى أي مجموعة ينتمي الفعل <span class="fr-text font-bold text-yellow-300">"Chanter"</span>؟</p>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="checkAnswer(this, true, 'quiz1')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">المجموعة الأولى (-er)</button>
+                <button onclick="checkAnswer(this, false, 'quiz1')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">المجموعة الثانية (-ir)</button>
+                <button onclick="checkAnswer(this, false, 'quiz1')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">المجموعة الثالثة</button>
+            </div>
+            <div class="feedback mt-3 hidden font-bold text-yellow-300"></div>
+        </div>
+
+        <!-- 1st Group (-er) -->
+        <section class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+                <div class="bg-blue-600 p-4 text-white flex justify-between items-center">
+                    <h2 class="text-xl font-bold">1. أفعال المجموعة الأولى (-er)</h2>
+                    <span class="fr-text text-2xl font-bold opacity-50">ER</span>
+                </div>
+                <div class="p-6">
+                    <p class="mb-4 text-gray-700">لتصريف أفعال المجموعة الأولى، نحذف <span class="fr-text font-bold bg-gray-200 px-1 rounded">-er</span> ونضيف النهايات التالية:</p>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gray-50 p-3 rounded border text-center"><span class="block text-sm text-gray-500">Je</span> <span class="fr-text font-bold text-xl text-red-600">-e</span></div>
+                        <div class="bg-gray-50 p-3 rounded border text-center"><span class="block text-sm text-gray-500">Tu</span> <span class="fr-text font-bold text-xl text-red-600">-es</span></div>
+                        <div class="bg-gray-50 p-3 rounded border text-center"><span class="block text-sm text-gray-500">Il/Elle/On</span> <span class="fr-text font-bold text-xl text-red-600">-e</span></div>
+                        <div class="bg-gray-50 p-3 rounded border text-center"><span class="block text-sm text-gray-500">Nous</span> <span class="fr-text font-bold text-xl text-red-600">-ons</span></div>
+                        <div class="bg-gray-50 p-3 rounded border text-center"><span class="block text-sm text-gray-500">Vous</span> <span class="fr-text font-bold text-xl text-red-600">-ez</span></div>
+                        <div class="bg-gray-50 p-3 rounded border text-center"><span class="block text-sm text-gray-500">Ils/Elles</span> <span class="fr-text font-bold text-xl text-red-600">-ent</span></div>
+                    </div>
+
+                    <!-- Example: Aimer -->
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6">
+                        <h4 class="font-bold text-blue-800 mb-2">مثال: Aimer (يحب)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 fr-text text-lg">
+                            <div class="flex justify-between"><span>J'aim<span class="text-red-600 font-bold">e</span></span></div>
+                            <div class="flex justify-between"><span>Nous aim<span class="text-red-600 font-bold">ons</span></span></div>
+                            <div class="flex justify-between"><span>Tu aim<span class="text-red-600 font-bold">es</span></span></div>
+                            <div class="flex justify-between"><span>Vous aim<span class="text-red-600 font-bold">ez</span></span></div>
+                            <div class="flex justify-between"><span>Il aim<span class="text-red-600 font-bold">e</span></span></div>
+                            <div class="flex justify-between"><span>Ils aim<span class="text-red-600 font-bold">ent</span></span></div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Verb List -->
+                    <details class="group bg-gray-50 rounded-lg border border-gray-200">
+                        <summary class="cursor-pointer p-4 font-bold flex justify-between items-center text-blue-700 hover:bg-gray-100 transition">
+                            <span><i data-lucide="list" class="inline w-4 h-4 ml-2"></i>أهم أفعال المجموعة الأولى</span>
+                            <i data-lucide="chevron-down" class="w-5 h-5 transition-transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="p-4 border-t border-gray-200 h-64 overflow-y-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-100 sticky top-0">
+                                    <tr>
+                                        <th class="px-4 py-2 text-right">الفعل</th>
+                                        <th class="px-4 py-2">Le Verbe</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <!-- Verbs generated from list -->
+                                    <tr><td class="px-4 py-2 text-right">يغني</td><td class="px-4 py-2 fr-text font-semibold">Chanter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يفضل</td><td class="px-4 py-2 fr-text font-semibold">Préférer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يعشق</td><td class="px-4 py-2 fr-text font-semibold">Adorer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يدرس / يذاكر</td><td class="px-4 py-2 fr-text font-semibold">Étudier</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يقدم</td><td class="px-4 py-2 fr-text font-semibold">Présenter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يعطي</td><td class="px-4 py-2 fr-text font-semibold">Donner</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يشاهد</td><td class="px-4 py-2 fr-text font-semibold">Regarder</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يمشي</td><td class="px-4 py-2 fr-text font-semibold">Marcher</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يستمع</td><td class="px-4 py-2 fr-text font-semibold">Écouter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يسكن</td><td class="px-4 py-2 fr-text font-semibold">Habiter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يشارك في</td><td class="px-4 py-2 fr-text font-semibold">Participer à</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يساعد</td><td class="px-4 py-2 fr-text font-semibold">Aider</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يغلق</td><td class="px-4 py-2 fr-text font-semibold">Fermer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">ينظم</td><td class="px-4 py-2 fr-text font-semibold">Organiser</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يهنئ</td><td class="px-4 py-2 fr-text font-semibold">Féliciter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يلعب</td><td class="px-4 py-2 fr-text font-semibold">Jouer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يسلف</td><td class="px-4 py-2 fr-text font-semibold">Prêter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يعمل</td><td class="px-4 py-2 fr-text font-semibold">Travailler</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يستعير</td><td class="px-4 py-2 fr-text font-semibold">Emprunter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يصلح</td><td class="px-4 py-2 fr-text font-semibold">Réparer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يحمل / يرتدي</td><td class="px-4 py-2 fr-text font-semibold">Porter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يجهز</td><td class="px-4 py-2 fr-text font-semibold">Préparer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يحضر</td><td class="px-4 py-2 fr-text font-semibold">Apporter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يشتري</td><td class="px-4 py-2 fr-text font-semibold">Acheter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يتصل</td><td class="px-4 py-2 fr-text font-semibold">Téléphoner</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يشرح</td><td class="px-4 py-2 fr-text font-semibold">Expliquer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يطلب / يسأل</td><td class="px-4 py-2 fr-text font-semibold">Demander</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يزور</td><td class="px-4 py-2 fr-text font-semibold">Visiter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يقبل</td><td class="px-4 py-2 fr-text font-semibold">Accepter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يعالج</td><td class="px-4 py-2 fr-text font-semibold">Soigner</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يرفض</td><td class="px-4 py-2 fr-text font-semibold">Refuser</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يمر / يقضي</td><td class="px-4 py-2 fr-text font-semibold">Passer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يقترح</td><td class="px-4 py-2 fr-text font-semibold">Proposer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يعبر</td><td class="px-4 py-2 fr-text font-semibold">Traverser</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يحترم</td><td class="px-4 py-2 fr-text font-semibold">Respecter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يدخل</td><td class="px-4 py-2 fr-text font-semibold">Entrer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يصعد</td><td class="px-4 py-2 fr-text font-semibold">Monter</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يعبر عن</td><td class="px-4 py-2 fr-text font-semibold">Exprimer</td></tr>
+                                    <tr><td class="px-4 py-2 text-right">يبحث</td><td class="px-4 py-2 fr-text font-semibold">Chercher</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Quiz 2 -->
+            <div class="quiz-container bg-indigo-900 text-white rounded-xl p-6 shadow-xl relative overflow-hidden" id="quiz2">
+                <div class="absolute top-0 left-0 w-2 h-full bg-pink-500"></div>
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="help-circle"></i> اختبار سريع 2</h3>
+                <p class="mb-4 text-lg">أكمل الجملة: <span class="fr-text">"Tu ______ (jouer) au football."</span></p>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="checkAnswer(this, false, 'quiz2')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">joue</button>
+                    <button onclick="checkAnswer(this, true, 'quiz2')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">joues</button>
+                    <button onclick="checkAnswer(this, false, 'quiz2')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">jouez</button>
+                </div>
+                <div class="feedback mt-3 hidden font-bold text-pink-300"></div>
+            </div>
+        </section>
+
+        <!-- Exceptions -->
+        <section class="bg-white rounded-2xl shadow-md p-6 card-hover">
+            <h2 class="text-xl font-bold text-red-600 mb-6 border-b pb-2 flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                ملاحظات هامة وشواذ المجموعة الأولى
+            </h2>
+            
+            <div class="space-y-6">
+                <!-- CER -->
+                <div class="flex flex-col md:flex-row gap-4 items-start bg-orange-50 p-4 rounded-lg">
+                    <div class="bg-orange-200 text-orange-800 font-bold p-2 rounded fr-text">-cer</div>
+                    <div>
+                        <p class="font-bold">الأفعال المنتهية بـ cer:</p>
+                        <p>نضيف (ç) مع الضمير <span class="fr-text font-bold">Nous</span> للحفاظ على النطق.</p>
+                        <p class="fr-text mt-2 text-gray-600">Nous lan<span class="highlight-red">ç</span>ons (Lancer - يلقي)</p>
+                        <p class="fr-text text-gray-600">Nous commen<span class="highlight-red">ç</span>ons (Commencer - يبدأ)</p>
+                        <p class="text-sm text-gray-500 mt-2">أمثلة أخرى: Effacer (يمحو)، Placer (يضع)، Menacer (يهدد).</p>
+                    </div>
+                </div>
+
+                <!-- GER -->
+                <div class="flex flex-col md:flex-row gap-4 items-start bg-yellow-50 p-4 rounded-lg">
+                    <div class="bg-yellow-200 text-yellow-800 font-bold p-2 rounded fr-text">-ger</div>
+                    <div>
+                        <p class="font-bold">الأفعال المنتهية بـ ger:</p>
+                        <p>نضيف (e) قبل النهاية مع الضمير <span class="fr-text font-bold">Nous</span> لتعطيش الجيم.</p>
+                        <p class="fr-text mt-2 text-gray-600">Nous mang<span class="highlight-red">e</span>ons (Manger - يأكل)</p>
+                        <p class="fr-text text-gray-600">Nous rang<span class="highlight-red">e</span>ons (Ranger - يرتب)</p>
+                        <p class="fr-text text-gray-600">Nous nag<span class="highlight-red">e</span>ons (Nager - يسبح)</p>
+                    </div>
+                </div>
+
+                <!-- YER -->
+                <div class="flex flex-col md:flex-row gap-4 items-start bg-green-50 p-4 rounded-lg">
+                    <div class="bg-green-200 text-green-800 font-bold p-2 rounded fr-text">-yer</div>
+                    <div>
+                        <p class="font-bold">الأفعال المنتهية بـ yer:</p>
+                        <p>تتحول الـ <span class="fr-text font-bold">y</span> إلى <span class="fr-text font-bold">i</span> مع جميع الضمائر ما عدا <span class="fr-text font-bold">Nous / Vous</span>.</p>
+                        <div class="grid grid-cols-2 gap-2 mt-2 fr-text text-sm">
+                            <div class="bg-white p-2 rounded shadow-sm">J’envo<span class="highlight-red">ie</span></div>
+                            <div class="bg-white p-2 rounded shadow-sm">Nous envo<span class="highlight-red">yons</span></div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2 font-bold">* ملاحظة: أفعال -ayer يمكن أن تبقى Y أو تحول إلى I (كلاهما صحيح). مثال: Payer (يدفع).</p>
+                    </div>
+                </div>
+
+                <!-- Double Letters -->
+                <div class="flex flex-col md:flex-row gap-4 items-start bg-purple-50 p-4 rounded-lg">
+                    <div class="bg-purple-200 text-purple-800 font-bold p-2 rounded fr-text">-eler / -eter</div>
+                    <div>
+                        <p class="font-bold">تضعيف الحرف:</p>
+                        <p>نضاعف حرف (l) أو (t) مع كل الضمائر ما عدا <span class="fr-text font-bold">Nous / Vous</span>.</p>
+                        <p class="fr-text mt-2 text-gray-600 font-bold">Appeler (ينادي):</p>
+                        <p class="fr-text">J’appe<span class="highlight-red">ll</span>e - Nous appe<span class="text-blue-600">l</span>ons</p>
+                        
+                        <div class="mt-4 border-t pt-2">
+                            <p class="font-bold text-red-600">استثناء هام:</p>
+                            <p class="fr-text font-bold">Acheter (يشتري) & Préférer (يفضل)</p>
+                            <p class="text-sm">لا نضاعف الحرف، ولكن نضع Accent grave (è) مع كل الضمائر ما عدا Nous/Vous.</p>
+                            <p class="fr-text mt-1">J'ach<span class="highlight-red">è</span>te - Nous ach<span class="text-blue-600">e</span>tons</p>
+                            <p class="fr-text">Je préf<span class="highlight-red">è</span>re - Nous préf<span class="text-blue-600">é</span>rons</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz 3 -->
+        <div class="quiz-container bg-indigo-900 text-white rounded-xl p-6 shadow-xl relative overflow-hidden" id="quiz3">
+            <div class="absolute top-0 left-0 w-2 h-full bg-green-400"></div>
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="help-circle"></i> اختبار سريع 3</h3>
+            <p class="mb-4 text-lg">اختر التصريف الصحيح: <span class="fr-text">"Nous ______ (manger) une pomme."</span></p>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="checkAnswer(this, false, 'quiz3')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">mangons</button>
+                <button onclick="checkAnswer(this, true, 'quiz3')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">mangeons</button>
+                <button onclick="checkAnswer(this, false, 'quiz3')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">mangions</button>
+            </div>
+            <div class="feedback mt-3 hidden font-bold text-green-300"></div>
+        </div>
+
+        <!-- Aller & Pronominal -->
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- ALLER -->
+            <section class="bg-white rounded-2xl shadow-md overflow-hidden border-t-4 border-red-500">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="move-right" class="text-red-500"></i>
+                        الفعل الشاذ: Aller (يذهب)
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-4">ينتهي بـ er لكنه مجموعة ثالثة شاذة.</p>
+                    
+                    <div class="bg-gray-100 p-4 rounded-lg fr-text font-medium grid grid-cols-2 gap-y-2 mb-4">
+                        <div>Je <span class="highlight-red">vais</span></div>
+                        <div>Nous <span class="highlight-red">allons</span></div>
+                        <div>Tu <span class="highlight-red">vas</span></div>
+                        <div>Vous <span class="highlight-red">allez</span></div>
+                        <div>Il <span class="highlight-red">va</span></div>
+                        <div>Ils <span class="highlight-red">vont</span></div>
+                    </div>
+
+                    <div class="space-y-2 text-sm">
+                        <p class="font-bold">استخداماته:</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>للمكان: <span class="fr-text">Je vais à l'école.</span></li>
+                            <li>للصحة: <span class="fr-text">Je vais bien. (أنا بخير)</span></li>
+                            <li>للمستقبل القريب: <span class="fr-text">Je vais arriver. (سأصل)</span></li>
+                            <li>للمناسبة (ملابس): <span class="fr-text">Ça te va ? (هل يناسبك؟)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pronominal Verbs -->
+            <section class="bg-white rounded-2xl shadow-md overflow-hidden border-t-4 border-green-500">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                        <i data-lucide="users" class="text-green-500"></i>
+                        الأفعال الضميرية (Les verbes pronominaux)
+                    </h2>
+                    <p class="text-sm text-gray-500 mb-4">هي الأفعال المسبوقة بـ <span class="fr-text font-bold">se</span>.</p>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-bold text-green-800 text-sm mb-2">تصريف الضمير (Se):</h4>
+                        <div class="grid grid-cols-2 gap-2 fr-text text-sm">
+                            <div>Je <span class="font-bold text-green-700">me</span></div>
+                            <div>Nous <span class="font-bold text-green-700">nous</span></div>
+                            <div>Tu <span class="font-bold text-green-700">te</span></div>
+                            <div>Vous <span class="font-bold text-green-700">vous</span></div>
+                            <div>Il <span class="font-bold text-green-700">se</span></div>
+                            <div>Ils <span class="font-bold text-green-700">se</span></div>
+                        </div>
+                    </div>
+
+                    <div class="text-sm space-y-2">
+                        <p><strong>عند النفي:</strong> ننفي الضمير والفعل معاً.</p>
+                        <p class="fr-text bg-gray-100 p-2 rounded">Je <span class="text-red-500">ne</span> <strong>m'amuse</strong> <span class="text-red-500">pas</span>.</p>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <details class="text-sm">
+                            <summary class="cursor-pointer text-blue-600 font-bold">قائمة أفعال ضميرية هامة</summary>
+                            <div class="mt-2 h-32 overflow-y-auto bg-gray-50 p-2 rounded border">
+                                <ul class="list-disc list-inside">
+                                    <li>Se lever (يستيقظ)</li>
+                                    <li>Se coucher (ينام)</li>
+                                    <li>Se promener (يتنزه)</li>
+                                    <li>S'amuser (يتسلى)</li>
+                                    <li>Se reposer (يستريح)</li>
+                                    <li>S'appeler (يسمى)</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Quiz 4 -->
+        <div class="quiz-container bg-indigo-900 text-white rounded-xl p-6 shadow-xl relative overflow-hidden" id="quiz4">
+            <div class="absolute top-0 left-0 w-2 h-full bg-red-400"></div>
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="help-circle"></i> اختبار سريع 4</h3>
+            <p class="mb-4 text-lg">أكمل: <span class="fr-text">"Je ______ (se coucher) tôt."</span></p>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="checkAnswer(this, false, 'quiz4')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">se couche</button>
+                <button onclick="checkAnswer(this, true, 'quiz4')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">me couche</button>
+                <button onclick="checkAnswer(this, false, 'quiz4')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">te couches</button>
+            </div>
+            <div class="feedback mt-3 hidden font-bold text-red-300"></div>
+        </div>
+
+        <!-- 2nd Group (-ir) -->
+        <section class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+             <div class="bg-red-600 p-4 text-white flex justify-between items-center">
+                <h2 class="text-xl font-bold">2. أفعال المجموعة الثانية (-ir)</h2>
+                <span class="fr-text text-2xl font-bold opacity-50">IR</span>
+            </div>
+            <div class="p-6">
+                <p class="mb-4">نحذف <span class="fr-text font-bold bg-gray-200 px-1 rounded">-r</span> ونضيف النهايات:</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-red-50 p-3 rounded border border-red-100 text-center"><span class="text-sm">Je</span> <span class="fr-text font-bold text-lg text-red-600">-s</span></div>
+                    <div class="bg-red-50 p-3 rounded border border-red-100 text-center"><span class="text-sm">Tu</span> <span class="fr-text font-bold text-lg text-red-600">-s</span></div>
+                    <div class="bg-red-50 p-3 rounded border border-red-100 text-center"><span class="text-sm">Il</span> <span class="fr-text font-bold text-lg text-red-600">-t</span></div>
+                    <div class="bg-red-50 p-3 rounded border border-red-100 text-center"><span class="text-sm">Nous</span> <span class="fr-text font-bold text-lg text-red-600">-ssons</span></div>
+                    <div class="bg-red-50 p-3 rounded border border-red-100 text-center"><span class="text-sm">Vous</span> <span class="fr-text font-bold text-lg text-red-600">-ssez</span></div>
+                    <div class="bg-red-50 p-3 rounded border border-red-100 text-center"><span class="text-sm">Ils</span> <span class="fr-text font-bold text-lg text-red-600">-ssent</span></div>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg p-4">
+                    <h3 class="font-bold mb-3 border-b pb-2">أفعال هامة (Mots Clés):</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+                        <div class="flex flex-col"><span class="fr-text font-bold">Finir</span><span class="text-gray-500">ينهي</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Choisir</span><span class="text-gray-500">يختار</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Remplir</span><span class="text-gray-500">يملأ</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Réussir</span><span class="text-gray-500">ينجح</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Obéir à</span><span class="text-gray-500">يطيع</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Punir</span><span class="text-gray-500">يعاقب</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Guérir</span><span class="text-gray-500">يشفي</span></div>
+                        <div class="flex flex-col"><span class="fr-text font-bold">Maigrir</span><span class="text-gray-500">ينحف</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3rd Group & Irregulars (Tabbed Interface for cleaner look) -->
+        <section class="bg-white rounded-2xl shadow-md p-6 card-hover">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                <i data-lucide="shuffle" class="w-6 h-6 text-gray-600"></i>
+                3. أفعال المجموعة الثالثة والشواذ
+            </h2>
+
+            <!-- Cards Grid for Irregulars -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Être / Avoir / Aller / Faire -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <h3 class="font-bold text-center text-blue-800 mb-3 border-b pb-2">الأكثر أهمية</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">ÊTRE (يكون)</p>
+                            <p class="fr-text text-sm">Suis, es, est, sommes, êtes, sont</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">AVOIR (يملك)</p>
+                            <p class="fr-text text-sm">J'ai, as, a, avons, avez, ont</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">FAIRE (يعمل)</p>
+                            <p class="fr-text text-sm">Fais, fais, fait, faisons, <span class="text-red-600 font-bold">faites</span>, font</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vouloir / Pouvoir / Devoir -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <h3 class="font-bold text-center text-blue-800 mb-3 border-b pb-2">الإرادة والاستطاعة</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">VOULOIR (يريد)</p>
+                            <p class="fr-text text-sm">Veux, veux, veut, voulons, voulez, veulent</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">POUVOIR (يستطيع)</p>
+                            <p class="fr-text text-sm">Peux, peux, peut, pouvons, pouvez, peuvent</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">DEVOIR (يجب)</p>
+                            <p class="fr-text text-sm">Dois, dois, doit, devons, devez, doivent</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Venir / Prendre / Attendre -->
+                <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                    <h3 class="font-bold text-center text-blue-800 mb-3 border-b pb-2">حركة وتناول</h3>
+                    <div class="space-y-4">
+                         <div>
+                            <p class="text-xs font-bold text-gray-500">VENIR (يأتي)</p>
+                            <p class="fr-text text-sm">Viens, viens, vient, venons, venez, viennent</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">PRENDRE (يأخذ)</p>
+                            <p class="fr-text text-sm">Prends, prends, prend, prenons, prenez, prennent</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-500">ATTENDRE (ينتظر)</p>
+                            <p class="fr-text text-sm">Attends, attends, attend, attendons, attendez, attendent</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+             <!-- Other Irregulars List -->
+             <div class="mt-6">
+                <details class="group bg-blue-50 rounded-lg border border-blue-100">
+                    <summary class="cursor-pointer p-4 font-bold flex justify-between items-center text-blue-800 hover:bg-blue-100 transition">
+                        <span><i data-lucide="plus-circle" class="inline w-4 h-4 ml-2"></i>قائمة أفعال شاذة أخرى</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="p-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm border-t border-blue-200">
+                        <div><span class="fr-text font-bold block">Vendre</span>يبيع</div>
+                        <div><span class="fr-text font-bold block">Descendre</span>ينزل</div>
+                        <div><span class="fr-text font-bold block">Entendre</span>يسمع</div>
+                        <div><span class="fr-text font-bold block">Boire</span>يشرب</div>
+                        <div><span class="fr-text font-bold block">Lire</span>يقرأ</div>
+                        <div><span class="fr-text font-bold block">Écrire</span>يكتب</div>
+                        <div><span class="fr-text font-bold block">Dire</span>يقول</div>
+                        <div><span class="fr-text font-bold block">Sortir</span>يخرج</div>
+                        <div><span class="fr-text font-bold block">Partir</span>يرحل</div>
+                        <div><span class="fr-text font-bold block">Dormir</span>ينام</div>
+                        <div><span class="fr-text font-bold block">Mettre</span>يضع</div>
+                        <div><span class="fr-text font-bold block">Connaitre</span>يعرف</div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <!-- Quiz 5 -->
+        <div class="quiz-container bg-indigo-900 text-white rounded-xl p-6 shadow-xl relative overflow-hidden" id="quiz5">
+            <div class="absolute top-0 left-0 w-2 h-full bg-purple-400"></div>
+            <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="help-circle"></i> اختبار سريع 5</h3>
+            <p class="mb-4 text-lg">أكمل: <span class="fr-text">"Vous ______ (faire) le devoir."</span></p>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="checkAnswer(this, false, 'quiz5')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">faisez</button>
+                <button onclick="checkAnswer(this, true, 'quiz5')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">faites</button>
+                <button onclick="checkAnswer(this, false, 'quiz5')" class="bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition">faisons</button>
+            </div>
+            <div class="feedback mt-3 hidden font-bold text-purple-300"></div>
+        </div>
+
+        <!-- Impersonal & Info -->
+        <section class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl shadow-md p-6 card-hover">
+                <h3 class="text-lg font-bold mb-4 text-blue-700">أفعال غير شخصية (Impersonnels)</h3>
+                <p class="text-sm text-gray-500 mb-3">تصرف فقط مع الضمير <span class="fr-text font-bold">Il</span>.</p>
+                <ul class="space-y-3">
+                    <li class="flex items-center justify-between bg-blue-50 p-2 rounded">
+                        <span>تمطر</span>
+                        <span class="fr-text font-bold">Il pleut</span>
+                    </li>
+                    <li class="flex items-center justify-between bg-blue-50 p-2 rounded">
+                        <span>تثلج</span>
+                        <span class="fr-text font-bold">Il neige</span>
+                    </li>
+                    <li class="flex items-center justify-between bg-blue-50 p-2 rounded">
+                        <span>يجب (Falloir)</span>
+                        <span class="fr-text font-bold">Il faut</span>
+                    </li>
+                    <li class="flex items-center justify-between bg-blue-50 p-2 rounded">
+                        <span>للطقس (Faire)</span>
+                        <span class="fr-text font-bold">Il fait (beau/chaud)</span>
+                    </li>
+                     <li class="flex items-center justify-between bg-blue-50 p-2 rounded">
+                        <span>للساعة (Être)</span>
+                        <span class="fr-text font-bold">Il est (7 heures)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-md p-6 card-hover">
+                <h3 class="text-lg font-bold mb-4 text-blue-700">كلمات دالة ومصدر الفعل</h3>
+                
+                <div class="mb-4">
+                    <h4 class="font-bold text-sm text-gray-600 mb-2">الكلمات الدالة (Mots-clés):</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-100 rounded text-sm fr-text">Maintenant (الآن)</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded text-sm fr-text">Aujourd'hui (اليوم)</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded text-sm fr-text">Chaque (كل)</span>
+                        <span class="px-3 py-1 bg-gray-100 rounded text-sm fr-text">Tout (كل)</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sm text-gray-600 mb-2">متى يبقى الفعل في المصدر؟</h4>
+                    <ul class="list-disc list-inside text-sm space-y-2">
+                        <li>إذا سبقه فعل مصرف: <br><span class="fr-text text-blue-600">J'aime <strong>jouer</strong>.</span></li>
+                        <li>إذا سبقه حرف جر (pour, à, de): <br><span class="fr-text text-blue-600">Pour <strong>jouer</strong>.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12 text-center">
+        <p class="font-bold mb-2 fr-text">Bonne Chance !</p>
+        <p class="text-sm opacity-60">frenchapeau</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Quiz Logic
+        function checkAnswer(btn, isCorrect, quizId) {
+            const container = document.getElementById(quizId);
+            const feedback = container.querySelector('.feedback');
+            const buttons = container.querySelectorAll('button');
+
+            // Disable all buttons in this quiz
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b === btn) {
+                    if (isCorrect) {
+                        b.classList.remove('bg-white/10', 'border-white/30');
+                        b.classList.add('bg-green-500', 'border-green-500');
+                    } else {
+                        b.classList.remove('bg-white/10', 'border-white/30');
+                        b.classList.add('bg-red-500', 'border-red-500');
+                    }
+                }
+            });
+
+            feedback.classList.remove('hidden');
+            
+            if (isCorrect) {
+                feedback.innerText = "أحسنت! إجابة صحيحة 🎉";
+                feedback.classList.add('text-green-300');
+                
+                // Fire confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } else {
+                feedback.innerText = "للأسف إجابة خاطئة، حاول مرة أخرى.";
+                feedback.classList.add('text-red-300');
+                
+                // Re-enable buttons after 2 seconds to try again
+                setTimeout(() => {
+                    buttons.forEach(b => {
+                        b.disabled = false;
+                        b.classList.remove('bg-green-500', 'bg-red-500', 'border-green-500', 'border-red-500');
+                        b.classList.add('bg-white/10', 'border-white/30');
+                    });
+                    feedback.classList.add('hidden');
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
