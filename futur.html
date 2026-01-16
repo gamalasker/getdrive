@@ -1,0 +1,568 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Futur Proche - المستقبل القريب</title>
+    <!-- استدعاء خطوط جميلة من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Fredoka:wght@400;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #325FFF; /* أزرق فرنسي عصري */
+            --primary-red: #FF4B4B;   /* أحمر ناعم */
+            --bg-color: #F0F4F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --correct-green: #48BB78;
+            --wrong-red: #F56565;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif; /* خط عربي جميل */
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* تنسيق النصوص الفرنسية */
+        .fr {
+            font-family: 'Nunito', 'Fredoka', sans-serif;
+            direction: ltr;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        /* الهيدر */
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), #5A67D8);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px 80px 20px;
+        }
+
+        /* البطاقات */
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            font-size: 1.5rem;
+        }
+
+        /* التكوين - المعادلة */
+        .formula-box {
+            background: #EBF4FF;
+            border: 2px dashed var(--primary-blue);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .formula-item {
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-weight: bold;
+        }
+
+        /* جدول التصريف */
+        .conjugation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .conj-item {
+            background: #F7FAFC;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-red);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* الأمثلة */
+        .example-box {
+            background: #FFF5F5;
+            border-left: 4px solid var(--primary-red);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .highlight {
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+        
+        .highlight-red {
+            color: var(--primary-red);
+            font-weight: bold;
+        }
+
+        /* أنماط الاختبار (Quiz Styles) */
+        .quiz-container {
+            padding: 10px;
+        }
+        
+        .question-box {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        .options label {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            transition: background 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .options label:hover {
+            background-color: #e2e8f0;
+        }
+
+        .options input[type="radio"] {
+            margin-left: 10px; /* For RTL */
+            transform: scale(1.2);
+        }
+
+        .quiz-btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Cairo', sans-serif;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .quiz-btn:hover {
+            background-color: #2b4ccf;
+        }
+
+        .result-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .correct {
+            border: 2px solid var(--correct-green);
+            background-color: #f0fff4;
+        }
+
+        .incorrect {
+            border: 2px solid var(--wrong-red);
+            background-color: #fff5f5;
+        }
+
+        /* زر العودة للأعلى */
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: var(--primary-red);
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #myBtn:hover {
+            background-color: #C53030;
+            transform: scale(1.1);
+        }
+
+        /* منع التحديد */
+        .no-select {
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* تحسينات للجوال */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            .formula-box { font-size: 1rem; flex-direction: column; }
+            .conj-item { flex-direction: column; text-align: center; gap: 5px;}
+        }
+
+    </style>
+</head>
+<body class="no-select" oncontextmenu="return false;">
+
+    <!-- زر العودة للأعلى -->
+    <button onclick="topFunction()" id="myBtn" title="Retour en haut">⬆</button>
+
+    <header>
+        <h1>Le Futur Proche</h1>
+        <div class="subtitle">المستقبل القريب</div>
+    </header>
+
+    <div class="container">
+
+        <!-- القاعدة -->
+        <div class="card">
+            <h2 class="card-title">📝 التكوين (La Formation)</h2>
+            <p>يتكون زمن المستقبل القريب من تصريف فعل <span class="fr highlight">Aller</span> في زمن المضارع بمعنى "سوف" + المصدر.</p>
+            
+            <div class="formula-box">
+                <span class="formula-item fr">Verbe ALLER (Présent)</span>
+                <span>+</span>
+                <span class="formula-item fr">Infinitif (المصدر)</span>
+            </div>
+
+            <div class="example-box">
+                <p><span class="fr">Ex: La fête <strong>va commencer</strong> à 18 h.</span></p>
+                <small>الحفل سوف يبدأ في الساعة 18.</small>
+            </div>
+        </div>
+
+        <!-- التصريف -->
+        <div class="card">
+            <h2 class="card-title">🔄 تصريف فعل Sortir (يخرج)</h2>
+            <div class="conjugation-grid">
+                <div class="conj-item">
+                    <span class="fr">Je vais sortir</span>
+                    <span>أنا سوف أخرج</span>
+                </div>
+                <div class="conj-item">
+                    <span class="fr">Nous allons sortir</span>
+                    <span>نحن سوف نخرج</span>
+                </div>
+                <div class="conj-item">
+                    <span class="fr">Tu vas sortir</span>
+                    <span>أنت سوف تخرج</span>
+                </div>
+                <div class="conj-item">
+                    <span class="fr">Vous allez sortir</span>
+                    <span>أنتم سوف تخرجون</span>
+                </div>
+                <div class="conj-item">
+                    <span class="fr">Il / Elle va sortir</span>
+                    <span>هو / هي سوف تخرج</span>
+                </div>
+                <div class="conj-item">
+                    <span class="fr">Ils / Elles vont sortir</span>
+                    <span>هم / هن سوف يخرجون</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- النفي -->
+        <div class="card">
+            <h2 class="card-title">⛔ النفي (La Négation)</h2>
+            <p>عند النفي، نضع الفعل المساعد <span class="fr">(Aller)</span> بين طرفي النفي.</p>
+            <div class="example-box" style="text-align: center;">
+                <p class="fr" style="font-size: 1.2rem;">Je <span class="highlight">ne</span> <span class="highlight-red">vais</span> <span class="highlight">pas</span> sortir ce soir.</p>
+                <p>أنا سوف لن أخرج هذا المساء.</p>
+            </div>
+        </div>
+
+        <!-- الأفعال الضميرية -->
+        <div class="card">
+            <h2 class="card-title">🔄 الفعل ذو ضميرين (Verbe Pronominal)</h2>
+            <p>ضمير المفعول يتبع الفاعل ولكن الفعل يبقى في المصدر.</p>
+            <div class="example-box">
+                <p class="fr">Je vais <span class="highlight-red">me</span> promener.</p>
+                <p>أنا سوف أتنزه.</p>
+            </div>
+        </div>
+
+        <!-- الاستخدام والدلالات -->
+        <div class="card">
+            <h2 class="card-title">💡 الاستخدام (L'Utilisation)</h2>
+            
+            <p><strong>1. يدل على نية في المستقبل:</strong></p>
+            <div class="example-box">
+                <p class="fr">Le mois prochain, je vais me promener aux champs.</p>
+                <small>الشهر القادم، أنا سوف أتنزه في الحقول.</small>
+            </div>
+            
+            <p style="margin-top: 15px;"><strong>2. يدل على حدث سيتم بعد فترة وجيزة:</strong></p>
+            <div class="example-box">
+                <p class="fr">Dans une heure, je vais me coucher.</p>
+                <small>خلال ساعة، سوف أنام.</small>
+            </div>
+        </div>
+
+        <!-- الكلمات الدالة -->
+        <div class="card">
+            <h2 class="card-title">🔑 الكلمات الدالة (Mots Clés)</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">🔹 <span class="fr">Dans + فترة زمنية</span> (في خلال)</li>
+                <li style="margin-bottom: 10px;">🔹 <span class="fr">Prochain</span> (القادم)</li>
+                <li style="margin-bottom: 10px;">🔹 <span class="fr">Ce soir</span> (هذا المساء)</li>
+                <li style="margin-bottom: 10px;">🔹 <span class="fr">Bientôt</span> (قريباً)</li>
+            </ul>
+        </div>
+
+        <!-- ملاحظة أيام الأسبوع -->
+        <div class="card" style="border-right-color: #ECC94B;">
+            <h2 class="card-title" style="color: #D69E2E;">📅 ملاحظة هامة: أيام الأسبوع</h2>
+            
+            <div style="background: #FFFFF0; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <h3 style="font-size: 1rem; margin-bottom: 5px;">1. العادة والتكرار (المضارع):</h3>
+                <p>إذا سُبقت أيام الأسبوع بأداة المعرفة <span class="fr">Le</span>، تدل على حدث متكرر (عادة) ويصرف الفعل في <strong>المضارع</strong>.</p>
+                <div class="example-box">
+                    <p class="fr"><strong>Le</strong> jeudi, je <u>vais</u> au club.</p>
+                    <small>كل خميس، أنا أذهب إلى النادي.</small>
+                </div>
+            </div>
+
+            <div style="background: #EBF8FF; padding: 15px; border-radius: 10px;">
+                <h3 style="font-size: 1rem; margin-bottom: 5px;">2. حدث محدد (المستقبل):</h3>
+                <p>إذا حُذفت أداة المعرفة، أو أضفنا <span class="fr">Ce</span> (هذا)، يصرف الفعل في <strong>المستقبل</strong>.</p>
+                <div class="example-box">
+                    <p class="fr"><strong>Ce</strong> jeudi, je <u>vais sortir</u> avec les copains.</p>
+                    <p class="fr" style="margin-top:5px;">Jeudi, je <u>vais regarder</u> un film.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الاختبار النهائي الجديد -->
+        <div class="card" style="border-right-color: #48BB78;">
+            <h2 class="card-title" style="color: #2F855A;">🧠 Test Final (اختبار شامل)</h2>
+            <div class="quiz-container">
+                <p style="margin-bottom: 20px; color: #718096;">اختر الإجابة الصحيحة مما بين القوسين:</p>
+                
+                <!-- س1 -->
+                <div class="question-box">
+                    <p class="question-text fr">1. Demain, je ______ (finir) mes devoirs.</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="wrong1"> <span class="fr">vas finir</span></label>
+                        <label><input type="radio" name="q1" value="correct"> <span class="fr">vais finir</span></label>
+                        <label><input type="radio" name="q1" value="wrong2"> <span class="fr">vais finis</span></label>
+                    </div>
+                </div>
+
+                <!-- س2 -->
+                <div class="question-box">
+                    <p class="question-text fr">2. Nous ______ (ne pas regarder) la télé.</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="wrong1"> <span class="fr">ne allons pas regarder</span></label>
+                        <label><input type="radio" name="q2" value="wrong2"> <span class="fr">allons ne pas regarder</span></label>
+                        <label><input type="radio" name="q2" value="correct"> <span class="fr">n'allons pas regarder</span></label>
+                    </div>
+                </div>
+
+                <!-- س3 -->
+                <div class="question-box">
+                    <p class="question-text fr">3. Tu ______ (se promener) ce soir.</p>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="correct"> <span class="fr">vas te promener</span></label>
+                        <label><input type="radio" name="q3" value="wrong1"> <span class="fr">te vas promener</span></label>
+                        <label><input type="radio" name="q3" value="wrong2"> <span class="fr">vas se promener</span></label>
+                    </div>
+                </div>
+
+                <!-- س4 -->
+                <div class="question-box">
+                    <p class="question-text fr">4. Les élèves ______ (écrire) la leçon.</p>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="wrong1"> <span class="fr">va écrire</span></label>
+                        <label><input type="radio" name="q4" value="correct"> <span class="fr">vont écrire</span></label>
+                        <label><input type="radio" name="q4" value="wrong2"> <span class="fr">allez écrire</span></label>
+                    </div>
+                </div>
+
+                 <!-- س5 -->
+                 <div class="question-box" style="border-bottom: none;">
+                    <p class="question-text fr">5. Ce soir, vous ______ (venir) chez moi ?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="correct"> <span class="fr">allez venir</span></label>
+                        <label><input type="radio" name="q5" value="wrong1"> <span class="fr">vais venir</span></label>
+                        <label><input type="radio" name="q5" value="wrong2"> <span class="fr">vont venir</span></label>
+                    </div>
+                </div>
+
+                <button onclick="checkQuiz()" class="quiz-btn">Vérifier les réponses (تحقق من الإجابات)</button>
+                <div id="quiz-result" class="result-message" style="display: none;"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // دالة الاختبار
+        function checkQuiz() {
+            let score = 0;
+            let total = 5;
+            let resultDiv = document.getElementById('quiz-result');
+            
+            // تحديد الإجابات الصحيحة
+            let q1 = document.querySelector('input[name="q1"]:checked');
+            let q2 = document.querySelector('input[name="q2"]:checked');
+            let q3 = document.querySelector('input[name="q3"]:checked');
+            let q4 = document.querySelector('input[name="q4"]:checked');
+            let q5 = document.querySelector('input[name="q5"]:checked');
+
+            // حساب النقاط
+            if (q1 && q1.value === "correct") score++;
+            if (q2 && q2.value === "correct") score++;
+            if (q3 && q3.value === "correct") score++;
+            if (q4 && q4.value === "correct") score++;
+            if (q5 && q5.value === "correct") score++;
+
+            // عرض النتيجة
+            resultDiv.style.display = 'block';
+            if (score === total) {
+                resultDiv.innerHTML = `🌟 Bravo! Votre note est ${score}/${total} (ممتاز!)`;
+                resultDiv.className = "result-message correct";
+            } else if (score >= total / 2) {
+                resultDiv.innerHTML = `👍 Pas mal! Votre note est ${score}/${total} (جيد، حاول مرة أخرى)`;
+                resultDiv.className = "result-message correct";
+                resultDiv.style.borderColor = "#ECC94B";
+                resultDiv.style.backgroundColor = "#FFFFF0";
+            } else {
+                resultDiv.innerHTML = `🧐 Attention! Votre note est ${score}/${total} (راجع القاعدة مرة أخرى)`;
+                resultDiv.className = "result-message incorrect";
+            }
+
+            // تلوين الإجابات الصحيحة والخاطئة لتغذية بصرية
+            highlightAnswers('q1');
+            highlightAnswers('q2');
+            highlightAnswers('q3');
+            highlightAnswers('q4');
+            highlightAnswers('q5');
+        }
+
+        function highlightAnswers(name) {
+            let options = document.getElementsByName(name);
+            options.forEach(opt => {
+                let label = opt.parentElement;
+                if (opt.value === "correct") {
+                    if (opt.checked) {
+                        label.style.backgroundColor = "#C6F6D5"; // Green light
+                        label.style.borderColor = "#48BB78";
+                    }
+                } else {
+                    if (opt.checked) {
+                        label.style.backgroundColor = "#FED7D7"; // Red light
+                        label.style.borderColor = "#F56565";
+                    }
+                }
+            });
+        }
+
+        // زر العودة للأعلى
+        var mybutton = document.getElementById("myBtn");
+
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        // منع النقر بزر الماوس الأيمن
+        document.addEventListener('contextmenu', event => {
+            event.preventDefault();
+            alert("ممنوع النسخ - حقوق الملكية محفوظة");
+        });
+
+        // منع تحديد النصوص
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) { return false; }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){ return false; }
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){ return false; }
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){ return false; }
+        }
+    </script>
+</body>
+</html>
