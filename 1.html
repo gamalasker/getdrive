@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس الأول: التحيات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .lesson-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+
+        h2 {
+            color: #333;
+            margin: 25px 0 15px 0;
+            font-size: 22px;
+        }
+
+        .text-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .french {
+            font-size: 22px;
+            color: #1976D2;
+            font-weight: bold;
+            margin-bottom: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .arabic {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-fr {
+            background: #1976D2;
+            color: white;
+        }
+
+        .btn-ar {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-slow {
+            background: #FF9800;
+            color: white;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button.speaking {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="lesson-card">
+        <h1>🎓 الدرس الأول: التحيات</h1>
+
+        <h2>💬 الحوار</h2>
+
+        <div class="text-item">
+            <div class="french">Bonjour! Comment allez-vous?</div>
+            <div class="arabic">صباح الخير! كيف حالك؟</div>
+            <div class="buttons">
+                <button class="btn-fr" onclick="speak('Bonjour! Comment allez-vous?', 'fr-FR')">
+                    🇫🇷 فرنسي
+                </button>
+                <button class="btn-ar" onclick="speak('صباح الخير! كيف حالك؟', 'ar-SA')">
+                    🇸🇦 عربي
+                </button>
+                <button class="btn-slow" onclick="speakSlow('Bonjour! Comment allez-vous?', 'fr-FR')">
+                    🐢 بطيء
+                </button>
+            </div>
+        </div>
+
+        <div class="text-item">
+            <div class="french">Très bien, merci! Et vous?</div>
+            <div class="arabic">بخير، شكراً! وأنت؟</div>
+            <div class="buttons">
+                <button class="btn-fr" onclick="speak('Très bien, merci! Et vous?', 'fr-FR')">
+                    🇫🇷 فرنسي
+                </button>
+                <button class="btn-ar" onclick="speak('بخير، شكراً! وأنت؟', 'ar-SA')">
+                    🇸🇦 عربي
+                </button>
+                <button class="btn-slow" onclick="speakSlow('Très bien, merci! Et vous?', 'fr-FR')">
+                    🐢 بطيء
+                </button>
+            </div>
+        </div>
+
+        <div class="text-item">
+            <div class="french">Au revoir!</div>
+            <div class="arabic">مع السلامة!</div>
+            <div class="buttons">
+                <button class="btn-fr" onclick="speak('Au revoir!', 'fr-FR')">
+                    🇫🇷 فرنسي
+                </button>
+                <button class="btn-ar" onclick="speak('مع السلامة!', 'ar-SA')">
+                    🇸🇦 عربي
+                </button>
+                <button class="btn-slow" onclick="speakSlow('Au revoir!', 'fr-FR')">
+                    🐢 بطيء
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        console.log('🚀 JavaScript Started');
+        
+        // اختبار عند التحميل
+        window.addEventListener('load', function() {
+            console.log('📄 Page Loaded');
+            
+            if (typeof AndroidTTS !== 'undefined') {
+                console.log('✅ AndroidTTS found!');
+                try {
+                    AndroidTTS.test();
+                } catch (e) {
+                    console.error('❌ Test failed:', e);
+                }
+            } else {
+                console.error('❌ AndroidTTS NOT found!');
+            }
+        });
+
+        function speak(text, lang) {
+            console.log('🔊 speak() called:', text, lang);
+            
+            if (typeof AndroidTTS !== 'undefined') {
+                try {
+                    console.log('✅ Calling AndroidTTS.speak()');
+                    AndroidTTS.speak(text, lang);
+                    return;
+                } catch (e) {
+                    console.error('❌ AndroidTTS.speak() failed:', e);
+                    alert('خطأ في النطق: ' + e.message);
+                }
+            } else {
+                alert('⚠️ النطق التلقائي غير متاح');
+            }
+        }
+
+        function speakSlow(text, lang) {
+            console.log('🐢 speakSlow() called:', text, lang);
+            
+            if (typeof AndroidTTS !== 'undefined') {
+                try {
+                    AndroidTTS.speakSlow(text, lang);
+                    return;
+                } catch (e) {
+                    console.error('❌ AndroidTTS.speakSlow() failed:', e);
+                    alert('خطأ في النطق البطيء: ' + e.message);
+                }
+            } else {
+                alert('⚠️ النطق البطيء غير متاح');
+            }
+        }
+    </script>
+</body>
+</html>
