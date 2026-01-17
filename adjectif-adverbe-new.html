@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفات والظروف في اللغة الفرنسية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: #ffffff;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-dark);
+            line-height: 1.8;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--bg-gradient);
+            color: white;
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            animation: fadeInDown 0.8s ease;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        header h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            background: white;
+            color: var(--primary-color);
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1);
+        }
+
+        .nav-tab:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        .card h4 {
+            color: var(--secondary-color);
+            font-size: 1.3rem;
+            margin: 20px 0 15px 0;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #f9fafb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: #f3f4f6;
+        }
+
+        /* List Styles */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 12px 20px;
+            margin: 10px 0;
+            background: #f9fafb;
+            border-right: 4px solid var(--secondary-color);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        li:hover {
+            background: #f3f4f6;
+            transform: translateX(-5px);
+        }
+
+        /* Example Box */
+        .example-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-right: 5px solid var(--accent-color);
+            font-size: 1.1rem;
+        }
+
+        /* Quiz Section */
+        .quiz-container {
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .quiz-header h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .quiz-question {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .quiz-question.active {
+            display: block;
+        }
+
+        .question-number {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: #f9fafb;
+            padding: 18px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e5e7eb;
+            font-size: 1.1rem;
+        }
+
+        .option:hover {
+            background: #f3f4f6;
+            border-color: var(--primary-color);
+            transform: translateX(-5px);
+        }
+
+        .option.selected {
+            background: #dbeafe;
+            border-color: var(--primary-color);
+            border-width: 3px;
+        }
+
+        .option.correct {
+            background: #d1fae5;
+            border-color: var(--secondary-color);
+            border-width: 3px;
+        }
+
+        .option.incorrect {
+            background: #fee2e2;
+            border-color: #ef4444;
+            border-width: 3px;
+        }
+
+        .quiz-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:hover {
+            background: #4338ca;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #059669;
+        }
+
+        /* Results */
+        .quiz-results {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .quiz-results.active {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-message {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header h2 {
+                font-size: 1.3rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .card h3 {
+                font-size: 1.3rem;
+            }
+
+            .quiz-container {
+                padding: 25px;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .option {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+
+            .score-display {
+                font-size: 3rem;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            header {
+                padding: 25px 20px;
+            }
+
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            header h2 {
+                font-size: 1.1rem;
+            }
+
+            .nav-tabs {
+                gap: 10px;
+            }
+
+            .nav-tab {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇫🇷 الصفات والظروف في اللغة الفرنسية</h1>
+            <h2>Les Adjectifs et Les Adverbes</h2>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('feminine')">تأنيث الصفات</div>
+            <div class="nav-tab" onclick="showSection('position')">موضع الصفة</div>
+            <div class="nav-tab" onclick="showSection('plural')">جمع الصفات</div>
+            <div class="nav-tab" onclick="showSection('adverbs')">الظروف</div>
+            <div class="nav-tab" onclick="showSection('quantity')">ظروف الكمية</div>
+            <div class="nav-tab" onclick="showSection('quiz')">الاختبار النهائي</div>
+        </div>
+
+        <!-- Feminine Section -->
+        <div id="feminine" class="content-section active">
+            <div class="card">
+                <h3>✨ تأنيث الصفات (Le féminin des adjectifs)</h3>
+
+                <h4>القاعدة الأساسية</h4>
+                <p>إضافة حرف <strong>(e)</strong> في نهاية الصفة المذكرة</p>
+                <table>
+                    <tr><th>المذكر</th><th>المؤنث</th></tr>
+                    <tr><td>Souriant</td><td>Souriante</td></tr>
+                    <tr><td>Petit</td><td>Petite</td></tr>
+                    <tr><td>Grand</td><td>Grande</td></tr>
+                    <tr><td>Bavard</td><td>Bavarde</td></tr>
+                    <tr><td>Violent</td><td>Violente</td></tr>
+                </table>
+
+                <h4>الصفات المنتهية بـ (e) لا تتغير</h4>
+                <table>
+                    <tr><th>الصفة</th><th>المعنى</th></tr>
+                    <tr><td>Fantastique</td><td>رائع</td></tr>
+                    <tr><td>Sympathique</td><td>لطيف</td></tr>
+                    <tr><td>Timide</td><td>خجول</td></tr>
+                    <tr><td>Romantique</td><td>رومانسي</td></tr>
+                    <tr><td>Magnifique</td><td>رائع</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h4>الصفات المنتهية بـ (on – ien) نضيف (ne)</h4>
+                <table>
+                    <tr><th>المذكر</th><th>المؤنث</th></tr>
+                    <tr><td>Bon</td><td>Bonne</td></tr>
+                    <tr><td>Égyptien</td><td>Égyptienne</td></tr>
+                    <tr><td>Américain</td><td>Américaine</td></tr>
+                </table>
+
+                <h4>الصفات المنتهية بـ (il-el-ul) نضيف (le)</h4>
+                <table>
+                    <tr><th>المذكر</th><th>المؤنث</th></tr>
+                    <tr><td>Gentil</td><td>Gentille</td></tr>
+                    <tr><td>Nouvel</td><td>Nouvelle</td></tr>
+                    <tr><td>Nul</td><td>Nulle</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h4>الصفات المنتهية بـ (x) تصبح (se)</h4>
+                <table>
+                    <tr><th>المذكر</th><th>المؤنث</th></tr>
+                    <tr><td>Sérieux</td><td>Sérieuse</td></tr>
+                    <tr><td>Heureux</td><td>Heureuse</td></tr>
+                    <tr><td>Dangereux</td><td>Dangereuse</td></tr>
+                    <tr><td>Nerveux</td><td>Nerveuse</td></tr>
+                </table>
+
+                <h4>الصفات المنتهية بـ (er) تصبح (ère)</h4>
+                <table>
+                    <tr><th>المذكر</th><th>المؤنث</th></tr>
+                    <tr><td>Premier</td><td>Première</td></tr>
+                    <tr><td>Cher</td><td>Chère</td></tr>
+                    <tr><td>Danger</td><td>Dangère</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h4>صفات شاذة تتغير عند التأنيث</h4>
+                <table>
+                    <tr><th>المذكر</th><th>المؤنث</th></tr>
+                    <tr><td>Blanc</td><td>Blanche</td></tr>
+                    <tr><td>Doux</td><td>Douce</td></tr>
+                    <tr><td>Vieux</td><td>Vieille</td></tr>
+                    <tr><td>Beau</td><td>Belle</td></tr>
+                    <tr><td>Nouveau</td><td>Nouvelle</td></tr>
+                    <tr><td>Sportif</td><td>Sportive</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Position Section -->
+        <div id="position" class="content-section">
+            <div class="card">
+                <h3>📍 موضع الصفة في الجملة</h3>
+
+                <h4>الصفة عادة تأتي بعد الاسم</h4>
+                <p>خاصة صفات الجنسية واللون والشكل</p>
+                <div class="example-box">
+                    <strong>مثال:</strong> le tableau noir (السبورة السوداء)
+                </div>
+
+                <h4>صفات تأتي قبل الاسم</h4>
+                <table>
+                    <tr><th>الصفة</th><th>المعنى</th></tr>
+                    <tr><td>Bon, Beau</td><td>جيد، جميل</td></tr>
+                    <tr><td>Joli</td><td>جميل</td></tr>
+                    <tr><td>Mauvais</td><td>سيء</td></tr>
+                    <tr><td>Petit</td><td>صغير</td></tr>
+                    <tr><td>Nouveau</td><td>جديد</td></tr>
+                    <tr><td>Vieux</td><td>قديم</td></tr>
+                    <tr><td>Grand</td><td>كبير</td></tr>
+                    <tr><td>Premier</td><td>أول</td></tr>
+                </table>
+
+                <div class="example-box">
+                    <strong>مثال:</strong> la jolie fleur (الزهرة الجميلة)
+                </div>
+            </div>
+        </div>
+
+        <!-- Plural Section -->
+        <div id="plural" class="content-section">
+            <div class="card">
+                <h3>🔢 جمع الصفات</h3>
+
+                <h4>القاعدة الأساسية: إضافة (s)</h4>
+                <table>
+                    <tr><th>المفرد</th><th>الجمع</th></tr>
+                    <tr><td>Grand</td><td>Grands</td></tr>
+                    <tr><td>Petite</td><td>Petites</td></tr>
+                </table>
+
+                <h4>صفات شاذة في الجمع</h4>
+                <table>
+                    <tr><th>المفرد</th><th>الجمع</th></tr>
+                    <tr><td>Beau</td><td>Beaux</td></tr>
+                    <tr><td>Nouveau</td><td>Nouveaux</td></tr>
+                    <tr><td>Original</td><td>Originaux</td></tr>
+                    <tr><td>Génial</td><td>Géniaux</td></tr>
+                    <tr><td>Vieux</td><td>Vieux</td></tr>
+                </table>
+
+                <h4>صفات لا تتغير في الجمع</h4>
+                <ul>
+                    <li><strong>Super</strong> - رائع</li>
+                    <li><strong>Cool</strong> - رائع</li>
+                    <li><strong>Orange</strong> - برتقالي</li>
+                    <li><strong>Marron</strong> - بني</li>
+                </ul>
+
+                <div class="example-box">
+                    <strong>ملاحظة مهمة:</strong> أداة النكرة (des) تتحول إلى (de) أمام الصفة في الجمع<br>
+                    <strong>مثال:</strong> Ce sont de bonnes notes.
+                </div>
+            </div>
+        </div>
+
+        <!-- Adverbs Section -->
+        <div id="adverbs" class="content-section">
+            <div class="card">
+                <h3>⚡ الظروف (Les Adverbes)</h3>
+
+                <p>الظرف كلمة تصف الفعل ولا يتغير شكلها</p>
+
+                <h4>كيفية تكوين الظرف من الصفة</h4>
+                <p>نؤنث الصفة ثم نضيف المقطع <strong>(ment)</strong></p>
+
+                <table>
+                    <tr><th>الصفة (مذكر)</th><th>الصفة (مؤنث)</th><th>الظرف</th></tr>
+                    <tr><td>Doux</td><td>Douce</td><td>Doucement</td></tr>
+                    <tr><td>Facile</td><td>Facile</td><td>Facilement</td></tr>
+                    <tr><td>Difficile</td><td>Difficile</td><td>Difficilement</td></tr>
+                    <tr><td>Heureux</td><td>Heureuse</td><td>Heureusement</td></tr>
+                </table>
+
+                <h4>أمثلة على استخدام الظروف</h4>
+                <div class="example-box">
+                    <strong>La voiture roule vite.</strong> - تسير السيارة بسرعة<br>
+                    <strong>Elle étudie bien.</strong> - تدرس جيداً<br>
+                    <strong>Il pleut fort.</strong> - تمطر بشدة
+                </div>
+
+                <h4>موضع الظرف في الماضي المركب</h4>
+                <p>نضع الظرف بين الفعل المساعد واسم المفعول</p>
+                <div class="example-box">
+                    <strong>Il a beaucoup mangé.</strong><br>
+                    <strong>Il s'est bien amusé.</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantity Section -->
+        <div id="quantity" class="content-section">
+            <div class="card">
+                <h3>📊 ظروف الكمية</h3>
+
+                <h4>ظروف الكمية الأساسية</h4>
+                <table>
+                    <tr><th>الظرف</th><th>المعنى</th><th>الاستخدام</th></tr>
+                    <tr><td>Beaucoup de</td><td>الكثير من</td><td>Il mange beaucoup.</td></tr>
+                    <tr><td>Un peu de</td><td>قليل من</td><td>Un peu de chocolat</td></tr>
+                    <tr><td>Trop de</td><td>الكثير جداً</td><td>Trop de sodas</td></tr>
+                    <tr><td>Assez de</td><td>كافٍ من</td><td>Assez de pain</td></tr>
+                    <tr><td>Plus de</td><td>أكثر من</td><td>Plus de livres</td></tr>
+                </table>
+
+                <h4>وحدات القياس والكمية</h4>
+                <table>
+                    <tr><th>التعبير</th><th>المعنى</th></tr>
+                    <tr><td>Un verre de</td><td>كوب من</td></tr>
+                    <tr><td>Une bouteille de</td><td>زجاجة من</td></tr>
+                    <tr><td>Une tasse de</td><td>فنجان من</td></tr>
+                    <tr><td>Un kilo de</td><td>كيلو من</td></tr>
+                    <tr><td>Une tranche de</td><td>شريحة من</td></tr>
+                    <tr><td>Un morceau de</td><td>قطعة من</td></tr>
+                    <tr><td>Une boîte de</td><td>علبة من</td></tr>
+                    <tr><td>Un paquet de</td><td>حزمة من</td></tr>
+                </table>
+
+                <div class="example-box">
+                    <strong>ملاحظة مهمة:</strong> ظروف الكمية تُتبع بحرف الجر (de) أو (d') دون تغيير<br>
+                    <strong>مثال:</strong> Je voudrais un verre d'eau.
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz" class="content-section">
+            <div class="quiz-container">
+                <div class="quiz-header">
+                    <h2>🎯 الاختبار النهائي</h2>
+                    <p>اختبر معلوماتك في الصفات والظروف الفرنسية</p>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+
+                <!-- Quiz Questions -->
+                <div id="quizQuestions">
+                    <!-- Question 1 -->
+                    <div class="quiz-question active" data-question="1">
+                        <span class="question-number">السؤال 1 من 10</span>
+                        <p class="question-text">ما هو المؤنث الصحيح للصفة "Heureux"؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Heureuse</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Heureuxe</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Heureuxse</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Heureusee</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="quiz-question" data-question="2">
+                        <span class="question-number">السؤال 2 من 10</span>
+                        <p class="question-text">أي من هذه الصفات تأتي قبل الاسم؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Beau</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Rouge</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Français</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Intelligent</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="quiz-question" data-question="3">
+                        <span class="question-number">السؤال 3 من 10</span>
+                        <p class="question-text">ما هو جمع الصفة "Nouveau"؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Nouveaux</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Nouveaus</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Nouveaux</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Nouvelles</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="quiz-question" data-question="4">
+                        <span class="question-number">السؤال 4 من 10</span>
+                        <p class="question-text">كيف نكون الظرف من الصفة "Facile"؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Facilement</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Facilment</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Facillement</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Facilement</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 5 -->
+                    <div class="quiz-question" data-question="5">
+                        <span class="question-number">السؤال 5 من 10</span>
+                        <p class="question-text">أي صفة من هذه الصفات لا تتغير عند التأنيث؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Sympathique</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Petit</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Bon</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Heureux</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 6 -->
+                    <div class="quiz-question" data-question="6">
+                        <span class="question-number">السؤال 6 من 10</span>
+                        <p class="question-text">ما هو المؤنث الصحيح للصفة "Gentil"؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Gentille</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Gentile</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Gentil</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Gentillee</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 7 -->
+                    <div class="quiz-question" data-question="7">
+                        <span class="question-number">السؤال 7 من 10</span>
+                        <p class="question-text">ما حرف الجر المستخدم بعد ظروف الكمية؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">de</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">à</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">pour</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">avec</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 8 -->
+                    <div class="quiz-question" data-question="8">
+                        <span class="question-number">السؤال 8 من 10</span>
+                        <p class="question-text">ما هو المؤنث الصحيح للصفة "Blanc"؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Blanche</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Blance</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Blanque</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Blanche</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 9 -->
+                    <div class="quiz-question" data-question="9">
+                        <span class="question-number">السؤال 9 من 10</span>
+                        <p class="question-text">أين نضع الظرف في الماضي المركب؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">بين الفعل المساعد واسم المفعول</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">قبل الفعل المساعد</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">بعد اسم المفعول</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">في بداية الجملة</div>
+                        </div>
+                    </div>
+
+                    <!-- Question 10 -->
+                    <div class="quiz-question" data-question="10">
+                        <span class="question-number">السؤال 10 من 10</span>
+                        <p class="question-text">أي من هذه الصفات لا تتغير في الجمع؟</p>
+                        <div class="options">
+                            <div class="option" data-answer="correct" onclick="selectOption(this)">Marron</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Grand</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Petit</div>
+                            <div class="option" data-answer="wrong" onclick="selectOption(this)">Beau</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Buttons -->
+                <div class="quiz-buttons">
+                    <button class="btn" id="checkBtn" onclick="checkAnswer()" disabled>تحقق من الإجابة</button>
+                    <button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display: none;">السؤال التالي</button>
+                </div>
+
+                <!-- Quiz Results -->
+                <div class="quiz-results" id="quizResults">
+                    <h2>🎉 انتهى الاختبار!</h2>
+                    <div class="score-display" id="scoreDisplay">0/10</div>
+                    <p class="score-message" id="scoreMessage"></p>
+                    <button class="btn" onclick="restartQuiz()">إعادة الاختبار</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+
+            if (sectionId === 'quiz') {
+                resetQuiz();
+            }
+        }
+
+        // Quiz functionality
+        let currentQuestion = 1;
+        let score = 0;
+        let selectedAnswer = null;
+
+        function selectOption(element) {
+            const options = element.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedAnswer = element;
+            document.getElementById('checkBtn').disabled = false;
+        }
+
+        function checkAnswer() {
+            if (!selectedAnswer) return;
+
+            const isCorrect = selectedAnswer.dataset.answer === 'correct';
+
+            if (isCorrect) {
+                selectedAnswer.classList.add('correct');
+                score++;
+            } else {
+                selectedAnswer.classList.add('incorrect');
+                // Show correct answer
+                const options = selectedAnswer.parentElement.querySelectorAll('.option');
+                options.forEach(opt => {
+                    if (opt.dataset.answer === 'correct') {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Disable all options
+            const options = selectedAnswer.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.style.pointerEvents = 'none');
+
+            document.getElementById('checkBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'inline-block';
+
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 10) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+
+                selectedAnswer = null;
+                document.getElementById('checkBtn').disabled = true;
+                document.getElementById('checkBtn').style.display = 'inline-block';
+                document.getElementById('nextBtn').style.display = 'none';
+            } else {
+                showResults();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / 10) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showResults() {
+            document.getElementById('quizQuestions').style.display = 'none';
+            document.getElementById('quizResults').classList.add('active');
+            document.querySelector('.quiz-buttons').style.display = 'none';
+
+            const percentage = (score / 10) * 100;
+            document.getElementById('scoreDisplay').textContent = score + '/10';
+
+            let message = '';
+            if (percentage === 100) {
+                message = '🌟 ممتاز! لديك إتقان كامل للموضوع!';
+            } else if (percentage >= 80) {
+                message = '👏 رائع! أداء ممتاز!';
+            } else if (percentage >= 60) {
+                message = '👍 جيد! لكن يمكنك التحسن أكثر.';
+            } else if (percentage >= 40) {
+                message = '📚 حاول مراجعة الدروس مرة أخرى.';
+            } else {
+                message = '💪 لا تستسلم! راجع المحتوى وأعد المحاولة.';
+            }
+
+            document.getElementById('scoreMessage').textContent = message;
+        }
+
+        function restartQuiz() {
+            resetQuiz();
+        }
+
+        function resetQuiz() {
+            currentQuestion = 1;
+            score = 0;
+            selectedAnswer = null;
+
+            document.querySelectorAll('.quiz-question').forEach((q, index) => {
+                q.classList.remove('active');
+                if (index === 0) q.classList.add('active');
+
+                q.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                    opt.style.pointerEvents = 'auto';
+                });
+            });
+
+            document.getElementById('quizQuestions').style.display = 'block';
+            document.getElementById('quizResults').classList.remove('active');
+            document.querySelector('.quiz-buttons').style.display = 'flex';
+            document.getElementById('checkBtn').style.display = 'inline-block';
+            document.getElementById('checkBtn').disabled = true;
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('progressBar').style.width = '0%';
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
