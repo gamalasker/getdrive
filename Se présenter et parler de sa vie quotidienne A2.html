@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدرس الأول - مستوى A2 في اللغة الفرنسية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            direction: ltr;
+        }
+
+        .lesson-info {
+            background: #f8f9fa;
+            padding: 20px 40px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .info-item .label {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+            padding-right: 15px;
+            border-right: 4px solid #764ba2;
+        }
+
+        .intro-text {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            border-right: 5px solid #2196f3;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .vocab-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-right: 5px solid #667eea;
+            position: relative;
+        }
+
+        .vocab-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .vocab-french {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Georgia', serif;
+            direction: ltr;
+            text-align: left;
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+        }
+
+        .vocab-french:hover {
+            color: #764ba2;
+        }
+
+        .vocab-french::after {
+            content: '🔊';
+            font-size: 0.7em;
+            margin-left: 8px;
+            opacity: 0.7;
+        }
+
+        .vocab-arabic {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .vocab-example {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+
+        .example-french {
+            color: #764ba2;
+            font-style: italic;
+            margin-bottom: 5px;
+            font-family: 'Georgia', serif;
+            direction: ltr;
+            text-align: left;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .example-french:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .example-french::before {
+            content: '🔊 ';
+            font-size: 0.8em;
+            opacity: 0.6;
+        }
+
+        .example-arabic {
+            color: #555;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .speak-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .speak-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .speak-btn:active {
+            transform: translateY(0);
+        }
+
+        .grammar-box {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            border-right: 5px solid #ff9800;
+            margin: 20px 0;
+        }
+
+        .grammar-title {
+            color: #f57c00;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        td.french-text {
+            direction: ltr;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            cursor: pointer;
+        }
+
+        td.french-text:hover {
+            background: #e8eaf6;
+            color: #667eea;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .exercise-box {
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 10px;
+            border-right: 5px solid #4caf50;
+            margin: 20px 0;
+        }
+
+        .exercise-title {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .exercise-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 1.05em;
+        }
+
+        .exercise-item .french-sentence {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Georgia', serif;
+            color: #333;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .exercise-item .french-sentence:hover {
+            color: #667eea;
+        }
+
+        .tip-box {
+            background: #fce4ec;
+            padding: 20px;
+            border-radius: 10px;
+            border-right: 5px solid #e91e63;
+            margin: 20px 0;
+        }
+
+        .tip-icon {
+            color: #e91e63;
+            font-size: 1.3em;
+            margin-left: 10px;
+        }
+
+        .dialogue-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .dialogue-line {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .dialogue-french {
+            direction: ltr;
+            text-align: left;
+            font-family: 'Georgia', serif;
+            font-size: 1.05em;
+            color: #333;
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .dialogue-french:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .dialogue-arabic {
+            direction: rtl;
+            text-align: right;
+            color: #666;
+            font-size: 0.95em;
+            margin-right: 30px;
+        }
+
+        .audio-controls {
+            background: #e8eaf6;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .audio-controls button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .audio-controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .audio-controls button:active {
+            transform: translateY(0);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .vocab-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-info {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🇫🇷 الدرس الأول: التعريف بالنفس والحياة اليومية</h1>
+            <div class="subtitle">Se présenter et parler de sa vie quotidienne</div>
+        </header>
+
+        <div class="lesson-info">
+            <div class="info-item">
+                <div class="label">المستوى</div>
+                <div class="value">A2 - ابتدائي متقدم</div>
+            </div>
+            <div class="info-item">
+                <div class="label">المدة المقترحة</div>
+                <div class="value">60-90 دقيقة</div>
+            </div>
+            <div class="info-item">
+                <div class="label">عدد المفردات</div>
+                <div class="value">40+ كلمة</div>
+            </div>
+            <div class="info-item">
+                <div class="label">رقم الدرس</div>
+                <div class="value">1/20</div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- أدوات التحكم في النطق -->
+            <div class="audio-controls">
+                <strong>🎤 أدوات النطق:</strong><br>
+                <button onclick="stopSpeech()">⏹️ إيقاف النطق</button>
+                <small style="display: block; margin-top: 10px; color: #666;">
+                    💡 انقر على أي نص فرنسي لسماع النطق
+                </small>
+            </div>
+
+            <div class="section">
+                <div class="intro-text">
+                    <strong>مرحباً بك في الدرس الأول من سلسلة المستوى A2!</strong><br>
+                    في هذا الدرس سنتعلم كيفية التعريف بالنفس بشكل أكثر تفصيلاً، والحديث عن الحياة اليومية والروتين. هذا الدرس يبني على ما تعلمته في المستوى A1 ويضيف مفردات وتراكيب جديدة تساعدك على التواصل بشكل أفضل.
+                </div>
+
+                <h2>📚 المفردات الأساسية - Vocabulaire Essentiel</h2>
+
+                <h3>🏠 الحياة اليومية - La vie quotidienne</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يستيقظ</div>
+                        <div class="vocab-french" onclick="speak('se réveiller', 'fr-FR')">se réveiller</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أستيقظ في الساعة السابعة.</div>
+                            <div class="example-french" onclick="speak('Je me réveille à sept heures', 'fr-FR')">Je me réveille à 7 heures.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('se réveiller', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">ينهض من السرير</div>
+                        <div class="vocab-french" onclick="speak('se lever', 'fr-FR')">se lever</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">ينهض مبكراً في الصباح.</div>
+                            <div class="example-french" onclick="speak('Il se lève tôt le matin', 'fr-FR')">Il se lève tôt le matin.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('se lever', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يستحم</div>
+                        <div class="vocab-french" onclick="speak('se doucher', 'fr-FR')">se doucher</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">تستحم كل يوم.</div>
+                            <div class="example-french" onclick="speak('Elle se douche tous les jours', 'fr-FR')">Elle se douche tous les jours.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('se doucher', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يرتدي ملابسه</div>
+                        <div class="vocab-french" onclick="speak('s\'habiller', 'fr-FR')">s'habiller</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أرتدي ملابسي بسرعة.</div>
+                            <div class="example-french" onclick="speak('Je m\'habille rapidement', 'fr-FR')">Je m'habille rapidement.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('s\'habiller', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يتناول الإفطار</div>
+                        <div class="vocab-french" onclick="speak('prendre le petit-déjeuner', 'fr-FR')">prendre le petit-déjeuner</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">نتناول الإفطار معاً.</div>
+                            <div class="example-french" onclick="speak('Nous prenons le petit-déjeuner ensemble', 'fr-FR')">Nous prenons le petit-déjeuner ensemble.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('prendre le petit-déjeuner', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يغادر (للعمل)</div>
+                        <div class="vocab-french" onclick="speak('partir au travail', 'fr-FR')">partir (au travail)</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أغادر للعمل في الساعة الثامنة.</div>
+                            <div class="example-french" onclick="speak('Je pars au travail à huit heures', 'fr-FR')">Je pars au travail à 8 heures.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('partir au travail', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يعود إلى المنزل</div>
+                        <div class="vocab-french" onclick="speak('rentrer', 'fr-FR')">rentrer</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أعود إلى المنزل حوالي الساعة السادسة مساءً.</div>
+                            <div class="example-french" onclick="speak('Je rentre à la maison vers dix-huit heures', 'fr-FR')">Je rentre à la maison vers 18 heures.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('rentrer', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يستريح</div>
+                        <div class="vocab-french" onclick="speak('se reposer', 'fr-FR')">se reposer</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">يستريح بعد العمل.</div>
+                            <div class="example-french" onclick="speak('Il se repose après le travail', 'fr-FR')">Il se repose après le travail.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('se reposer', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يتسوق / يشتري حاجيات</div>
+                        <div class="vocab-french" onclick="speak('faire les courses', 'fr-FR')">faire les courses</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أتسوق يوم السبت.</div>
+                            <div class="example-french" onclick="speak('Je fais les courses le samedi', 'fr-FR')">Je fais les courses le samedi.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('faire les courses', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يذهب للنوم</div>
+                        <div class="vocab-french" onclick="speak('se coucher', 'fr-FR')">se coucher</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أذهب للنوم في الساعة الحادية عشرة.</div>
+                            <div class="example-french" onclick="speak('Je me couche à vingt-trois heures', 'fr-FR')">Je me couche à 23 heures.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('se coucher', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+                </div>
+
+                <h3>👤 الصفات الشخصية - Les qualités personnelles</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">صبور / صبورة</div>
+                        <div class="vocab-french" onclick="speak('patient, patiente', 'fr-FR')">patient(e)</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أستاذي صبور جداً.</div>
+                            <div class="example-french" onclick="speak('Mon professeur est très patient', 'fr-FR')">Mon professeur est très patient.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('patient, patiente', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">كريم / كريمة</div>
+                        <div class="vocab-french" onclick="speak('généreux, généreuse', 'fr-FR')">généreux/généreuse</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">هي كريمة مع أصدقائها.</div>
+                            <div class="example-french" onclick="speak('Elle est généreuse avec ses amis', 'fr-FR')">Elle est généreuse avec ses amis.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('généreux, généreuse', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">مجتهد / مجتهدة</div>
+                        <div class="vocab-french" onclick="speak('travailleur, travailleuse', 'fr-FR')">travailleur/travailleuse</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">إنه طالب مجتهد.</div>
+                            <div class="example-french" onclick="speak('C\'est un étudiant travailleur', 'fr-FR')">C'est un étudiant travailleur.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('travailleur, travailleuse', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">خجول / خجولة</div>
+                        <div class="vocab-french" onclick="speak('timide', 'fr-FR')">timide</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أختي خجولة قليلاً.</div>
+                            <div class="example-french" onclick="speak('Ma sœur est un peu timide', 'fr-FR')">Ma sœur est un peu timide.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('timide', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">اجتماعي / اجتماعية</div>
+                        <div class="vocab-french" onclick="speak('sociable', 'fr-FR')">sociable</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أنا شخص اجتماعي.</div>
+                            <div class="example-french" onclick="speak('Je suis une personne sociable', 'fr-FR')">Je suis une personne sociable.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('sociable', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">متفائل / متفائلة</div>
+                        <div class="vocab-french" onclick="speak('optimiste', 'fr-FR')">optimiste</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">هو متفائل دائماً.</div>
+                            <div class="example-french" onclick="speak('Il est toujours optimiste', 'fr-FR')">Il est toujours optimiste.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('optimiste', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+                </div>
+
+                <h3>💼 المهن والدراسة - Les professions et les études</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">مهندس / مهندسة</div>
+                        <div class="vocab-french" onclick="speak('ingénieur, ingénieure', 'fr-FR')">ingénieur(e)</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أخي مهندس كمبيوتر.</div>
+                            <div class="example-french" onclick="speak('Mon frère est ingénieur informatique', 'fr-FR')">Mon frère est ingénieur informatique.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('ingénieur informatique', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">ممرض / ممرضة</div>
+                        <div class="vocab-french" onclick="speak('infirmier, infirmière', 'fr-FR')">infirmier/infirmière</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">تعمل كممرضة.</div>
+                            <div class="example-french" onclick="speak('Elle travaille comme infirmière', 'fr-FR')">Elle travaille comme infirmière.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('infirmier, infirmière', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">محامي / محامية</div>
+                        <div class="vocab-french" onclick="speak('avocat, avocate', 'fr-FR')">avocat(e)</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">والدي محامي.</div>
+                            <div class="example-french" onclick="speak('Mon père est avocat', 'fr-FR')">Mon père est avocat.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('avocat, avocate', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">محاسب / محاسبة</div>
+                        <div class="vocab-french" onclick="speak('comptable', 'fr-FR')">comptable</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أعمل كمحاسب.</div>
+                            <div class="example-french" onclick="speak('Je travaille comme comptable', 'fr-FR')">Je travaille comme comptable.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('comptable', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يدرس</div>
+                        <div class="vocab-french" onclick="speak('étudier', 'fr-FR')">étudier</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أدرس الطب.</div>
+                            <div class="example-french" onclick="speak('J\'étudie la médecine', 'fr-FR')">J'étudie la médecine.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('étudier', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">يحضر دروساً</div>
+                        <div class="vocab-french" onclick="speak('suivre des cours', 'fr-FR')">suivre des cours</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أحضر دروساً في الفرنسية.</div>
+                            <div class="example-french" onclick="speak('Je suis des cours de français', 'fr-FR')">Je suis des cours de français.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('suivre des cours', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+                </div>
+
+                <h3>🕐 التعبير عن الوقت - Exprimer le temps</h3>
+                <div class="vocab-grid">
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">مبكراً</div>
+                        <div class="vocab-french" onclick="speak('tôt', 'fr-FR')">tôt</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أستيقظ مبكراً في الصباح.</div>
+                            <div class="example-french" onclick="speak('Je me lève tôt le matin', 'fr-FR')">Je me lève tôt le matin.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('tôt', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">متأخراً</div>
+                        <div class="vocab-french" onclick="speak('tard', 'fr-FR')">tard</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">يعود متأخراً في المساء.</div>
+                            <div class="example-french" onclick="speak('Il rentre tard le soir', 'fr-FR')">Il rentre tard le soir.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('tard', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">عادةً</div>
+                        <div class="vocab-french" onclick="speak('d\'habitude', 'fr-FR')">d'habitude</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">عادةً، آخذ الحافلة.</div>
+                            <div class="example-french" onclick="speak('D\'habitude, je prends le bus', 'fr-FR')">D'habitude, je prends le bus.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('d\'habitude', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">دائماً</div>
+                        <div class="vocab-french" onclick="speak('toujours', 'fr-FR')">toujours</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">هي في الموعد دائماً.</div>
+                            <div class="example-french" onclick="speak('Elle est toujours à l\'heure', 'fr-FR')">Elle est toujours à l'heure.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('toujours', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">غالباً / كثيراً</div>
+                        <div class="vocab-french" onclick="speak('souvent', 'fr-FR')">souvent</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أذهب للسينما كثيراً.</div>
+                            <div class="example-french" onclick="speak('Je vais souvent au cinéma', 'fr-FR')">Je vais souvent au cinéma.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('souvent', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">أحياناً</div>
+                        <div class="vocab-french" onclick="speak('parfois', 'fr-FR')">parfois</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أحياناً، أعمل في عطلة نهاية الأسبوع.</div>
+                            <div class="example-french" onclick="speak('Parfois, je travaille le weekend', 'fr-FR')">Parfois, je travaille le weekend.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('parfois', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">نادراً</div>
+                        <div class="vocab-french" onclick="speak('rarement', 'fr-FR')">rarement</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">أشاهد التلفاز نادراً.</div>
+                            <div class="example-french" onclick="speak('Je regarde rarement la télévision', 'fr-FR')">Je regarde rarement la télévision.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('rarement', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+
+                    <div class="vocab-card">
+                        <div class="vocab-arabic">أبداً</div>
+                        <div class="vocab-french" onclick="speak('jamais', 'fr-FR')">jamais</div>
+                        <div class="vocab-example">
+                            <div class="example-arabic">لا أدخن أبداً.</div>
+                            <div class="example-french" onclick="speak('Je ne fume jamais', 'fr-FR')">Je ne fume jamais.</div>
+                        </div>
+                        <button class="speak-btn" onclick="speakSlow('jamais', 'fr-FR')">🐢 نطق بطيء</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📖 القواعد النحوية - Grammaire</h2>
+
+                <div class="grammar-box">
+                    <div class="grammar-title">1. الأفعال الانعكاسية - Les verbes pronominaux</div>
+                    <p>الأفعال الانعكاسية هي أفعال تُستخدم مع ضمائر انعكاسية (me, te, se, nous, vous, se) لتدل على أن الفاعل يقوم بالفعل على نفسه.</p>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الضمير</th>
+                                    <th>se réveiller (يستيقظ)</th>
+                                    <th>s'habiller (يرتدي ملابسه)</th>
+                                    <th>se coucher (يذهب للنوم)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Je</td>
+                                    <td class="french-text" onclick="speak('je me réveille', 'fr-FR')">me réveille</td>
+                                    <td class="french-text" onclick="speak('je m\'habille', 'fr-FR')">m'habille</td>
+                                    <td class="french-text" onclick="speak('je me couche', 'fr-FR')">me couche</td>
+                                </tr>
+                                <tr>
+                                    <td>Tu</td>
+                                    <td class="french-text" onclick="speak('tu te réveilles', 'fr-FR')">te réveilles</td>
+                                    <td class="french-text" onclick="speak('tu t\'habilles', 'fr-FR')">t'habilles</td>
+                                    <td class="french-text" onclick="speak('tu te couches', 'fr-FR')">te couches</td>
+                                </tr>
+                                <tr>
+                                    <td>Il/Elle</td>
+                                    <td class="french-text" onclick="speak('il se réveille', 'fr-FR')">se réveille</td>
+                                    <td class="french-text" onclick="speak('il s\'habille', 'fr-FR')">s'habille</td>
+                                    <td class="french-text" onclick="speak('il se couche', 'fr-FR')">se couche</td>
+                                </tr>
+                                <tr>
+                                    <td>Nous</td>
+                                    <td class="french-text" onclick="speak('nous nous réveillons', 'fr-FR')">nous réveillons</td>
+                                    <td class="french-text" onclick="speak('nous nous habillons', 'fr-FR')">nous habillons</td>
+                                    <td class="french-text" onclick="speak('nous nous couchons', 'fr-FR')">nous couchons</td>
+                                </tr>
+                                <tr>
+                                    <td>Vous</td>
+                                    <td class="french-text" onclick="speak('vous vous réveillez', 'fr-FR')">vous réveillez</td>
+                                    <td class="french-text" onclick="speak('vous vous habillez', 'fr-FR')">vous habillez</td>
+                                    <td class="french-text" onclick="speak('vous vous couchez', 'fr-FR')">vous couchez</td>
+                                </tr>
+                                <tr>
+                                    <td>Ils/Elles</td>
+                                    <td class="french-text" onclick="speak('ils se réveillent', 'fr-FR')">se réveillent</td>
+                                    <td class="french-text" onclick="speak('ils s\'habillent', 'fr-FR')">s'habillent</td>
+                                    <td class="french-text" onclick="speak('ils se couchent', 'fr-FR')">se couchent</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grammar-box">
+                    <div class="grammar-title">2. ظروف التكرار - Les adverbes de fréquence</div>
+                    <p>تُستخدم ظروف التكرار للتعبير عن عدد مرات حدوث الفعل. ترتيبها من الأكثر تكراراً إلى الأقل:</p>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الظرف بالفرنسية</th>
+                                    <th>المعنى</th>
+                                    <th>النسبة التقريبية</th>
+                                    <th>مثال</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="french-text" onclick="speak('toujours', 'fr-FR')">toujours</td>
+                                    <td>دائماً</td>
+                                    <td>100%</td>
+                                    <td class="french-text" onclick="speak('Je suis toujours à l\'heure', 'fr-FR')">Je suis toujours à l'heure</td>
+                                </tr>
+                                <tr>
+                                    <td class="french-text" onclick="speak('souvent', 'fr-FR')">souvent</td>
+                                    <td>غالباً</td>
+                                    <td>70-80%</td>
+                                    <td class="french-text" onclick="speak('Je vais souvent au sport', 'fr-FR')">Je vais souvent au sport</td>
+                                </tr>
+                                <tr>
+                                    <td class="french-text" onclick="speak('parfois', 'fr-FR')">parfois</td>
+                                    <td>أحياناً</td>
+                                    <td>40-50%</td>
+                                    <td class="french-text" onclick="speak('Je mange parfois au restaurant', 'fr-FR')">Je mange parfois au restaurant</td>
+                                </tr>
+                                <tr>
+                                    <td class="french-text" onclick="speak('rarement', 'fr-FR')">rarement</td>
+                                    <td>نادراً</td>
+                                    <td>10-20%</td>
+                                    <td class="french-text" onclick="speak('Je regarde rarement la télé', 'fr-FR')">Je regarde rarement la télé</td>
+                                </tr>
+                                <tr>
+                                    <td class="french-text" onclick="speak('jamais', 'fr-FR')">jamais</td>
+                                    <td>أبداً</td>
+                                    <td>0%</td>
+                                    <td class="french-text" onclick="speak('Je ne fume jamais', 'fr-FR')">Je ne fume jamais</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <strong><span class="tip-icon">💡</span> نصيحة مهمة:</strong><br>
+                    موقع ظروف التكرار في الجملة عادةً يكون بعد الفعل مباشرة:<br>
+                    <strong>Sujet + Verbe + Adverbe + Complément</strong><br>
+                    <div style="direction: ltr; text-align: left; margin-top: 10px; font-family: 'Georgia', serif; font-style: italic; cursor: pointer;" onclick="speak('Je mange souvent des fruits', 'fr-FR')">
+                    Je <u>mange</u> <strong>souvent</strong> des fruits. 🔊
+                    </div>
+                    <div style="margin-top: 5px;">مثال: آكل الفواكه كثيراً</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>✍️ تمارين تطبيقية - Exercices pratiques</h2>
+
+                <div class="exercise-box">
+                    <div class="exercise-title">تمرين 1: صرّف الأفعال الانعكاسية</div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Je me lève à six heures du matin', 'fr-FR')">1. Je __________ (se lever) à 6 heures du matin.</div>
+                        <em>الجواب: me lève</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Tu te douches tous les jours', 'fr-FR')">2. Tu __________ (se doucher) tous les jours?</div>
+                        <em>الجواب: te douches</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Nous nous réveillons tôt le weekend', 'fr-FR')">3. Nous __________ (se réveiller) tôt le weekend.</div>
+                        <em>الجواب: nous réveillons</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Ils se couchent tard le vendredi', 'fr-FR')">4. Ils __________ (se coucher) tard le vendredi.</div>
+                        <em>الجواب: se couchent</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Elle s\'habille élégamment pour le travail', 'fr-FR')">5. Elle __________ (s'habiller) élégamment pour le travail.</div>
+                        <em>الجواب: s'habille</em>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <div class="exercise-title">تمرين 2: أضف ظرف التكرار المناسب</div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Je prends toujours mon café le matin', 'fr-FR')">1. Je __________ (دائماً) prends mon café le matin.</div>
+                        <em>الجواب: toujours</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Il va parfois au cinéma avec ses amis', 'fr-FR')">2. Il va __________ (أحياناً) au cinéma avec ses amis.</div>
+                        <em>الجواب: parfois</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Nous ne mangeons jamais de viande', 'fr-FR')">3. Nous ne mangeons __________ (أبداً) de viande.</div>
+                        <em>الجواب: jamais</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Elle fait souvent du sport', 'fr-FR')">4. Elle fait __________ (غالباً) du sport.</div>
+                        <em>الجواب: souvent</em>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="french-sentence" onclick="speak('Je regarde rarement la télévision', 'fr-FR')">5. Je regarde __________ (نادراً) la télévision.</div>
+                        <em>الجواب: rarement</em>
+                    </div>
+                </div>
+
+                <div class="exercise-box">
+                    <div class="exercise-title">تمرين 3: صِف روتينك اليومي</div>
+                    <div class="exercise-item">
+                        اكتب 5 جمل عن روتينك اليومي باستخدام الأفعال الانعكاسية وظروف التكرار.<br><br>
+                        <strong>مثال:</strong><br>
+                        <div style="direction: ltr; text-align: left; font-family: 'Georgia', serif; font-style: italic; margin-top: 10px;">
+                        <div style="cursor: pointer;" onclick="speak('Je me réveille toujours à sept heures', 'fr-FR')">- Je me réveille toujours à 7 heures. 🔊</div>
+                        <div style="cursor: pointer;" onclick="speak('Je me douche tous les matins', 'fr-FR')">- Je me douche tous les matins. 🔊</div>
+                        <div style="cursor: pointer;" onclick="speak('Je prends souvent le bus pour aller au travail', 'fr-FR')">- Je prends souvent le bus pour aller au travail. 🔊</div>
+                        <div style="cursor: pointer;" onclick="speak('Je me repose parfois l\'après-midi', 'fr-FR')">- Je me repose parfois l'après-midi. 🔊</div>
+                        <div style="cursor: pointer;" onclick="speak('Je me couche rarement avant vingt-trois heures', 'fr-FR')">- Je me couche rarement avant 23 heures. 🔊</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>💬 حوار نموذجي - Dialogue modèle</h2>
+
+                <div class="grammar-box">
+                    <div class="grammar-title">Parler de sa routine quotidienne</div>
+
+                    <div class="dialogue-box">
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Bonjour Marc! Comment ça va?', 'fr-FR')"><strong>Sophie:</strong> Bonjour Marc! Comment ça va?</div>
+                            <div class="dialogue-arabic">مرحباً مارك! كيف حالك؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Ça va bien, merci! Et toi?', 'fr-FR')"><strong>Marc:</strong> Ça va bien, merci! Et toi?</div>
+                            <div class="dialogue-arabic">بخير، شكراً! وأنتِ؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Très bien! Dis-moi, à quelle heure tu te réveilles le matin?', 'fr-FR')"><strong>Sophie:</strong> Très bien! Dis-moi, à quelle heure tu te réveilles le matin?</div>
+                            <div class="dialogue-arabic">بخير جداً! قل لي، في أي ساعة تستيقظ صباحاً؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Je me réveille toujours à six heures. Je me lève rapidement et je me douche.', 'fr-FR')"><strong>Marc:</strong> Je me réveille toujours à 6 heures. Je me lève rapidement et je me douche.</div>
+                            <div class="dialogue-arabic">أستيقظ دائماً في السادسة. أنهض بسرعة وأستحم.</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Tu es très matinal! Moi, je me lève à sept heures. Après, je prends mon petit-déjeuner.', 'fr-FR')"><strong>Sophie:</strong> Tu es très matinal! Moi, je me lève à 7 heures. Après, je prends mon petit-déjeuner.</div>
+                            <div class="dialogue-arabic">أنت صباحي جداً! أنا أنهض في السابعة. بعدها، أتناول إفطاري.</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Et tu pars au travail à quelle heure?', 'fr-FR')"><strong>Marc:</strong> Et tu pars au travail à quelle heure?</div>
+                            <div class="dialogue-arabic">وفي أي ساعة تغادرين للعمل؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Je pars à huit heures. Je prends souvent le métro. Et toi?', 'fr-FR')"><strong>Sophie:</strong> Je pars à 8 heures. Je prends souvent le métro. Et toi?</div>
+                            <div class="dialogue-arabic">أغادر في الثامنة. آخذ المترو كثيراً. وأنت؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Moi, je travaille de chez moi. Je suis ingénieur informatique.', 'fr-FR')"><strong>Marc:</strong> Moi, je travaille de chez moi. Je suis ingénieur informatique.</div>
+                            <div class="dialogue-arabic">أنا أعمل من منزلي. أنا مهندس كمبيوتر.</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('C\'est intéressant! Tu rentres tard le soir?', 'fr-FR')"><strong>Sophie:</strong> C'est intéressant! Tu rentres tard le soir?</div>
+                            <div class="dialogue-arabic">هذا مثير للاهتمام! تعود متأخراً مساءً؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Non, je finis toujours à dix-sept heures. Le soir, je me repose et je regarde parfois un film.', 'fr-FR')"><strong>Marc:</strong> Non, je finis toujours à 17 heures. Le soir, je me repose et je regarde parfois un film.</div>
+                            <div class="dialogue-arabic">لا، أنتهي دائماً في الخامسة مساءً. في المساء، أستريح وأشاهد فيلماً أحياناً.</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Et tu te couches à quelle heure?', 'fr-FR')"><strong>Sophie:</strong> Et tu te couches à quelle heure?</div>
+                            <div class="dialogue-arabic">وفي أي ساعة تذهب للنوم؟</div>
+                        </div>
+
+                        <div class="dialogue-line">
+                            <div class="dialogue-french" onclick="speak('Je me couche vers vingt-deux heures. J\'aime dormir tôt!', 'fr-FR')"><strong>Marc:</strong> Je me couche vers 22 heures. J'aime dormir tôt!</div>
+                            <div class="dialogue-arabic">أذهب للنوم حوالي العاشرة. أحب النوم مبكراً!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong><span class="tip-icon">🎯</span> نصائح للتعلم الفعّال:</strong>
+                <ul style="margin-top: 10px; margin-right: 20px;">
+                    <li>تدرّب على الأفعال الانعكاسية يومياً بوصف روتينك</li>
+                    <li>استمع إلى متحدثي الفرنسية الأصليين وهم يصفون يومهم</li>
+                    <li>اكتب يومياتك باللغة الفرنسية باستخدام المفردات الجديدة</li>
+                    <li>مارس الحوارات مع شريك دراسة أو أمام المرآة</li>
+                    <li>راجع الدرس بانتظام وأضف 5 كلمات جديدة كل يوم</li>
+                    <li><strong>استخدم ميزة النطق الصوتي لتحسين نطقك الفرنسي 🔊</strong></li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="#" class="btn btn-primary">📚 الدرس التالي: الحديث عن الهوايات</a>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>سلسلة دروس المستوى A2 في اللغة الفرنسية</strong></p>
+            <p>إعداد: منصة Frenchapeau التعليمية</p>
+            <p style="margin-top: 10px; opacity: 0.8;">© 2026 - جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <!-- ====================================== -->
+    <!-- 🎤 نظام النطق التلقائي - Android TTS -->
+    <!-- ====================================== -->
+    <script>
+    (function() {
+        'use strict';
+
+        // فحص التوافقية عند تحميل الصفحة
+        window.addEventListener('load', function() {
+            if (typeof AndroidTTS !== 'undefined') {
+                console.log('✅ Android TTS متاح ;)');
+            } else {
+                console.log('⚠️ سيتم استخدام متصفح الويب للنطق');
+            }
+        });
+
+        // دالة النطق الرئيسية
+        window.speak = function(text, lang) {
+            lang = lang || 'fr-FR'; // الافتراضي: فرنسي
+
+            // المحاولة 1: استخدام Android TTS
+            if (typeof AndroidTTS !== 'undefined') {
+                try {
+                    AndroidTTS.speak(text, lang);
+                    return;
+                } catch (e) {
+                    console.error('خطأ في Android TTS:', e);
+                }
+            }
+
+            // المحاولة 2: استخدام متصفح الويب
+            if (typeof speechSynthesis !== 'undefined') {
+                try {
+                    speechSynthesis.cancel();
+                    var utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = lang;
+                    utterance.rate = 0.9;
+                    utterance.pitch = 1;
+                    speechSynthesis.speak(utterance);
+                    return;
+                } catch (e) {
+                    console.error('خطأ في Web Speech:', e);
+                }
+            }
+
+            // لا يوجد نطق متاح
+            console.warn('النطق غير متاح');
+        };
+
+        // دالة النطق البطيء
+        window.speakSlow = function(text, lang) {
+            lang = lang || 'fr-FR';
+
+            if (typeof AndroidTTS !== 'undefined') {
+                try {
+                    AndroidTTS.speakSlow(text, lang);
+                    return;
+                } catch (e) {
+                    console.error('خطأ النطق البطيء:', e);
+                }
+            }
+
+            if (typeof speechSynthesis !== 'undefined') {
+                try {
+                    speechSynthesis.cancel();
+                    var utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = lang;
+                    utterance.rate = 0.6; // بطيء جداً
+                    speechSynthesis.speak(utterance);
+                    return;
+                } catch (e) {
+                    console.error('خطأ النطق البطيء:', e);
+                }
+            }
+        };
+
+        // دالة إيقاف النطق
+        window.stopSpeech = function() {
+            if (typeof AndroidTTS !== 'undefined') {
+                try {
+                    AndroidTTS.stop();
+                } catch (e) {}
+            }
+            if (typeof speechSynthesis !== 'undefined') {
+                speechSynthesis.cancel();
+            }
+        };
+    })();
+    </script>
+</body>
+</html>
