@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام متابعة الأداء المدرسي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            header {
+                padding: 20px;
+                margin-bottom: 30px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 480px) {
+            button {
+                width: auto;
+                margin-bottom: 0;
+            }
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219150;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-info {
+            background: #17a2b8;
+        }
+
+        .btn-info:hover {
+            background: #138496;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            min-width: 800px;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            white-space: nowrap;
+        }
+
+        .report-section {
+            margin-top: 30px;
+        }
+
+        .date-filter {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .date-filter {
+                flex-direction: row;
+            }
+
+            .date-filter .form-group {
+                flex: 1;
+            }
+        }
+
+        .tab-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .tab-buttons {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .tab-button {
+                flex: 1;
+                min-width: 150px;
+            }
+        }
+
+        #hidden-report-container {
+            display: none;
+        }
+
+        .import-section {
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin: 0 2px;
+        }
+
+        .teachers-list-section {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .staff-type-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .staff-type-btn {
+            flex: 1;
+            padding: 10px;
+            background: #ecf0f1;
+            border: 1px solid #ddd;
+            color: #333;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .staff-type-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .danger-zone {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-school"></i> نظام متابعة الأداء المدرسي</h1>
+            <p>تسجيل بيانات المعلمين والمشرفين ومتابعة الأداء الشامل</p>
+        </header>
+
+        <div class="grid">
+            <!-- Add Staff (Teacher/Supervisor) -->
+            <div class="card">
+                <h2><i class="fas fa-user-plus"></i> إدارة الموظفين</h2>
+
+                <div class="staff-type-toggle">
+                    <div class="staff-type-btn active" id="typeTeacherBtn" onclick="setStaffType('teacher')">معلم</div>
+                    <div class="staff-type-btn" id="typeSupervisorBtn" onclick="setStaffType('supervisor')">مشرف</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="staffName">الاسم</label>
+                    <input type="text" id="staffName" required>
+                    <input type="hidden" id="editStaffIndex">
+                    <input type="hidden" id="currentStaffType" value="teacher">
+                </div>
+
+                <div id="teacherFields">
+                    <div class="form-group">
+                        <label for="staffSubject">التخصص (للمعلمين)</label>
+                        <select id="staffSubject">
+                            <option value="رياضيات">رياضيات</option>
+                            <option value="علوم">علوم</option>
+                            <option value="لغة عربية">لغة عربية</option>
+                            <option value="انجليزي">انجليزي</option>
+                            <option value="تاريخ">تاريخ</option>
+                            <option value="كيمياء">كيمياء</option>
+                            <option value="فيزياء">فيزياء</option>
+                            <option value="حاسب آلي">حاسب آلي</option>
+                            <option value="أنشطة">أنشطة</option>
+                            <option value="لغة فرنسية">لغة فرنسية</option>
+                            <option value="لغة ألمانية">لغة ألمانية</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffClassroom">الفصل (للمعلمين)</label>
+                        <input type="text" id="staffClassroom" placeholder="مثال: 3A">
+                    </div>
+                </div>
+
+                <button id="addStaffBtn"><i class="fas fa-plus"></i> إضافة</button>
+                <button id="updateStaffBtn" class="btn-warning" style="display:none;"><i class="fas fa-edit"></i> تحديث
+                    البيانات</button>
+                <button id="cancelEditBtn" class="btn-danger" style="display:none;"><i class="fas fa-times"></i>
+                    إلغاء</button>
+
+                <button id="toggleStaffListBtn" class="btn-info" style="margin-top: 10px;"><i class="fas fa-list"></i>
+                    عرض القائمة</button>
+
+                <div id="staffListSection" class="teachers-list-section">
+                    <h3 id="staffListTitle">قائمة المعلمين</h3>
+                    <div class="table-container">
+                        <table id="staffTable">
+                            <thead>
+                                <tr id="staffTableHead">
+                                    <th>م</th>
+                                    <th>الاسم</th>
+                                    <th>التخصص</th>
+                                    <th>الفصل</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observation Form -->
+            <div class="card">
+                <h2><i class="fas fa-clipboard-list"></i> تسجيل متابعة شاملة</h2>
+
+                <div class="form-group">
+                    <label for="observationType">نوع المتابعة</label>
+                    <select id="observationType">
+                        <option value="متابعة فصلية">متابعة معلم في الفصل</option>
+                        <option value="إشراف يومي">إشراف يومي</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="observationDate">التاريخ</label>
+                    <input type="date" id="observationDate" required>
+                </div>
+
+                <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                <!-- Teacher Section -->
+                <h3 style="font-size: 1.1em; color: var(--primary); margin-bottom: 10px;">بيانات المعلم</h3>
+                <div class="form-group">
+                    <label for="teacherId">المعلم</label>
+                    <select id="teacherId"></select>
+                </div>
+                <div class="form-group">
+                    <label for="performance">أداء المعلم</label>
+                    <select id="performance">
+                        <option value="ممتاز">ممتاز</option>
+                        <option value="جيد جدا">جيد جدا</option>
+                        <option value="جيد">جيد</option>
+                        <option value="مقبول">مقبول</option>
+                        <option value="ضعيف">ضعيف</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="notes">ملاحظات على المعلم</label>
+                    <textarea id="notes" rows="2"></textarea>
+                </div>
+
+                <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #ccc;">
+
+                <!-- Supervisor Section -->
+                <h3 style="font-size: 1.1em; color: var(--primary); margin-bottom: 10px;">بيانات المشرف</h3>
+                <div class="form-group">
+                    <label for="supervisorId">المشرف</label>
+                    <select id="supervisorId"></select>
+                </div>
+                <div class="form-group">
+                    <label for="workAssigned">العمل المكلف به المشرف</label>
+                    <input type="text" id="workAssigned" placeholder="مثال: إشراف الفناء...">
+                </div>
+                <div class="form-group">
+                    <label for="supervisorPerformance">تقييم المشرف (حالة الإشراف)</label>
+                    <select id="supervisorPerformance">
+                        <option value="ممتاز">ممتاز</option>
+                        <option value="جيد جدا">جيد جدا</option>
+                        <option value="جيد">جيد</option>
+                        <option value="مقبول">مقبول</option>
+                        <option value="ضعيف">ضعيف</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="supervisorNotes">ملاحظات على المشرف</label>
+                    <textarea id="supervisorNotes" rows="2"></textarea>
+                </div>
+
+                <button id="addObservationBtn"><i class="fas fa-check"></i> تسجيل المتابعة الشاملة</button>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div class="card report-section">
+            <h2><i class="fas fa-file-pdf"></i> التقارير والتصدير</h2>
+            <div class="date-filter">
+                <div class="form-group">
+                    <label>من تاريخ</label>
+                    <input type="date" id="startDate">
+                </div>
+                <div class="form-group">
+                    <label>إلى تاريخ</label>
+                    <input type="date" id="endDate">
+                </div>
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-button" id="dailyReportBtn">تقرير يومي (PDF)</button>
+                <button class="tab-button" id="weeklyReportBtn">تقرير أسبوعي (PDF)</button>
+                <button class="tab-button btn-success" id="exportExcelBtn"><i class="fas fa-file-excel"></i> تصدير
+                    Excel</button>
+            </div>
+
+            <div class="import-section">
+                <h3><i class="fas fa-file-import"></i> أدوات البيانات</h3>
+                <div class="form-group">
+                    <input type="file" id="importExcelFile" accept=".xlsx, .xls" />
+                </div>
+                <button class="btn-warning" id="importExcelBtn"><i class="fas fa-upload"></i> استيراد من Excel</button>
+
+                <div class="danger-zone">
+                    <button class="btn-danger" id="clearDataBtn" style="background-color: #c0392b;"><i
+                            class="fas fa-trash-alt"></i> مسح جميع المتابعات (مسح التقرير)</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-table"></i> سجل المتابعات</h2>
+            <div class="table-container">
+                <table id="observationsTable">
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>المعلم</th>
+                            <th>أداء المعلم</th>
+                            <th>ملاحظات المعلم</th>
+                            <th>المشرف</th>
+                            <th>العمل المكلف به</th>
+                            <th>تقييم المشرف</th>
+                            <th>ملاحظات المشرف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="observationsBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="hidden-report-container"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        // --- 1. Data Store ---
+        const saveData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+        const getData = (key) => {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        };
+
+        let teachers = getData('teachers') || [];
+        let supervisors = getData('supervisors') || [];
+        let observations = getData('observations') || [];
+
+        // --- 2. UI Helpers ---
+        window.setStaffType = (type) => {
+            document.getElementById('currentStaffType').value = type;
+            document.querySelectorAll('.staff-type-btn').forEach(btn => btn.classList.remove('active'));
+
+            if (type === 'teacher') {
+                document.getElementById('typeTeacherBtn').classList.add('active');
+                document.getElementById('teacherFields').style.display = 'block';
+                document.getElementById('staffListTitle').textContent = 'قائمة المعلمين';
+                document.getElementById('staffTableHead').innerHTML = '<th>م</th><th>الاسم</th><th>التخصص</th><th>الفصل</th><th>إجراءات</th>';
+            } else {
+                document.getElementById('typeSupervisorBtn').classList.add('active');
+                document.getElementById('teacherFields').style.display = 'none';
+                document.getElementById('staffListTitle').textContent = 'قائمة المشرفين';
+                document.getElementById('staffTableHead').innerHTML = '<th>م</th><th>الاسم</th><th>-</th><th>-</th><th>إجراءات</th>';
+            }
+            updateStaffListTable();
+        };
+
+        const updateDropdowns = () => {
+            const tDropdown = document.getElementById('teacherId');
+            tDropdown.innerHTML = '<option value="">اختر معلم...</option>';
+            teachers.forEach((t, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = `${t.name} (${t.subject})`;
+                tDropdown.appendChild(opt);
+            });
+
+            const sDropdown = document.getElementById('supervisorId');
+            sDropdown.innerHTML = '<option value="">اختر مشرف...</option>';
+            supervisors.forEach((s, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = s.name;
+                sDropdown.appendChild(opt);
+            });
+        };
+
+        const updateStaffListTable = () => {
+            const type = document.getElementById('currentStaffType').value;
+            const list = type === 'teacher' ? teachers : supervisors;
+            const tbody = document.getElementById('staffBody');
+            tbody.innerHTML = '';
+
+            list.forEach((item, index) => {
+                const row = document.createElement('tr');
+                if (type === 'teacher') {
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.name}</td>
+                        <td>${item.subject}</td>
+                        <td>${item.classroom || '-'}</td>
+                        <td>
+                            <button class="btn-warning action-btn" onclick="editStaff(${index}, 'teacher')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-danger action-btn" onclick="deleteStaff(${index}, 'teacher')"><i class="fas fa-trash"></i></button>
+                        </td>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.name}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn-warning action-btn" onclick="editStaff(${index}, 'supervisor')"><i class="fas fa-edit"></i></button>
+                            <button class="btn-danger action-btn" onclick="deleteStaff(${index}, 'supervisor')"><i class="fas fa-trash"></i></button>
+                        </td>
+                    `;
+                }
+                tbody.appendChild(row);
+            });
+        };
+
+        const getColorForPerformance = (performance) => {
+            const colors = {
+                'ممتاز': '#27ae60',
+                'جيد جدا': '#2980b9',
+                'جيد': '#f39c12',
+                'مقبول': '#e67e22',
+                'ضعيف': '#e74c3c'
+            };
+            return colors[performance] || 'black';
+        };
+
+        const updateObservationsTable = () => {
+            const tbody = document.getElementById('observationsBody');
+            tbody.innerHTML = '';
+
+            const sortedObservations = [...observations].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedObservations.forEach(obs => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${obs.date || '-'}</td>
+                    <td>${obs.teacher || '-'}</td>
+                    <td style="color:${getColorForPerformance(obs.performance)}; font-weight:bold;">${obs.performance || '-'}</td>
+                    <td>${obs.notes || '-'}</td>
+                    <td>${obs.supervisor || '-'}</td>
+                    <td>${obs.workAssigned || '-'}</td>
+                    <td style="color:${getColorForPerformance(obs.supervisorPerformance)}; font-weight:bold;">${obs.supervisorPerformance || '-'}</td>
+                    <td>${obs.supervisorNotes || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        };
+
+        // --- 3. Manage Staff Logic ---
+        document.getElementById('addStaffBtn').addEventListener('click', () => {
+            const type = document.getElementById('currentStaffType').value;
+            const name = document.getElementById('staffName').value;
+
+            if (!name) { alert('يرجى إدخال الاسم'); return; }
+
+            if (type === 'teacher') {
+                const subject = document.getElementById('staffSubject').value;
+                const classroom = document.getElementById('staffClassroom').value;
+                teachers.push({ name, subject, classroom });
+                saveData('teachers', teachers);
+            } else {
+                supervisors.push({ name });
+                saveData('supervisors', supervisors);
+            }
+
+            updateDropdowns();
+            updateStaffListTable();
+            alert('تمت الإضافة بنجاح');
+            resetStaffForm();
+        });
+
+        window.editStaff = (index, type) => {
+            setStaffType(type);
+            const list = type === 'teacher' ? teachers : supervisors;
+            const item = list[index];
+
+            document.getElementById('staffName').value = item.name;
+            document.getElementById('editStaffIndex').value = index;
+
+            if (type === 'teacher') {
+                document.getElementById('staffSubject').value = item.subject;
+                document.getElementById('staffClassroom').value = item.classroom;
+            }
+
+            document.getElementById('addStaffBtn').style.display = 'none';
+            document.getElementById('updateStaffBtn').style.display = 'inline-block';
+            document.getElementById('cancelEditBtn').style.display = 'inline-block';
+            document.querySelector('.container').scrollIntoView();
+        };
+
+        document.getElementById('updateStaffBtn').addEventListener('click', () => {
+            const index = document.getElementById('editStaffIndex').value;
+            const type = document.getElementById('currentStaffType').value;
+            const name = document.getElementById('staffName').value;
+
+            if (!name || index === "") { alert('بيانات غير مكتملة'); return; }
+
+            if (type === 'teacher') {
+                const subject = document.getElementById('staffSubject').value;
+                const classroom = document.getElementById('staffClassroom').value;
+                teachers[index] = { name, subject, classroom };
+                saveData('teachers', teachers);
+            } else {
+                supervisors[index] = { name };
+                saveData('supervisors', supervisors);
+            }
+
+            updateDropdowns();
+            updateStaffListTable();
+            alert('تم التحديث بنجاح');
+            resetStaffForm();
+        });
+
+        document.getElementById('cancelEditBtn').addEventListener('click', resetStaffForm);
+
+        function resetStaffForm() {
+            document.getElementById('staffName').value = '';
+            document.getElementById('staffClassroom').value = '';
+            document.getElementById('editStaffIndex').value = '';
+            document.getElementById('addStaffBtn').style.display = 'inline-block';
+            document.getElementById('updateStaffBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
+        window.deleteStaff = (index, type) => {
+            if (confirm('هل أنت متأكد من الحذف؟')) {
+                const list = type === 'teacher' ? teachers : supervisors;
+                list.splice(index, 1);
+                saveData(type === 'teacher' ? 'teachers' : 'supervisors', list);
+                updateDropdowns();
+                updateStaffListTable();
+            }
+        };
+
+        document.getElementById('toggleStaffListBtn').addEventListener('click', () => {
+            const section = document.getElementById('staffListSection');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // --- 4. Add Observation Logic ---
+        document.getElementById('addObservationBtn').addEventListener('click', () => {
+            const teacherIdx = document.getElementById('teacherId').value;
+            const supervisorIdx = document.getElementById('supervisorId').value;
+            const date = document.getElementById('observationDate').value;
+
+            if (teacherIdx === "" || supervisorIdx === "" || !date) {
+                alert('يرجى اختيار المعلم والمشرف وتحديد التاريخ');
+                return;
+            }
+
+            const teacher = teachers[teacherIdx];
+            const supervisor = supervisors[supervisorIdx];
+
+            const obs = {
+                date,
+                type: document.getElementById('observationType').value,
+
+                teacher: teacher.name,
+                subject: teacher.subject,
+                classroom: teacher.classroom,
+                performance: document.getElementById('performance').value,
+                notes: document.getElementById('notes').value,
+
+                supervisor: supervisor.name,
+                workAssigned: document.getElementById('workAssigned').value,
+                supervisorPerformance: document.getElementById('supervisorPerformance').value,
+                supervisorNotes: document.getElementById('supervisorNotes').value
+            };
+
+            observations.push(obs);
+            saveData('observations', observations);
+            updateObservationsTable();
+            alert('تم تسجيل المتابعة الشاملة بنجاح');
+
+            document.getElementById('notes').value = '';
+            document.getElementById('supervisorNotes').value = '';
+            document.getElementById('workAssigned').value = '';
+        });
+
+        // --- 5. Reports & Data Tools ---
+        const getFilteredObservations = (reportType) => {
+            return observations.filter(obs => {
+                const obsDate = new Date(obs.date);
+                const today = new Date();
+
+                if (reportType === 'daily') {
+                    return obsDate.toDateString() === today.toDateString();
+                } else if (reportType === 'weekly') {
+                    let startDate, endDate;
+                    if (document.getElementById('startDate').value && document.getElementById('endDate').value) {
+                        startDate = new Date(document.getElementById('startDate').value);
+                        endDate = new Date(document.getElementById('endDate').value);
+                    } else {
+                        const curr = new Date();
+                        const first = curr.getDate() - curr.getDay();
+                        startDate = new Date(curr.setDate(first));
+                        endDate = new Date(curr.setDate(startDate.getDate() + 6));
+                    }
+                    return obsDate >= startDate && obsDate <= endDate;
+                }
+                return true;
+            });
+        };
+
+        const generatePdfReport = (type = 'daily') => {
+            const data = getFilteredObservations(type);
+            const title = type === 'daily' ? 'التقرير اليومي الشامل' : 'التقرير الأسبوعي الشامل';
+            const dateText = new Date().toLocaleDateString('ar-EG');
+
+            const container = document.createElement('div');
+            container.setAttribute('dir', 'rtl');
+            container.style.fontFamily = "'Segoe UI', Tahoma, sans-serif";
+            container.style.padding = "20px";
+
+            let htmlContent = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #2c3e50; margin-bottom: 10px;">${title}</h1>
+                    <p style="color: #7f8c8d;">تاريخ التقرير: ${dateText}</p>
+                    <hr style="border: 1px solid #eee; margin-top: 10px;">
+                </div>
+                
+                <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 11px;" dir="rtl">
+                    <thead>
+                        <tr style="background-color: #2c3e50; color: white;">
+                            <th style="padding: 6px; border: 1px solid #ddd;">التاريخ</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">المعلم</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">أداء المعلم</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">ملاحظات المعلم</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">المشرف</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">عمل مشرف</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">أداء مشرف</th>
+                            <th style="padding: 6px; border: 1px solid #ddd;">ملاحظات مشرف</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            if (data.length === 0) {
+                htmlContent += `<tr><td colspan="8" style="padding: 20px;">لا توجد بيانات لهذا التقرير</td></tr>`;
+            } else {
+                data.forEach(obs => {
+                    htmlContent += `
+                        <tr>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.date}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.teacher}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.performance}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.notes || '-'}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.supervisor}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.workAssigned || '-'}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.supervisorPerformance}</td>
+                            <td style="padding: 6px; border: 1px solid #ddd;">${obs.supervisorNotes || '-'}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            htmlContent += `</tbody></table>`;
+            container.innerHTML = htmlContent;
+
+            const opt = {
+                margin: 5,
+                filename: `SchoolReport_${type}_${dateText}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            };
+
+            html2pdf().set(opt).from(container).save();
+        };
+
+        const exportToExcel = () => {
+            const dataToExport = getFilteredObservations('weekly');
+            const formattedData = dataToExport.map(obs => ({
+                "التاريخ": obs.date,
+                "المعلم": obs.teacher,
+                "النوع": obs.type,
+                "أداء المعلم": obs.performance,
+                "ملاحظات المعلم": obs.notes,
+                "المشرف": obs.supervisor,
+                "العمل المكلف به": obs.workAssigned,
+                "تقييم المشرف": obs.supervisorPerformance,
+                "ملاحظات المشرف": obs.supervisorNotes
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(formattedData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "التقييم الشامل");
+            if (!wb.Workbook) wb.Workbook = {};
+            if (!wb.Workbook.Views) wb.Workbook.Views = [];
+            if (!wb.Workbook.Views[0]) wb.Workbook.Views[0] = {};
+            wb.Workbook.Views[0].RTL = true;
+            XLSX.writeFile(wb, "school_comprehensive_report.xlsx");
+        };
+
+        const importFromExcel = () => {
+            const fileInput = document.getElementById('importExcelFile');
+            const file = fileInput.files[0];
+            if (!file) { alert("الرجاء اختيار ملف Excel أولاً."); return; }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                if (jsonData.length === 0) { alert("الملف فارغ"); return; }
+
+                const newObservations = jsonData.map(row => ({
+                    date: row['التاريخ'] || '',
+                    teacher: row['المعلم'] || '',
+                    subject: '',
+                    classroom: '',
+                    type: row['النوع'] || '',
+                    performance: row['أداء المعلم'] || '',
+                    notes: row['ملاحظات المعلم'] || '',
+                    supervisor: row['المشرف'] || '',
+                    workAssigned: row['العمل المكلف به'] || '',
+                    supervisorPerformance: row['تقييم المشرف'] || '',
+                    supervisorNotes: row['ملاحظات المشرف'] || ''
+                }));
+
+                const validNewObservations = newObservations.filter(o => o.teacher || o.supervisor);
+
+                if (validNewObservations.length > 0) {
+                    observations = [...observations, ...validNewObservations];
+                    saveData('observations', observations);
+                    updateObservationsTable();
+                    alert(`تم استيراد ${validNewObservations.length} سجل بنجاح.`);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        };
+
+        // Clear Data Logic
+        const clearAllData = () => {
+            if (confirm("هل أنت متأكد تماماً بأنك تريد مسح جميع سجلات المتابعة؟\n\nلا يمكن التراجع عن هذا الإجراء!")) {
+                if (confirm("تأكيد أخير: سيتم مسح التقرير بالكامل.")) {
+                    observations = [];
+                    saveData('observations', observations);
+                    updateObservationsTable();
+                    alert("تم مسح جميع البيانات بنجاح.");
+                }
+            }
+        };
+
+        // --- 6. Init ---
+        document.getElementById('dailyReportBtn').addEventListener('click', () => generatePdfReport('daily'));
+        document.getElementById('weeklyReportBtn').addEventListener('click', () => generatePdfReport('weekly'));
+        document.getElementById('exportExcelBtn').addEventListener('click', exportToExcel);
+        document.getElementById('importExcelBtn').addEventListener('click', importFromExcel);
+        document.getElementById('clearDataBtn').addEventListener('click', clearAllData); // New Event Listener
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setStaffType('teacher');
+            updateDropdowns();
+            updateStaffListTable();
+            updateObservationsTable();
+            document.getElementById('observationDate').value = new Date().toISOString().split('T')[0];
+        });
+
+    </script>
+</body>
+
+</html>
