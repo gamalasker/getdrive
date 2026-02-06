@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الإشراف المدرسي اليومي</title>
+    <style>
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-success: #10b981;
+            --color-danger: #ef4444;
+            --color-warning: #f59e0b;
+            --color-bg: #f8fafc;
+            --color-surface: #ffffff;
+            --color-text: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--color-text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--color-surface);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: var(--color-primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .school-name {
+            color: var(--color-text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .controls {
+            background: var(--color-surface);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .day-tabs {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        .day-tab {
+            padding: 12px 24px;
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+
+        .day-tab:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        .day-tab.active {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .schedule-container {
+            background: var(--color-surface);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--color-border);
+        }
+
+        .day-title {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .general-supervisor {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .supervisors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .supervisor-card {
+            background: #f8fafc;
+            border: 2px solid var(--color-border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: move;
+            position: relative;
+        }
+
+        .supervisor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-primary);
+        }
+
+        .supervisor-card.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .supervisor-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .supervisor-name::before {
+            content: '👤';
+            font-size: 1.4rem;
+        }
+
+        .supervisor-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .info-icon {
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border-radius: 6px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            justify-content: flex-end;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                font-size: 12pt;
+            }
+
+            .container,
+            .header,
+            .controls,
+            .schedule-container {
+                display: none !important;
+            }
+
+            .print-content {
+                display: block !important;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .print-header {
+                text-align: center;
+                margin-bottom: 30px;
+                border-bottom: 2px solid #000;
+                padding-bottom: 20px;
+            }
+
+            .print-header h1 {
+                font-size: 24pt;
+                margin-bottom: 10px;
+                color: #000;
+            }
+
+            .print-header .meta-info {
+                display: flex;
+                justify-content: space-between;
+                font-size: 14pt;
+                margin-top: 20px;
+                font-weight: bold;
+            }
+
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            .print-table th,
+            .print-table td {
+                border: 1px solid #000;
+                padding: 10px;
+                text-align: right;
+            }
+
+            .print-table th {
+                background-color: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-weight: bold;
+                font-size: 14pt;
+            }
+
+            .print-table td {
+                font-size: 12pt;
+            }
+
+            .signature-col {
+                width: 150px;
+            }
+
+            .print-footer {
+                margin-top: 50px;
+                display: flex;
+                justify-content: space-between;
+                padding: 0 50px;
+                font-weight: bold;
+                font-size: 14pt;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .day-tabs {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .supervisors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 نظام الإشراف المدرسي اليومي</h1>
+            <div class="school-name">مدرسة د. محمد ربيع فلاح الثانوية بنات</div>
+            <div class="subtitle">نظام شامل لإدارة وتنظيم الإشراف اليومي</div>
+        </div>
+
+        <div class="controls">
+            <div class="day-tabs" id="dayTabs"></div>
+            <input type="date" id="printDate" class="form-input"
+                style="width: auto; max-width: 150px; cursor: pointer;">
+            <button class="btn btn-primary" onclick="addSupervisor()">➕ إضافة مشرف</button>
+            <button class="btn btn-primary" onclick="editGeneralSupervisor()">✏️ تعديل المشرف العام</button>
+            <button class="btn btn-success" onclick="window.print()">🖨️ طباعة</button>
+            <button class="btn btn-warning" onclick="exportToWord()" style="background-color: #2b5797; color: white;">📄
+                تصدير لوورد</button>
+        </div>
+
+        <div class="schedule-container">
+            <div class="stats" id="stats"></div>
+            <div class="day-header">
+                <div class="day-title" id="dayTitle"></div>
+                <div class="general-supervisor" id="generalSupervisor"></div>
+            </div>
+            <div class="supervisors-grid" id="supervisorsGrid"></div>
+        </div>
+    </div>
+
+    <!-- Print Content Container -->
+    <div class="print-content" id="printContent"></div>
+
+    <!-- Modal for Adding/Editing Supervisor -->
+    <div class="modal" id="supervisorModal">
+        <div class="modal-content">
+            <div class="modal-header" id="modalTitle">إضافة مشرف جديد</div>
+            <form id="supervisorForm">
+                <div class="form-group">
+                    <label class="form-label">اليوم</label>
+                    <select class="form-select" id="supervisorDay" required>
+                        <option value="الأحد">الأحد</option>
+                        <option value="الاثنين">الاثنين</option>
+                        <option value="الثلاثاء">الثلاثاء</option>
+                        <option value="الأربعاء">الأربعاء</option>
+                        <option value="الخميس">الخميس</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">الاسم</label>
+                    <input type="text" class="form-input" id="supervisorName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">المبنى</label>
+                    <select class="form-select" id="supervisorBuilding" required>
+                        <option value="الجديد">الجديد</option>
+                        <option value="القديم">القديم</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">الدور</label>
+                    <select class="form-select" id="supervisorFloor" required>
+                        <option value="الأول">الأول</option>
+                        <option value="الثاني">الثاني</option>
+                        <option value="الثالث">الثالث</option>
+                        <option value="الرابع">الرابع</option>
+                        <option value="الخامس">الخامس</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" onclick="closeModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-success">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing General Supervisor -->
+    <div class="modal" id="generalSupervisorModal">
+        <div class="modal-content">
+            <div class="modal-header">تعديل المشرف العام</div>
+            <form id="generalSupervisorForm">
+                <div class="form-group">
+                    <label class="form-label">اسم المشرف العام</label>
+                    <input type="text" class="form-input" id="generalSupervisorName" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-danger" onclick="closeGeneralModal()">إلغاء</button>
+                    <button type="submit" class="btn btn-success">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initial data
+        let scheduleData = {
+            'الأحد': {
+                'general_supervisor': 'فتحي عيد',
+                'supervisors': [
+                    { 'name': 'عاطف كامل', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'نبيلة فؤاد حسن', 'building': 'الجديد', 'floor': 'الثاني' },
+                    { 'name': 'بسمة احمد', 'building': 'الجديد', 'floor': 'الثالث' },
+                    { 'name': 'حسام منصور', 'building': 'الجديد', 'floor': 'الرابع' },
+                    { 'name': 'شيماء جلال', 'building': 'الجديد', 'floor': 'الخامس' },
+                    { 'name': 'سحر أنور', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'يسرا جمال', 'building': 'القديم', 'floor': 'الثاني' },
+                    { 'name': 'صباح احمد', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'سناء عبد الله', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'على امام', 'building': 'القديم', 'floor': 'الرابع' },
+                    { 'name': 'سعيد رمضان', 'building': 'القديم', 'floor': 'الرابع' }
+                ]
+            },
+            'الاثنين': {
+                'general_supervisor': 'ناصر عبد الحميد',
+                'supervisors': [
+                    { 'name': 'عادل السنباطي', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'ايمان ابو الفتوح', 'building': 'الجديد', 'floor': 'الثاني' },
+                    { 'name': 'مهدى عبد الفتاح', 'building': 'الجديد', 'floor': 'الثالث' },
+                    { 'name': 'احمد عبد الحميد', 'building': 'الجديد', 'floor': 'الرابع' },
+                    { 'name': 'محمد عساكر المسلمى', 'building': 'الجديد', 'floor': 'الخامس' },
+                    { 'name': 'يسرا جمال', 'building': 'القديم', 'floor': 'الثاني' },
+                    { 'name': 'ليلى على', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'صفاء محمد', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'ماهر عبد الحليم', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'احمد فراج الهادى', 'building': 'القديم', 'floor': 'الرابع' },
+                    { 'name': 'حافظه عبد العظيم', 'building': 'القديم', 'floor': 'الرابع' }
+                ]
+            },
+            'الثلاثاء': {
+                'general_supervisor': 'ابراهيم رمضان بكر',
+                'supervisors': [
+                    { 'name': 'انعام صلاح', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'ريهام شوق', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'اسراء احمد صديق', 'building': 'الجديد', 'floor': 'الثاني' },
+                    { 'name': 'دينا حماد', 'building': 'الجديد', 'floor': 'الثالث' },
+                    { 'name': 'رشا رمضان حامد', 'building': 'الجديد', 'floor': 'الرابع' },
+                    { 'name': 'طلعت عبد المعبود', 'building': 'الجديد', 'floor': 'الخامس' },
+                    { 'name': 'نبيلة فؤاد حسن', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'منال عبد الستار', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'حنان سليم', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'أماني موسي', 'building': 'القديم', 'floor': 'الثاني' },
+                    { 'name': 'هناء محمد عبد الفتاح', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'لبنى عبد العزيز', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'سحر الشحات', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'محمد عبد الوهاب', 'building': 'القديم', 'floor': 'الرابع' },
+                    { 'name': 'حافظه عبد العظيم', 'building': 'القديم', 'floor': 'الرابع' }
+                ]
+            },
+            'الأربعاء': {
+                'general_supervisor': 'عبد السلام جمال',
+                'supervisors': [
+                    { 'name': 'هدى طنطاوي', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'عايده نور', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'عبير عبد الله', 'building': 'الجديد', 'floor': 'الثاني' },
+                    { 'name': 'زبيدة محمد', 'building': 'الجديد', 'floor': 'الثالث' },
+                    { 'name': 'وهيبه السيد', 'building': 'الجديد', 'floor': 'الرابع' },
+                    { 'name': 'دينا حماد', 'building': 'الجديد', 'floor': 'الخامس' },
+                    { 'name': 'المسلمى', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'سعيد احمد', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'عبير السيد', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'هدى جمعه', 'building': 'القديم', 'floor': 'الثاني' },
+                    { 'name': 'وفاء محمد عبد الشافي', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'سندسيه', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'احمد سيد احمد', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'ايه ابراهيم صادق', 'building': 'القديم', 'floor': 'الرابع' },
+                    { 'name': 'عبد المصلح', 'building': 'القديم', 'floor': 'الرابع' },
+                    { 'name': 'علاء سيد أحمد', 'building': 'القديم', 'floor': 'الرابع' }
+                ]
+            },
+            'الخميس': {
+                'general_supervisor': 'محمد إبراهيم الدسوقى',
+                'supervisors': [
+                    { 'name': 'عبير رمضان', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'ايمان ابو الفتوح', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'اسراء احمد صديق', 'building': 'الجديد', 'floor': 'الأول' },
+                    { 'name': 'ايناس عبد الوهاب', 'building': 'الجديد', 'floor': 'الثاني' },
+                    { 'name': 'أيمن عطية حبيب', 'building': 'الجديد', 'floor': 'الثالث' },
+                    { 'name': 'وهيبه السيد', 'building': 'الجديد', 'floor': 'الرابع' },
+                    { 'name': 'وليد محمد', 'building': 'الجديد', 'floor': 'الخامس' },
+                    { 'name': 'عايده نور', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'عبير السيد', 'building': 'القديم', 'floor': 'الأول' },
+                    { 'name': 'ناهد عبد الوهاب', 'building': 'القديم', 'floor': 'الثاني' },
+                    { 'name': 'سحر الشحات', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'عفت على محمد', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'على صابر', 'building': 'القديم', 'floor': 'الثالث' },
+                    { 'name': 'عبير السعيد كامل', 'building': 'القديم', 'floor': 'الرابع' },
+                    { 'name': 'رمضان عبد الرازق', 'building': 'القديم', 'floor': 'الرابع' }
+                ]
+            }
+        };
+
+        let currentDay = 'الأحد';
+        let editingIndex = -1;
+        let draggedElement = null;
+        let draggedIndex = -1;
+
+        // Helper function to get full date
+        function getFullDate() {
+            const dateInput = document.getElementById('printDate');
+            const selectedDate = dateInput.valueAsDate || new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return selectedDate.toLocaleDateString('ar-EG', options);
+        }
+
+        // Get selected day name
+        function getSelectedDayName() {
+            const dateInput = document.getElementById('printDate');
+            const selectedDate = dateInput.valueAsDate || new Date();
+            return selectedDate.toLocaleDateString('ar-EG', { weekday: 'long' });
+        }
+
+        // Load data from localStorage if exists
+        function loadData() {
+            const saved = localStorage.getItem('supervisionSchedule');
+            if (saved) {
+                scheduleData = JSON.parse(saved);
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('supervisionSchedule', JSON.stringify(scheduleData));
+        }
+
+        // Initialize
+        function init() {
+            loadData();
+            // Set date input to today
+            document.getElementById('printDate').valueAsDate = new Date();
+            renderDayTabs();
+            renderSchedule();
+        }
+
+        // Render day tabs
+        function renderDayTabs() {
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+            const tabsContainer = document.getElementById('dayTabs');
+            tabsContainer.innerHTML = days.map(day =>
+                `<div class="day-tab ${day === currentDay ? 'active' : ''}" onclick="switchDay('${day}')">${day}</div>`
+            ).join('');
+        }
+
+        // Switch day
+        function switchDay(day) {
+            currentDay = day;
+            renderDayTabs();
+            renderSchedule();
+        }
+
+        // Render schedule
+        function renderSchedule() {
+            const data = scheduleData[currentDay];
+            document.getElementById('dayTitle').textContent = `جدول الإشراف - ${currentDay}`;
+            document.getElementById('generalSupervisor').innerHTML = `👨‍💼 المشرف العام: ${data.general_supervisor}`;
+
+            // Render stats
+            const statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-value">${data.supervisors.length}</div>
+                    <div class="stat-label">إجمالي المشرفين</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.supervisors.filter(s => s.building === 'الجديد').length}</div>
+                    <div class="stat-label">المبنى الجديد</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${data.supervisors.filter(s => s.building === 'القديم').length}</div>
+                    <div class="stat-label">المبنى القديم</div>
+                </div>
+            `;
+            document.getElementById('stats').innerHTML = statsHtml;
+
+            // Render supervisors
+            const grid = document.getElementById('supervisorsGrid');
+            if (data.supervisors.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>لا يوجد مشرفين</h3>
+                        <p>اضغط على "إضافة مشرف" لإضافة مشرف جديد</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = data.supervisors.map((supervisor, index) => `
+                <div class="supervisor-card" draggable="true" 
+                     ondragstart="handleDragStart(event, ${index})"
+                     ondragover="handleDragOver(event)"
+                     ondrop="handleDrop(event, ${index})"
+                     ondragend="handleDragEnd(event)">
+                    <div class="supervisor-name">${supervisor.name}</div>
+                    <div class="supervisor-info">
+                        <div class="info-row">
+                            <span class="info-icon">🏢</span>
+                            <span>المبنى: ${supervisor.building}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">📍</span>
+                            <span>الدور: ${supervisor.floor}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-icon">📋</span>
+                            <span>الموقع: ${supervisor.building} - ${supervisor.floor}</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary btn-small" onclick="editSupervisor(${index})">✏️ تعديل</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteSupervisor(${index})">🗑️ حذف</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Print Content
+            const printContent = document.getElementById('printContent');
+
+            // Use currentDay (Active Tab) as the source of truth for the schedule data and day name
+            // The date picker provides the date string only.
+            const printData = scheduleData[currentDay];
+
+            printContent.innerHTML = `
+                <div class="print-header">
+                    <h1>مدرسة د. محمد ربيع فلاح الثانوية بنات</h1>
+                    <h2>كشف توقيع الإشراف اليومي</h2>
+                    <div class="meta-info">
+                        <div>التاريخ: ${getFullDate()}</div>
+                        <div>اليوم: ${currentDay}</div>
+                        <div>المشرف العام: ${printData.general_supervisor}</div>
+                    </div>
+                </div>
+
+                <table class="print-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px">م</th>
+                            <th>اسم المشرف</th>
+                            <th>المبنى</th>
+                            <th>الدور</th>
+                            <th>التواجد</th>
+                            <th class="signature-col">التوقيع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${printData.supervisors.map((supervisor, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${supervisor.name}</td>
+                            <td>${supervisor.building}</td>
+                            <td>${supervisor.floor}</td>
+                            <td>${supervisor.building} - ${supervisor.floor}</td>
+                            <td></td>
+                        </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div class="print-footer">
+                    <div>توقيع المشرف العام</div>
+                    <div>مدير المدرسة</div>
+                </div>
+            `;
+        }
+
+        // Export to Word
+        function exportToWord() {
+            // Use currentDay (Active Tab) to ensure export matches screen
+            const data = scheduleData[currentDay];
+            const dateStr = getFullDate();
+
+            const header = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40' dir='rtl'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>جدول الإشراف</title>
+                    <style>
+                        body { font-family: 'Arial', sans-serif; direction: rtl; text-align: right; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; direction: rtl; }
+                        td, th { border: 1px solid black; padding: 8px; text-align: right; }
+                        th { background-color: #f2f2f2; }
+                        .header { text-align: center; margin-bottom: 20px; }
+                        h1 { font-size: 24pt; margin: 0; }
+                        h2 { font-size: 18pt; margin: 10px 0; }
+                        .meta { margin-top: 15px; font-size: 14pt; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>مدرسة د. محمد ربيع فلاح الثانوية بنات</h1>
+                        <h2>كشف توقيع الإشراف اليومي</h2>
+                        <div class="meta">
+                            <p>التاريخ: ${dateStr}</p>
+                            <p>اليوم: ${currentDay}</p>
+                            <p>المشرف العام: ${data.general_supervisor}</p>
+                        </div>
+                    </div>
+                    
+                    <table dir="rtl" style="width: 100%; table-layout: fixed;">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px">م</th>
+                                <th>اسم المشرف</th>
+                                <th>المبنى</th>
+                                <th>الدور</th>
+                                <th>التواجد</th>
+                                <th style="width: 150px">التوقيع</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.supervisors.map((supervisor, index) => `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${supervisor.name}</td>
+                                <td>${supervisor.building}</td>
+                                <td>${supervisor.floor}</td>
+                                <td>${supervisor.building} - ${supervisor.floor}</td>
+                                <td></td>
+                            </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 50px; display: flex; justify-content: space-between; padding: 0 50px; font-weight: bold; font-size: 14pt;">
+                        <div style="float: right;">توقيع المشرف العام</div>
+                        <div style="float: left;">مدير المدرسة</div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', header], {
+                type: 'application/msword'
+            });
+
+            // Create download link
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `جدول_الاشراف_${currentDay}_${new Date().toISOString().split('T')[0]}.doc`;
+
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Drag and drop handlers
+        function handleDragStart(event, index) {
+            draggedElement = event.target;
+            draggedIndex = index;
+            event.target.classList.add('dragging');
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+        }
+
+        function handleDrop(event, targetIndex) {
+            event.preventDefault();
+            if (draggedIndex !== targetIndex) {
+                const data = scheduleData[currentDay];
+                const draggedItem = data.supervisors[draggedIndex];
+                data.supervisors.splice(draggedIndex, 1);
+                data.supervisors.splice(targetIndex, 0, draggedItem);
+                saveData();
+                renderSchedule();
+            }
+        }
+
+        function handleDragEnd(event) {
+            event.target.classList.remove('dragging');
+        }
+
+        // Add supervisor
+        function addSupervisor() {
+            editingIndex = -1;
+            document.getElementById('modalTitle').textContent = 'إضافة مشرف جديد';
+            document.getElementById('supervisorName').value = '';
+            document.getElementById('supervisorDay').value = currentDay;
+            document.getElementById('supervisorBuilding').value = 'الجديد';
+            document.getElementById('supervisorFloor').value = 'الأول';
+            document.getElementById('supervisorModal').classList.add('active');
+        }
+
+        // Edit supervisor
+        function editSupervisor(index) {
+            editingIndex = index;
+            const supervisor = scheduleData[currentDay].supervisors[index];
+            document.getElementById('modalTitle').textContent = 'تعديل بيانات المشرف';
+            document.getElementById('supervisorName').value = supervisor.name;
+            document.getElementById('supervisorDay').value = currentDay;
+            document.getElementById('supervisorBuilding').value = supervisor.building;
+            document.getElementById('supervisorFloor').value = supervisor.floor;
+            document.getElementById('supervisorModal').classList.add('active');
+        }
+
+        // Delete supervisor
+        function deleteSupervisor(index) {
+            if (confirm('هل أنت متأكد من حذف هذا المشرف؟')) {
+                scheduleData[currentDay].supervisors.splice(index, 1);
+                saveData();
+                renderSchedule();
+            }
+        }
+
+        // Edit general supervisor
+        function editGeneralSupervisor() {
+            document.getElementById('generalSupervisorName').value = scheduleData[currentDay].general_supervisor;
+            document.getElementById('generalSupervisorModal').classList.add('active');
+        }
+
+        // Close modals
+        function closeModal() {
+            document.getElementById('supervisorModal').classList.remove('active');
+        }
+
+        function closeGeneralModal() {
+            document.getElementById('generalSupervisorModal').classList.remove('active');
+        }
+
+        // Handle supervisor form submit
+        document.getElementById('supervisorForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('supervisorName').value.trim();
+            const building = document.getElementById('supervisorBuilding').value;
+            const floor = document.getElementById('supervisorFloor').value;
+            const selectedDay = document.getElementById('supervisorDay').value;
+
+            if (!name) {
+                alert('يرجى إدخال اسم المشرف');
+                return;
+            }
+
+            const supervisor = { name, building, floor };
+
+            // Logic to handle changing days or editing within same day
+            if (editingIndex === -1) {
+                // Adding new supervisor
+                scheduleData[selectedDay].supervisors.push(supervisor);
+            } else {
+                // Editing existing supervisor
+                if (selectedDay === currentDay) {
+                    // Same day update
+                    scheduleData[currentDay].supervisors[editingIndex] = supervisor;
+                } else {
+                    // Moving to different day
+                    // 1. Remove from current day
+                    scheduleData[currentDay].supervisors.splice(editingIndex, 1);
+                    // 2. Add to new day
+                    scheduleData[selectedDay].supervisors.push(supervisor);
+                }
+            }
+
+            saveData();
+
+            // If we moved the supervisor to another day, or added to another day, we might want to stay on current day or switch?
+            // User requested ability to modify day. 
+            // If I move a supervisor to Sunday while viewing Monday, they should disappear from Monday.
+            // So simply re-rendering the current schedule is correct. 
+            // If they stayed on current day, they update in place.
+            // If they moved, they disappear.
+
+            renderSchedule();
+            closeModal();
+        });
+
+        // Handle general supervisor form submit
+        document.getElementById('generalSupervisorForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('generalSupervisorName').value.trim();
+
+            if (!name) {
+                alert('يرجى إدخال اسم المشرف العام');
+                return;
+            }
+
+            scheduleData[currentDay].general_supervisor = name;
+            saveData();
+            renderSchedule();
+            closeGeneralModal();
+        });
+
+        // Close modals on outside click
+        document.getElementById('supervisorModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('generalSupervisorModal').addEventListener('click', function (e) {
+            if (e.target === this) closeGeneralModal();
+        });
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+
+</html>
