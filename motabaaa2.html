@@ -14,43 +14,47 @@
             background-color: #f3f4f6;
         }
 
-        /* تنسيقات الطباعة الاحترافية الصارمة لجعلها وثيقة رسمية */
+        /* تنسيقات الطباعة الاحترافية الصارمة لجعلها وثيقة رسمية في صفحة واحدة */
         @media print {
             @page {
                 size: A4;
-                margin: 0.5cm;
+                margin: 0.3cm; /* تقليل الهوامش الخارجية */
             }
             .no-print { display: none !important; }
             body { background-color: white !important; padding: 0 !important; margin: 0 !important; }
             
-            /* إزالة أي مظهر لصفحة ويب */
             .print-container { 
                 box-shadow: none !important; 
-                border: 2px solid #000 !important; 
+                border: 1.5px solid #000 !important; 
                 width: 100% !important; 
                 margin: 0 !important; 
-                padding: 15px !important;
+                padding: 10px !important;
                 border-radius: 0 !important;
                 height: auto;
+                max-height: 100%;
+                overflow: hidden;
             }
 
-            /* تحويل الهيدر إلى نص أسود بسيط */
+            /* تقليص الهيدر */
             .bg-emerald-700 { 
                 background-color: white !important; 
                 color: black !important; 
                 border-bottom: 2px solid black !important;
-                padding: 10px 0 !important;
-                margin-bottom: 15px !important;
+                padding: 5px 0 !important;
+                margin-bottom: 8px !important;
             }
+            .bg-emerald-700 h1 { font-size: 1.25rem !important; }
+            .bg-emerald-700 h2 { font-size: 1rem !important; }
             
             /* إطارات البيانات العلوية في الطباعة */
             .data-item-box {
                 background-color: white !important;
                 border: 1px solid black !important;
                 border-radius: 0 !important;
-                padding: 5px !important;
-                box-shadow: none !important;
+                padding: 3px 6px !important; /* تقليل البادينج */
+                margin-bottom: 0 !important;
             }
+            .data-item-box label { font-size: 10px !important; }
 
             input, textarea, select { 
                 border: none !important; 
@@ -59,40 +63,44 @@
                 font-weight: bold !important;
                 color: black !important;
                 padding: 0 !important;
+                font-size: 12px !important;
                 appearance: none;
                 -webkit-appearance: none;
             }
 
-            /* تحسين شكل التقييم المختار */
+            /* تحسين شكل التقييم المختار ليكون مضغوطاً */
             input[type="radio"] { display: none !important; }
             .item-row label { display: none !important; }
             .item-row label:has(input:checked) { 
                 display: block !important; 
                 text-align: center;
-                font-size: 1.5rem;
+                font-size: 1.2rem;
                 font-weight: bold !important;
                 color: black !important;
+                line-height: 1;
             }
 
-            /* تنسيق الجدول الرسمي */
-            table { border: 2px solid black !important; width: 100% !important; margin: 10px 0 !important; }
-            th, td { border: 1px solid black !important; color: black !important; padding: 6px !important; font-size: 13px !important; }
-            th { background-color: #eee !important; text-decoration: underline; }
+            /* تنسيق الجدول الرسمي ليكون مضغوطاً */
+            table { border: 1.5px solid black !important; width: 100% !important; margin: 5px 0 !important; }
+            th, td { border: 1px solid black !important; color: black !important; padding: 4px !important; font-size: 11px !important; }
+            th { background-color: #eee !important; }
 
-            /* زيادة المسافات بين الأقسام في الطباعة */
-            .section-gap { margin-bottom: 20px !important; }
+            /* تقليص المسافات بين الأقسام لضمان صفحة واحدة */
+            .section-gap { margin-bottom: 8px !important; }
+            form.space-y-8 { space-y: 4 !important; } /* تلاعب لتقليل المسافات */
+            .space-y-8 > :not([class*="hidden"]) ~ :not([class*="hidden"]) { margin-top: 0.6rem !important; }
             
-            /* صناديق التوقيع */
+            /* صناديق التوقيع مصغرة */
             .signature-box-print {
                 border: 1px solid black !important;
-                padding: 8px !important;
+                padding: 4px !important;
                 text-align: center;
             }
             .signature-line {
                 border-bottom: 1px solid black !important;
-                width: 130px;
+                width: 100px;
                 display: inline-block;
-                margin-top: 15px;
+                margin-top: 5px;
             }
         }
 
@@ -132,9 +140,9 @@
                     <h2 class="text-xl">تقرير المتابعة الداخلية للمدرسة</h2>
                 </div>
 
-                <form id="followupForm" class="p-6 space-y-8">
+                <form id="followupForm" class="p-4 md:p-6 space-y-4 md:space-y-8">
                     <!-- البيانات الأساسية مع إطار لكل بيان -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ui-header-card p-4 rounded-xl border border-emerald-100 section-gap">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 ui-header-card p-4 rounded-xl border border-emerald-100 section-gap">
                         <div class="data-item-box field-focus">
                             <label class="block text-xs font-bold text-emerald-800 mb-1">اليوم:</label>
                             <select id="reportDay" class="w-full border-none p-0 bg-transparent text-sm focus:ring-0 font-bold">
@@ -172,30 +180,30 @@
                     </div>
 
                     <!-- جدول العناصر -->
-                    <div class="section-gap">
+                    <div class="section-gap overflow-x-auto">
                         <table class="w-full border-collapse border border-gray-300 text-center">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="p-3 text-sm w-1/3 border border-gray-300 font-bold">العنصر</th>
-                                    <th class="p-3 text-sm border border-gray-300 font-bold">التقييم</th>
-                                    <th class="p-3 text-sm border border-gray-300 font-bold">الملاحظات</th>
+                                    <th class="p-2 md:p-3 text-sm w-1/3 border border-gray-300 font-bold">العنصر</th>
+                                    <th class="p-2 md:p-3 text-sm border border-gray-300 font-bold">التقييم</th>
+                                    <th class="p-2 md:p-3 text-sm border border-gray-300 font-bold">الملاحظات</th>
                                 </tr>
                             </thead>
                             <tbody id="evaluationTable">
                                 <tr class="item-row" data-id="prep">
-                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">دفتر التحضير</td>
-                                    <td class="p-3 border border-gray-300">
-                                        <div class="flex justify-center gap-6">
+                                    <td class="p-2 md:p-3 text-sm font-bold text-right border border-gray-300">دفتر التحضير</td>
+                                    <td class="p-2 md:p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-4 md:gap-6">
                                             <label class="cursor-pointer font-bold"><input type="radio" name="prep" value="✅"> ✅</label>
                                             <label class="cursor-pointer font-bold"><input type="radio" name="prep" value="❌"> ❌</label>
                                         </div>
                                     </td>
-                                    <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
+                                    <td class="p-1 border border-gray-300"><textarea class="w-full text-xs border-none focus:ring-0 h-8 resize-none"></textarea></td>
                                 </tr>
                                 <tr class="item-row" data-id="year_work">
-                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">دفتر أعمال السنة</td>
-                                    <td class="p-3 border border-gray-300">
-                                        <div class="flex justify-center gap-6">
+                                    <td class="p-2 md:p-3 text-sm font-bold text-right border border-gray-300">دفتر أعمال السنة</td>
+                                    <td class="p-2 md:p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-4 md:gap-6">
                                             <label class="cursor-pointer font-bold"><input type="radio" name="yw" value="✅"> ✅</label>
                                             <label class="cursor-pointer font-bold"><input type="radio" name="yw" value="❌"> ❌</label>
                                         </div>
@@ -203,9 +211,9 @@
                                     <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
                                 </tr>
                                 <tr class="item-row" data-id="regularity">
-                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">الانتظام داخل الحصة</td>
-                                    <td class="p-3 border border-gray-300">
-                                        <div class="flex justify-center gap-6">
+                                    <td class="p-2 md:p-3 text-sm font-bold text-right border border-gray-300">الانتظام داخل الحصة</td>
+                                    <td class="p-2 md:p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-4 md:gap-6">
                                             <label class="cursor-pointer font-bold"><input type="radio" name="reg" value="✅"> ✅</label>
                                             <label class="cursor-pointer font-bold"><input type="radio" name="reg" value="❌"> ❌</label>
                                         </div>
@@ -213,9 +221,9 @@
                                     <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
                                 </tr>
                                 <tr class="item-row" data-id="weekly">
-                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">التقييمات الأسبوعية</td>
-                                    <td class="p-3 border border-gray-300">
-                                        <div class="flex justify-center gap-6">
+                                    <td class="p-2 md:p-3 text-sm font-bold text-right border border-gray-300">التقييمات الأسبوعية</td>
+                                    <td class="p-2 md:p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-4 md:gap-6">
                                             <label class="cursor-pointer font-bold"><input type="radio" name="wk" value="✅"> ✅</label>
                                             <label class="cursor-pointer font-bold"><input type="radio" name="wk" value="❌"> ❌</label>
                                         </div>
@@ -227,20 +235,20 @@
                     </div>
 
                     <!-- توقيع المعلم الأول -->
-                    <div class="flex justify-start px-2 py-2 section-gap">
-                        <div class="font-bold text-base">
+                    <div class="flex justify-start px-2 py-1 section-gap">
+                        <div class="font-bold text-sm md:text-base">
                             <p>توقيع المعلم الأول: <span class="signature-line mr-2"></span></p>
                         </div>
                     </div>
 
                     <!-- حالة الإشراف -->
-                    <div class="border border-gray-300 p-4 bg-yellow-50 rounded-xl section-gap header-highlight">
-                        <p class="font-bold text-sm border-b border-yellow-200 pb-2 mb-2">حالة الإشراف والمشرفين:</p>
-                        <textarea id="supervisionNotes" class="w-full text-sm border-none focus:ring-0 bg-transparent h-16 resize-none font-bold"></textarea>
+                    <div class="border border-gray-300 p-3 md:p-4 bg-yellow-50 rounded-xl section-gap header-highlight">
+                        <p class="font-bold text-xs md:text-sm border-b border-yellow-200 pb-2 mb-2">حالة الإشراف والمشرفين:</p>
+                        <textarea id="supervisionNotes" class="w-full text-sm border-none focus:ring-0 bg-transparent h-12 md:h-16 resize-none font-bold"></textarea>
                     </div>
 
                     <!-- التوقيعات الختامية -->
-                    <div class="grid grid-cols-3 gap-4 text-center font-bold text-[12px] pt-4">
+                    <div class="grid grid-cols-3 gap-2 md:gap-4 text-center font-bold text-[10px] md:text-[12px] pt-2">
                         <div class="signature-box-print"><p>المشرف العام</p><p class="signature-line"></p></div>
                         <div class="signature-box-print"><p>وكيل المدرسة</p><p class="signature-line"></p></div>
                         <div class="signature-box-print"><p>مدير المدرسة</p><p class="signature-line"></p></div>
@@ -248,11 +256,11 @@
                 </form>
 
                 <!-- الأزرار (تختفي في الطباعة) -->
-                <div class="bg-gray-100 p-6 flex flex-wrap justify-center gap-4 no-print border-t">
-                    <button onclick="saveReport()" class="bg-emerald-600 text-white px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-emerald-700 transition-colors">حفظ</button>
-                    <button onclick="window.print()" class="bg-gray-800 text-white px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-black transition-colors">PDF / طباعة</button>
-                    <button onclick="exportToExcel()" class="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-colors">إكسيل</button>
-                    <button onclick="resetUI()" class="bg-red-50 text-red-600 px-6 py-2 rounded-lg border border-red-200 text-sm hover:bg-red-100 transition-colors">مسح</button>
+                <div class="bg-gray-100 p-4 md:p-6 flex flex-wrap justify-center gap-3 md:gap-4 no-print border-t">
+                    <button onclick="saveReport()" class="bg-emerald-600 text-white px-4 md:px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-emerald-700 transition-colors">حفظ</button>
+                    <button onclick="window.print()" class="bg-gray-800 text-white px-4 md:px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-black transition-colors">PDF / طباعة</button>
+                    <button onclick="exportToExcel()" class="bg-blue-600 text-white px-4 md:px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-colors">إكسيل</button>
+                    <button onclick="resetUI()" class="bg-red-50 text-red-600 px-4 md:px-6 py-2 rounded-lg border border-red-200 text-sm hover:bg-red-100 transition-colors">مسح</button>
                 </div>
             </div>
         </div>
