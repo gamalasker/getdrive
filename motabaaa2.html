@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المتابعة الداخلية - مدرسة د/ محمد ربيع فلاح</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* تنسيقات الطباعة الاحترافية الصارمة لجعلها وثيقة رسمية */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0.5cm;
+            }
+            .no-print { display: none !important; }
+            body { background-color: white !important; padding: 0 !important; margin: 0 !important; }
+            
+            /* إزالة أي مظهر لصفحة ويب */
+            .print-container { 
+                box-shadow: none !important; 
+                border: 2px solid #000 !important; 
+                width: 100% !important; 
+                margin: 0 !important; 
+                padding: 15px !important;
+                border-radius: 0 !important;
+                height: auto;
+            }
+
+            /* تحويل الهيدر إلى نص أسود بسيط */
+            .bg-emerald-700 { 
+                background-color: white !important; 
+                color: black !important; 
+                border-bottom: 2px solid black !important;
+                padding: 10px 0 !important;
+                margin-bottom: 15px !important;
+            }
+            
+            /* إطارات البيانات العلوية في الطباعة */
+            .data-item-box {
+                background-color: white !important;
+                border: 1px solid black !important;
+                border-radius: 0 !important;
+                padding: 5px !important;
+                box-shadow: none !important;
+            }
+
+            input, textarea, select { 
+                border: none !important; 
+                outline: none !important; 
+                background: transparent !important; 
+                font-weight: bold !important;
+                color: black !important;
+                padding: 0 !important;
+                appearance: none;
+                -webkit-appearance: none;
+            }
+
+            /* تحسين شكل التقييم المختار */
+            input[type="radio"] { display: none !important; }
+            .item-row label { display: none !important; }
+            .item-row label:has(input:checked) { 
+                display: block !important; 
+                text-align: center;
+                font-size: 1.5rem;
+                font-weight: bold !important;
+                color: black !important;
+            }
+
+            /* تنسيق الجدول الرسمي */
+            table { border: 2px solid black !important; width: 100% !important; margin: 10px 0 !important; }
+            th, td { border: 1px solid black !important; color: black !important; padding: 6px !important; font-size: 13px !important; }
+            th { background-color: #eee !important; text-decoration: underline; }
+
+            /* زيادة المسافات بين الأقسام في الطباعة */
+            .section-gap { margin-bottom: 20px !important; }
+            
+            /* صناديق التوقيع */
+            .signature-box-print {
+                border: 1px solid black !important;
+                padding: 8px !important;
+                text-align: center;
+            }
+            .signature-line {
+                border-bottom: 1px solid black !important;
+                width: 130px;
+                display: inline-block;
+                margin-top: 15px;
+            }
+        }
+
+        .scroll-custom::-webkit-scrollbar { width: 6px; }
+        .scroll-custom::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .field-focus:focus-within { border-color: #059669; background-color: #ecfdf5; }
+        .ui-header-card { background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%); }
+        
+        .data-item-box {
+            @apply border border-emerald-100 bg-white p-3 rounded-lg shadow-sm transition-all duration-200;
+        }
+    </style>
+</head>
+<body class="p-2 md:p-8">
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- العمود الجانبي: سجل الأسبوع (محلي) -->
+        <div class="lg:col-span-1 space-y-4 no-print order-2 lg:order-1">
+            <div class="bg-white rounded-lg shadow-md p-4 border border-gray-200 sticky top-4">
+                <h3 class="text-lg font-bold text-emerald-800 mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    سجل تقارير الأسبوع
+                </h3>
+                <div id="reportsHistory" class="space-y-2 max-h-[70vh] overflow-y-auto scroll-custom p-1">
+                    <p class="text-gray-400 text-xs text-center py-4">لا توجد سجلات حالية</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- العمود الرئيسي: التقرير -->
+        <div class="lg:col-span-3 space-y-4 order-1 lg:order-2">
+            <div class="bg-white shadow-2xl rounded-lg overflow-hidden print-container border border-gray-200">
+                <!-- الترويسة -->
+                <div class="bg-emerald-700 text-white p-6 text-center">
+                    <h1 class="text-2xl font-bold">مدرسة د/ محمد ربيع فلاح الثانوية بنات</h1>
+                    <h2 class="text-xl">تقرير المتابعة الداخلية للمدرسة</h2>
+                </div>
+
+                <form id="followupForm" class="p-6 space-y-8">
+                    <!-- البيانات الأساسية مع إطار لكل بيان -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ui-header-card p-4 rounded-xl border border-emerald-100 section-gap">
+                        <div class="data-item-box field-focus">
+                            <label class="block text-xs font-bold text-emerald-800 mb-1">اليوم:</label>
+                            <select id="reportDay" class="w-full border-none p-0 bg-transparent text-sm focus:ring-0 font-bold">
+                                <option value="الأحد">الأحد</option><option value="الاثنين">الاثنين</option><option value="الثلاثاء">الثلاثاء</option>
+                                <option value="الأربعاء">الأربعاء</option><option value="الخميس">الخميس</option><option value="الجمعة">الجمعة</option><option value="السبت">السبت</option>
+                            </select>
+                        </div>
+                        <div class="data-item-box field-focus">
+                            <label class="block text-xs font-bold text-emerald-800 mb-1">التاريخ:</label>
+                            <input type="date" id="reportDate" class="w-full border-none p-0 bg-transparent text-sm focus:ring-0 font-bold">
+                        </div>
+                        <div class="data-item-box field-focus">
+                            <label class="block text-xs font-bold text-emerald-800 mb-1">اسم المعلم:</label>
+                            <input type="text" id="teacherName" class="w-full border-none p-0 bg-transparent text-sm font-bold focus:ring-0" placeholder="الاسم الرباعي">
+                        </div>
+                        <div class="data-item-box field-focus">
+                            <label class="block text-xs font-bold text-emerald-800 mb-1">الفصل:</label>
+                            <select id="teacherClass" class="w-full border-none p-0 bg-transparent text-sm focus:ring-0 font-bold">
+                                <optgroup label="الصف الأول">
+                                    <script>for(let i=1; i<=13; i++) document.write(`<option value="أولى ${i}">أولى ${i}</option>`);</script>
+                                </optgroup>
+                                <optgroup label="الصف الثاني">
+                                    <script>for(let i=1; i<=13; i++) document.write(`<option value="ثانية ${i}">ثانية ${i}</option>`);</script>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="data-item-box field-focus">
+                            <label class="block text-xs font-bold text-emerald-800 mb-1">المادة:</label>
+                            <input type="text" id="subject" class="w-full border-none p-0 bg-transparent text-sm focus:ring-0 font-bold">
+                        </div>
+                        <div class="data-item-box field-focus">
+                            <label class="block text-xs font-bold text-emerald-800 mb-1">الحصة:</label>
+                            <input type="text" id="period" class="w-full border-none p-0 bg-transparent text-sm focus:ring-0 font-bold">
+                        </div>
+                    </div>
+
+                    <!-- جدول العناصر -->
+                    <div class="section-gap">
+                        <table class="w-full border-collapse border border-gray-300 text-center">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="p-3 text-sm w-1/3 border border-gray-300 font-bold">العنصر</th>
+                                    <th class="p-3 text-sm border border-gray-300 font-bold">التقييم</th>
+                                    <th class="p-3 text-sm border border-gray-300 font-bold">الملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="evaluationTable">
+                                <tr class="item-row" data-id="prep">
+                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">دفتر التحضير</td>
+                                    <td class="p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-6">
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="prep" value="✅"> ✅</label>
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="prep" value="❌"> ❌</label>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
+                                </tr>
+                                <tr class="item-row" data-id="year_work">
+                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">دفتر أعمال السنة</td>
+                                    <td class="p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-6">
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="yw" value="✅"> ✅</label>
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="yw" value="❌"> ❌</label>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
+                                </tr>
+                                <tr class="item-row" data-id="regularity">
+                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">الانتظام داخل الحصة</td>
+                                    <td class="p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-6">
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="reg" value="✅"> ✅</label>
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="reg" value="❌"> ❌</label>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
+                                </tr>
+                                <tr class="item-row" data-id="weekly">
+                                    <td class="p-3 text-sm font-bold text-right border border-gray-300">التقييمات الأسبوعية</td>
+                                    <td class="p-3 border border-gray-300">
+                                        <div class="flex justify-center gap-6">
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="wk" value="✅"> ✅</label>
+                                            <label class="cursor-pointer font-bold"><input type="radio" name="wk" value="❌"> ❌</label>
+                                        </div>
+                                    </td>
+                                    <td class="p-1 border border-gray-300"><textarea class="w-full text-sm border-none focus:ring-0 h-8 resize-none"></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- توقيع المعلم الأول -->
+                    <div class="flex justify-start px-2 py-2 section-gap">
+                        <div class="font-bold text-base">
+                            <p>توقيع المعلم الأول: <span class="signature-line mr-2"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- حالة الإشراف -->
+                    <div class="border border-gray-300 p-4 bg-yellow-50 rounded-xl section-gap header-highlight">
+                        <p class="font-bold text-sm border-b border-yellow-200 pb-2 mb-2">حالة الإشراف والمشرفين:</p>
+                        <textarea id="supervisionNotes" class="w-full text-sm border-none focus:ring-0 bg-transparent h-16 resize-none font-bold"></textarea>
+                    </div>
+
+                    <!-- التوقيعات الختامية -->
+                    <div class="grid grid-cols-3 gap-4 text-center font-bold text-[12px] pt-4">
+                        <div class="signature-box-print"><p>المشرف العام</p><p class="signature-line"></p></div>
+                        <div class="signature-box-print"><p>وكيل المدرسة</p><p class="signature-line"></p></div>
+                        <div class="signature-box-print"><p>مدير المدرسة</p><p class="signature-line"></p></div>
+                    </div>
+                </form>
+
+                <!-- الأزرار (تختفي في الطباعة) -->
+                <div class="bg-gray-100 p-6 flex flex-wrap justify-center gap-4 no-print border-t">
+                    <button onclick="saveReport()" class="bg-emerald-600 text-white px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-emerald-700 transition-colors">حفظ</button>
+                    <button onclick="window.print()" class="bg-gray-800 text-white px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-black transition-colors">PDF / طباعة</button>
+                    <button onclick="exportToExcel()" class="bg-blue-600 text-white px-6 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 transition-colors">إكسيل</button>
+                    <button onclick="resetUI()" class="bg-red-50 text-red-600 px-6 py-2 rounded-lg border border-red-200 text-sm hover:bg-red-100 transition-colors">مسح</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="no-print fixed bottom-5 right-5 bg-gray-800 text-white px-4 py-2 rounded-lg translate-y-20 transition-all duration-300 z-50 shadow-lg"></div>
+
+    <script>
+        const STORAGE_KEY = 'school_reports_internal_v3';
+
+        window.onload = function() {
+            const today = new Date();
+            document.getElementById('reportDate').value = today.toISOString().split('T')[0];
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            document.getElementById('reportDay').value = days[today.getDay()];
+            renderHistory();
+            cleanupOldRecords();
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('translate-y-20');
+            setTimeout(() => toast.classList.add('translate-y-20'), 3000);
+        }
+
+        function saveReport() {
+            const teacher = document.getElementById('teacherName').value.trim();
+            if (!teacher) return showToast("يرجى إدخال اسم المعلم");
+
+            const reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const newReport = {
+                id: Date.now(),
+                teacher,
+                class: document.getElementById('teacherClass').value,
+                day: document.getElementById('reportDay').value,
+                date: document.getElementById('reportDate').value,
+                subject: document.getElementById('subject').value,
+                period: document.getElementById('period').value,
+                notes: document.getElementById('supervisionNotes').value,
+                items: {}
+            };
+
+            document.querySelectorAll('.item-row').forEach(row => {
+                const id = row.getAttribute('data-id');
+                newReport.items[id] = {
+                    val: row.querySelector('input:checked')?.value || '',
+                    txt: row.querySelector('textarea').value
+                };
+            });
+
+            reports.unshift(newReport);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+            showToast("تم الحفظ محلياً");
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const container = document.getElementById('reportsHistory');
+            container.innerHTML = reports.length ? reports.map(r => `
+                <div class="bg-emerald-50 border border-emerald-100 p-2 rounded cursor-pointer group relative mb-2 shadow-sm hover:bg-emerald-100 transition-colors" onclick="loadReport(${r.id})">
+                    <div class="text-[10px] font-bold text-emerald-800">${r.day} ${r.date}</div>
+                    <div class="text-xs font-semibold">${r.teacher}</div>
+                    <button onclick="event.stopPropagation(); deleteReport(${r.id})" class="absolute left-1 top-1 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity">✕</button>
+                </div>
+            `).join('') : '<p class="text-center text-gray-400 text-xs">لا توجد سجلات حالية</p>';
+        }
+
+        function loadReport(id) {
+            const reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const r = reports.find(x => x.id === id);
+            if (!r) return;
+            document.getElementById('teacherName').value = r.teacher;
+            document.getElementById('teacherClass').value = r.class;
+            document.getElementById('reportDay').value = r.day;
+            document.getElementById('reportDate').value = r.date;
+            document.getElementById('subject').value = r.subject;
+            document.getElementById('period').value = r.period;
+            document.getElementById('supervisionNotes').value = r.notes;
+            Object.keys(r.items).forEach(k => {
+                const row = document.querySelector(`[data-id="${k}"]`);
+                if(row) {
+                    const radio = row.querySelector(`input[value="${r.items[k].val}"]`);
+                    if(radio) radio.checked = true;
+                    row.querySelector('textarea').value = r.items[k].txt;
+                }
+            });
+            showToast("تم تحميل البيانات");
+        }
+
+        function deleteReport(id) {
+            if(!confirm("حذف السجل؟")) return;
+            let reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            reports = reports.filter(r => r.id !== id);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+            renderHistory();
+        }
+
+        function cleanupOldRecords() {
+            let reports = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            const week = 7 * 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            reports = reports.filter(r => (now - r.id) < week);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+        }
+
+        function resetUI() {
+            if(confirm("مسح كافة الحقول؟")) document.getElementById('followupForm').reset();
+        }
+
+        function exportToExcel() {
+            const data = [
+                ["تقرير متابعة مدرسة د/ محمد ربيع فلاح"],
+                ["اليوم", document.getElementById('reportDay').value, "التاريخ", document.getElementById('reportDate').value],
+                ["المعلم", document.getElementById('teacherName').value, "الفصل", document.getElementById('teacherClass').value],
+                ["المادة", document.getElementById('subject').value, "الحصة", document.getElementById('period').value],
+                [],
+                ["العنصر", "التقييم", "الملاحظات"]
+            ];
+            document.querySelectorAll('.item-row').forEach(row => {
+                data.push([row.querySelector('td').innerText, row.querySelector('input:checked')?.value || '', row.querySelector('textarea').value]);
+            });
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Report");
+            XLSX.writeFile(wb, `Report_Mata3a.xlsx`);
+        }
+    </script>
+</body>
+</html>
