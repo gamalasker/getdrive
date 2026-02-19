@@ -2,182 +2,266 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>القرآن الكريم</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── VARIABLES ── */
 :root {
   --pri:#1a472a; --prl:#2d6a4f; --acc:#c9a84c; --acl:#e8c86d;
   --bg:#0d1b12; --bgc:#162418; --bgs:#111a14;
   --tp:#f0e6c8; --ts:#9ab89e; --tm:#5a7a5e;
   --bd:#2a3f2c; --ab:#0f1e13; --ah:#192b1d;
-  --sh:rgba(0,0,0,.5);
+  --sh:rgba(0,0,0,.55); --hh:65px; --bnh:60px;
 }
 .lm {
   --pri:#1a6b3c; --prl:#2a8a52; --acc:#b8860b; --acl:#daa520;
   --bg:#f8f5e8; --bgc:#fff9f0; --bgs:#f0ebe0;
   --tp:#1a2e1c; --ts:#4a6850; --tm:#7a9a7e;
   --bd:#d4c9a0; --ab:#fefcf5; --ah:#f5eed8;
-  --sh:rgba(0,0,0,.15);
+  --sh:rgba(0,0,0,.18);
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);min-height:100vh;direction:rtl;transition:all .3s}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--pri);border-radius:3px}
+/* ── RESET ── */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);direction:rtl;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--pri);border-radius:2px}
+button{font-family:'Cairo',sans-serif;cursor:pointer}
 
-/* ─── HEADER ─── */
-.hdr{background:linear-gradient(135deg,var(--pri),var(--prl));padding:12px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 20px var(--sh);position:sticky;top:0;z-index:100;border-bottom:2px solid var(--acc)}
-.hbrand{display:flex;align-items:center;gap:12px}
-.hlogo{font-size:28px;color:var(--acc)}
-.htitle{font-family:'Scheherazade New',serif;font-size:24px;color:var(--acl);font-weight:700}
-.hsub{font-size:12px;color:rgba(255,255,255,.7);margin-top:-4px}
-.hacts{display:flex;gap:8px;align-items:center}
-.bico{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s}
-.bico:hover{background:rgba(255,255,255,.25);transform:scale(1.05)}
+/* ── HEADER ── */
+.hdr{
+  height:var(--hh);background:linear-gradient(135deg,var(--pri),var(--prl));
+  padding:0 16px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 16px var(--sh);position:fixed;top:0;left:0;right:0;z-index:200;
+  border-bottom:2px solid var(--acc);
+}
+.hbrand{display:flex;align-items:center;gap:10px}
+.hlogo{font-size:24px;color:var(--acc)}
+.htitle{font-family:'Scheherazade New',serif;font-size:20px;color:var(--acl);font-weight:700;line-height:1}
+.hsub{font-size:10px;color:rgba(255,255,255,.65);margin-top:1px}
+.hacts{display:flex;gap:6px}
+.bico{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  color:#fff;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:17px;transition:all .2s;border:none}
+.bico:active{transform:scale(.92)}
 
-/* ─── LAYOUT ─── */
-.layout{display:flex;height:calc(100vh - 65px);overflow:hidden}
+/* ── OVERLAY ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:149;backdrop-filter:blur(2px)}
+.overlay.on{display:block}
 
-/* ─── SIDEBAR ─── */
-.sdb{width:310px;background:var(--bgs);border-left:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;transition:width .3s}
-.sdb.col{width:0}
-.stabs{display:flex;border-bottom:1px solid var(--bd)}
-.stab{flex:1;padding:11px 4px;text-align:center;cursor:pointer;font-size:12px;color:var(--tm);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-.stab.on{color:var(--acc);border-bottom-color:var(--acc);background:rgba(201,168,76,.05)}
-.stab:hover:not(.on){color:var(--ts);background:rgba(255,255,255,.03)}
+/* ── SIDEBAR ── */
+.sdb{
+  position:fixed;top:var(--hh);right:0;width:300px;
+  height:calc(100% - var(--hh));background:var(--bgs);
+  border-left:1px solid var(--bd);display:flex;flex-direction:column;
+  z-index:150;transform:translateX(0);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.sdb.col{transform:translateX(110%)}
+
+.stabs{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0}
+.stab{flex:1;padding:13px 4px;text-align:center;cursor:pointer;font-size:11px;
+  color:var(--tm);border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.stab.on{color:var(--acc);border-bottom-color:var(--acc);background:rgba(201,168,76,.06)}
+
 .spnl{display:none;flex:1;overflow:hidden;flex-direction:column}
 .spnl.on{display:flex}
 
-/* search */
-.srca{padding:14px;border-bottom:1px solid var(--bd)}
+/* surah list */
+.ssl{padding:10px 12px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.ssl input{width:100%;padding:9px 12px;background:var(--bgc);border:1px solid var(--bd);
+  border-radius:10px;color:var(--tp);font-size:13px;outline:none}
+.ssl input:focus{border-color:var(--acc)}
+.ssl input::placeholder{color:var(--tm)}
+.slist{flex:1;overflow-y:auto;padding:6px;-webkit-overflow-scrolling:touch}
+.si{display:flex;align-items:center;padding:10px 10px;border-radius:10px;
+  cursor:pointer;transition:all .2s;margin-bottom:2px;border:1px solid transparent;
+  min-height:52px}
+.si:active{opacity:.75}
+.si.on{background:var(--pri);border-color:var(--prl)}
+.sinum{width:34px;height:34px;background:var(--bd);border-radius:50%;display:flex;
+  align-items:center;justify-content:center;font-size:11px;color:var(--acc);
+  margin-left:8px;flex-shrink:0;font-weight:700}
+.si.on .sinum{background:rgba(201,168,76,.2)}
+.siinfo{flex:1;min-width:0}
+.siname{font-family:'Scheherazade New',serif;font-size:17px;color:var(--tp);line-height:1.2}
+.simeta{font-size:10px;color:var(--tm);margin-top:1px}
+.sivs{font-size:10px;color:var(--tm);flex-shrink:0;margin-right:4px}
+
+/* search panel */
+.srca{padding:14px 12px;border-bottom:1px solid var(--bd);flex-shrink:0}
 .stypes{display:flex;gap:6px;margin-bottom:10px}
-.stbtn{flex:1;padding:7px 2px;border:1px solid var(--bd);background:transparent;color:var(--ts);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;transition:all .2s}
+.stbtn{flex:1;padding:8px 2px;border:1px solid var(--bd);background:transparent;
+  color:var(--ts);border-radius:8px;font-size:12px;transition:all .2s}
 .stbtn.on{background:var(--pri);border-color:var(--prl);color:#fff}
-.srci{width:100%;padding:9px 12px;background:var(--bgc);border:1px solid var(--bd);border-radius:10px;color:var(--tp);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:border-color .2s;margin-bottom:8px}
+.srcrow{display:flex;gap:8px}
+.srci{flex:1;padding:10px 12px;background:var(--bgc);border:1px solid var(--bd);
+  border-radius:10px;color:var(--tp);font-size:14px;outline:none;min-width:0;
+  transition:border-color .2s}
 .srci:focus{border-color:var(--acc)}
 .srci::placeholder{color:var(--tm)}
-.srcrow{display:flex;gap:8px}
-.srcrow .srci{margin:0}
-.sbtn{padding:9px 16px;background:var(--acc);border:none;border-radius:10px;color:var(--bg);cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;transition:all .2s;white-space:nowrap}
-.sbtn:hover{background:var(--acl)}
-.shint{font-size:11px;color:var(--tm);margin-top:6px}
-.qlinks{padding:12px 14px;border-bottom:1px solid var(--bd)}
-.ql-lbl{font-size:12px;color:var(--ts);margin-bottom:8px}
+.sbtn{padding:10px 14px;background:var(--acc);border:none;border-radius:10px;
+  color:var(--bg);font-size:13px;font-weight:700;transition:all .2s;white-space:nowrap}
+.sbtn:active{transform:scale(.95)}
+.shint{font-size:11px;color:var(--tm);margin-top:7px}
+.qlinks{padding:12px;flex-shrink:0}
+.ql-lbl{font-size:11px;color:var(--ts);margin-bottom:8px}
 .ql-btns{display:flex;flex-wrap:wrap;gap:6px}
-.qlb{padding:5px 10px;border:1px solid var(--bd);background:transparent;color:var(--ts);border-radius:8px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;transition:all .2s}
-.qlb:hover{color:var(--acc);border-color:var(--acc)}
+.qlb{padding:6px 10px;border:1px solid var(--bd);background:transparent;color:var(--ts);
+  border-radius:8px;font-size:12px;transition:all .2s}
+.qlb:active{background:var(--pri);color:#fff}
 
-/* surah list */
-.ssl{padding:10px 12px;border-bottom:1px solid var(--bd)}
-.ssl input{width:100%;padding:8px 12px;background:var(--bgc);border:1px solid var(--bd);border-radius:10px;color:var(--tp);font-family:'Cairo',sans-serif;font-size:13px;outline:none}
-.ssl input:focus{border-color:var(--acc)}
-.slist{flex:1;overflow-y:auto;padding:6px}
-.si{display:flex;align-items:center;padding:9px 10px;border-radius:10px;cursor:pointer;transition:all .2s;margin-bottom:2px;border:1px solid transparent}
-.si:hover{background:var(--ah);border-color:var(--bd)}
-.si.on{background:var(--pri);border-color:var(--prl)}
-.sinum{width:32px;height:32px;background:var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--acc);margin-left:8px;flex-shrink:0;font-weight:700}
-.si.on .sinum{background:rgba(201,168,76,.2)}
-.siinfo{flex:1}
-.siname{font-family:'Scheherazade New',serif;font-size:16px;color:var(--tp);line-height:1.2}
-.simeta{font-size:10px;color:var(--tm);margin-top:1px}
-.sivs{font-size:11px;color:var(--tm)}
-
-/* bookmarks */
-.bmhdr{padding:12px 14px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+/* bookmarks panel */
+.bmhdr{padding:12px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
 .bmtitle{font-size:13px;color:var(--ts)}
-.bmclear{font-size:12px;color:#e74c3c;background:none;border:none;cursor:pointer;font-family:'Cairo',sans-serif}
-.bmlist{flex:1;overflow-y:auto;padding:8px}
-.bmi{display:flex;align-items:center;padding:9px 10px;border-radius:10px;background:var(--bgc);border:1px solid var(--bd);margin-bottom:5px;cursor:pointer;transition:all .2s}
-.bmi:hover{border-color:var(--acc)}
-.bmico{color:var(--acc);margin-left:8px;font-size:15px}
-.bmtxt{flex:1}
+.bmclear{font-size:12px;color:#e74c3c;background:none;border:none}
+.bmlist{flex:1;overflow-y:auto;padding:8px;-webkit-overflow-scrolling:touch}
+.bmi{display:flex;align-items:center;padding:10px;border-radius:10px;background:var(--bgc);
+  border:1px solid var(--bd);margin-bottom:6px;cursor:pointer;transition:all .2s;min-height:54px}
+.bmi:active{opacity:.75}
+.bmico{color:var(--acc);margin-left:8px;font-size:16px}
+.bmtxt{flex:1;min-width:0}
 .bmname{font-size:13px;color:var(--tp)}
 .bmtype{font-size:10px;color:var(--tm);margin-top:1px}
-.bmdel{color:var(--tm);background:none;border:none;cursor:pointer;font-size:13px;padding:4px;border-radius:4px;transition:color .2s}
-.bmdel:hover{color:#e74c3c}
+.bmdel{color:var(--tm);background:none;border:none;font-size:14px;padding:6px;
+  border-radius:4px;transition:color .2s;flex-shrink:0}
+.bmdel:active{color:#e74c3c}
 .nobm{text-align:center;color:var(--tm);padding:40px 16px;font-size:13px}
 .nobm .i{font-size:32px;margin-bottom:8px;display:block}
 
-/* ─── MAIN ─── */
-.main{flex:1;overflow-y:auto;background:var(--bg)}
-.chdr{background:var(--bgc);padding:16px 24px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.cinfo{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.cname{font-family:'Scheherazade New',serif;font-size:24px;color:var(--acc)}
-.cbdgs{display:flex;gap:6px;flex-wrap:wrap}
-.bdg{padding:3px 10px;border-radius:20px;font-size:11px;background:var(--pri);color:rgba(255,255,255,.8);border:1px solid var(--prl)}
-.cacts{display:flex;gap:8px}
-.bact{padding:7px 14px;border-radius:8px;border:1px solid var(--bd);background:transparent;color:var(--ts);cursor:pointer;font-family:'Cairo',sans-serif;font-size:12px;transition:all .2s;display:flex;align-items:center;gap:5px}
-.bact:hover{background:var(--bgs);color:var(--acc);border-color:var(--acc)}
-.bact.mk{color:var(--acc);border-color:var(--acc);background:rgba(201,168,76,.08)}
-
-/* basmala */
-.bsm{text-align:center;padding:26px 20px 16px;font-family:'Scheherazade New',serif;font-size:30px;color:var(--acc);text-shadow:0 0 20px rgba(201,168,76,.3)}
-
-/* ayahs */
-.ayc{padding:16px 24px 40px;max-width:860px;margin:0 auto}
-.aycard{background:var(--ab);border:1px solid var(--bd);border-radius:14px;padding:20px 22px;margin-bottom:12px;transition:all .2s;position:relative}
-.aycard:hover{background:var(--ah);border-color:rgba(201,168,76,.3)}
-.aycard.hl{border-color:var(--acc);animation:hl 2.5s ease}
-@keyframes hl{0%{background:rgba(201,168,76,.22)}100%{background:var(--ab)}}
-.ayhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.aynum{width:34px;height:34px;background:linear-gradient(135deg,var(--pri),var(--prl));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--acl);font-weight:700}
-.aybtns{display:flex;gap:5px}
-.aybtn{width:30px;height:30px;border-radius:7px;border:1px solid var(--bd);background:transparent;color:var(--tm);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s}
-.aybtn:hover{color:var(--acc);border-color:var(--acc)}
-.aybtn.mk{color:var(--acc);border-color:var(--acc);background:rgba(201,168,76,.1)}
-.aytxt{font-family:'Scheherazade New',serif;font-size:26px;line-height:2.3;color:var(--tp);text-align:justify}
-.ayend{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:50%;font-size:12px;color:var(--acc);margin-right:4px;vertical-align:middle}
-.aybar{display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)}
-.ayref{font-size:11px;color:var(--tm)}
-.jzsep{text-align:center;padding:8px;margin:14px 0;position:relative}
-.jzsep::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--bd)}
-.jzbdg{display:inline-block;background:var(--pri);color:var(--acl);padding:3px 14px;border-radius:20px;font-size:11px;border:1px solid var(--prl);position:relative;z-index:1}
-
-/* nav */
-.navf{padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bd);background:var(--bgc);position:sticky;bottom:0}
-.bnav{padding:9px 20px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--ts);cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;transition:all .2s}
-.bnav:hover:not(:disabled){background:var(--pri);color:#fff;border-color:var(--prl)}
-.bnav:disabled{opacity:.4;cursor:not-allowed}
-.pgind{font-size:12px;color:var(--tm)}
+/* ── MAIN AREA ── */
+.main{
+  position:fixed;
+  top:var(--hh);
+  left:0;right:0;
+  bottom:var(--bnh);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:var(--bg);
+}
 
 /* welcome */
-.wlc{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;padding:40px;text-align:center}
-.wbsm{font-family:'Scheherazade New',serif;font-size:44px;color:var(--acc);margin-bottom:18px;text-shadow:0 0 30px rgba(201,168,76,.4)}
-.wtitle{font-size:20px;color:var(--ts);margin-bottom:8px}
-.wdesc{font-size:13px;color:var(--tm);max-width:380px;line-height:1.9;margin-bottom:28px}
-.wfeats{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-.wfeat{background:var(--bgc);border:1px solid var(--bd);border-radius:12px;padding:14px 18px;width:150px;text-align:center}
-.wfeat .i{font-size:24px;margin-bottom:6px;display:block}
+.wlc{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100%;padding:24px 20px;text-align:center}
+.wbsm{font-family:'Scheherazade New',serif;font-size:36px;color:var(--acc);
+  margin-bottom:16px;text-shadow:0 0 30px rgba(201,168,76,.4);line-height:1.5}
+.wtitle{font-size:17px;color:var(--ts);margin-bottom:8px}
+.wdesc{font-size:13px;color:var(--tm);max-width:340px;line-height:1.9;margin-bottom:24px}
+.wfeats{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:320px}
+.wfeat{background:var(--bgc);border:1px solid var(--bd);border-radius:12px;padding:14px 10px;text-align:center}
+.wfeat .i{font-size:22px;margin-bottom:6px;display:block}
 .wfeat .l{font-size:12px;color:var(--ts)}
 
 /* loading */
-.lov{display:none;align-items:center;justify-content:center;padding:60px;flex-direction:column;gap:14px}
+.lov{display:none;align-items:center;justify-content:center;height:60vh;flex-direction:column;gap:14px}
 .lov.on{display:flex}
-.spin{width:42px;height:42px;border:3px solid var(--bd);border-top-color:var(--acc);border-radius:50%;animation:sp .8s linear infinite}
+.spin{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--acc);
+  border-radius:50%;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .ltxt{color:var(--tm);font-size:13px}
 
+/* content header */
+.chdr{background:var(--bgc);padding:12px 16px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:10;flex-wrap:wrap;gap:8px}
+.cinfo{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1}
+.cname{font-family:'Scheherazade New',serif;font-size:22px;color:var(--acc);line-height:1.2}
+.cbdgs{display:flex;gap:5px;flex-wrap:wrap}
+.bdg{padding:3px 9px;border-radius:20px;font-size:10px;background:var(--pri);
+  color:rgba(255,255,255,.8);border:1px solid var(--prl)}
+.bact{padding:8px 12px;border-radius:8px;border:1px solid var(--bd);background:transparent;
+  color:var(--ts);font-size:12px;transition:all .2s;display:flex;align-items:center;gap:4px}
+.bact.mk{color:var(--acc);border-color:var(--acc);background:rgba(201,168,76,.08)}
+.bact:active{transform:scale(.95)}
+
+/* basmala */
+.bsm{text-align:center;padding:20px 16px 12px;font-family:'Scheherazade New',serif;
+  font-size:26px;color:var(--acc);text-shadow:0 0 16px rgba(201,168,76,.3)}
+
+/* ayahs container */
+.ayc{padding:12px 12px 20px;max-width:820px;margin:0 auto}
+.aycard{background:var(--ab);border:1px solid var(--bd);border-radius:14px;
+  padding:16px 16px;margin-bottom:10px;transition:background .2s,border-color .2s;position:relative}
+.aycard:active{opacity:.9}
+.aycard.hl{border-color:var(--acc);animation:hl 2.5s ease}
+@keyframes hl{0%{background:rgba(201,168,76,.2)}100%{background:var(--ab)}}
+.ayhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.aynum{width:34px;height:34px;background:linear-gradient(135deg,var(--pri),var(--prl));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--acl);font-weight:700;flex-shrink:0}
+.aybtns{display:flex;gap:6px}
+.aybtn{width:36px;height:36px;border-radius:8px;border:1px solid var(--bd);
+  background:transparent;color:var(--tm);display:flex;align-items:center;
+  justify-content:center;font-size:15px;transition:all .2s}
+.aybtn:active{transform:scale(.9)}
+.aybtn.mk{color:var(--acc);border-color:var(--acc);background:rgba(201,168,76,.1)}
+.aytxt{font-family:'Scheherazade New',serif;font-size:24px;line-height:2.3;
+  color:var(--tp);text-align:justify}
+.ayend{display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);
+  border-radius:50%;font-size:11px;color:var(--acc);margin-right:3px;vertical-align:middle}
+.aybar{margin-top:10px;padding-top:10px;border-top:1px solid var(--bd)}
+.ayref{font-size:11px;color:var(--tm)}
+.jzsep{text-align:center;padding:8px;margin:12px 0;position:relative}
+.jzsep::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--bd)}
+.jzbdg{display:inline-block;background:var(--pri);color:var(--acl);padding:4px 14px;
+  border-radius:20px;font-size:11px;border:1px solid var(--prl);position:relative;z-index:1}
+
 /* error */
 .err{text-align:center;padding:50px 24px;color:var(--tm)}
-.err .i{font-size:44px;margin-bottom:14px;display:block}
+.err .i{font-size:42px;margin-bottom:14px;display:block}
 
-/* toast */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--prl);color:#fff;padding:11px 22px;border-radius:30px;font-size:13px;z-index:2000;transition:transform .3s;border:1px solid var(--acc)}
-.toast.on{transform:translateX(-50%) translateY(0)}
-
-@media(max-width:768px){
-  .sdb{position:fixed;top:65px;right:0;height:calc(100vh - 65px);z-index:50;width:290px;transform:translateX(0);transition:transform .3s}
-  .sdb.col{transform:translateX(100%);width:290px}
-  .ayc{padding:12px 14px 36px}
-  .chdr{padding:12px 14px}
-  .aytxt{font-size:22px}
-  .wbsm{font-size:32px}
+/* ── BOTTOM NAVIGATION BAR ── */
+.bnav-bar{
+  position:fixed;bottom:0;left:0;right:0;height:var(--bnh);
+  background:var(--bgc);border-top:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 12px;z-index:100;
 }
+.bnav-sides{display:flex;gap:8px}
+.bnav-btn{padding:8px 14px;border-radius:10px;border:1px solid var(--bd);
+  background:var(--bg);color:var(--ts);font-size:12px;
+  transition:all .2s;white-space:nowrap}
+.bnav-btn:active{background:var(--pri);color:#fff;border-color:var(--prl)}
+.bnav-btn:disabled{opacity:.35;pointer-events:none}
+.bnav-center{display:flex;gap:10px;align-items:center}
+.pgind{font-size:11px;color:var(--tm);text-align:center;white-space:nowrap}
+
+/* ── DESKTOP ENHANCEMENTS (>768px) ── */
+@media(min-width:769px){
+  :root{--bnh:0px}
+  .main{bottom:0}
+  .sdb{width:300px;transform:none !important;border-left:1px solid var(--bd)}
+  .sdb.col{width:0;overflow:hidden}
+  .overlay{display:none !important}
+  .layout{display:flex;padding-top:var(--hh)}
+  .main{position:relative;top:0;flex:1}
+  /* desktop nav inside content */
+  .navf{padding:14px 24px;display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--bd);background:var(--bgc)}
+  .bnav-bar{display:none}
+  .chdr{padding:14px 24px}
+  .ayc{padding:16px 24px 36px}
+  .aytxt{font-size:26px}
+  .bsm{font-size:30px;padding:24px 24px 14px}
+  .wbsm{font-size:44px}
+  .wfeats{grid-template-columns:repeat(4,1fr);max-width:560px}
+}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(var(--bnh) + 14px);left:50%;
+  transform:translateX(-50%) translateY(20px);opacity:0;
+  background:var(--prl);color:#fff;padding:10px 20px;border-radius:30px;
+  font-size:13px;z-index:9999;transition:all .3s;border:1px solid var(--acc);
+  white-space:nowrap;pointer-events:none}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
 </style>
 </head>
 <body>
 
 <div class="toast" id="toast"></div>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <!-- HEADER -->
 <header class="hdr">
@@ -189,28 +273,31 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);min-hei
     </div>
   </div>
   <div class="hacts">
-    <button class="bico" onclick="toggleTheme()" title="تغيير المظهر" id="themeBtn">🌙</button>
-    <button class="bico" onclick="toggleSidebar()" title="القائمة الجانبية">☰</button>
+    <button class="bico" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    <button class="bico" onclick="toggleSidebar()">☰</button>
   </div>
 </header>
 
+<!-- LAYOUT WRAPPER (desktop) -->
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <div class="sdb" id="sdb">
+  <div class="sdb col" id="sdb">
     <div class="stabs">
       <div class="stab on" onclick="switchTab('surahs')" id="t-surahs">📖 السور</div>
       <div class="stab"    onclick="switchTab('search')"  id="t-search">🔍 بحث</div>
       <div class="stab"    onclick="switchTab('bm')"      id="t-bm">🔖 محفوظ</div>
     </div>
 
-    <!-- SURAHS PANEL -->
+    <!-- SURAHS -->
     <div class="spnl on" id="p-surahs">
-      <div class="ssl"><input type="text" placeholder="ابحث عن سورة..." oninput="filterSurahs(this.value)"></div>
+      <div class="ssl">
+        <input type="text" placeholder="ابحث عن سورة..." oninput="filterSurahs(this.value)">
+      </div>
       <div class="slist" id="surahList"></div>
     </div>
 
-    <!-- SEARCH PANEL -->
+    <!-- SEARCH -->
     <div class="spnl" id="p-search">
       <div class="srca">
         <div class="stypes">
@@ -219,7 +306,8 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);min-hei
           <button class="stbtn"    onclick="setSType('ayah')"  id="st-ayah">آية</button>
         </div>
         <div class="srcrow">
-          <input class="srci" id="srcInput" placeholder="رقم السورة (1-114)" onkeydown="if(event.key==='Enter')doSearch()">
+          <input class="srci" id="srcInput" placeholder="رقم السورة (1-114)"
+            onkeydown="if(event.key==='Enter')doSearch()">
           <button class="sbtn" onclick="doSearch()">بحث</button>
         </div>
         <div class="shint" id="srcHint">أدخل رقم السورة من 1 إلى 114</div>
@@ -227,20 +315,20 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);min-hei
       <div class="qlinks">
         <div class="ql-lbl">سور مختارة</div>
         <div class="ql-btns">
-          <button class="qlb" onclick="loadSurah(1)">الفاتحة</button>
-          <button class="qlb" onclick="loadSurah(2)">البقرة</button>
-          <button class="qlb" onclick="loadSurah(18)">الكهف</button>
-          <button class="qlb" onclick="loadSurah(36)">يس</button>
-          <button class="qlb" onclick="loadSurah(55)">الرحمن</button>
-          <button class="qlb" onclick="loadSurah(67)">الملك</button>
-          <button class="qlb" onclick="loadSurah(112)">الإخلاص</button>
-          <button class="qlb" onclick="loadJuz(1)">الجزء 1</button>
-          <button class="qlb" onclick="loadJuz(30)">الجزء 30</button>
+          <button class="qlb" onclick="openSurah(1)">الفاتحة</button>
+          <button class="qlb" onclick="openSurah(2)">البقرة</button>
+          <button class="qlb" onclick="openSurah(18)">الكهف</button>
+          <button class="qlb" onclick="openSurah(36)">يس</button>
+          <button class="qlb" onclick="openSurah(55)">الرحمن</button>
+          <button class="qlb" onclick="openSurah(67)">الملك</button>
+          <button class="qlb" onclick="openSurah(112)">الإخلاص</button>
+          <button class="qlb" onclick="openJuz(1)">الجزء 1</button>
+          <button class="qlb" onclick="openJuz(30)">الجزء 30</button>
         </div>
       </div>
     </div>
 
-    <!-- BOOKMARKS PANEL -->
+    <!-- BOOKMARKS -->
     <div class="spnl" id="p-bm">
       <div class="bmhdr">
         <span class="bmtitle">الإشارات المرجعية</span>
@@ -250,14 +338,14 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);min-hei
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main" id="mainArea">
 
     <!-- WELCOME -->
     <div id="wlcScreen" class="wlc">
       <div class="wbsm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
       <div class="wtitle">مرحباً بك في تطبيق القرآن الكريم</div>
-      <div class="wdesc">اختر سورة من القائمة الجانبية، أو استخدم البحث للانتقال إلى سورة أو جزء أو آية محددة</div>
+      <div class="wdesc">اضغط ☰ لاختيار سورة أو استخدام البحث للانتقال إلى سورة أو جزء أو آية</div>
       <div class="wfeats">
         <div class="wfeat"><span class="i">📖</span><span class="l">114 سورة كاملة</span></div>
         <div class="wfeat"><span class="i">🔍</span><span class="l">بحث متقدم</span></div>
@@ -267,34 +355,48 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--tp);min-hei
     </div>
 
     <!-- LOADING -->
-    <div class="lov" id="lov"><div class="spin"></div><div class="ltxt">جاري التحميل...</div></div>
+    <div class="lov" id="lov">
+      <div class="spin"></div>
+      <div class="ltxt">جاري التحميل...</div>
+    </div>
 
-    <!-- CONTENT -->
+    <!-- CONTENT AREA -->
     <div id="cArea" style="display:none">
       <div class="chdr">
         <div class="cinfo">
           <div class="cname" id="cName">—</div>
           <div class="cbdgs" id="cBdgs"></div>
         </div>
-        <div class="cacts">
-          <button class="bact" id="bmCurBtn" onclick="bmCurrent()">🔖 حفظ</button>
-        </div>
+        <button class="bact" id="bmCurBtn" onclick="bmCurrent()">🔖 حفظ</button>
       </div>
       <div id="bsmArea"></div>
       <div class="ayc" id="ayc"></div>
-      <div class="navf">
-        <button class="bnav" id="prevBtn" onclick="navigate(-1)">◄ السابق</button>
-        <span class="pgind" id="pgInd"></span>
-        <button class="bnav" id="nextBtn" onclick="navigate(1)">التالي ►</button>
+
+      <!-- Desktop nav (hidden on mobile, shown via CSS) -->
+      <div class="navf" id="navF" style="display:none">
+        <button id="prevBtnD" onclick="navigate(-1)" class="bnav-btn">◄ السابق</button>
+        <span class="pgind" id="pgIndD"></span>
+        <button id="nextBtnD" onclick="navigate(1)" class="bnav-btn">التالي ►</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- BOTTOM NAV BAR (mobile) -->
+<div class="bnav-bar">
+  <div class="bnav-sides">
+    <button class="bnav-btn" id="prevBtn" onclick="navigate(-1)">◄ السابق</button>
+  </div>
+  <span class="pgind" id="pgInd">القرآن الكريم</span>
+  <div class="bnav-sides">
+    <button class="bnav-btn" id="nextBtn" onclick="navigate(1)">التالي ►</button>
+  </div>
+</div>
+
 <script>
-/* ══════════════════════════════════════
-   DATA
-══════════════════════════════════════ */
+/* ════════════════════════════════
+   SURAH DATA [num, name, verses, juz, type]
+════════════════════════════════ */
 const SD = [
   [1,"الفاتحة",7,1,"مكية"],[2,"البقرة",286,2,"مدنية"],[3,"آل عمران",200,3,"مدنية"],
   [4,"النساء",176,4,"مدنية"],[5,"المائدة",120,6,"مدنية"],[6,"الأنعام",165,7,"مكية"],
@@ -337,48 +439,54 @@ const SD = [
 ];
 
 const API = 'https://api.alquran.cloud/v1';
-let mode = 'surah', cur = null, stype = 'surah';
-let BM = JSON.parse(localStorage.getItem('qbm') || '[]');
+let mode='surah', cur=null, stype='surah';
+let BM = JSON.parse(localStorage.getItem('qbm')||'[]');
 let ayahTexts = {};
-let lightMode = localStorage.getItem('qtheme') === 'light';
+let lightMode = localStorage.getItem('qtheme')==='light';
+const isMobile = () => window.innerWidth < 769;
 
-if (lightMode) { document.body.classList.add('lm'); document.getElementById('themeBtn').textContent = '☀️'; }
+/* apply theme */
+if(lightMode){ document.body.classList.add('lm'); document.getElementById('themeBtn').textContent='☀️'; }
 
-/* ══════════════════════════════════════
-   INIT
-══════════════════════════════════════ */
-function init() {
-  renderSurahList(SD);
-  renderBM();
+/* ════ INIT ════ */
+function init(){
+  renderSurahList(SD); renderBM();
   const last = localStorage.getItem('qlast');
-  if (last) { const d = JSON.parse(last); d.type === 'surah' ? loadSurah(d.n) : loadJuz(d.n); }
+  if(last){ const d=JSON.parse(last); d.type==='surah'?loadSurah(d.n):loadJuz(d.n); }
+  // disable nav buttons initially
+  setNav(true,true);
 }
 
-/* ══════════════════════════════════════
-   UI
-══════════════════════════════════════ */
-function toggleSidebar() { document.getElementById('sdb').classList.toggle('col'); }
-
-function switchTab(t) {
-  ['surahs','search','bm'].forEach(x => {
-    document.getElementById('t-'+x).classList.toggle('on', x===t);
-    document.getElementById('p-'+x).classList.toggle('on', x===t);
+/* ════ SIDEBAR ════ */
+function toggleSidebar(){
+  const s=document.getElementById('sdb');
+  const open = s.classList.contains('col');
+  if(open){ s.classList.remove('col'); if(isMobile()) document.getElementById('overlay').classList.add('on'); }
+  else { closeSidebar(); }
+}
+function closeSidebar(){
+  document.getElementById('sdb').classList.add('col');
+  document.getElementById('overlay').classList.remove('on');
+}
+function switchTab(t){
+  ['surahs','search','bm'].forEach(x=>{
+    document.getElementById('t-'+x).classList.toggle('on',x===t);
+    document.getElementById('p-'+x).classList.toggle('on',x===t);
   });
 }
 
-function toggleTheme() {
-  lightMode = !lightMode;
-  document.body.classList.toggle('lm', lightMode);
-  document.getElementById('themeBtn').textContent = lightMode ? '☀️' : '🌙';
-  localStorage.setItem('qtheme', lightMode ? 'light' : 'dark');
+/* ════ THEME ════ */
+function toggleTheme(){
+  lightMode=!lightMode;
+  document.body.classList.toggle('lm',lightMode);
+  document.getElementById('themeBtn').textContent=lightMode?'☀️':'🌙';
+  localStorage.setItem('qtheme',lightMode?'light':'dark');
 }
 
-/* ══════════════════════════════════════
-   SURAH LIST
-══════════════════════════════════════ */
-function renderSurahList(data) {
-  document.getElementById('surahList').innerHTML = data.map(s =>
-    `<div class="si" id="si-${s[0]}" onclick="loadSurah(${s[0]})">
+/* ════ SURAH LIST ════ */
+function renderSurahList(data){
+  document.getElementById('surahList').innerHTML = data.map(s=>
+    `<div class="si" id="si-${s[0]}" onclick="openSurah(${s[0]})">
       <div class="sinum">${s[0]}</div>
       <div class="siinfo">
         <div class="siname">${s[1]}</div>
@@ -388,151 +496,123 @@ function renderSurahList(data) {
     </div>`
   ).join('');
 }
-
-function filterSurahs(q) {
-  renderSurahList(SD.filter(s => s[1].includes(q) || String(s[0]).includes(q)));
+function filterSurahs(q){
+  renderSurahList(SD.filter(s=>s[1].includes(q)||String(s[0]).includes(q)));
+}
+function setActiveSurah(n){
+  document.querySelectorAll('.si').forEach(e=>e.classList.remove('on'));
+  const el=document.getElementById('si-'+n);
+  if(el){el.classList.add('on');el.scrollIntoView({block:'nearest'});}
 }
 
-function setActiveSurah(n) {
-  document.querySelectorAll('.si').forEach(e => e.classList.remove('on'));
-  const el = document.getElementById('si-'+n);
-  if (el) { el.classList.add('on'); el.scrollIntoView({block:'nearest'}); }
-}
-
-/* ══════════════════════════════════════
-   SEARCH
-══════════════════════════════════════ */
-function setSType(t) {
-  stype = t;
-  document.querySelectorAll('.stbtn').forEach(b => b.classList.remove('on'));
+/* ════ SEARCH ════ */
+function setSType(t){
+  stype=t;
+  document.querySelectorAll('.stbtn').forEach(b=>b.classList.remove('on'));
   document.getElementById('st-'+t).classList.add('on');
-  const inp = document.getElementById('srcInput');
-  const hints = {surah:'أدخل رقم السورة من 1 إلى 114', juz:'أدخل رقم الجزء من 1 إلى 30', ayah:'مثال: 2:255 (سورة:آية)'};
-  const phlds = {surah:'رقم السورة (1-114)', juz:'رقم الجزء (1-30)', ayah:'سورة:آية  مثال 2:255'};
-  inp.placeholder = phlds[t];
-  document.getElementById('srcHint').textContent = hints[t];
-  inp.value = '';
+  const ph={surah:'رقم السورة (1-114)',juz:'رقم الجزء (1-30)',ayah:'سورة:آية  مثال 2:255'};
+  const ht={surah:'أدخل رقم السورة من 1 إلى 114',juz:'أدخل رقم الجزء من 1 إلى 30',ayah:'الصيغة: رقم_السورة:رقم_الآية'};
+  document.getElementById('srcInput').placeholder=ph[t];
+  document.getElementById('srcHint').textContent=ht[t];
+  document.getElementById('srcInput').value='';
 }
-
-function doSearch() {
-  const v = document.getElementById('srcInput').value.trim();
-  if (!v) return;
-  if (stype === 'surah') {
-    const n = parseInt(v);
-    n>=1 && n<=114 ? loadSurah(n) : toast('أدخل رقمًا بين 1 و 114');
-  } else if (stype === 'juz') {
-    const n = parseInt(v);
-    n>=1 && n<=30 ? loadJuz(n) : toast('أدخل رقمًا بين 1 و 30');
-  } else {
-    const p = v.split(':');
-    if (p.length===2) { const s=parseInt(p[0]), a=parseInt(p[1]); loadAyah(s,a); }
-    else toast('الصيغة الصحيحة: رقم_السورة:رقم_الآية');
+function doSearch(){
+  const v=document.getElementById('srcInput').value.trim();
+  if(!v)return;
+  if(stype==='surah'){const n=parseInt(v);(n>=1&&n<=114)?openSurah(n):toast('أدخل رقمًا بين 1 و 114');}
+  else if(stype==='juz'){const n=parseInt(v);(n>=1&&n<=30)?openJuz(n):toast('أدخل رقمًا بين 1 و 30');}
+  else{
+    const p=v.split(':');
+    if(p.length===2){loadAyah(parseInt(p[0]),parseInt(p[1]));}
+    else toast('الصيغة: سورة:آية  مثال: 2:255');
   }
 }
 
-/* ══════════════════════════════════════
-   API LOADERS
-══════════════════════════════════════ */
-async function loadSurah(n) {
+/* wrappers that also close sidebar on mobile */
+function openSurah(n){ if(isMobile())closeSidebar(); loadSurah(n); }
+function openJuz(n){ if(isMobile())closeSidebar(); loadJuz(n); }
+
+/* ════ API ════ */
+async function loadSurah(n){
   showLoad(); mode='surah'; cur=n;
-  try {
-    const r = await fetch(`${API}/surah/${n}`);
-    const d = await r.json();
-    if (d.code===200) {
-      displaySurah(d.data);
-      localStorage.setItem('qlast', JSON.stringify({type:'surah',n}));
-      setActiveSurah(n);
-    } else showErr();
-  } catch { showErr(); }
+  try{
+    const r=await fetch(`${API}/surah/${n}`);
+    const d=await r.json();
+    if(d.code===200){ displaySurah(d.data); localStorage.setItem('qlast',JSON.stringify({type:'surah',n})); setActiveSurah(n); }
+    else showErr();
+  }catch{showErr();}
   hideLoad();
 }
-
-async function loadJuz(n) {
+async function loadJuz(n){
   showLoad(); mode='juz'; cur=n;
-  try {
-    const r = await fetch(`${API}/juz/${n}`);
-    const d = await r.json();
-    if (d.code===200) {
-      displayJuz(d.data, n);
-      localStorage.setItem('qlast', JSON.stringify({type:'juz',n}));
-    } else showErr();
-  } catch { showErr(); }
+  try{
+    const r=await fetch(`${API}/juz/${n}`);
+    const d=await r.json();
+    if(d.code===200){ displayJuz(d.data,n); localStorage.setItem('qlast',JSON.stringify({type:'juz',n})); }
+    else showErr();
+  }catch{showErr();}
   hideLoad();
 }
-
-async function loadAyah(s, a) {
+async function loadAyah(s,a){
   showLoad();
-  try {
-    const r = await fetch(`${API}/ayah/${s}:${a}`);
-    const d = await r.json();
-    if (d.code===200) {
-      await loadSurah(s);
-      setTimeout(() => scrollToAyah(a), 600);
-    } else { showErr(); toast('لم يُعثر على الآية المطلوبة'); }
-  } catch { showErr(); }
+  try{
+    const r=await fetch(`${API}/ayah/${s}:${a}`);
+    const d=await r.json();
+    if(d.code===200){ if(isMobile())closeSidebar(); await loadSurah(s); setTimeout(()=>scrollToAyah(a),600); }
+    else{ showErr(); toast('لم يُعثر على الآية'); }
+  }catch{showErr();}
   hideLoad();
 }
-
-function scrollToAyah(n) {
-  const el = document.getElementById('ay-'+n);
-  if (el) { el.scrollIntoView({behavior:'smooth',block:'center'}); el.classList.add('hl'); setTimeout(()=>el.classList.remove('hl'),3000); }
+function scrollToAyah(n){
+  const el=document.getElementById('ay-'+n);
+  if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),3000);}
 }
 
-/* ══════════════════════════════════════
-   DISPLAY
-══════════════════════════════════════ */
-function displaySurah(s) {
-  showContent();
-  ayahTexts = {};
-  const sd = SD.find(x=>x[0]===s.number);
-  document.getElementById('cName').textContent = 'سورة ' + s.name;
-  document.getElementById('cBdgs').innerHTML =
+/* ════ DISPLAY ════ */
+function displaySurah(s){
+  showContent(); ayahTexts={};
+  const sd=SD.find(x=>x[0]===s.number);
+  document.getElementById('cName').textContent='سورة '+s.name;
+  document.getElementById('cBdgs').innerHTML=
     `<span class="bdg">الجزء ${sd?sd[3]:''}</span>
      <span class="bdg">${sd?sd[4]:''}</span>
      <span class="bdg">${s.numberOfAyahs} آية</span>`;
-  document.getElementById('bsmArea').innerHTML =
-    (s.number!==9 && s.number!==1) ?
-    '<div class="bsm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>' : '';
-  document.getElementById('ayc').innerHTML = s.ayahs.map(a => ayCard(a, s.number, s.name)).join('');
-  document.getElementById('prevBtn').disabled = s.number<=1;
-  document.getElementById('nextBtn').disabled = s.number>=114;
-  document.getElementById('pgInd').textContent = `سورة ${s.number} / 114`;
-  document.getElementById('mainArea').scrollTop = 0;
+  document.getElementById('bsmArea').innerHTML=
+    (s.number!==9&&s.number!==1)?'<div class="bsm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>':'';
+  document.getElementById('ayc').innerHTML=s.ayahs.map(a=>ayCard(a,s.number,s.name)).join('');
+  setNav(s.number<=1, s.number>=114);
+  setPgInd(`سورة ${s.number} / 114`);
+  document.getElementById('mainArea').scrollTop=0;
   updBmBtn();
 }
-
-function displayJuz(juz, n) {
-  showContent(); ayahTexts = {};
-  document.getElementById('cName').textContent = 'الجزء ' + n;
-  document.getElementById('cBdgs').innerHTML = `<span class="bdg">${juz.ayahs.length} آية</span>`;
-  document.getElementById('bsmArea').innerHTML = '';
-  let html = '', lastS = null;
-  juz.ayahs.forEach(a => {
-    if (a.surah.number !== lastS) {
-      html += `<div class="jzsep"><span class="jzbdg">سورة ${a.surah.name} · رقم ${a.surah.number}</span></div>`;
-      lastS = a.surah.number;
+function displayJuz(juz,n){
+  showContent(); ayahTexts={};
+  document.getElementById('cName').textContent='الجزء '+n;
+  document.getElementById('cBdgs').innerHTML=`<span class="bdg">${juz.ayahs.length} آية</span>`;
+  document.getElementById('bsmArea').innerHTML='';
+  let html='', lastS=null;
+  juz.ayahs.forEach(a=>{
+    if(a.surah.number!==lastS){
+      html+=`<div class="jzsep"><span class="jzbdg">سورة ${a.surah.name} · رقم ${a.surah.number}</span></div>`;
+      lastS=a.surah.number;
     }
-    html += ayCard(a, a.surah.number, a.surah.name);
+    html+=ayCard(a,a.surah.number,a.surah.name);
   });
-  document.getElementById('ayc').innerHTML = html;
-  document.getElementById('prevBtn').disabled = n<=1;
-  document.getElementById('nextBtn').disabled = n>=30;
-  document.getElementById('pgInd').textContent = `الجزء ${n} / 30`;
-  document.getElementById('mainArea').scrollTop = 0;
+  document.getElementById('ayc').innerHTML=html;
+  setNav(n<=1, n>=30);
+  setPgInd(`الجزء ${n} / 30`);
+  document.getElementById('mainArea').scrollTop=0;
   updBmBtn();
 }
-
-function ayCard(a, sn, sname) {
-  ayahTexts[`${sn}:${a.numberInSurah}`] = a.text;
-  const mk = BM.some(b=>b.type==='ayah'&&b.sn===sn&&b.an===a.numberInSurah);
+function ayCard(a,sn,sname){
+  ayahTexts[`${sn}:${a.numberInSurah}`]=a.text;
+  const mk=BM.some(b=>b.type==='ayah'&&b.sn===sn&&b.an===a.numberInSurah);
   return `<div class="aycard" id="ay-${a.numberInSurah}">
     <div class="ayhdr">
       <div class="aynum">${a.numberInSurah}</div>
       <div class="aybtns">
-        <button class="aybtn ${mk?'mk':''}" title="إشارة مرجعية"
-          onclick="toggleAyBM(${sn},${a.numberInSurah},'${sname}',this)">🔖</button>
-        <button class="aybtn" title="نسخ الآية"
-          onclick="copyAy(${sn},${a.numberInSurah})">📋</button>
+        <button class="aybtn ${mk?'mk':''}" onclick="toggleAyBM(${sn},${a.numberInSurah},'${sname}',this)" title="إشارة">🔖</button>
+        <button class="aybtn" onclick="copyAy(${sn},${a.numberInSurah})" title="نسخ">📋</button>
       </div>
     </div>
     <div class="aytxt">${a.text}<span class="ayend">${a.numberInSurah}</span></div>
@@ -542,50 +622,50 @@ function ayCard(a, sn, sname) {
   </div>`;
 }
 
-/* ══════════════════════════════════════
-   NAVIGATION
-══════════════════════════════════════ */
-function navigate(d) {
-  if (mode==='surah') { const n=cur+d; if(n>=1&&n<=114) loadSurah(n); }
-  else { const n=cur+d; if(n>=1&&n<=30) loadJuz(n); }
+/* ════ NAVIGATION ════ */
+function navigate(d){
+  if(mode==='surah'){const n=cur+d;if(n>=1&&n<=114)loadSurah(n);}
+  else{const n=cur+d;if(n>=1&&n<=30)loadJuz(n);}
+}
+function setNav(disP, disN){
+  ['prevBtn','prevBtnD'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=disP;});
+  ['nextBtn','nextBtnD'].forEach(id=>{const el=document.getElementById(id);if(el)el.disabled=disN;});
+}
+function setPgInd(txt){
+  ['pgInd','pgIndD'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=txt;});
 }
 
-/* ══════════════════════════════════════
-   BOOKMARKS
-══════════════════════════════════════ */
-function toggleAyBM(sn, an, sname, btn) {
-  const idx = BM.findIndex(b=>b.type==='ayah'&&b.sn===sn&&b.an===an);
-  if (idx>=0) { BM.splice(idx,1); btn.classList.remove('mk'); toast('حُذفت الإشارة'); }
-  else { BM.push({type:'ayah',sn,an,title:`${sname} – الآية ${an}`,dt:new Date().toLocaleDateString('ar')}); btn.classList.add('mk'); toast('تمت إضافة الإشارة'); }
-  saveBM(); renderBM();
+/* ════ BOOKMARKS ════ */
+function toggleAyBM(sn,an,sname,btn){
+  const idx=BM.findIndex(b=>b.type==='ayah'&&b.sn===sn&&b.an===an);
+  if(idx>=0){BM.splice(idx,1);btn.classList.remove('mk');toast('حُذفت الإشارة');}
+  else{BM.push({type:'ayah',sn,an,title:`${sname} – الآية ${an}`,dt:new Date().toLocaleDateString('ar')});btn.classList.add('mk');toast('تمت إضافة الإشارة');}
+  saveBM();renderBM();
 }
-
-function bmCurrent() {
-  if (!cur) return;
-  if (mode==='surah') {
+function bmCurrent(){
+  if(!cur)return;
+  if(mode==='surah'){
     const sd=SD.find(x=>x[0]===cur);
     const idx=BM.findIndex(b=>b.type==='surah'&&b.n===cur);
-    if (idx>=0) { BM.splice(idx,1); toast('حُذفت إشارة السورة'); }
-    else { BM.push({type:'surah',n:cur,title:`سورة ${sd?sd[1]:cur}`,dt:new Date().toLocaleDateString('ar')}); toast('تمت إضافة إشارة للسورة'); }
-  } else {
+    if(idx>=0){BM.splice(idx,1);toast('حُذفت إشارة السورة');}
+    else{BM.push({type:'surah',n:cur,title:`سورة ${sd?sd[1]:cur}`,dt:new Date().toLocaleDateString('ar')});toast('تمت إضافة إشارة للسورة');}
+  }else{
     const idx=BM.findIndex(b=>b.type==='juz'&&b.n===cur);
-    if (idx>=0) { BM.splice(idx,1); toast('حُذفت إشارة الجزء'); }
-    else { BM.push({type:'juz',n:cur,title:`الجزء ${cur}`,dt:new Date().toLocaleDateString('ar')}); toast('تمت إضافة إشارة للجزء'); }
+    if(idx>=0){BM.splice(idx,1);toast('حُذفت إشارة الجزء');}
+    else{BM.push({type:'juz',n:cur,title:`الجزء ${cur}`,dt:new Date().toLocaleDateString('ar')});toast('تمت إضافة إشارة للجزء');}
   }
-  saveBM(); renderBM(); updBmBtn();
+  saveBM();renderBM();updBmBtn();
 }
-
-function updBmBtn() {
-  const btn=document.getElementById('bmCurBtn'); if(!btn) return;
-  let mk = mode==='surah' ? BM.some(b=>b.type==='surah'&&b.n===cur) : BM.some(b=>b.type==='juz'&&b.n===cur);
-  btn.classList.toggle('mk', mk);
-  btn.textContent = mk ? '🔖 محفوظ' : '🔖 حفظ';
+function updBmBtn(){
+  const btn=document.getElementById('bmCurBtn');if(!btn)return;
+  const mk=mode==='surah'?BM.some(b=>b.type==='surah'&&b.n===cur):BM.some(b=>b.type==='juz'&&b.n===cur);
+  btn.classList.toggle('mk',mk);
+  btn.textContent=mk?'🔖 محفوظ':'🔖 حفظ';
 }
-
-function renderBM() {
+function renderBM(){
   const el=document.getElementById('bmList');
-  if (!BM.length) { el.innerHTML='<div class="nobm"><span class="i">🔖</span>لا توجد إشارات مرجعية بعد<br><small>أضفها أثناء القراءة</small></div>'; return; }
-  el.innerHTML = BM.map((b,i)=>`
+  if(!BM.length){el.innerHTML='<div class="nobm"><span class="i">🔖</span>لا توجد إشارات بعد<br><small>أضفها أثناء القراءة</small></div>';return;}
+  el.innerHTML=BM.map((b,i)=>`
     <div class="bmi" onclick="goBM(${i})">
       <span class="bmico">${b.type==='surah'?'📖':b.type==='juz'?'📚':'📍'}</span>
       <div class="bmtxt">
@@ -595,53 +675,64 @@ function renderBM() {
       <button class="bmdel" onclick="delBM(event,${i})">✕</button>
     </div>`).join('');
 }
-
-function goBM(i) {
+function goBM(i){
   const b=BM[i];
-  if (b.type==='surah') loadSurah(b.n);
-  else if (b.type==='juz') loadJuz(b.n);
+  if(isMobile())closeSidebar();
+  if(b.type==='surah')loadSurah(b.n);
+  else if(b.type==='juz')loadJuz(b.n);
   else loadSurah(b.sn).then(()=>setTimeout(()=>scrollToAyah(b.an),600));
 }
-
-function delBM(e, i) { e.stopPropagation(); BM.splice(i,1); saveBM(); renderBM(); toast('حُذفت الإشارة'); }
-
-function clearAllBM() {
-  if (!BM.length) return;
-  if (confirm('هل تريد حذف جميع الإشارات؟')) { BM=[]; saveBM(); renderBM(); toast('حُذفت جميع الإشارات'); updBmBtn(); }
+function delBM(e,i){e.stopPropagation();BM.splice(i,1);saveBM();renderBM();toast('حُذفت الإشارة');}
+function clearAllBM(){
+  if(!BM.length)return;
+  if(confirm('هل تريد حذف جميع الإشارات؟')){BM=[];saveBM();renderBM();toast('حُذفت جميع الإشارات');updBmBtn();}
 }
+function saveBM(){localStorage.setItem('qbm',JSON.stringify(BM));}
 
-function saveBM() { localStorage.setItem('qbm', JSON.stringify(BM)); }
-
-/* ══════════════════════════════════════
-   UTILS
-══════════════════════════════════════ */
-function copyAy(sn, an) {
+/* ════ UTILS ════ */
+function copyAy(sn,an){
   const txt=ayahTexts[`${sn}:${an}`]||'';
   navigator.clipboard.writeText(txt).then(()=>toast('تم نسخ الآية')).catch(()=>toast('تعذّر النسخ'));
 }
-
-function showLoad() {
+function showLoad(){
   document.getElementById('wlcScreen').style.display='none';
   document.getElementById('cArea').style.display='none';
   document.getElementById('lov').classList.add('on');
 }
-function hideLoad() { document.getElementById('lov').classList.remove('on'); }
-function showContent() {
+function hideLoad(){document.getElementById('lov').classList.remove('on');}
+function showContent(){
   document.getElementById('lov').classList.remove('on');
   document.getElementById('wlcScreen').style.display='none';
   document.getElementById('cArea').style.display='block';
+  // show desktop nav footer
+  if(!isMobile()){
+    const nf=document.getElementById('navF');
+    if(nf)nf.style.display='flex';
+  }
 }
-function showErr() {
-  hideLoad(); showContent();
-  document.getElementById('ayc').innerHTML='<div class="err"><span class="i">⚠️</span>تعذّر التحميل. تحقق من اتصال الإنترنت وأعد المحاولة.</div>';
+function showErr(){
+  hideLoad();showContent();
+  document.getElementById('ayc').innerHTML='<div class="err"><span class="i">⚠️</span>تعذّر التحميل. تحقق من اتصالك بالإنترنت وأعد المحاولة.</div>';
 }
 
+/* ════ TOAST ════ */
 let _tt=null;
-function toast(msg) {
-  const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('on');
-  if(_tt) clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('on'),2600);
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');
+  if(_tt)clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('on'),2600);
 }
 
+/* ════ RESIZE HANDLING ════ */
+window.addEventListener('resize',()=>{
+  if(!isMobile()){
+    document.getElementById('overlay').classList.remove('on');
+    document.getElementById('sdb').classList.remove('col');
+  }else{
+    document.getElementById('sdb').classList.add('col');
+  }
+});
+
+/* ════ START ════ */
 init();
 </script>
 </body>
