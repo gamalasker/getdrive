@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercices &mdash; Unit&eacute; 3 : Le club des look&eacute;s</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      min-height: 100vh;
+      color: #fff
+    }
+
+    header {
+      background: linear-gradient(90deg, #1a1a2e, #16213e, #0f3460);
+      padding: 28px 20px;
+      text-align: center;
+      border-bottom: 3px solid #e94560
+    }
+
+    header h1 {
+      font-size: clamp(1.3rem, 4vw, 2rem);
+      color: #e94560;
+      letter-spacing: 2px
+    }
+
+    header p {
+      color: #a8b2d8;
+      margin-top: 6px;
+      font-size: 0.95rem
+    }
+
+    .info-box {
+      max-width: 700px;
+      margin: 28px auto 10px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(233, 69, 96, 0.3);
+      border-radius: 14px;
+      padding: 22px
+    }
+
+    .info-box h2 {
+      color: #e94560;
+      text-align: center;
+      margin-bottom: 14px;
+      font-size: 1rem
+    }
+
+    .info-box input {
+      width: 100%;
+      padding: 11px 14px;
+      margin-bottom: 10px;
+      border-radius: 9px;
+      border: 1px solid rgba(233, 69, 96, 0.4);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none
+    }
+
+    .info-box input:focus {
+      border-color: #e94560
+    }
+
+    .note {
+      margin-top: 6px;
+      background: rgba(233, 69, 96, 0.1);
+      border: 1px dashed rgba(233, 69, 96, 0.4);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      color: #a8b2d8;
+      text-align: center
+    }
+
+    .note b {
+      color: #e94560
+    }
+
+    .pgwrap {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      height: 7px;
+      max-width: 700px;
+      margin: 18px auto 0;
+      overflow: hidden
+    }
+
+    .pgfill {
+      height: 100%;
+      background: linear-gradient(90deg, #e94560, #ffc850);
+      border-radius: 30px;
+      transition: width .5s;
+      width: 0
+    }
+
+    .pgtxt {
+      text-align: center;
+      color: #a8b2d8;
+      font-size: 0.82rem;
+      margin-top: 5px
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 18px 10px 0;
+      max-width: 860px;
+      margin: 0 auto
+    }
+
+    .tab {
+      padding: 9px 18px;
+      border-radius: 28px;
+      border: 2px solid rgba(233, 69, 96, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+      color: #a8b2d8;
+      cursor: pointer;
+      font-size: 0.88rem;
+      transition: all .3s
+    }
+
+    .tab.on,
+    .tab:hover {
+      background: #e94560;
+      color: #fff;
+      border-color: #e94560;
+      box-shadow: 0 0 12px rgba(233, 69, 96, .4)
+    }
+
+    .sec {
+      display: none;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 18px 14px
+    }
+
+    .sec.on {
+      display: block
+    }
+
+    .sectitle {
+      text-align: center;
+      margin-bottom: 22px
+    }
+
+    .sectitle h2 {
+      color: #e94560;
+      font-size: clamp(1rem, 3vw, 1.4rem)
+    }
+
+    .sectitle p {
+      color: #a8b2d8;
+      font-size: 0.87rem;
+      margin-top: 5px
+    }
+
+    .dial {
+      background: rgba(255, 255, 255, 0.07);
+      border-left: 4px solid #e94560;
+      border-radius: 11px;
+      padding: 18px;
+      margin-bottom: 26px
+    }
+
+    .dl {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 9px
+    }
+
+    .sp {
+      font-weight: 700;
+      min-width: 65px;
+      color: #e94560;
+      font-size: 0.9rem
+    }
+
+    .st {
+      color: #e2e8f0;
+      line-height: 1.6;
+      font-size: 0.95rem
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px
+    }
+
+    .card:hover {
+      border-color: rgba(233, 69, 96, .4)
+    }
+
+    .qtxt {
+      font-size: 0.98rem;
+      color: #e2e8f0;
+      margin-bottom: 14px;
+      line-height: 1.6
+    }
+
+    .qn {
+      display: inline-block;
+      background: #e94560;
+      color: #fff;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      text-align: center;
+      line-height: 26px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 7px
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #ffc850;
+      margin-bottom: 10px
+    }
+
+    .lbl {
+      color: #ffc850;
+      font-weight: 700;
+      margin: 18px 0 10px;
+      font-size: 0.9rem
+    }
+
+    .g2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px
+    }
+
+    .g1 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px
+    }
+
+    @media(max-width:480px) {
+      .g2 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .btn {
+      padding: 9px 13px;
+      border-radius: 9px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 0.88rem;
+      text-align: left;
+      transition: all .22s;
+      line-height: 1.4
+    }
+
+    .btn:hover:not(:disabled) {
+      background: rgba(233, 69, 96, .2);
+      border-color: #e94560;
+      transform: translateY(-2px)
+    }
+
+    .btn.sel {
+      background: rgba(233, 69, 96, .3);
+      border-color: #e94560
+    }
+
+    .btn.ok {
+      background: rgba(72, 199, 142, .25);
+      border-color: #48c78e;
+      color: #48c78e
+    }
+
+    .btn.ko {
+      background: rgba(255, 91, 91, .2);
+      border-color: #ff5b5b;
+      color: #ff5b5b
+    }
+
+    .btn:disabled {
+      cursor: default
+    }
+
+    .vbtn {
+      margin-top: 10px;
+      padding: 7px 20px;
+      border-radius: 18px;
+      background: #e94560;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 0.87rem;
+      transition: all .3s
+    }
+
+    .vbtn:hover {
+      background: #c62a47
+    }
+
+    .vbtn:disabled {
+      background: #555;
+      cursor: default
+    }
+
+    .fb {
+      margin-top: 9px;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 0.87rem;
+      display: none
+    }
+
+    .fb.ok {
+      background: rgba(72, 199, 142, .15);
+      color: #48c78e;
+      display: block
+    }
+
+    .fb.ko {
+      background: rgba(255, 91, 91, .15);
+      color: #ff5b5b;
+      display: block
+    }
+
+    .subbtn {
+      display: block;
+      margin: 30px auto;
+      background: linear-gradient(135deg, #e94560, #c62a47);
+      color: #fff;
+      border: none;
+      padding: 14px 46px;
+      border-radius: 46px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(233, 69, 96, .4);
+      transition: all .3s
+    }
+
+    .subbtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(233, 69, 96, .5)
+    }
+
+    #res {
+      display: none;
+      max-width: 660px;
+      margin: 28px auto;
+      background: rgba(255, 255, 255, 0.07);
+      border: 2px solid #e94560;
+      border-radius: 18px;
+      padding: 36px 22px;
+      text-align: center
+    }
+
+    .rsco {
+      font-size: clamp(2.2rem, 7vw, 3.5rem);
+      font-weight: 700;
+      color: #e94560
+    }
+
+    .rgrd {
+      font-size: 1.1rem;
+      color: #a8b2d8;
+      margin: 8px 0
+    }
+
+    .rstr {
+      font-size: 2.2rem;
+      margin: 14px 0;
+      letter-spacing: 5px
+    }
+
+    .rbdg {
+      display: inline-block;
+      padding: 7px 22px;
+      border-radius: 28px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin: 9px 0
+    }
+
+    .bex {
+      background: rgba(72, 199, 142, .2);
+      color: #48c78e;
+      border: 2px solid #48c78e
+    }
+
+    .bgo {
+      background: rgba(255, 200, 80, .2);
+      color: #ffc850;
+      border: 2px solid #ffc850
+    }
+
+    .bpa {
+      background: rgba(255, 160, 50, .2);
+      color: #ffa032;
+      border: 2px solid #ffa032
+    }
+
+    .bfa {
+      background: rgba(255, 91, 91, .2);
+      color: #ff5b5b;
+      border: 2px solid #ff5b5b
+    }
+
+    .rdet {
+      margin-top: 18px;
+      color: #a8b2d8;
+      font-size: 0.92rem;
+      line-height: 2
+    }
+
+    .eml {
+      margin-top: 14px;
+      padding: 11px 18px;
+      border-radius: 9px;
+      font-size: 0.87rem;
+      background: rgba(233, 69, 96, .1);
+      color: #a8b2d8;
+      border: 1px solid rgba(233, 69, 96, .3)
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px;
+      color: #000;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-top: 38px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Exercices Interactifs &mdash; Unit&eacute; 3</h1>
+    <p>Le club des look&eacute;s &nbsp;&bull;&nbsp; V&ecirc;tements &bull; Couleurs &bull; Mati&egrave;res &bull;
+      Opinions</p>
+  </header>
+
+  <div class="info-box">
+    <h2>Informations de l&rsquo;&eacute;l&egrave;ve</h2>
+    <input type="text" id="snom" placeholder="Nom et pr&eacute;nom">
+    <input type="text" id="sclass" placeholder="Classe">
+    <input type="email" id="semail" placeholder="E-mail (optionnel)">
+
+  </div>
+
+  <div class="pgwrap">
+    <div class="pgfill" id="pgf"></div>
+  </div>
+  <p class="pgtxt" id="pgt">0 / 29 questions</p>
+
+  <div class="tabs">
+    <button class="tab on" onclick="go('s1',this)">Compr&eacute;hension</button>
+    <button class="tab" onclick="go('s2',this)">Situations</button>
+    <button class="tab" onclick="go('s3',this)">Grammaire</button>
+    <button class="tab" onclick="go('s4',this)">Production</button>
+  </div>
+
+  <!-- ===== SECTION 1 : COMPREHENSION ===== -->
+  <div class="sec on" id="s1">
+    <div class="sectitle">
+      <h2>Compr&eacute;hension de texte</h2>
+      <p>Lis le dialogue, puis choisis la bonne r&eacute;ponse.</p>
+    </div>
+
+    <div class="dial">
+      <div class="dl"><span class="sp">Karim&nbsp;:</span><span class="st">All&ocirc;, salut Nadia&nbsp;!
+          Qu&rsquo;est-ce que tu fais ce week-end&nbsp;?</span></div>
+      <div class="dl"><span class="sp">Nadia&nbsp;:</span><span class="st">Je vais faire du shopping avec mon
+          fr&egrave;re Sami.</span></div>
+      <div class="dl"><span class="sp">Karim&nbsp;:</span><span class="st">Qu&rsquo;est-ce que vous allez
+          acheter&nbsp;?</span></div>
+      <div class="dl"><span class="sp">Nadia&nbsp;:</span><span class="st">Je cherche des v&ecirc;tements pour la
+          rentr&eacute;e scolaire. Je vais acheter un jean et une chemise.</span></div>
+      <div class="dl"><span class="sp">Karim&nbsp;:</span><span class="st">Tu aimes les v&ecirc;tements de quelle
+          couleur&nbsp;?</span></div>
+      <div class="dl"><span class="sp">Nadia&nbsp;:</span><span class="st">J&rsquo;adore le bleu et le blanc. Je ne
+          m&rsquo;habille jamais en noir.</span></div>
+      <div class="dl"><span class="sp">Karim&nbsp;:</span><span class="st">Et quelle mati&egrave;re tu
+          pr&eacute;f&egrave;res&nbsp;?</span></div>
+      <div class="dl"><span class="sp">Nadia&nbsp;:</span><span class="st">Je pr&eacute;f&egrave;re les v&ecirc;tements
+          en coton, c&rsquo;est confortable. Je cherche un jean &agrave; rayures bleues.</span></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">1</span>Nadia va faire du shopping avec&nbsp;&hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q1',false)">a) sa m&egrave;re</button>
+        <button class="btn" onclick="one(this,'q1',false)">b) Karim</button>
+        <button class="btn" onclick="one(this,'q1',true)">c) son fr&egrave;re Sami</button>
+        <button class="btn" onclick="one(this,'q1',false)">d) son amie Julie</button>
+      </div>
+      <div class="fb" id="fb1"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">2</span>Nadia va faire du shopping&nbsp;&hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q2',false)">a) demain matin</button>
+        <button class="btn" onclick="one(this,'q2',true)">b) ce week-end</button>
+        <button class="btn" onclick="one(this,'q2',false)">c) ce soir</button>
+        <button class="btn" onclick="one(this,'q2',false)">d) la semaine prochaine</button>
+      </div>
+      <div class="fb" id="fb2"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">3</span>Nadia va acheter&nbsp;&hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q3',false)">a) une robe de soir&eacute;e</button>
+        <button class="btn" onclick="one(this,'q3',false)">b) un manteau en laine</button>
+        <button class="btn" onclick="one(this,'q3',false)">c) une jupe &agrave; fleurs</button>
+        <button class="btn" onclick="one(this,'q3',true)">d) un jean et une chemise</button>
+      </div>
+      <div class="fb" id="fb3"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">4</span>Nadia pr&eacute;f&egrave;re les v&ecirc;tements&nbsp;&hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q4',false)">a) en soie</button>
+        <button class="btn" onclick="one(this,'q4',false)">b) en laine</button>
+        <button class="btn" onclick="one(this,'q4',true)">c) en coton</button>
+        <button class="btn" onclick="one(this,'q4',false)">d) en velours</button>
+      </div>
+      <div class="fb" id="fb4"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== SECTION 2 : SITUATIONS (5 choix / 2 bonnes) ===== -->
+  <div class="sec" id="s2">
+    <div class="sectitle">
+      <h2>Les Situations</h2>
+      <p>Choisis les <strong>deux bonnes r&eacute;ponses</strong> parmi cinq, puis clique sur
+        &laquo;&nbsp;V&eacute;rifier&nbsp;&raquo;.</p>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">5</span>Tu demandes &agrave; ton ami ce qu&rsquo;il porte en &eacute;t&eacute;,
+        qu&rsquo;est-ce qu&rsquo;il dit&nbsp;?</p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq5">
+        <button class="btn" onclick="two(this,'q5')">a) Un manteau en cuir.</button>
+        <button class="btn" onclick="two(this,'q5')">b) Un anorak chaud.</button>
+        <button class="btn" onclick="two(this,'q5')" data-c="1">c) Un tee-shirt &agrave; manches courtes.</button>
+        <button class="btn" onclick="two(this,'q5')">d) Un pull en soie.</button>
+        <button class="btn" onclick="two(this,'q5')" data-c="1">e) Un maillot de bain.</button>
+      </div>
+      <button class="vbtn" id="vq5" onclick="chk('q5')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb5"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">6</span>Ton ami te demande ce que tu portes en hiver, tu dis&nbsp;&hellip;</p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq6">
+        <button class="btn" onclick="two(this,'q6')">a) Que portes-tu en hiver&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q6')" data-c="1">b) Un manteau ou un pull.</button>
+        <button class="btn" onclick="two(this,'q6')">c) Un tee-shirt l&eacute;ger.</button>
+        <button class="btn" onclick="two(this,'q6')" data-c="1">d) Un anorak chaud.</button>
+        <button class="btn" onclick="two(this,'q6')">e) Une chemise &agrave; manches courtes.</button>
+      </div>
+      <button class="vbtn" id="vq6" onclick="chk('q6')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb6"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">7</span>Tu demandes l&rsquo;avis de ton ami sur ton look, tu dis&nbsp;&hellip;
+      </p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq7">
+        <button class="btn" onclick="two(this,'q7')">a) Que penses-tu de ce sport&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q7')" data-c="1">b) Comment tu trouves mon look&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q7')">c) Quel est ton avis sur mon quartier&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q7')" data-c="1">d) Quel est ton avis sur ma tenue&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q7')">e) Quel look tu portes&nbsp;?</button>
+      </div>
+      <button class="vbtn" id="vq7" onclick="chk('q7')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb7"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">8</span>Tu t&rsquo;informes sur le prix d&rsquo;un v&ecirc;tement, tu
+        dis&nbsp;&hellip;</p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq8">
+        <button class="btn" onclick="two(this,'q8')">a) Quel est le prix de ce roman&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q8')" data-c="1">b) C&rsquo;est combien&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q8')">c) Combien fait le livre&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q8')" data-c="1">d) Combien co&ucirc;te cette chemise&nbsp;?</button>
+        <button class="btn" onclick="two(this,'q8')">e) En quoi est la chemise&nbsp;?</button>
+      </div>
+      <button class="vbtn" id="vq8" onclick="chk('q8')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb8"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">9</span>Le vendeur te demande ta couleur pr&eacute;f&eacute;r&eacute;e, tu
+        dis&nbsp;&hellip;</p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq9">
+        <button class="btn" onclick="two(this,'q9')">a) Je n&rsquo;aime pas le noir.</button>
+        <button class="btn" onclick="two(this,'q9')" data-c="1">b) Je choisis le bleu.</button>
+        <button class="btn" onclick="two(this,'q9')">c) Je pr&eacute;f&egrave;re les jeans.</button>
+        <button class="btn" onclick="two(this,'q9')" data-c="1">d) Je pr&eacute;f&egrave;re le rouge ou le
+          rose.</button>
+        <button class="btn" onclick="two(this,'q9')">e) Je pr&eacute;f&egrave;re le coton ou la soie.</button>
+      </div>
+      <button class="vbtn" id="vq9" onclick="chk('q9')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb9"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">10</span>Tu appr&eacute;cies la tenue d&rsquo;une copine, tu dis&nbsp;&hellip;
+      </p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq10">
+        <button class="btn" onclick="two(this,'q10')">a) C&rsquo;est nul&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q10')">b) C&rsquo;est moche&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q10')">c) Ce n&rsquo;est pas &agrave; la mode&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q10')" data-c="1">d) C&rsquo;est tr&egrave;s
+          &eacute;l&eacute;gant&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q10')" data-c="1">e) C&rsquo;est tr&egrave;s sympa&nbsp;!</button>
+      </div>
+      <button class="vbtn" id="vq10" onclick="chk('q10')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb10"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">11</span>Tu n&rsquo;aimes pas la tenue de ton ami, tu dis&nbsp;&hellip;</p>
+      <p class="hint">Choisis 2 r&eacute;ponses</p>
+      <div class="g1" id="oq11">
+        <button class="btn" onclick="two(this,'q11')">a) C&rsquo;est original&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q11')">b) C&rsquo;est tr&egrave;s joli&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q11')" data-c="1">c) C&rsquo;est d&eacute;mod&eacute;&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q11')">d) C&rsquo;est &eacute;l&eacute;gant&nbsp;!</button>
+        <button class="btn" onclick="two(this,'q11')" data-c="1">e) C&rsquo;est horrible&nbsp;!</button>
+      </div>
+      <button class="vbtn" id="vq11" onclick="chk('q11')" disabled>V&eacute;rifier</button>
+      <div class="fb" id="fb11"></div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3 : GRAMMAIRE ===== -->
+  <div class="sec" id="s3">
+    <div class="sectitle">
+      <h2>R&egrave;gles Grammaticales</h2>
+      <p>Compl&egrave;te les phrases.</p>
+    </div>
+
+    <p class="lbl">Les couleurs &mdash; f&eacute;minin et pluriel</p>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">12</span>La robe est &hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q12',false)">a) blanc</button>
+        <button class="btn" onclick="one(this,'q12',true)">b) blanche</button>
+        <button class="btn" onclick="one(this,'q12',false)">c) blancs</button>
+        <button class="btn" onclick="one(this,'q12',false)">d) blanches</button>
+      </div>
+      <div class="fb" id="fb12"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">13</span>Les chaussettes sont &hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q13',false)">a) noir</button>
+        <button class="btn" onclick="one(this,'q13',false)">b) noire</button>
+        <button class="btn" onclick="one(this,'q13',false)">c) noirs</button>
+        <button class="btn" onclick="one(this,'q13',true)">d) noires</button>
+      </div>
+      <div class="fb" id="fb13"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">14</span>Les pulls sont &hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q14',false)">a) vert</button>
+        <button class="btn" onclick="one(this,'q14',false)">b) verte</button>
+        <button class="btn" onclick="one(this,'q14',true)">c) verts</button>
+        <button class="btn" onclick="one(this,'q14',false)">d) vertes</button>
+      </div>
+      <div class="fb" id="fb14"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">15</span>Elle porte une robe &hellip; marine.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q15',true)">a) bleu</button>
+        <button class="btn" onclick="one(this,'q15',false)">b) bleue</button>
+        <button class="btn" onclick="one(this,'q15',false)">c) bleus</button>
+        <button class="btn" onclick="one(this,'q15',false)">d) bleues</button>
+      </div>
+      <div class="fb" id="fb15"></div>
+    </div>
+
+    <p class="lbl">Les adjectifs d&eacute;monstratifs</p>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">16</span>&hellip; pull est tr&egrave;s beau.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q16',false)">a) Cette</button>
+        <button class="btn" onclick="one(this,'q16',true)">b) Ce</button>
+        <button class="btn" onclick="one(this,'q16',false)">c) Ces</button>
+        <button class="btn" onclick="one(this,'q16',false)">d) Cet</button>
+      </div>
+      <div class="fb" id="fb16"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">17</span>&hellip; anorak est chaud.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q17',false)">a) Ce</button>
+        <button class="btn" onclick="one(this,'q17',true)">b) Cet</button>
+        <button class="btn" onclick="one(this,'q17',false)">c) Cette</button>
+        <button class="btn" onclick="one(this,'q17',false)">d) Ces</button>
+      </div>
+      <div class="fb" id="fb17"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">18</span>&hellip; robe est magnifique.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q18',false)">a) Ce</button>
+        <button class="btn" onclick="one(this,'q18',false)">b) Cet</button>
+        <button class="btn" onclick="one(this,'q18',true)">c) Cette</button>
+        <button class="btn" onclick="one(this,'q18',false)">d) Ces</button>
+      </div>
+      <div class="fb" id="fb18"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">19</span>&hellip; pulls sont en laine.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q19',false)">a) Ce</button>
+        <button class="btn" onclick="one(this,'q19',false)">b) Cet</button>
+        <button class="btn" onclick="one(this,'q19',false)">c) Cette</button>
+        <button class="btn" onclick="one(this,'q19',true)">d) Ces</button>
+      </div>
+      <div class="fb" id="fb19"></div>
+    </div>
+
+    <p class="lbl">Mati&egrave;res et motifs &mdash; en / &agrave;</p>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">20</span>Elle porte une robe &hellip; coton.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q20',false)">a) &agrave;</button>
+        <button class="btn" onclick="one(this,'q20',false)">b) de</button>
+        <button class="btn" onclick="one(this,'q20',true)">c) en</button>
+        <button class="btn" onclick="one(this,'q20',false)">d) avec</button>
+      </div>
+      <div class="fb" id="fb20"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">21</span>Il aime les pulls &hellip; rayures.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q21',false)">a) en</button>
+        <button class="btn" onclick="one(this,'q21',true)">b) &agrave;</button>
+        <button class="btn" onclick="one(this,'q21',false)">c) de</button>
+        <button class="btn" onclick="one(this,'q21',false)">d) par</button>
+      </div>
+      <div class="fb" id="fb21"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">22</span>Cette jupe est &hellip; carreaux noirs.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q22',false)">a) en</button>
+        <button class="btn" onclick="one(this,'q22',true)">b) &agrave;</button>
+        <button class="btn" onclick="one(this,'q22',false)">c) de</button>
+        <button class="btn" onclick="one(this,'q22',false)">d) avec</button>
+      </div>
+      <div class="fb" id="fb22"></div>
+    </div>
+
+    <p class="lbl">tr&egrave;s &mdash; beaucoup &mdash; bien</p>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">23</span>J&rsquo;aime &hellip; ce pull.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q23',false)">a) tr&egrave;s</button>
+        <button class="btn" onclick="one(this,'q23',true)">b) beaucoup</button>
+        <button class="btn" onclick="one(this,'q23',false)">c) bien</button>
+        <button class="btn" onclick="one(this,'q23',false)">d) mal</button>
+      </div>
+      <div class="fb" id="fb23"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">24</span>Ce pull est &hellip; beau.</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q24',true)">a) tr&egrave;s</button>
+        <button class="btn" onclick="one(this,'q24',false)">b) beaucoup</button>
+        <button class="btn" onclick="one(this,'q24',false)">c) bien</button>
+        <button class="btn" onclick="one(this,'q24',false)">d) peu</button>
+      </div>
+      <div class="fb" id="fb24"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">25</span>Cette robe te va &hellip;</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q25',false)">a) beaucoup</button>
+        <button class="btn" onclick="one(this,'q25',false)">b) tr&egrave;s</button>
+        <button class="btn" onclick="one(this,'q25',true)">c) bien</button>
+        <button class="btn" onclick="one(this,'q25',false)">d) mal</button>
+      </div>
+      <div class="fb" id="fb25"></div>
+    </div>
+
+    <p class="lbl">Quel &mdash; Quelle &mdash; Quels &mdash; Quelles</p>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">26</span>&hellip; look tu pr&eacute;f&egrave;res&nbsp;?</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q26',true)">a) Quel</button>
+        <button class="btn" onclick="one(this,'q26',false)">b) Quelle</button>
+        <button class="btn" onclick="one(this,'q26',false)">c) Quels</button>
+        <button class="btn" onclick="one(this,'q26',false)">d) Quelles</button>
+      </div>
+      <div class="fb" id="fb26"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">27</span>&hellip; taille tu fais&nbsp;?</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q27',false)">a) Quel</button>
+        <button class="btn" onclick="one(this,'q27',true)">b) Quelle</button>
+        <button class="btn" onclick="one(this,'q27',false)">c) Quels</button>
+        <button class="btn" onclick="one(this,'q27',false)">d) Quelles</button>
+      </div>
+      <div class="fb" id="fb27"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">28</span>&hellip; v&ecirc;tements tu portes&nbsp;?</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q28',false)">a) Quel</button>
+        <button class="btn" onclick="one(this,'q28',false)">b) Quelle</button>
+        <button class="btn" onclick="one(this,'q28',true)">c) Quels</button>
+        <button class="btn" onclick="one(this,'q28',false)">d) Quelles</button>
+      </div>
+      <div class="fb" id="fb28"></div>
+    </div>
+
+    <div class="card">
+      <p class="qtxt"><span class="qn">29</span>&hellip; chaussettes tu choisis&nbsp;?</p>
+      <div class="g2">
+        <button class="btn" onclick="one(this,'q29',false)">a) Quel</button>
+        <button class="btn" onclick="one(this,'q29',false)">b) Quelle</button>
+        <button class="btn" onclick="one(this,'q29',false)">c) Quels</button>
+        <button class="btn" onclick="one(this,'q29',true)">d) Quelles</button>
+      </div>
+      <div class="fb" id="fb29"></div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 4 : PRODUCTION ===== -->
+  <div class="sec" id="s4">
+    <div class="sectitle">
+      <h2>Production &Eacute;crite</h2>
+      <p>R&eacute;ponds aux questions suivantes. (Aucune note n'est attribu&eacute;e)</p>
+    </div>
+
+    <div class="card">
+      <p class="lbl">1. Mail</p>
+      <p class="qtxt">R&eacute;ponds &agrave; ce mail par des phrases compl&egrave;tes :<br><em>&laquo; Quel look tu
+          pr&eacute;f&egrave;res ? Comment tu trouves mon look ? &raquo;</em></p>
+      <textarea id="pmail" rows="4"
+        style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(233,69,96,0.4); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; resize:vertical; outline:none; font-family:inherit; margin-bottom:10px;"
+        placeholder="Écris ta réponse ici..."></textarea>
+    </div>
+
+    <div class="card">
+      <p class="lbl">2. Sujet</p>
+      <p class="qtxt">&Eacute;cris de 25 &agrave; 30 mots dans ce sujet :<br><em>D&eacute;cris la tenue que tu portes
+          &agrave; l'&eacute;cole.Utilise les éléments suivsnts:(tenue - couleur)</em></p>
+      <textarea id="psujet" rows="6"
+        style="width:100%; padding:10px; border-radius:8px; border:1px solid rgba(233,69,96,0.4); background:rgba(255,255,255,0.1); color:#fff; font-size:0.95rem; resize:vertical; outline:none; font-family:inherit; margin-bottom:10px;"
+        placeholder="Écris ta réponse ici..."></textarea>
+    </div>
+  </div>
+
+  <button class="subbtn" onclick="submit()">Soumettre et voir le r&eacute;sultat</button>
+
+  <div id="res">
+    <div id="res-content"
+      style="padding:20px; border-radius:18px; background:linear-gradient(135deg, #1a1a2e, #16213e); text-align:center;">
+      <div class="rstr" id="rstr"></div>
+      <div class="rsco" id="rsco"></div>
+      <div class="rgrd" id="rgrd"></div>
+      <div class="rbdg" id="rbdg"></div>
+      <div class="rdet" id="rdet"></div>
+
+      <!-- Container for production answers in image -->
+      <div id="rprod"
+        style="margin-top:20px; text-align:left; background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; border:1px dashed rgba(233,69,96,0.4); display:none; color:#e2e8f0; font-size:0.9rem; line-height:1.5;">
+      </div>
+    </div>
+    <div class="eml" id="reml"></div>
+    <div style="margin-top:20px;">
+      <button onclick="downloadImage()"
+        style="background:#48c78e; color:#fff; padding:12px 30px; border:none; border-radius:30px; font-weight:bold; cursor:pointer; box-shadow:0 4px 12px rgba(72,199,142,0.4); transition:transform 0.2s;">
+        📸 T&eacute;l&eacute;charger le r&eacute;sultat
+      </button>
+    </div>
+  </div>
+
+  <footer>Unit&eacute; 3 &mdash; Le club des look&eacute;s &nbsp;&bull;&nbsp; Exercices Interactifs<br>انتاج موقع تعليم
+    الفرنسية frenchapeau 2026 مسيو جمال عسكر</footer>
+
+  <script>
+    const TEACHER = "gamalasker@gmail.com";
+
+    const N = 29;
+    let ans = {}, sc = {}, sel = {};
+
+    function go(id, btn) {
+      document.querySelectorAll(".sec").forEach(s => s.classList.remove("on"));
+      document.querySelectorAll(".tab").forEach(b => b.classList.remove("on"));
+      document.getElementById(id).classList.add("on");
+      btn.classList.add("on");
+    }
+    function upd() {
+      const c = Object.keys(ans).length;
+      document.getElementById("pgf").style.width = (c / N * 100) + "%";
+      document.getElementById("pgt").textContent = c + " / " + N + " questions";
+    }
+    function setfb(q, ok, msg) {
+      const el = document.getElementById("fb" + q.replace("q", ""));
+      el.className = "fb " + (ok ? "ok" : "ko");
+      el.textContent = msg;
+    }
+    function one(btn, q, ok) {
+      if (ans[q]) return;
+      ans[q] = true; sc[q] = ok ? 1 : 0;
+      btn.closest(".g2").querySelectorAll(".btn").forEach(b => {
+        b.disabled = true;
+        if (b === btn) { b.classList.add(ok ? "ok" : "ko"); }
+        if (!ok && b.getAttribute("onclick").includes(",true)")) b.classList.add("ok");
+      });
+      setfb(q, ok, ok ? "✓ Bonne réponse !" : "✗ Mauvaise réponse.");
+      upd();
+    }
+    function two(btn, q) {
+      if (ans[q]) return;
+      if (!sel[q]) sel[q] = [];
+      if (btn.classList.contains("sel")) { btn.classList.remove("sel"); sel[q] = sel[q].filter(b => b !== btn); }
+      else { if (sel[q].length >= 2) return; btn.classList.add("sel"); sel[q].push(btn); }
+      document.getElementById("v" + q).disabled = sel[q].length !== 2;
+    }
+    function chk(q) {
+      if (ans[q]) return; ans[q] = true;
+      document.querySelectorAll("#o" + q + " .btn").forEach(b => b.disabled = true);
+      document.getElementById("v" + q).disabled = true;
+      let c = 0;
+      (sel[q] || []).forEach(b => {
+        if (b.dataset.c === "1") { b.classList.remove("sel"); b.classList.add("ok"); c++; }
+        else { b.classList.remove("sel"); b.classList.add("ko"); }
+      });
+      document.querySelectorAll("#o" + q + " .btn").forEach(b => { if (b.dataset.c === "1" && !b.classList.contains("ok")) b.classList.add("ok"); });
+      sc[q] = c === 2 ? 1 : c === 1 ? 0.5 : 0;
+      if (c === 2) setfb(q, true, "✓ Parfait ! Les deux bonnes réponses !");
+      else if (c === 1) setfb(q, false, "⚠ Une seule bonne réponse.");
+      else setfb(q, false, "✗ Aucune bonne réponse.");
+      upd();
+    }
+    function submit() {
+      const nom = document.getElementById("snom").value || "&mdash;";
+      const cls = document.getElementById("sclass").value || "&mdash;";
+      const em = document.getElementById("semail").value || "";
+      let tot = 0; for (let k in sc) tot += sc[k]; tot = Math.round(tot);
+      const p = Math.round(tot / N * 100);
+      let s = "&#11088;", bc = "bfa", bt = "&Agrave; revoir";
+      if (p >= 90) { s = "&#11088;&#11088;&#11088;&#11088;&#11088;"; bc = "bex"; bt = "Excellent !"; }
+      else if (p >= 75) { s = "&#11088;&#11088;&#11088;&#11088;"; bc = "bgo"; bt = "Très bien !"; }
+      else if (p >= 60) { s = "&#11088;&#11088;&#11088;"; bc = "bpa"; bt = "Bien !"; }
+      else if (p >= 50) { s = "&#11088;&#11088;"; bc = "bpa"; bt = "Passable"; }
+      document.getElementById("rstr").innerHTML = s;
+      document.getElementById("rsco").textContent = tot + " / " + N;
+      document.getElementById("rgrd").textContent = "Note : " + p + " %";
+      const bdg = document.getElementById("rbdg"); bdg.className = "rbdg " + bc; bdg.innerHTML = bt;
+      document.getElementById("rdet").innerHTML = "Nom : <b>" + nom + "</b><br>Classe : <b>" + cls + "</b><br>Bonnes réponses : <b>" + tot + "</b><br>Mauvaises réponses : <b>" + (N - tot) + "</b>";
+
+      const vmail = document.getElementById("pmail") ? document.getElementById("pmail").value : "";
+      const vsujet = document.getElementById("psujet") ? document.getElementById("psujet").value : "";
+
+      const rprod = document.getElementById("rprod");
+      if (vmail || vsujet) {
+        rprod.style.display = "block";
+        rprod.innerHTML = "<h3 style='color:#e94560; margin-bottom:10px; font-size:1rem;'>Production &Eacute;crite</h3>" +
+          "<b>1. Mail:</b><br>" + (vmail.replace(/\n/g, '<br>') || "<i>(Vide)</i>") + "<br><br>" +
+          "<b>2. Sujet:</b><br>" + (vsujet.replace(/\n/g, '<br>') || "<i>(Vide)</i>");
+      } else {
+        rprod.style.display = "none";
+      }
+
+      let ml = "";
+      if (TEACHER) {
+        const sb = encodeURIComponent("Résultat — " + nom);
+        let bdText = "Nom: " + nom + "\nClasse: " + cls + "\nE-mail: " + (em || "—") + "\nNote: " + tot + "/" + N + "\nPourcentage: " + p + "%\nNiveau: " + bt + "\n\n--- Production ---\nMail:\n" + vmail + "\n\nSujet:\n" + vsujet + "\n\n* L'élève a été invité à joindre l'image de son résultat en pièce jointe.";
+        const bd = encodeURIComponent(bdText);
+        ml = '<a href="mailto:' + TEACHER + '?subject=' + sb + '&body=' + bd + '" style="color:#e94560;">Envoyer le résultat par E-mail (N\'oublie pas d\'attacher l\'image !)</a>';
+      } else { ml = "Ajoutez l'e-mail du professeur dans le code pour activer l'envoi."; }
+      document.getElementById("reml").innerHTML = ml;
+      const r = document.getElementById("res"); r.style.display = "block"; r.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function downloadImage() {
+      const resContent = document.getElementById('res-content');
+      html2canvas(resContent, {
+        backgroundColor: '#16213e',
+        scale: 2
+      }).then(canvas => {
+        const nom = document.getElementById("snom").value || "Eleve";
+        const link = document.createElement('a');
+        link.download = `Resultat-${nom}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+
+</html>
