@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unité 3 — Le club des lookés | اختبار تفاعلي</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap');
+
+    :root {
+      --primary: #6c63ff;
+      --primary-dark: #4a42d6;
+      --secondary: #ff6584;
+      --accent: #43e97b;
+      --gold: #f7c948;
+      --bg: #0f0e17;
+      --surface: #1a1a2e;
+      --surface2: #16213e;
+      --surface3: #0f3460;
+      --text: #fffffe;
+      --text-muted: #a7a9be;
+      --correct: #43e97b;
+      --wrong: #ff6584;
+      --border: rgba(108, 99, 255, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(108, 99, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(255, 101, 132, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(67, 233, 123, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    .hero {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.2), rgba(255, 101, 132, 0.2));
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent, rgba(108, 99, 255, 0.1), transparent 60%);
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 0.4rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.7rem 1.5rem;
+      border-radius: 1rem;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Progress */
+    .progress-wrap {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .progress-score {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .progress-bar-bg {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 3rem 0 1.5rem;
+      padding: 1.2rem 1.5rem;
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.15), rgba(108, 99, 255, 0.05));
+      border-radius: 1rem;
+      border-right: 4px solid var(--primary);
+      border: 1px solid var(--border);
+      border-right: 4px solid var(--primary);
+    }
+
+    .section-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Reading Passage */
+    .passage {
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(67, 233, 123, 0.05));
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .passage-label {
+      position: absolute;
+      top: -12px;
+      right: 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      padding: 0.2rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .passage-qa {
+      margin-bottom: 1.2rem;
+    }
+
+    .passage-q {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .passage-a {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      padding-left: 1rem;
+      border-left: 2px solid rgba(108, 99, 255, 0.3);
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Question Cards */
+    .question-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .question-card.answered::before {
+      opacity: 1;
+    }
+
+    .question-card.answered {
+      border-color: rgba(108, 99, 255, 0.5);
+    }
+
+    .question-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .question-header {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.3rem;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .question-text {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.6;
+      flex: 1;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Multi-answer badge */
+    .multi-badge {
+      display: inline-block;
+      background: rgba(247, 201, 72, 0.2);
+      color: var(--gold);
+      border: 1px solid rgba(247, 201, 72, 0.4);
+      padding: 0.2rem 0.7rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0.9rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .option::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .option:hover:not(.disabled) {
+      border-color: rgba(108, 99, 255, 0.5);
+      transform: translateX(-3px);
+      background: rgba(108, 99, 255, 0.08);
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background: rgba(108, 99, 255, 0.12);
+    }
+
+    .option.correct {
+      border-color: var(--correct);
+      background: rgba(67, 233, 123, 0.12);
+    }
+
+    .option.wrong {
+      border-color: var(--wrong);
+      background: rgba(255, 101, 132, 0.12);
+    }
+
+    .option.reveal-correct {
+      border-color: var(--correct);
+      background: rgba(67, 233, 123, 0.08);
+      animation: pulse-correct 0.5s ease;
+    }
+
+    @keyframes pulse-correct {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.01);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .option.disabled {
+      cursor: default;
+    }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      transition: all 0.25s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .option.correct .option-letter {
+      background: var(--correct);
+      color: #000;
+      border-color: var(--correct);
+    }
+
+    .option.wrong .option-letter {
+      background: var(--wrong);
+      color: #fff;
+      border-color: var(--wrong);
+    }
+
+    .option.reveal-correct .option-letter {
+      background: var(--correct);
+      color: #000;
+      border-color: var(--correct);
+    }
+
+    .option-text {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .option-icon {
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Explanation */
+    .explanation {
+      margin-top: 1rem;
+      padding: 1rem 1.2rem;
+      background: rgba(67, 233, 123, 0.07);
+      border: 1px solid rgba(67, 233, 123, 0.2);
+      border-radius: 0.8rem;
+      font-size: 0.9rem;
+      color: #a7f3c4;
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .explanation.wrong-exp {
+      background: rgba(255, 101, 132, 0.07);
+      border-color: rgba(255, 101, 132, 0.2);
+      color: #ffa5b8;
+    }
+
+    .explanation.show {
+      display: block;
+    }
+
+    .explanation strong {
+      color: var(--correct);
+    }
+
+    .explanation.wrong-exp strong {
+      color: var(--wrong);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Writing Section */
+    .writing-prompt {
+      background: linear-gradient(135deg, rgba(255, 101, 132, 0.1), rgba(108, 99, 255, 0.1));
+      border: 1px solid rgba(255, 101, 132, 0.3);
+      border-radius: 1.2rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .writing-prompt .mail-from {
+      color: var(--secondary);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .writing-prompt .mail-line {
+      color: var(--text-muted);
+      padding-left: 1rem;
+    }
+
+    .writing-prompt .mail-sign {
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 0.5rem;
+    }
+
+    .writing-area {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.8rem;
+      padding: 1rem;
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      resize: vertical;
+      min-height: 120px;
+      transition: border-color 0.3s;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .writing-area:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    }
+
+    .word-counter {
+      text-align: left;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .model-answer-btn {
+      background: rgba(108, 99, 255, 0.15);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+      color: var(--primary);
+      padding: 0.6rem 1.2rem;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 0.75rem;
+      transition: all 0.3s;
+    }
+
+    .model-answer-btn:hover {
+      background: rgba(108, 99, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .model-answer {
+      display: none;
+      margin-top: 1rem;
+      padding: 1.2rem;
+      background: rgba(67, 233, 123, 0.07);
+      border: 1px dashed rgba(67, 233, 123, 0.3);
+      border-radius: 0.8rem;
+      font-size: 0.9rem;
+      color: #a7f3c4;
+      line-height: 1.8;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .model-answer.show {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Submit Button */
+    .submit-wrap {
+      text-align: center;
+      margin: 3rem 0;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 1.2rem 4rem;
+      border-radius: 3rem;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 30px rgba(108, 99, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(108, 99, 255, 0.5);
+    }
+
+    .btn-submit:hover::before {
+      opacity: 1;
+    }
+
+    .btn-submit span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Results Panel */
+    #results {
+      display: none;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .results-card {
+      background: linear-gradient(135deg, var(--surface), var(--surface2));
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 3rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .results-card::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(108, 99, 255, 0.2), transparent 70%);
+      pointer-events: none;
+    }
+
+    .score-circle {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0%, var(--secondary) var(--pct, 0%), rgba(255, 255, 255, 0.05) var(--pct, 0%) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      position: relative;
+    }
+
+    .score-circle::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      background: var(--surface);
+      border-radius: 50%;
+    }
+
+    .score-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .score-num {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .score-total {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .grade-label {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 0.5rem;
+    }
+
+    .grade-message {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .result-stat {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.2rem;
+    }
+
+    .result-stat-num {
+      font-size: 2rem;
+      font-weight: 900;
+    }
+
+    .result-stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* Certificate */
+    .certificate {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border: 3px solid var(--gold);
+      border-radius: 2rem;
+      padding: 3rem;
+      text-align: center;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .certificate::before,
+    .certificate::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(247, 201, 72, 0.1), transparent 70%);
+    }
+
+    .certificate::before {
+      top: -80px;
+      right: -80px;
+    }
+
+    .certificate::after {
+      bottom: -80px;
+      left: -80px;
+    }
+
+    .cert-border {
+      border: 1px solid rgba(247, 201, 72, 0.3);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cert-ornament {
+      color: var(--gold);
+      font-size: 2rem;
+      letter-spacing: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cert-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px rgba(247, 201, 72, 0.3);
+    }
+
+    .cert-subtitle {
+      font-size: 1rem;
+      color: #d4a017;
+      margin-bottom: 1.5rem;
+    }
+
+    .cert-body {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 2;
+      margin-bottom: 1.5rem;
+    }
+
+    .cert-name {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text);
+      padding: 0.5rem 2rem;
+      border-bottom: 2px solid var(--gold);
+      display: inline-block;
+      margin: 0.5rem 0 1.5rem;
+    }
+
+    .cert-unit {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .cert-score-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold), #e5a800);
+      color: #000;
+      padding: 0.6rem 2rem;
+      border-radius: 2rem;
+      font-size: 1.2rem;
+      font-weight: 900;
+      margin: 1rem 0;
+    }
+
+    .cert-grade-badge {
+      display: inline-block;
+      padding: 0.4rem 1.5rem;
+      border-radius: 2rem;
+      font-weight: 900;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+      border: 2px solid;
+    }
+
+    .cert-footer {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(247, 201, 72, 0.2);
+    }
+
+    .cert-sign {
+      text-align: center;
+    }
+
+    .cert-sign-line {
+      width: 120px;
+      height: 1px;
+      background: rgba(247, 201, 72, 0.5);
+      margin: 0.5rem auto;
+    }
+
+    .cert-sign-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .cert-seal {
+      width: 80px;
+      height: 80px;
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--gold);
+      position: relative;
+    }
+
+    .cert-seal::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed rgba(247, 201, 72, 0.5);
+      border-radius: 50%;
+    }
+
+    /* Confetti */
+    .confetti-wrap {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -20px;
+      animation: confetti-fall linear forwards;
+      border-radius: 2px;
+    }
+
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Print Button */
+    .btn-print {
+      background: linear-gradient(135deg, var(--gold), #e5a800);
+      color: #000;
+      border: none;
+      padding: 0.9rem 2.5rem;
+      border-radius: 2rem;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 0.5rem;
+      box-shadow: 0 4px 20px rgba(247, 201, 72, 0.3);
+    }
+
+    .btn-print:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(247, 201, 72, 0.4);
+    }
+
+    .btn-retry {
+      background: rgba(108, 99, 255, 0.2);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 0.9rem 2.5rem;
+      border-radius: 2rem;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 0.5rem;
+    }
+
+    .btn-retry:hover {
+      background: rgba(108, 99, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cert-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .cert-title {
+        font-size: 1.4rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      .progress-wrap,
+      .submit-wrap,
+      .btn-print,
+      .btn-retry,
+      .section-header,
+      .passage,
+      .question-card {
+        display: none;
+      }
+
+      #results,
+      .certificate {
+        display: block !important;
+      }
+
+      .certificate {
+        border-color: #c7a800;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <form id="emailForm" action="https://formsubmit.co/gamalasker@gmail.com" method="POST" target="hidden_iframe"
+    style="display:none;">
+    <input type="hidden" name="_subject" id="f_subject">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="الاسم" id="f_name">
+    <input type="hidden" name="الدرجة" id="f_score">
+    <input type="hidden" name="النسبة" id="f_pct">
+    <input type="hidden" name="التقييم" id="f_grade">
+    <input type="hidden" name="إجابة السؤال الأول" id="f_w1">
+    <input type="hidden" name="إجابة السؤال الثاني" id="f_w2">
+    <input type="hidden" name="إجابة السؤال الثالث" id="f_w3">
+  </form>
+
+  <div class="confetti-wrap" id="confettiWrap"></div>
+
+  <div class="container">
+
+    <!-- Hero Header -->
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-badge">🇫🇷 FRANÇAIS — SECONDAIRE ٢ت</div>
+        <h1>Unité 3 — Le club des lookés</h1>
+        <p>اختبار مراجعة شامل وتفاعلي</p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">38</div>
+            <div class="stat-label">سؤال اختياري</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">3</div>
+            <div class="stat-label">تمرين إنتاجي</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">5</div>
+            <div class="stat-label">محاور دراسية</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span class="progress-text">التقدم في الاختبار</span>
+        <span class="progress-score" id="liveScore">النتيجة: 0 / 38</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- ======== SECTION A: READING ======== -->
+    <div class="section-header">
+      <div class="section-icon">📖</div>
+      <div>
+        <div class="section-title">A — Compréhension de l'écrit</div>
+        <div class="section-subtitle">فهم المقروء — اقرأ النص ثم أجب</div>
+      </div>
+    </div>
+
+    <div class="passage">
+      <div class="passage-label">📝 النص</div>
+      <div class="passage-qa">
+        <div class="passage-q">❓ Où tu vas en vacances d'été ? Avec qui ?</div>
+        <div class="passage-a">Karim: Je passe les deux mois de vacances au club sportif. Je vais là avec ma sœur Salma
+          et mon frère Ahmed. On va voir nos amis.</div>
+      </div>
+      <div class="passage-qa">
+        <div class="passage-q">❓ Quelles activités tu aimes faire ?</div>
+        <div class="passage-a">Karim: J'aime aller à la fête du club, tout près de la piscine. Mon frère Ahmed aime
+          nager dans la piscine. Ma sœur joue de la musique avec ma cousine Hoda.</div>
+      </div>
+      <div class="passage-qa">
+        <div class="passage-q">❓ Qu'est-ce que tu portes à la fête ?</div>
+        <div class="passage-a">Karim: Je vais à la fête à vélo. Je mets des baskets, un tee-shirt, un short, une
+          casquette et des lunettes de soleil.</div>
+      </div>
+    </div>
+
+    <!-- Reading Questions -->
+    <div id="q-section-read"></div>
+
+    <!-- ======== SECTION B: SITUATIONS ======== -->
+    <div class="section-header">
+      <div class="section-icon">💬</div>
+      <div>
+        <div class="section-title">B — Situations de communication</div>
+        <div class="section-subtitle">مواقف تواصلية — اختر الإجابتين الصحيحتين</div>
+      </div>
+    </div>
+
+    <div id="q-section-sit"></div>
+
+    <!-- ======== SECTION C: GRAMMAR ======== -->
+    <div class="section-header">
+      <div class="section-icon">📐</div>
+      <div>
+        <div class="section-title">C — Grammaire</div>
+        <div class="section-subtitle">قواعد اللغة — اختر الإجابة الصحيحة</div>
+      </div>
+    </div>
+
+    <!-- COD sub-header -->
+    <div
+      style="background:rgba(108,99,255,0.1);border:1px solid rgba(108,99,255,0.2);border-radius:0.8rem;padding:0.8rem 1.2rem;margin-bottom:1rem;font-size:0.9rem;color:var(--primary);font-weight:700;">
+      🔵 أولاً: الضمائر الشخصية COD
+    </div>
+    <div id="q-cod"></div>
+
+    <div
+      style="background:rgba(255,101,132,0.1);border:1px solid rgba(255,101,132,0.2);border-radius:0.8rem;padding:0.8rem 1.2rem;margin:1.5rem 0 1rem;font-size:0.9rem;color:var(--secondary);font-weight:700;">
+      🔴 ثانياً: الألوان — les couleurs
+    </div>
+    <div id="q-colors"></div>
+
+    <div
+      style="background:rgba(67,233,123,0.1);border:1px solid rgba(67,233,123,0.2);border-radius:0.8rem;padding:0.8rem 1.2rem;margin:1.5rem 0 1rem;font-size:0.9rem;color:var(--accent);font-weight:700;">
+      🟢 ثالثاً: صفات الإشارة — ce / cet / cette / ces
+    </div>
+    <div id="q-dem"></div>
+
+    <div
+      style="background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.2);border-radius:0.8rem;padding:0.8rem 1.2rem;margin:1.5rem 0 1rem;font-size:0.9rem;color:var(--gold);font-weight:700;">
+      🟡 رابعاً: كلمات الاستفهام — quel / quels / quelle / quelles…
+    </div>
+    <div id="q-inter"></div>
+
+    <div
+      style="background:rgba(255,200,100,0.1);border:1px solid rgba(255,200,100,0.2);border-radius:0.8rem;padding:0.8rem 1.2rem;margin:1.5rem 0 1rem;font-size:0.9rem;color:#ffbb55;font-weight:700;">
+      🟠 خامساً: الصفات — accord de l'adjectif
+    </div>
+    <div id="q-adj"></div>
+
+    <!-- ======== SECTION D: PRODUCTION ======== -->
+    <div class="section-header">
+      <div class="section-icon">✍️</div>
+      <div>
+        <div class="section-title">D — Exercices de production</div>
+        <div class="section-subtitle">تمارين الإنتاج الكتابي</div>
+      </div>
+    </div>
+
+    <!-- Writing 1 -->
+    <div class="question-card">
+      <div class="question-header">
+        <div class="question-num">1</div>
+        <div class="question-text">Réponds à ce mail par trois phrases complètes :</div>
+      </div>
+      <div class="writing-prompt">
+        <div class="mail-from">📧 Bonjour !</div>
+        <div class="mail-line">– Quels accessoires tu préfères ?</div>
+        <div class="mail-line">– En quoi tu préfères les bagues ?</div>
+        <div class="mail-line">– Quand tu mets ces accessoires ?</div>
+        <div class="mail-sign">Au revoir !</div>
+      </div>
+      <textarea class="writing-area" id="write1" placeholder="Écris ta réponse ici..."
+        oninput="countWords('write1','wc1')"></textarea>
+      <div class="word-counter" id="wc1">0 mots</div>
+      <button class="model-answer-btn" onclick="toggleModel('model1')">💡 عرض الإجابة النموذجية</button>
+      <div class="model-answer" id="model1">
+        ✅ <strong>Réponse modèle :</strong><br>
+        J'aime porter des bracelets et des colliers comme accessoires.<br>
+        Je préfère les bagues en or, c'est très élégant.<br>
+        Je mets ces accessoires quand je vais à une fête ou une sortie spéciale.
+      </div>
+    </div>
+
+    <!-- Writing 2 -->
+    <div class="question-card">
+      <div class="question-header">
+        <div class="question-num">2</div>
+        <div class="question-text">Réponds à ce mail par trois phrases complètes :</div>
+      </div>
+      <div class="writing-prompt">
+        <div class="mail-from">📧 Bonsoir !</div>
+        <div class="mail-line">– La fête de Tom, c'est à quelle heure ?</div>
+        <div class="mail-line">– Quel cadeau tu vas acheter ?</div>
+        <div class="mail-line">– Quelle tenue tu vas porter à la fête ?</div>
+        <div class="mail-sign">Ciao !</div>
+      </div>
+      <textarea class="writing-area" id="write2" placeholder="Écris ta réponse ici..."
+        oninput="countWords('write2','wc2')"></textarea>
+      <div class="word-counter" id="wc2">0 mots</div>
+      <button class="model-answer-btn" onclick="toggleModel('model2')">💡 عرض الإجابة النموذجية</button>
+      <div class="model-answer" id="model2">
+        ✅ <strong>Réponse modèle :</strong><br>
+        La fête de Tom commence à sept heures du soir.<br>
+        Je vais acheter un beau collier en argent comme cadeau.<br>
+        À la fête, je vais porter une robe rouge et des chaussures à talons.
+      </div>
+    </div>
+
+    <!-- Writing 3 -->
+    <div class="question-card">
+      <div class="question-header">
+        <div class="question-num">3</div>
+        <div class="question-text">Écris de 25 à 30 mots — Décris la tenue que tu portes à une fête ! <em
+            style="color:var(--text-muted);font-size:0.85rem;">(vêtements – accessoires)</em></div>
+      </div>
+      <textarea class="writing-area" id="write3" placeholder="Décris ta tenue ici (25-30 mots)..."
+        oninput="countWords('write3','wc3')" style="min-height:150px;"></textarea>
+      <div class="word-counter" id="wc3">0 mots</div>
+      <button class="model-answer-btn" onclick="toggleModel('model3')">💡 عرض الإجابة النموذجية</button>
+      <div class="model-answer" id="model3">
+        ✅ <strong>Réponse modèle (27 mots) :</strong><br>
+        Pour aller à une fête, je mets une belle robe bleue à fleurs avec des chaussures à talons noires. Je porte un
+        collier en or et des boucles d'oreilles. C'est très élégant !
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-wrap">
+      <input type="text" id="studentName" placeholder="اكتب اسمك الثلاثي لتسجيل النتيجة..."
+        style="padding: 1rem; width: 80%; max-width: 400px; border-radius: 1rem; border: 1px solid var(--primary); background: rgba(255,255,255,0.03); color: var(--text); font-family: 'Cairo', sans-serif; font-size: 1.1rem; text-align: center; margin-bottom: 1.5rem;"><br>
+      <button class="btn-submit" onclick="submitExam()">
+        <span>🎯 تصحيح الاختبار وعرض النتيجة</span>
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div id="results">
+
+      <div class="results-card">
+        <div class="score-circle" id="scoreCircle">
+          <div class="score-inner">
+            <div class="score-num" id="scoreNum">0</div>
+            <div class="score-total" id="scoreTotal">/ 38</div>
+          </div>
+        </div>
+        <div class="grade-label" id="gradeLabel"></div>
+        <div class="grade-message" id="gradeMsg"></div>
+        <div class="results-grid">
+          <div class="result-stat">
+            <div class="result-stat-num" style="color:var(--correct)" id="correctCount">0</div>
+            <div class="result-stat-label">✅ إجابات صحيحة</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" style="color:var(--wrong)" id="wrongCount">0</div>
+            <div class="result-stat-label">❌ إجابات خاطئة</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" style="color:var(--gold)" id="pctNum">0%</div>
+            <div class="result-stat-label">📊 النسبة المئوية</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
+          <button class="btn-print" onclick="window.print()">🖨️ طباعة الشهادة</button>
+          <button class="btn-retry" onclick="retryExam()">🔄 إعادة الاختبار</button>
+        </div>
+      </div>
+
+      <!-- Certificate -->
+      <div class="certificate" id="certificate">
+        <div class="cert-border">
+          <div class="cert-ornament">✦ ✦ ✦ ✦ ✦</div>
+          <div class="cert-title">شهادة إتمام الاختبار</div>
+          <div class="cert-subtitle">Certificat de Réussite</div>
+          <div class="cert-body">
+            يُشهد بأن الطالب
+          </div>
+          <div class="cert-name" id="certName">المتفوق</div>
+          <div class="cert-unit">قد أتمّ بنجاح مراجعة وحدة</div>
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text);margin:0.5rem 0;">
+            Unité 3 — Le club des lookés<br>
+            <span style="font-size:0.85rem;color:var(--text-muted);">الدرس الثاني — Leçon 2</span>
+          </div>
+          <div style="margin:1rem 0;">
+            <div class="cert-score-badge" id="certScore">0 / 38</div>
+          </div>
+          <div id="certGradeBadge"></div>
+          <div class="cert-footer">
+            <div class="cert-sign">
+              <div style="font-size:1.2rem;color:var(--gold);">FrenchAPEAU</div>
+              <div class="cert-sign-line"></div>
+              <div class="cert-sign-label">المنصة التعليمية</div>
+            </div>
+            <div class="cert-seal">⭐</div>
+            <div class="cert-sign">
+              <div style="font-size:0.9rem;color:var(--text-muted)" id="certDate"></div>
+              <div class="cert-sign-line"></div>
+              <div class="cert-sign-label">تاريخ الاختبار</div>
+            </div>
+          </div>
+          <div class="cert-ornament" style="margin-top:1.5rem;">✦ ✦ ✦ ✦ ✦</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // =============================================
+    // DATA
+    // =============================================
+
+    const readingQuestions = [
+      {
+        q: "Karim passe ses vacances ...",
+        opts: ["au club sportif", "au club du quartier", "à la mer", "chez sa famille"],
+        correct: [0],
+        exp: "✅ في النص: <strong>«Je passe les deux mois de vacances au club sportif»</strong> — يقضي كريم إجازته في النادي الرياضي.",
+        multi: false
+      },
+      {
+        q: "............., aime faire de la natation.",
+        opts: ["Karim", "Hoda", "Salma", "Ahmed"],
+        correct: [3],
+        exp: "✅ في النص: <strong>«Mon frère Ahmed aime nager dans la piscine»</strong> — أحمد هو من يحب السباحة، وليس كريم.",
+        multi: false
+      },
+      {
+        q: "Karim va à la fête ...",
+        opts: ["à vélo", "à cheval", "en voiture", "à pied"],
+        correct: [0],
+        exp: "✅ في النص: <strong>«Je vais à la fête à vélo»</strong> — يذهب كريم إلى الحفلة بالدراجة.",
+        multi: false
+      },
+      {
+        q: "À la fête, Karim met ...",
+        opts: ["des lunettes de vue", "un survêtement", "des lunettes de soleil", "des chaussures à lacets"],
+        correct: [2],
+        exp: "✅ في النص: <strong>«Je mets des baskets, un tee-shirt, un short, une casquette et des lunettes de soleil»</strong> — يرتدي نظارة شمسية وليس نظارة نظر ولا بدلة رياضية.",
+        multi: false
+      }
+    ];
+
+    const situationQuestions = [
+      {
+        q: "Tu décris tes nouvelles chaussures, tu dis :",
+        opts: ["Elle est à fleurs.", "Ils sont marron.", "Elles sont à lacets.", "C'est en satin.", "Il est très beau."],
+        correct: [2, 3],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«Elles sont à lacets»</strong> — الأحذية مؤنثة جمع، فنستخدم (elles). <strong>«C'est en satin»</strong> — لوصف المادة المصنوع منها الحذاء نستخدم (en). ❌ (Elle est) خطأ لأن الأحذية جمع، و(Ils sont) خطأ لأن الأحذية مؤنثة.",
+        multi: true
+      },
+      {
+        q: "Tu admires l'accessoire de ta copine, qu'est-ce que tu dis ?",
+        opts: ["Ce ne te va pas bien.", "C'est très moche.", "Il te va très bien.", "Elle n'aime pas les accessoires.", "C'est magnifique !"],
+        correct: [2, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«Il te va très bien»</strong> — تعبير المديح الصحيح. <strong>«C'est magnifique !»</strong> — تعبير إعجاب مناسب. ❌ الباقي إما نقد أو لا معنى له في السياق.",
+        multi: true
+      },
+      {
+        q: "Tu demandes à ton ami la matière d'un bracelet, tu dis :",
+        opts: ["Quel est le prix de ce bracelet ?", "Quel vêtement préfères-tu ?", "En quoi est le bracelet ?", "Quelle matière préfères-tu à l'école ?", "C'est en quoi ce bracelet ?"],
+        correct: [2, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«En quoi est le bracelet ?»</strong> و <strong>«C'est en quoi ce bracelet ?»</strong> — كلاهما يسأل عن المادة. ❌ الباقي يسأل عن السعر أو الملابس أو مفضلات المدرسة.",
+        multi: true
+      },
+      {
+        q: "Tu demandes à ta copine ses accessoires préférés, qu'est-ce que tu dis ?",
+        opts: ["Quels vêtements préfères-tu ?", "Quels accessoires tu préfères ?", "Quelle tenue tu préfères ?", "Quels accessoires tu n'aimes pas ?", "Quels sont tes accessoires préférés ?"],
+        correct: [1, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«Quels accessoires tu préfères ?»</strong> و <strong>«Quels sont tes accessoires préférés ?»</strong> — كلاهما يسأل عن الإكسوارات المفضلة. ❌ (Quels vêtements) يسأل عن الملابس وليس الإكسوارات.",
+        multi: true
+      },
+      {
+        q: "Tu parles de tes accessoires préférés, tu dis :",
+        opts: ["Je préfère la tenue de sport.", "Je n'aime pas les bagues.", "J'aime les tee-shirts.", "J'adore les colliers.", "Je préfère les bracelets en or."],
+        correct: [3, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«J'adore les colliers»</strong> و <strong>«Je préfère les bracelets en or»</strong> — كلاهما يتحدث عن إكسوار مفضل. ❌ (les tee-shirts) و (la tenue de sport) ليسا إكسواراً.",
+        multi: true
+      },
+      {
+        q: "Tu décris la bague d'une copine, qu'est-ce que tu dis ?",
+        opts: ["Elle est en or.", "Il est en coton.", "Elle met une bague.", "Il est en argent.", "Elle est en argent."],
+        correct: [0, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«Elle est en or»</strong> و <strong>«Elle est en argent»</strong> — الخاتم (bague) مؤنث لذا نستخدم (elle). ❌ (Il est en coton) خطأ لأن الخاتم لا يكون من القطن، و(Il est) خطأ لأن bague مؤنث.",
+        multi: true
+      },
+      {
+        q: "Ton ami te demande ce que tu mets autour du cou, tu dis :",
+        opts: ["Des boucles d'oreilles.", "Un bracelet.", "Un collier en or.", "Une ceinture.", "Un foulard."],
+        correct: [2, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«Un collier en or»</strong> — العقد يوضع حول الرقبة. <strong>«Un foulard»</strong> — الوشاح يُلف حول الرقبة. ❌ الحلق للأذن، السوار لليد، الحزام للوسط.",
+        multi: true
+      },
+      {
+        q: "Tu demandes au vendeur le prix d'un accessoire, qu'est-ce que tu dis ?",
+        opts: ["C'est en quoi ?", "Combien coûte ce pantalon ?", "C'est combien ?", "Tu admires ce jean ?", "Quel est le prix de cette écharpe ?"],
+        correct: [2, 4],
+        exp: "✅ الإجابتان الصحيحتان: <strong>«C'est combien ?»</strong> و <strong>«Quel est le prix de cette écharpe ?»</strong> — كلاهما يسأل عن السعر. ❌ (C'est en quoi) يسأل عن المادة، و(Combien coûte ce pantalon) يسأل عن بنطلون وليس إكسواراً.",
+        multi: true
+      }
+    ];
+
+    const codQuestions = [
+      {
+        q: "Tu mets ce bonnet ? – Oui, je ............ mets.",
+        opts: ["la", "le", "les", "l'"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>le</strong> — الطاقية (bonnet) اسم مفرد مذكر، لذا نستخدم ضمير المفعول به (le) بدلاً من تكراره.",
+        multi: false
+      },
+      {
+        q: "Tu portes cette robe ? – Oui, je ............ porte.",
+        opts: ["le", "les", "la", "l'"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>la</strong> — الفستان (robe) اسم مفرد مؤنث، لذا نستخدم (la).",
+        multi: false
+      },
+      {
+        q: "Tu achètes la bague ? – Oui, je ............ achète.",
+        opts: ["le", "la", "les", "l'"],
+        correct: [3],
+        exp: "✅ الإجابة الصحيحة: <strong>l'</strong> — الخاتم (bague) مؤنث يبدأ بحرف علة، لذا يتحول (la) إلى (l') بالحذف.",
+        multi: false
+      },
+      {
+        q: "Madame, je ............ écoute très bien.",
+        opts: ["nous", "vous", "t'", "toi"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>vous</strong> — عند مخاطبة شخص واحد بأسلوب مهذب (Madame/Monsieur) نستخدم (vous).",
+        multi: false
+      },
+      {
+        q: "Les sandales, je ne ............ mets pas du tout.",
+        opts: ["la", "l'", "les", "le"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>les</strong> — الصنادل (sandales) اسم جمع مؤنث، لذا نستخدم (les). في النفي يوضع الضمير قبل الفعل بين (ne) و(mets).",
+        multi: false
+      }
+    ];
+
+    const colorQuestions = [
+      {
+        q: "Je vais acheter des casquettes ............",
+        opts: ["noir", "verte", "marron", "bleue"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>marron</strong> — اللون البني (marron) من الألوان الثابتة التي لا تتغير مع الجنس أو العدد لأنه اسم منقول.",
+        multi: false
+      },
+      {
+        q: "Ce sont des maillots de bain ............",
+        opts: ["bleu", "bleue", "bleus", "bleues"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>bleus</strong> — (maillots de bain) جمع مذكر، لذا تأخذ الصفة (s) للجمع المذكر.",
+        multi: false
+      },
+      {
+        q: "J'ai une robe ............ très élégante.",
+        opts: ["blanc", "blancs", "blanches", "blanche"],
+        correct: [3],
+        exp: "✅ الإجابة الصحيحة: <strong>blanche</strong> — الفستان (robe) مفرد مؤنث، و(blanc) في المؤنث تصبح (blanche).",
+        multi: false
+      },
+      {
+        q: "Il porte un pantalon ............ très à la mode.",
+        opts: ["noire", "noir", "noirs", "noires"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>noir</strong> — البنطلون (pantalon) مفرد مذكر، لذا نستخدم الصفة في صيغتها الأصلية (noir).",
+        multi: false
+      },
+      {
+        q: "Elle a des chaussures ............ à talons.",
+        opts: ["rouge", "rouges", "rougé", "rougés"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>rouges</strong> — الأحذية (chaussures) جمع مؤنث، لذا تأخذ الصفة (s) للجمع. ❌ (rougé) و (rougés) غير موجودتين في الفرنسية.",
+        multi: false
+      }
+    ];
+
+    const demQuestions = [
+      {
+        q: "............ ceinture est en cuir.",
+        opts: ["Ce", "Cet", "Cette", "Ces"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>Cette</strong> — الحزام (ceinture) اسم مفرد مؤنث، لذا نستخدم (cette).",
+        multi: false
+      },
+      {
+        q: "Je vais acheter ............ accessoire.",
+        opts: ["ce", "cet", "cette", "ces"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>cet</strong> — الإكسوار (accessoire) مذكر يبدأ بحرف علة، لذا نستخدم (cet) بدلاً من (ce) تفادياً لتلاقي حرفين متحركين.",
+        multi: false
+      },
+      {
+        q: "............ chaussures sont à lacets.",
+        opts: ["Ce", "Cet", "Cette", "Ces"],
+        correct: [3],
+        exp: "✅ الإجابة الصحيحة: <strong>Ces</strong> — الأحذية (chaussures) جمع، لذا نستخدم (ces) للدلالة على الجمع بنوعيه.",
+        multi: false
+      },
+      {
+        q: "............ bracelet est en or.",
+        opts: ["Cette", "Ces", "Ce", "Cet"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>Ce</strong> — السوار (bracelet) مفرد مذكر يبدأ بحرف ساكن، لذا نستخدم (ce).",
+        multi: false
+      },
+      {
+        q: "............ écharpe est très belle.",
+        opts: ["Ce", "Cet", "Cette", "Ces"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>Cette</strong> — الإيشارب (écharpe) مفرد مؤنث، لذا نستخدم (cette).",
+        multi: false
+      }
+    ];
+
+    const interQuestions = [
+      {
+        q: "............ lunettes tu vas choisir ?",
+        opts: ["Quel", "Quelle", "Quelles", "Quels"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>Quelles</strong> — النظارة (lunettes) جمع مؤنث، لذا نستخدم (quelles) التي تتوافق مع الجمع المؤنث.",
+        multi: false
+      },
+      {
+        q: "............ chapeaux tu vas acheter ?",
+        opts: ["Quelles", "Combien de", "Combien", "Que"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>Combien de</strong> — للسؤال عن الكمية مع اسم جمع، نستخدم (Combien de + اسم). ❌ (Combien) بدون (de) لا تُستخدم مباشرة قبل اسم.",
+        multi: false
+      },
+      {
+        q: "Sarah met ............ boucles d'oreilles ?",
+        opts: ["quels", "quel", "quelle", "quelles"],
+        correct: [3],
+        exp: "✅ الإجابة الصحيحة: <strong>quelles</strong> — الحلق (boucles d'oreilles) جمع مؤنث، وكلمة الاستفهام تتوافق مع الاسم الذي تُعدّل.",
+        multi: false
+      },
+      {
+        q: "............ tu ne me vois pas bien ? – J'ai mal aux yeux.",
+        opts: ["Comment", "Pourquoi", "Que", "Qui"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>Pourquoi</strong> — الجواب «J'ai mal aux yeux» يُعطي سبباً، لذا السؤال يكون بـ (Pourquoi = لماذا).",
+        multi: false
+      },
+      {
+        q: "Vous faites ............ pointure, monsieur ?",
+        opts: ["quelles", "quelle", "quel", "quels"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>quel</strong> — مقاس الحذاء (pointure) اسم مفرد مؤنث ولكن الفعل (faire) هنا يدل على رقم/مقياس، ويُستخدم معه (quel) في اللغة الفرنسية الشائعة كأسلوب محفوظ.",
+        multi: false
+      }
+    ];
+
+    const adjQuestions = [
+      {
+        q: "C'est un ............ bracelet en or.",
+        opts: ["belle", "beau", "beaux", "belles"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>beau</strong> — السوار (bracelet) مفرد مذكر يبدأ بحرف ساكن، نستخدم (beau). أمام حرف علة تصبح (bel).",
+        multi: false
+      },
+      {
+        q: "Elle porte une ............ robe à fleurs.",
+        opts: ["nouveau", "nouvel", "nouvelle", "nouvelles"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>nouvelle</strong> — الفستان (robe) مفرد مؤنث، و(nouveau) في المؤنث تصبح (nouvelle).",
+        multi: false
+      },
+      {
+        q: "Ce sont des accessoires très ............",
+        opts: ["cher", "chère", "chers", "chères"],
+        correct: [2],
+        exp: "✅ الإجابة الصحيحة: <strong>chers</strong> — الإكسوارات (accessoires) جمع مذكر، لذا تأخذ الصفة (s) للجمع المذكر.",
+        multi: false
+      },
+      {
+        q: "La jupe est trop ............ pour moi.",
+        opts: ["grand", "grands", "grandes", "grande"],
+        correct: [3],
+        exp: "✅ الإجابة الصحيحة: <strong>grande</strong> — التنورة (jupe) مفرد مؤنث، و(grand) في المؤنث تصبح (grande).",
+        multi: false
+      },
+      {
+        q: "J'ai acheté des chaussures très ............",
+        opts: ["confortable", "confortables", "confortablement", "confortabls"],
+        correct: [1],
+        exp: "✅ الإجابة الصحيحة: <strong>confortables</strong> — الأحذية (chaussures) جمع مؤنث، الصفة تأخذ (s) للجمع. ❌ (confortablement) ظرف وليس صفة، و(confortabls) غير موجودة.",
+        multi: false
+      }
+    ];
+
+    // =============================================
+    // STATE
+    // =============================================
+    let answers = {};
+    let totalMCQ = 0;
+
+    // =============================================
+    // BUILD QUESTIONS
+    // =============================================
+    function buildSection(containerId, questions, prefix, multiAllowed) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      let html = '';
+      questions.forEach((q, i) => {
+        const id = prefix + i;
+        totalMCQ++;
+        html += `<div class="question-card" id="card-${id}">`;
+        html += `<div class="question-header">`;
+        html += `<div class="question-num">${i + 1}</div>`;
+        html += `<div class="question-text">${q.multi ? '<span class="multi-badge" dir="rtl">✦ اختر إجابتين</span>' : ''}${q.q}</div>`;
+        html += `</div>`;
+        html += `<div class="options">`;
+        const letters = ['A', 'B', 'C', 'D', 'E'];
+        q.opts.forEach((opt, j) => {
+          html += `<div class="option" id="opt-${id}-${j}" onclick="selectOption('${id}',${j},${q.correct.length > 1})">`;
+          html += `<div class="option-letter">${letters[j]}</div>`;
+          html += `<div class="option-text">${opt}</div>`;
+          html += `<div class="option-icon"></div>`;
+          html += `</div>`;
+        });
+        html += `</div>`;
+        html += `<div class="explanation" id="exp-${id}">${q.exp}</div>`;
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+    }
+
+    // =============================================
+    // INIT
+    // =============================================
+    function init() {
+      totalMCQ = 0;
+      buildSection('q-section-read', readingQuestions, 'read', false);
+      buildSection('q-section-sit', situationQuestions, 'sit', true);
+      buildSection('q-cod', codQuestions, 'cod', false);
+      buildSection('q-colors', colorQuestions, 'clr', false);
+      buildSection('q-dem', demQuestions, 'dem', false);
+      buildSection('q-inter', interQuestions, 'int', false);
+      buildSection('q-adj', adjQuestions, 'adj', false);
+      document.getElementById('scoreTotal').textContent = '/ ' + totalMCQ;
+      updateProgress();
+    }
+
+    // =============================================
+    // SELECT OPTION
+    // =============================================
+    function selectOption(qid, optIdx, isMulti) {
+      if (answers[qid] && answers[qid].locked) return;
+
+      if (!answers[qid]) answers[qid] = { selected: [] };
+
+      if (isMulti) {
+        const sel = answers[qid].selected;
+        const pos = sel.indexOf(optIdx);
+        if (pos > -1) {
+          sel.splice(pos, 1);
+          document.getElementById('opt-' + qid + '-' + optIdx).classList.remove('selected');
+        } else if (sel.length < 2) {
+          sel.push(optIdx);
+          document.getElementById('opt-' + qid + '-' + optIdx).classList.add('selected');
+        }
+      } else {
+        if (answers[qid].selected.length > 0) {
+          document.getElementById('opt-' + qid + '-' + answers[qid].selected[0]).classList.remove('selected');
+        }
+        answers[qid].selected = [optIdx];
+        document.getElementById('opt-' + qid + '-' + optIdx).classList.add('selected');
+      }
+
+      document.getElementById('card-' + qid).classList.add('answered');
+      updateProgress();
+    }
+
+    // =============================================
+    // PROGRESS
+    // =============================================
+    function updateProgress() {
+      const answered = Object.keys(answers).filter(k => answers[k].selected && answers[k].selected.length > 0).length;
+      const pct = Math.round((answered / totalMCQ) * 100);
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('liveScore').textContent = 'تقدمت في: ' + answered + ' / ' + totalMCQ + ' سؤال';
+    }
+
+    // =============================================
+    // SUBMIT
+    // =============================================
+    function submitExam() {
+      const studentNameInput = document.getElementById('studentName');
+      const studentName = studentNameInput ? studentNameInput.value.trim() : 'طالب غير مسجل';
+
+      if (studentNameInput && studentName === '') {
+        alert('يرجى كتابة اسمك قبل تصحيح الاختبار ليتم تسجيل نتيجتك.');
+        studentNameInput.focus();
+        return;
+      }
+
+      let correct = 0, wrong = 0;
+
+      const allSections = [
+        { questions: readingQuestions, prefix: 'read' },
+        { questions: situationQuestions, prefix: 'sit' },
+        { questions: codQuestions, prefix: 'cod' },
+        { questions: colorQuestions, prefix: 'clr' },
+        { questions: demQuestions, prefix: 'dem' },
+        { questions: interQuestions, prefix: 'int' },
+        { questions: adjQuestions, prefix: 'adj' }
+      ];
+
+      allSections.forEach(sec => {
+        sec.questions.forEach((q, i) => {
+          const id = sec.prefix + i;
+          const userSel = answers[id] ? answers[id].selected : [];
+          const correctArr = q.correct;
+
+          // Disable all options
+          q.opts.forEach((_, j) => {
+            const el = document.getElementById('opt-' + id + '-' + j);
+            if (el) el.classList.add('disabled');
+          });
+
+          // Check answer
+          const isCorrect = correctArr.length === userSel.length &&
+            correctArr.every(c => userSel.includes(c));
+
+          if (isCorrect) {
+            correct++;
+            userSel.forEach(j => {
+              const el = document.getElementById('opt-' + id + '-' + j);
+              if (el) { el.classList.remove('selected'); el.classList.add('correct'); el.querySelector('.option-icon').textContent = '✓'; }
+            });
+          } else {
+            wrong++;
+            userSel.forEach(j => {
+              const el = document.getElementById('opt-' + id + '-' + j);
+              if (el) { el.classList.remove('selected'); el.classList.add('wrong'); el.querySelector('.option-icon').textContent = '✗'; }
+            });
+            correctArr.forEach(j => {
+              const el = document.getElementById('opt-' + id + '-' + j);
+              if (el && !userSel.includes(j)) { el.classList.add('reveal-correct'); el.querySelector('.option-icon').textContent = '✓'; }
+            });
+          }
+
+          // Show explanation
+          const expEl = document.getElementById('exp-' + id);
+          if (expEl) {
+            expEl.classList.add('show');
+            if (!isCorrect) expEl.classList.add('wrong-exp');
+          }
+
+          if (answers[id]) answers[id].locked = true;
+        });
+      });
+
+      // Show results
+      const pct = Math.round((correct / totalMCQ) * 100);
+      document.getElementById('scoreNum').textContent = correct;
+      document.getElementById('scoreTotal').textContent = '/ ' + totalMCQ;
+      document.getElementById('correctCount').textContent = correct;
+      document.getElementById('wrongCount').textContent = wrong;
+      document.getElementById('pctNum').textContent = pct + '%';
+      document.getElementById('progressBar').style.width = '100%';
+      document.getElementById('liveScore').textContent = 'النتيجة النهائية: ' + correct + ' / ' + totalMCQ;
+
+      // Score circle
+      document.getElementById('scoreCircle').style.setProperty('--pct', pct + '%');
+
+      // Grade
+      let grade, msg, color;
+      if (pct >= 90) { grade = 'A+ — ممتاز 🏆'; msg = 'أداء رائع! أنت متمكن تماماً من الدرس.'; color = '#43e97b'; }
+      else if (pct >= 80) { grade = 'A — جيد جداً ⭐'; msg = 'عمل ممتاز! استمر على هذا المستوى.'; color = '#38d9a9'; }
+      else if (pct >= 70) { grade = 'B — جيد 👍'; msg = 'أداء جيد! راجع بعض النقاط للوصول للتميز.'; color = '#74c0fc'; }
+      else if (pct >= 60) { grade = 'C — مقبول 📚'; msg = 'تحتاج إلى مزيد من المراجعة والتدريب.'; color = '#f7c948'; }
+      else { grade = 'D — يحتاج مراجعة 💪'; msg = 'لا تيأس! راجع الدرس من البداية.'; color = '#ff6584'; }
+
+      document.getElementById('gradeLabel').textContent = grade;
+      document.getElementById('gradeLabel').style.color = color;
+      document.getElementById('gradeMsg').textContent = msg;
+
+      // Certificate
+      document.getElementById('certName').textContent = studentName || 'المتفوق';
+      document.getElementById('certScore').textContent = correct + ' / ' + totalMCQ + '  (' + pct + '%)';
+      document.getElementById('certDate').textContent = new Date().toLocaleDateString('ar-EG');
+      document.getElementById('certGradeBadge').innerHTML =
+        `<span class="cert-grade-badge" style="color:${color};border-color:${color};">${grade}</span>`;
+
+      // FormSubmit Email
+      const write1 = document.getElementById('write1') ? document.getElementById('write1').value || 'لم يُجب' : '';
+      const write2 = document.getElementById('write2') ? document.getElementById('write2').value || 'لم يُجب' : '';
+      const write3 = document.getElementById('write3') ? document.getElementById('write3').value || 'لم يُجب' : '';
+
+      document.getElementById('f_subject').value = 'نتيجة اختبار الفرنسية - ' + studentName;
+      document.getElementById('f_name').value = studentName;
+      document.getElementById('f_score').value = correct + ' / ' + totalMCQ;
+      document.getElementById('f_pct').value = pct + '%';
+      document.getElementById('f_grade').value = grade;
+      document.getElementById('f_w1').value = write1;
+      document.getElementById('f_w2').value = write2;
+      document.getElementById('f_w3').value = write3;
+      document.getElementById('emailForm').submit();
+
+      // Show results
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+      // Confetti if good score
+      if (pct >= 70) launchConfetti();
+    }
+
+    // =============================================
+    // CONFETTI
+    // =============================================
+    function launchConfetti() {
+      const wrap = document.getElementById('confettiWrap');
+      wrap.innerHTML = '';
+      const colors = ['#6c63ff', '#ff6584', '#43e97b', '#f7c948', '#74c0fc', '#ff922b'];
+      for (let i = 0; i < 120; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.cssText = `
+      left: ${Math.random() * 100}%;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      width: ${6 + Math.random() * 8}px;
+      height: ${6 + Math.random() * 8}px;
+      border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+      animation-duration: ${2 + Math.random() * 3}s;
+      animation-delay: ${Math.random() * 2}s;
+    `;
+        wrap.appendChild(el);
+      }
+      setTimeout(() => { wrap.innerHTML = ''; }, 6000);
+    }
+
+    // =============================================
+    // MODEL ANSWERS
+    // =============================================
+    function toggleModel(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('show');
+    }
+
+    // =============================================
+    // WORD COUNT
+    // =============================================
+    function countWords(textareaId, counterId) {
+      const text = document.getElementById(textareaId).value.trim();
+      const words = text === '' ? 0 : text.split(/\s+/).length;
+      const el = document.getElementById(counterId);
+      el.textContent = words + ' mots';
+      el.style.color = (words >= 25 && words <= 30) ? 'var(--correct)' : words > 30 ? 'var(--wrong)' : 'var(--text-muted)';
+    }
+
+    // =============================================
+    // RETRY
+    // =============================================
+    function retryExam() {
+      answers = {};
+      document.getElementById('results').style.display = 'none';
+      init();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // =============================================
+    // START
+    // =============================================
+    init();
+  </script>
+</body>
+
+</html>
